@@ -1,0 +1,32 @@
+const uploadData = [
+    {
+        id:"1",
+        imageUrl:"/cards/cards-2.jpeg",
+        filename:"mancity.pdf",
+        uploaddate:"01-03-2024"
+    },
+    {
+        id:"2",
+        imageUrl:"/cards/cards-2.jpeg",
+        filename:"mancity.pdf",
+        uploaddate:"01-03-2024"
+    },
+    {
+        id:"3",
+        imageUrl:"/cards/cards-2.jpeg",
+        filename:"mancity.pdf",
+        uploaddate:"01-03-2024"
+    },
+    {
+        id:"4",
+        imageUrl:"/cards/cards-2.jpeg",
+        filename:"mancity.pdf",
+        uploaddate:"01-03-2024"
+    },
+    {
+        id:"5",
+        imageUrl:"/cards/cards-2.jpeg",
+        filename:"mancity.pdf",
+        uploaddate:"01-03-2024"
+    },
+]

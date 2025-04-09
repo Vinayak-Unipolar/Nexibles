@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.containers {
+ padding:0 6%;
+}
+
+/* .product-image-magnifier {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  } */
+
+  .custom-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+  }
+  
+  .list-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .list-item em {
+    font-style: italic;
+  }
+  
+  .description-text {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  

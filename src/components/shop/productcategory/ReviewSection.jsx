@@ -9,6 +9,7 @@ const ReviewSection = ({ productDetails }) => {
     const [error, setError] = useState(null);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [showAllReviews, setShowAllReviews] = useState(false); // State to toggle all reviews
 
     const token = process.env.NEXT_PUBLIC_API_KEY;
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
@@ -103,6 +104,9 @@ const ReviewSection = ({ productDetails }) => {
         return `${Math.round((count / reviews.length) * 100)}%`;
     };
 
+    // Determine which reviews to display (recent 4 by default or all if showAllReviews is true)
+    const displayedReviews = showAllReviews ? reviews : reviews.slice(-4);
+
     return (
         <div className="mt-6 mb-8 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
@@ -192,7 +196,7 @@ const ReviewSection = ({ productDetails }) => {
 
                 <div className="w-full lg:w-1/2">
                     <div className="space-y-4">
-                        {reviews.map((review, index) => (
+                        {displayedReviews.map((review, index) => (
                             <div key={index} className="border-b border-gray-200 py-3">
                                 <div className="flex flex-col sm:flex-row justify-between gap-2">
                                     <div className="flex items-center gap-2">
@@ -204,6 +208,14 @@ const ReviewSection = ({ productDetails }) => {
                                 <p className="mt-2 text-sm sm:text-base">{review.comment}</p>
                             </div>
                         ))}
+                        {reviews.length > 4 && (
+                            <button
+                                onClick={() => setShowAllReviews(!showAllReviews)}
+                                className="mt-4 text-black hover:underline text-sm sm:text-base"
+                            >
+                                {showAllReviews ? 'See less' : `See all (${reviews.length} reviews)`}
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

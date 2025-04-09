@@ -29,6 +29,8 @@ export default function TrendingProducts() {
         console.error("Error fetching data:", error);
       }
     };
+
+    // If you'd like different endpoints for each tab, add logic here.
     fetchData();
   }, [activeTab]);
 
@@ -78,8 +80,11 @@ export default function TrendingProducts() {
         </div>
       </div>
 
-      {/* Product Grid using explicit grid-template to force 4 fixed width columns */}
-      <div className="grid grid-cols-[repeat(4,220px)] gap-6 justify-center">
+      {/* Responsive grid:
+          - 2 columns for phones (below md breakpoint)
+          - 4 fixed-width columns (220px each) for md and above
+      */}
+      <div className="grid grid-cols-2 md:grid-cols-[repeat(4,220px)] gap-6 justify-center">
         {productData.length > 0 ? (
           <AnimatePresence>
             {productData.map((product, index) => (

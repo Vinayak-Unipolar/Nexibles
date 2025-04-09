@@ -11,7 +11,7 @@ const AdvantageItem = ({ icon, text }) => (
 
 const Advantages = () => {
   return (
-    <div className="bg-white py-12 mx-[10vw]">
+    <div className="bg-white py-12 w-full">
       <h2 className="md:text-4xl text-2xl font-bold text-center mb-8">Our advantages</h2>
       <div className="container mx-auto grid grid-cols-2 gap-8 md:grid-cols-4 sm:grid-cols-1">
         <AdvantageItem icon={<FaTruck size={26} className="md:size-14 sm:size-16" />} text="Speed to market" /> {/* Adjusted icon size */}

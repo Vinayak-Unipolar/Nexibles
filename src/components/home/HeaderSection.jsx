@@ -10,8 +10,6 @@ import "swiper/css/pagination";
 
 const HeaderSection = () => {
   const [slides, setSlides] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [direction, setDirection] = useState(1);
   const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_CDN_URL;
 
   useEffect(() => {
@@ -20,18 +18,18 @@ const HeaderSection = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/banner`);
         const data = await response.json();
         const transformedSlides = data.map((item) => ({
-          bgImage: `${BASE_IMAGE_URL}/${item.image}`,
+          bgMedia: `${BASE_IMAGE_URL}/${item.image}`,
           link: item.link,
           title: item.title,
           active: item.active,
           shown: item.shown,
           content: (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
+              {/* <div className="text-center">
                 <h2 className="text-xl md:text-6xl font-extrabold text-black">
                   {item.title}
                 </h2>
-              </div>
+              </div> */}
             </div>
           ),
         }));
@@ -43,6 +41,40 @@ const HeaderSection = () => {
 
     fetchBanners();
   }, []);
+
+  // Helper function to determine media type based on file extension
+  const getMediaType = (fileName) => {
+    const extension = fileName.split('.').pop().toLowerCase();
+    if (['mp4', 'webm', 'ogg'].includes(extension)) return 'video';
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) return 'image';
+    return 'image'; // Default to image if unknown
+  };
+
+  // Component to render either image or video
+  const MediaComponent = ({ media, alt }) => {
+    const mediaType = getMediaType(media);
+    if (mediaType === 'video') {
+      return (
+        <video
+          src={media}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover transition-opacity hover:opacity-90"
+        />
+      );
+    }
+    return (
+      <Image
+        src={media}
+        alt={alt}
+        layout="fill"
+        objectFit="cover"
+        className="transition-opacity hover:opacity-90"
+      />
+    );
+  };
 
   return (
     <div className="h-[50vh] md:h-[84vh] overflow-hidden relative">
@@ -72,12 +104,9 @@ const HeaderSection = () => {
           <SwiperSlide key={index}>
             <Link href={slide.link || "/shop"} className="block w-full h-full">
               <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[84vh] lg:h-[90vh]">
-                <Image
-                  src={slide.bgImage}
+                <MediaComponent
+                  media={slide.bgMedia}
                   alt={`Background ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="transition-opacity hover:opacity-90"
                 />
                 {slide.content}
               </div>

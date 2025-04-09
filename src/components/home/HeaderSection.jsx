@@ -26,11 +26,11 @@ const HeaderSection = () => {
           shown: item.shown,
           content: (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
+              {/* <div className="text-center">
                 <h2 className="text-xl md:text-6xl font-extrabold text-black">
                   {item.title}
                 </h2>
-              </div>
+              </div> */}
             </div>
           ),
         }));

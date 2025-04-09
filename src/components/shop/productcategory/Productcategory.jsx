@@ -14,8 +14,6 @@ const Productcategory = ({ categoryData }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
-
-  // Ensure navigation buttons are properly initialized
   useEffect(() => {
     if (swiperRef.current && prevRef.current && nextRef.current) {
       const swiper = swiperRef.current.swiper;
@@ -29,10 +27,9 @@ const Productcategory = ({ categoryData }) => {
         <Swiper
           ref={swiperRef}
           modules={[Navigation, Autoplay, Pagination]}
-          spaceBetween={24} // 24px gap (Tailwind gap-6)
-          slidesPerView="auto" // use auto so each slide can have a fixed width
+          spaceBetween={24} 
+          slidesPerView="auto" 
           centeredSlides={false}
-          // Center slides if they do not fill the container
           centerInsufficientSlides={true}
           autoplay={{
             delay: 3000,
@@ -54,7 +51,7 @@ const Productcategory = ({ categoryData }) => {
           {categoryData.map((category) => (
             <SwiperSlide
               key={category.name}
-              style={{ width: "220px" }} // fixed card width to mimic grid-cols-[repeat(4,220px)]
+              style={{ width: "220px" }}
             >
               <Link href={`/category/${category.cat_url}`} passHref>
                 <div
@@ -114,8 +111,6 @@ const Productcategory = ({ categoryData }) => {
             </SwiperSlide>
           ))}
         </Swiper>
-
-        {/* Custom navigation buttons - hidden on mobile */}
         <div
           ref={prevRef}
           className="absolute top-1/2 -left-2 sm:-left-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"

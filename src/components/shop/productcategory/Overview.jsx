@@ -23,7 +23,7 @@ export default function Overview({ productDetails, productImages }) {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
-            'API-Key': token, // Include API key in headers
+            'API-Key': token, 
           },
         });
         const data = await response.json();
@@ -59,7 +59,7 @@ export default function Overview({ productDetails, productImages }) {
           <div className="px-6 md:py-2">
             {/* Overview Section */}
             <div className="mb-4">
-              <h2 className="text-gray-900 font-bold text-2xl mb-2">Overview</h2>
+              <h2 className="text-gray-900 font-bold text-2xl mb-2">Description</h2>
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-[60%] pr-6">
                   <p

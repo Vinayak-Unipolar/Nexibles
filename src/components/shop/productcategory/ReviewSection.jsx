@@ -1,171 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-
-// const ReviewSection = ({ productDetails }) => {
-//     const [review, setReview] = useState('');
-//     const [rating, setRating] = useState(0);
-//     const [reviews, setReviews] = useState([]);
-//     const [averageRating, setAverageRating] = useState(0);
-//     const [isLoading, setIsLoading] = useState(true);
-//     const [error, setError] = useState(null);
-
-//     const token = 'irrv211vui9kuwn11efsb4xd4zdkuq'; // Replace with your actual API token
-//     const productId = productDetails.product?.id;
-
-//     // Fetch existing reviews based on product id
-//     useEffect(() => {
-//         const fetchReviews = async () => {
-//             try {
-//                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/ratings`, {
-//                     method: 'GET',
-//                     headers: {
-//                         'Content-Type': 'application/json',
-//                         'API-Key': token, // Include API key in headers
-//                     },
-//                 });
-//                 const data = await response.json();
-//                 if (data.status === 'success') {
-//                     const productReviews = data.data.filter(review => review.productid === productId);
-//                     setReviews(productReviews);
-
-//                     const totalRatings = productReviews.reduce((sum, review) => sum + parseInt(review.rating), 0);
-//                     const newAverageRating = productReviews.length > 0 ? (totalRatings / productReviews.length) : 0;
-//                     setAverageRating(newAverageRating);
-//                 } else {
-//                     setError('Failed to fetch reviews');
-//                 }
-//             } catch (error) {
-//                 setError('Error fetching reviews');
-//             } finally {
-//                 setIsLoading(false);
-//             }
-//         };
-
-//         if (productId) {
-//             fetchReviews();
-//         }
-//     }, [token, productId]);
-
-//     // Handle input change for review text
-//     const handleReviewChange = (e) => {
-//         setReview(e.target.value);
-//     };
-
-//     // Handle star rating change
-//     const handleRatingChange = (value) => {
-//         setRating(value);
-//     };
-
-//     // Handle form submit to post new review
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         if (review.trim() !== '') {
-//             const newReview = { productid: productId, reviewer: 'Static Name', rating, comment: review };
-//             try {
-//                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/ratings`, {
-//                     method: 'POST',
-//                     headers: {
-//                         'Content-Type': 'application/json',
-//                         'API-Key': token,
-//                     },
-//                     body: JSON.stringify(newReview),
-//                 });
-
-//                 const data = await response.json();
-//                 if (data.status === 'success') {
-//                     setReviews([...reviews, newReview]);
-//                     setReview('');
-//                     setRating(0);
-//                 } else {
-//                     setError('Failed to post review');
-//                 }
-//             } catch (error) {
-//                 setError('Error posting review');
-//             }
-//         }
-//     };
-
-//     // Render stars for rating
-//     const renderStars = (rating, onClick) => {
-//         const stars = [];
-//         for (let i = 1; i <= 5; i++) {
-//             const starClass = i <= Math.round(rating) ? 'text-yellow-500' : 'text-gray-300';
-//             stars.push(
-//                 <span
-//                     key={i}
-//                     className={`${starClass} cursor-pointer`}
-//                     onClick={() => onClick(i)}
-//                 >
-//                     &#9733;
-//                 </span>
-//             );
-//         }
-//         return stars;
-//     };
-
-//     return (
-//         <div className=' max-w-7xl px-4 sm:px-6 lg:px-8'>
-//             <div className="rounded-md py-4">
-//                 <div className="flex justify-between items-center mb-4">
-//                     <div className=" items-center ">
-//                         {isLoading ? (
-//                             <p>Loading...</p>
-//                         ) : (
-//                             <div className='border border-gray-300 px-[2.4vw] rounded-md py-[2.4vh] mt-[1rem] relative'>
-//                                 <div className="absolute top-0 left-0 w-full h-[6px] bg-[#30384E] rounded-t-md shadow"></div>
-
-//                                 <p className='text-gray-600 text-2xl font-semibold '>Reviews</p>
-//                                 <div className="text-[#E28141] mt-[1vh] text-3xl font-bold ">
-//                                     {averageRating.toFixed(1)}
-//                                     <span className='md:ml-[2vw]'>
-//                                         {renderStars(averageRating, () => { })}
-//                                     </span>
-//                                 </div>
-//                             </div>
-//                         )}
-//                         {/* <h2 className="text-lg font-bold  mr-2">Reviews</h2> */}
-
-//                     </div>
-//                 </div>
-//                 {/* <div className="flex items-center text-2xl font-bold mr-2">
-//                     {renderStars(rating, handleRatingChange)}
-//                 </div> */}
-//                 {/* <form onSubmit={handleSubmit} className="flex items-center mt-[1rem] mb-4">
-//                     <input
-//                         className="md:w-[30%] w-[70%] mr-2 p-2 border border-gray-300 rounded"
-//                         placeholder="Write a review..."
-//                         value={review}
-//                         onChange={handleReviewChange}
-//                     />
-//                     <button
-//                         type="submit"
-//                         className="bg-[#111B36] hover:bg-[#444b5f] text-white font-semibold py-2 md:px-6 px-4 rounded"
-//                     >
-//                         Post
-//                     </button>
-//                 </form> */}
-//             </div>
-//             <div>
-//                 {isLoading ? (
-//                     <p>Loading reviews...</p>
-//                 )
-//                     : (
-//                         reviews.map((review, index) => (
-//                             <div key={index} className="p-4 mb-2">
-//                                 <div className="flex items-center mb-2">
-//                                     <span className="mr-2 font-bold">{review.reviewer}</span>
-//                                     {renderStars(review.rating, () => { })}
-//                                 </div>
-//                                 <p>{review.comment}</p>
-//                             </div>
-//                         ))
-//                     )}
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default ReviewSection;
-
 import React, { useState, useEffect } from 'react';
 
 const ReviewSection = ({ productDetails }) => {
@@ -175,10 +7,11 @@ const ReviewSection = ({ productDetails }) => {
     const [averageRating, setAverageRating] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
 
     const token = process.env.NEXT_PUBLIC_API_KEY;
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
-    // Replace with your actual API token
     const productId = productDetails.product?.id;
 
     // Fetch existing reviews based on product id
@@ -189,7 +22,7 @@ const ReviewSection = ({ productDetails }) => {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'API-Key': token, // Include API key in headers
+                        'API-Key': token,
                     },
                 });
                 const data = await response.json();
@@ -215,21 +48,25 @@ const ReviewSection = ({ productDetails }) => {
         }
     }, [token, productId]);
 
-    // Handle input change for review text
-    const handleReviewChange = (e) => {
-        setReview(e.target.value);
-    };
-
-    // Handle star rating change
-    const handleRatingChange = (value) => {
-        setRating(value);
-    };
+    // Handle input changes
+    const handleNameChange = (e) => setName(e.target.value);
+    const handleEmailChange = (e) => setEmail(e.target.value);
+    const handleReviewChange = (e) => setReview(e.target.value);
+    const handleRatingChange = (value) => setRating(value);
 
     // Handle form submit to post new review
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (review.trim() !== '') {
-            const newReview = { productid: productId, reviewer: 'Static Name', rating, comment: review };
+        if (review.trim() !== '' && name.trim() !== '' && email.trim() !== '' && rating > 0) {
+            const newReview = {
+                productid: productId,
+                item: null,
+                user: name,
+                email: email,
+                rating: rating,
+                comment: review
+            };
+
             try {
                 const response = await fetch(`${APIURL}/api/ratings`, {
                     method: 'POST',
@@ -244,6 +81,8 @@ const ReviewSection = ({ productDetails }) => {
                 if (data.status === 'success') {
                     setReviews([...reviews, newReview]);
                     setReview('');
+                    setName('');
+                    setEmail('');
                     setRating(0);
                 } else {
                     setError('Failed to post review');
@@ -251,67 +90,125 @@ const ReviewSection = ({ productDetails }) => {
             } catch (error) {
                 setError('Error posting review');
             }
+        } else {
+            setError('Please fill all fields and select a rating');
         }
     };
 
-    // Render stars for rating
-    const renderStars = (rating, onClick) => {
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-            const starClass = i <= Math.round(rating) ? 'text-yellow-500' : 'text-gray-300';
-            stars.push(
-                <span
-                    key={i}
-                    className={`${starClass} cursor-pointer`}
-                    onClick={() => onClick(i)}
-                >
-                    &#9733;
-                </span>
-            );
-        }
-        return stars;
+    const renderStars = (count) => "★".repeat(count) + "☆".repeat(5 - count);
+
+    const getRatingPercentage = (star) => {
+        if (reviews.length === 0) return "0%";
+        const count = reviews.filter(review => parseInt(review.rating) === star).length;
+        return `${Math.round((count / reviews.length) * 100)}%`;
     };
 
     return (
-        <>
-            {reviews && reviews.length > 0 && (
-                <>
-                    <hr className="border-gray-300 " />
-                    <div className="max-w-7xl px-4 sm:px-6 lg:px-4">
-                        <div className="rounded-md py-2">
-                            <div className="flex justify-between items-center mb-4">
-                                <div className="items-center">
-                                    <div className="border border-gray-300 px-[2.4vw] rounded-md py-[2.4vh] mt-[1rem] relative">
-                                        <div className="absolute top-0 left-0 w-full h-[6px] bg-[#30384E] rounded-t-md shadow"></div>
-                                        <p className="text-gray-600 text-2xl font-semibold">Reviews</p>
-                                        <div className="text-[#E28141] mt-[1vh] text-3xl font-bold">
-                                            {averageRating.toFixed(1)}
-                                            <span className="md:ml-[2vw]">
-                                                {renderStars(averageRating, () => { })}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div className="mt-6 mb-8 px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <h2 className="text-gray-900 font-bold text-xl sm:text-2xl mb-2 sm:mb-0">Customer Review</h2>
+            </div>
 
-                            <div>
-                                {reviews.map((review, index) => (
-                                    <div key={index} className="p-1">
-                                        <div className="flex items-center mb-2">
-                                            <span className="font-bold">{review.reviewer}</span>
-                                            {renderStars(review.rating, () => { })}
-                                        </div>
-                                        <p>{review.comment}</p>
-                                    </div>
+            <div className="flex flex-col md:flex-row gap-6 mb-8">
+                <div className="w-full md:w-1/3">
+                    <div className="flex flex-col items-center">
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold">{averageRating.toFixed(1)}</h1>
+                        <div className="flex text-yellow-400 text-lg sm:text-xl my-2">
+                            {"★".repeat(Math.round(averageRating))}
+                            {"☆".repeat(5 - Math.round(averageRating))}
+                        </div>
+                        <p className="text-gray-600 text-sm sm:text-base">({reviews.length} Ratings)</p>
+                    </div>
+                </div>
+
+                <div className="w-full md:w-2/3">
+                    {[5, 4, 3, 2, 1].map(star => (
+                        <div key={star} className="flex items-center mb-2 text-sm sm:text-base">
+                            <span className=" sm:w-8">{star} ★</span>
+                            <div className="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+                                <div
+                                    className="bg-gray-600 h-2 rounded-full"
+                                    style={{ width: getRatingPercentage(star) }}
+                                ></div>
+                            </div>
+                            <span className="w-10 sm:w-12 text-right flex-shrink-0">{getRatingPercentage(star)}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-6">
+                <div className="w-full lg:w-1/2">
+                    <h3 className="text-xl sm:text-2xl font-bold mb-4">Leave A Comment</h3>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <input
+                                type="text"
+                                placeholder="Your Name*"
+                                className="w-full sm:w-1/2 p-3 border border-gray-300 rounded text-sm sm:text-base"
+                                value={name}
+                                onChange={handleNameChange}
+                                required
+                            />
+                            <input
+                                type="email"
+                                placeholder="Your Email*"
+                                className="w-full p-3 border border-gray-300 rounded text-sm sm:text-base"
+                                value={email}
+                                onChange={handleEmailChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Rating:</label>
+                            <div className="flex space-x-1 sm:space-x-2">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span
+                                        key={star}
+                                        className={`cursor-pointer text-xl sm:text-2xl ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
+                                        onClick={() => handleRatingChange(star)}
+                                    >
+                                        ★
+                                    </span>
                                 ))}
                             </div>
                         </div>
+                        <textarea
+                            placeholder="Your Message*"
+                            className="w-full p-3 border border-gray-300 rounded min-h-[100px] sm:min-h-[120px] text-sm sm:text-base"
+                            value={review}
+                            onChange={handleReviewChange}
+                            required
+                        ></textarea>
+                        <button
+                            type="submit"
+                            className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-white border border-gray-800 text-gray-800 font-medium rounded hover:bg-gray-100 text-sm sm:text-base"
+                        >
+                            SUBMIT REVIEWS
+                        </button>
+                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                    </form>
+                </div>
+
+                <div className="w-full lg:w-1/2">
+                    <div className="space-y-4">
+                        {reviews.map((review, index) => (
+                            <div key={index} className="border-b border-gray-200 py-3">
+                                <div className="flex flex-col sm:flex-row justify-between gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <div className="text-yellow-400 text-sm sm:text-base">
+                                            {renderStars(review.rating)}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p className="mt-2 text-sm sm:text-base">{review.comment}</p>
+                            </div>
+                        ))}
                     </div>
-                </>
-            )}
-        </>
+                </div>
+            </div>
+        </div>
     );
 };
 
 export default ReviewSection;
-

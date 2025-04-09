@@ -186,7 +186,7 @@ const ReviewSection = ({ productDetails }) => {
                         ></textarea>
                         <button
                             type="submit"
-                            className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-white border border-gray-800 text-gray-800 font-medium rounded hover:bg-gray-100 text-sm sm:text-base"
+                            className="w-full sm:w-auto px-6 sm:px-4 py-2 sm:py-3 bg-white border border-gray-800 text-gray-800 font-medium rounded hover:bg-gray-100 text-sm sm:text-md"
                         >
                             SUBMIT REVIEWS
                         </button>

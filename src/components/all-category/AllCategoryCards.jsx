@@ -11,10 +11,10 @@ const AllCategoryCards = ({ categoryData }) => {
   return (
     <div className="h-auto bg-white">
       {/* New 3-box grid section */}
-      <div className="mb-10 px-4 md:px-64">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="mb-10 px-4 md:px-40 xl:px-64">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
           {/* Left box (full height of the row) - First category */}
-          <div className="bg-gray-200 rounded-lg p-6 text-center relative h-full">
+          <div className="bg-gray-200 rounded-lg pb-6 text-center relative h-full">
             <Link href={`/category/${topThreeCategories[0].cat_url}`} passHref>
               <div className="relative w-full h-72 md:h-full">
                 <Image
@@ -33,12 +33,12 @@ const AllCategoryCards = ({ categoryData }) => {
           {/* Right side (two boxes split vertically) */}
           <div className="grid grid-cols-1 md:grid--2 gap-6">
             {/* Second category */}
-            <div className="bg-gray-200 rounded-lg p-6 text-center relative">
+            <div className="bg-gray-200 rounded-lg pb-4 text-center relative">
               <Link
                 href={`/category/${topThreeCategories[1].cat_url}`}
                 passHref
               >
-                <div className="relative w-full h-[240px]">
+                <div className="relative w-full h-[200px]">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_CDN_URL}/${topThreeCategories[1].bg_Img}`}
                     alt={topThreeCategories[1].name}
@@ -53,12 +53,12 @@ const AllCategoryCards = ({ categoryData }) => {
               </p>
             </div>
             {/* Third category */}
-            <div className="bg-gray-200 rounded-lg p-6 text-center relative">
+            <div className="bg-gray-200 rounded-lg pb-4 text-center relative">
               <Link
                 href={`/category/${topThreeCategories[2].cat_url}`}
                 passHref
               >
-                <div className="relative w-full h-[240px]">
+                <div className="relative w-full h-[200px]">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_CDN_URL}/${topThreeCategories[2].bg_Img}`}
                     alt={topThreeCategories[2].name}
@@ -78,65 +78,62 @@ const AllCategoryCards = ({ categoryData }) => {
 
       {/* All Categories title */}
       <div className="px-4 md:px-64 mb-10">
-        <p className="text-center text-[30px] md:text-[60px] font-semibold">All Categories</p>
+        <p className="text-center text-[30px] md:text-[40px] font-semibold">All Categories</p>
       </div>
 
       {/* Existing category cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 px-4 md:px-64">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 px-4 md:px-40">
         {categoryData.map((category) => (
-          <div key={category.id} className="mt-4">
-            <div className="rounded-full text-left p-2 transition-all duration-300 border border-gray-300 shadow-md hover:shadow-2xl hover:-translate-y-1">
+          <div key={category.id} className="mt-4 flex flex-col items-center">
+            <div
+              className="relative rounded-full overflow-hidden transition-all duration-300 border border-gray-300 shadow-md hover:shadow-2xl hover:-translate-y-1 w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52"
+
+            >
               <Link href={`/category/${category.cat_url}`} passHref>
-                <div className="w-auto h-[150px] md:h-[250px] relative">
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`}
-                    alt={category.name}
-                    className="rounded-md object-contain transition-transform duration-300 hover:scale-105 p-2 md:p-4"
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`}
+                  alt={category.name}
+                  className="object-contain p-2 sm:p-3 md:p-4 transition-transform duration-300 hover:scale-105"
+                  layout="fill"
+                  objectFit="contain"
+                />
               </Link>
             </div>
-            <p className="text-gray-900 font-semibold text-sm md:text-base text-center py-2 md:py-4">
+            <p className="text-gray-900 font-semibold text-xs sm:text-sm md:text-base text-center py-2 md:py-3">
               {category.name}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="py-10 px-4 md:px-64 mt-10 relative bg-gray-300">
-        <h2 className="text-center text-2xl md:text-3xl font-semibold mb-8 z-10 relative">
-          Key Product Features
-        </h2>
+      <div className="py-10 px-4 md:px-16 mt-10">
+  <h2 className="text-center text-2xl md:text-3xl font-semibold mb-8">
+    Key Product Features
+  </h2>
+  <div className="flex justify-center">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
+      {[
+        "Feature 1",
+        "Feature 2",
+        "Feature 3",
+        "Feature 4",
+        "Feature 5",
+        "Feature 6",
+      ].map((feature, index) => (
         <div
-          className="absolute px-6 inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: "url('https://via.placeholder.com/1200x600')",
-          }} // Replace with your background image URL
-        ></div>
-        <div className="relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              "Feature 1",
-              "Feature 2",
-              "Feature 3",
-              "Feature 4",
-              "Feature 5",
-              "Feature 6",
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className=" p-6 text-center  transition-all duration-300 hover:-translate-y-2 bg-opacity-90 flex flex-col justify-center items-center"
-              >
-                <div className="w-1/2  h-48 bg-gray-400 rounded-lg mb-4"></div>{" "}
-                {/* Placeholder for image */}
-                <p className="text-gray-900 font-semibold">{feature}</p>
-              </div>
-            ))}
-          </div>
+          key={index}
+          className="flex flex-col items-center p-4 transition-all duration-300 hover:-translate-y-2 bg-white  hover:shadow-lg w-full"
+          style={{ aspectRatio: "1 / 1" }}
+        >
+          <div className="w-full h-full bg-gray-400 rounded-lg mb-3"></div>
+          <p className="text-gray-900 font-semibold text-sm text-center">
+            {feature}
+          </p>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
     </div>
   );
 };

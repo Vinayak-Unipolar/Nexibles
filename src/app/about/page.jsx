@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
       <Navbar />
-      <div className="containers bg-[#89D0B7]">
+      <div >
       <About />
       </div>
       <Footer />

@@ -48,7 +48,7 @@ const Page = () => {
     <div className="">
       <Navbar />
       <CategoryImageBg />
-      <div className="md:flex">
+      <div className="md:flex mt-10">
         {/* <div className="md:w-1/4 bg-white">
           <FavoriteCategory />
         </div> */}

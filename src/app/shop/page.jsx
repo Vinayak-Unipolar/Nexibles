@@ -7,6 +7,7 @@ import Trendingproducts from '@/components/shop/trendingproducts/Trendingproduct
 import Backdrop from '@/components/shop/Backdrop';
 import Productcategory from '@/components/shop/productcategory/Productcategory';
 import Advantages from '@/components/shop/Advantages';
+import PopularProducts from '@/components/shop/popularproducts/Popularproducts';
 
 const Shop = () => {
   const [categoryData, setData] = useState([])
@@ -43,7 +44,8 @@ const Shop = () => {
       <Navbar />
       <Backdrop />
       <div className='containers mt-[3%]'>
-        <Banner categoryData={categoryData} />
+        {/* <Banner categoryData={categoryData} /> */}
+         <PopularProducts />
         <Trendingproducts />
         <Productcategory categoryData={categoryData} />
         <Advantages />

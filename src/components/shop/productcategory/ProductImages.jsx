@@ -106,7 +106,7 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
               <div
               key={index}
               className={`w-20 h-28 flex-shrink-0 cursor-pointer border-[1px] rounded-lg ${
-                index === currentImageIndex ? 'border-[#30384E]' : 'border-gray-300 hover:border-[#30384E]'
+                index === currentImageIndex ? ' bg-white' : 'border-gray-300 hover:border-[#30384E]'
               }`}
               onClick={() => setCurrentImageIndex(index)}
             >

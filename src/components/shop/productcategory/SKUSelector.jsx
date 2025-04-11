@@ -104,12 +104,12 @@ export default function SKUSelector({
                     {(parseInt(selectedQuantity, 10) || 0) >= minimumQuantity ? (
                         <motion.button
                             onClick={handleAddToCart}
-                            className="w-full md:w-auto bg-white rounded-md border border-black px-4 py-2 text-black font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
+                            className="w-full md:w-auto text-xs bg-white rounded-md border border-black px-20 py-2 text-black font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
                             variants={buttonVariants}
                             whileHover="hover"
                             whileTap="tap"
                         >
-                            <svg
+                            {/* <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
                                 height="16"
@@ -124,7 +124,7 @@ export default function SKUSelector({
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
+                            </svg> */}
                             Add to Cart
                         </motion.button>
                     ) : (
@@ -135,7 +135,7 @@ export default function SKUSelector({
                             whileHover="hover"
                             whileTap="tap"
                         >
-                            <svg
+                            {/* <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
                                 height="16"
@@ -150,7 +150,7 @@ export default function SKUSelector({
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
+                            </svg> */}
                             Add to Cart
                         </motion.button>
                     )}

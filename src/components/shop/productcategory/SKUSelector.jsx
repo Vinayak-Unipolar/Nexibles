@@ -87,7 +87,7 @@ export default function SKUSelector({
                         id="skuSelect"
                         value={selectedSKU}
                         onChange={handleSKUChange}
-                        className="w-full p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-sm bg-gray-200 h-10"
+                        className="w-full p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-sm bg-gray-100 h-10"
                         disabled={numberOfSKUs < 1}
                     >
                         {Array.from({ length: numberOfSKUs }, (_, index) => (

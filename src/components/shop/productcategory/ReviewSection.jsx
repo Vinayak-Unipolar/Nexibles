@@ -106,7 +106,7 @@ const ReviewSection = ({ productDetails }) => {
   return (
     <div className="mt-6 mb-8 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h2 className="text-gray-900 font-bold text-xl sm:text-2xl mb-2 sm:mb-0">Customer Review</h2>
+        <h2 className="text-gray-900 font-bold text-md sm:text-2xl mb-2 sm:mb-0">Customer Review</h2>
       </div>
 
       <div className="flex flex-col md:flex-row gap-6 mb-8">
@@ -128,7 +128,7 @@ const ReviewSection = ({ productDetails }) => {
         <div className="w-full md:w-2/3">
           {[5, 4, 3, 2, 1].map(star => (
             <div key={star} className="flex items-center mb-2 text-sm sm:text-base">
-              <span className="w-6 sm:w-8">{star} ★</span>
+              <span className=" sm:w-8">{star} ★</span>
               <div className="flex-1 bg-gray-200 rounded-full h-2 mx-2">
                 <div
                   className="bg-gray-600 h-2 rounded-full"

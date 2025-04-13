@@ -100,7 +100,7 @@ export default function Overview({ productDetails, productImages }) {
           >
             <div className="mb-4">
               <motion.h2 
-                className="text-gray-900 font-bold text-2xl mb-2"
+                className="text-gray-900 font-bold md:text-2xl mb-2"
                 variants={itemVariants}
               >
                 Description
@@ -111,7 +111,7 @@ export default function Overview({ productDetails, productImages }) {
               >
                 <div className="md:w-[60%] pr-6">
                   <motion.p
-                    className="text-gray-700 text-lg leading-8"
+                    className="text-gray-700 md:text-lg leading-8"
                     dangerouslySetInnerHTML={{ __html: productDetails.product.long_desc }}
                     variants={itemVariants}
                   />

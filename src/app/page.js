@@ -13,6 +13,7 @@ import Popularproducts from "@/components/shop/popularproducts/Popularproducts";
 import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTestimonials";
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
+import Industries from "@/components/home/Industries";
 
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
@@ -161,7 +162,8 @@ const Home = () => {
       <Modal isOpen={showModal} onClose={closeModal} />
       <Navbar />
       <HeaderSection />
-      <Productcategory categoryData={categoryData} />
+      {/* <Productcategory categoryData={categoryData} /> */}
+      <Industries/>
       <Popularproducts />
       <ProductSections />
       <Trendingproducts />

@@ -30,7 +30,7 @@ export default function PaymentMethod({ defaultAddress, addresses, totalPrice, m
               ? 'bg-black text-white hover:bg-gray-800'
               : 'bg-gray-400 text-gray-700 cursor-not-allowed'
           }`}
-          onClick={isDefaultAddressSaved ? makePayment : null} // Only trigger makePayment if address is saved
+          onClick={isDefaultAddressSaved ? makePayment : null} 
           disabled={!isDefaultAddressSaved || loading2 || isProcessingOrder} // Disable if no default address or processing
         >
           {loading2 || isProcessingOrder ? (

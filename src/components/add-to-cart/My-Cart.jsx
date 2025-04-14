@@ -18,7 +18,7 @@ export default function MyCart() {
   const router = useRouter();
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   const GST_RATE = 0.18;
-  
+
 
   const applyCouponToItems = useCallback(
     (coupon) => {
@@ -256,12 +256,20 @@ export default function MyCart() {
                       </div>
                     ) : (
                       <>
+                        <li className="mt-1 list-none">
+                          Material: {item.material}
+                        </li>
+                        <li className="mt-1 list-none">
+                          Price: ₹ {item.price} / Sku: {item.skuCount}</li>
+                        {/* <li className="mt-1 list-none">
+                          
+                        </li> */}
+
                         <li className="font-semibold mt-1 list-none">
                           Quantity: {item.quantity}
                         </li>
-                        <li className="mt-1 list-none">Price: ₹ {item.price}</li>
-                        <li className="mt-1 list-none">
-                          Sku: {item.skuCount}
+                        <li className="font-semibold mt-1 list-none">
+                          Total: {item.totalPrice}
                         </li>
                       </>
                     )}

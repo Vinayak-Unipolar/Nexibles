@@ -285,7 +285,7 @@ const MyOrderHistory = () => {
                                                     <img
                                                         src={`${CDN_URL}/${order.image}`}
                                                         alt={order.product_name}
-                                                        className="w-full h-64 lg:h-80 object-cover rounded-md"
+                                                        className="w-full h-64 lg:h-80 object-contain rounded-md"
                                                     />
                                                 </div>
 
@@ -342,7 +342,7 @@ const MyOrderHistory = () => {
                                                                                         ${uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded ? 'opacity-50 cursor-not-allowed' : ''}`}
                                                                                 >
                                                                                     <MdOutlineFileUpload className="mr-2" size={16} />
-                                                                                    {uploadingOrder === `${orderNo}_${sku.sku_no}` ? 'Uploading...' : `Upload for ${sku.sku_name}`}
+                                                                                    {uploadingOrder === `${orderNo}_${sku.sku_no}` ? 'Uploading...' : `Upload for ${sku.sku_no}`}
                                                                                 </label>
                                                                                 <input
                                                                                     type="file"

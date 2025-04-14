@@ -162,7 +162,7 @@ const Contact = () => {
                 Our industry specialists will guide you to select the best pouch style, materials, and features tailored to your product.
               </p>
               <p>
-                Let's get you started with a personalized quote today.
+                Lets get you started with a personalized quote today.
               </p>
             </div>
             <div className="flex space-x-4">

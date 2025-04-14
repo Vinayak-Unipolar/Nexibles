@@ -55,12 +55,12 @@ const Industries = () => {
   return (
     <div className="bg-white py-8 px-4 sm:px-6 lg:px-8 ">
       <div
-        className="mx-auto text-center mt-4 font-bold text-4xl text-gray-800 relative overflow-hidden"
+        className="mx-auto text-center mt-4 pb font-bold text-4xl text-gray-800 relative overflow-hidden"
         style={{ width: `${viewportWidth}px`, maxWidth: "100%" }}
       >
         For Every Industry
         <motion.div
-          className="flex md:mt-12"
+          className="flex md:mt-12 mt-6"
           style={{ gap: `${gap}px` }}
           initial={{ x: 0 }}
           animate={{ x: -copyWidth }}
@@ -74,7 +74,7 @@ const Industries = () => {
             <div
               key={index}
               style={{ flex: "0 0 auto", width: `${cardWidth}px` }}
-              className="bg-white  p-2 pb-4 border border-gray-200  transition-shadow duration-300 rounded-xl overflow-hidden"
+              className="bg-white  p-2 pb-4  border border-gray-200  transition-shadow duration-300 rounded-xl overflow-hidden"
             >
               <div>
                 <div className="relative h-48 md:h-[400px] w-full flex items-center justify-center">
@@ -84,7 +84,7 @@ const Industries = () => {
                     height={400}
                     alt={`Image for ${category.name}`}
                     quality={100}
-                    className="w-full h-full object-contain rounded-t-lg"
+                    className="w-full h-full object-contain pt-2"
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   />
                 </div>
@@ -108,7 +108,7 @@ const Industries = () => {
                       hover:text-white
                       transition-all
                       duration-300
-                      
+
                     "
                   >
                     {category.name}

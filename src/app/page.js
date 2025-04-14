@@ -76,6 +76,7 @@ const Modal = ({ isOpen, onClose }) => {
           >
             SUBSCRIBE
           </button>
+          
           <div className="flex gap-4 mt-2">
             <a
               href="https://instagram.com"

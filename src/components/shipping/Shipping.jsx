@@ -16,6 +16,7 @@ export default function Shipping({ defaultAddress, addresses }) {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const dispatch = useDispatch();
   const { items: cartItems, appliedCoupon, gstAmount } = useSelector((state) => state.cart);
+  console.log("Cart Items:", cartItems);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -269,34 +270,38 @@ export default function Shipping({ defaultAddress, addresses }) {
 
   const getOrderDetailsFromRedux = async () => {
     const correctedItems = await validateAndCorrectWeights(cartItems);
+    // Ensure correctedItems includes material
+    console.log("Corrected Items:", correctedItems); // Debug
+
     return correctedItems.map((product) => {
-      const selectedOptions = product.selectedOptions || {};
-      const flattenedOptions = Object.keys(selectedOptions).reduce((acc, optionKey) => {
-        const option = selectedOptions[optionKey];
-        return { ...acc, [`${optionKey}OptionName`]: option.optionName, [`${optionKey}Price`]: option.price };
-      }, {});
+        const selectedOptions = product.selectedOptions || {};
+        const flattenedOptions = Object.keys(selectedOptions).reduce((acc, optionKey) => {
+            const option = selectedOptions[optionKey];
+            return { ...acc, [`${optionKey}OptionName`]: option.optionName, [`${optionKey}Price`]: option.price };
+        }, {});
 
-      const optionKeys = Object.keys(selectedOptions);
-      const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
-      const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
+        const optionKeys = Object.keys(selectedOptions);
+        const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
+        const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
 
-      return {
-        id: product.id,
-        name: product.name,
-        price: parseFloat(product.totalPrice || 0).toFixed(2),
-        quantity: product.quantity || product.totalQuantity || 1,
-        payment_status: "pending",
-        discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
-        discountPercentage: parseFloat(product.discountPercentage || 0).toFixed(2),
-        discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
-        product_option_id: productOptionId,
-        product_config_id: productConfigId,
-        origin: "Nexibles",
-        skuCount: product.skuCount
-      };
+        return {
+            id: product.id,
+            name: product.name,
+            price: parseFloat(product.totalPrice || 0).toFixed(2),
+            quantity: product.quantity || product.totalQuantity || 1,
+            payment_status: "pending",
+            discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
+            discountPercentage: parseFloat(product.discountPercentage || 0).toFixed(2),
+            discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
+            product_option_id: productOptionId,
+            product_config_id: productConfigId,
+            origin: "Nexibles",
+            skuCount: product.skuCount,
+            material: product.material || "",
+        };
     });
-  };
-
+};
+  
   const createOrder = async () => {
     if (isProcessingOrder) return false;
     setIsProcessingOrder(true);
@@ -311,8 +316,6 @@ export default function Shipping({ defaultAddress, addresses }) {
       const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       const orderDate = new Date().toISOString();
       const addressDetails = defaultAddress?.data || {};
-
-      // Recalculate totals to ensure accuracy
       const newSubTotal = calculateSubtotal();
       const totalAfterDiscount = newSubTotal - parseFloat(discountAmount);
       const calculatedGst = totalAfterDiscount * GST_RATE;
@@ -402,7 +405,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         name: user?.result?.firstName ?? user?.firstName,
         number: user?.result?.mobile ?? user?.mobile,
         MUID: user?.result?.customerId ?? user?.customerId,
-        amount: Math.round(amount * 100), // Convert to paise and ensure integer
+        amount: Math.round(amount * 100), 
         transactionId,
         redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
       };

@@ -1,6 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import speci from '../../../../public/home/speci.png';
 import Loader from '@/components/comman/Loader';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Animation variants
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.5,
+      when: "beforeChildren",
+      staggerChildren: 0.1 
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.4 }
+  }
+};
+
+const faqVariants = {
+  collapsed: { 
+    opacity: 0, 
+    height: 0,
+    transition: { duration: 0.3 }
+  },
+  expanded: { 
+    opacity: 1, 
+    height: "auto",
+    transition: { duration: 0.3 }
+  }
+};
 
 export default function Overview({ productDetails, productImages }) {
   const [expandedFaq, setExpandedFaq] = useState(null);
@@ -23,13 +60,12 @@ export default function Overview({ productDetails, productImages }) {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
-            'API-Key': token, // Include API key in headers
+            'API-Key': token, 
           },
         });
         const data = await response.json();
 
         if (data.status === 'success') {
-          // Filter FAQs based on the product id
           const filteredFaqs = data.data.filter(faq => faq.productid === productId);
           setFaqs(filteredFaqs);
         } else {
@@ -43,7 +79,7 @@ export default function Overview({ productDetails, productImages }) {
     };
 
     if (productId) {
-      fetchFaqs(); // Fetch FAQs when productId is available
+      fetchFaqs();
     }
   }, [token, productId]);
 
@@ -56,79 +92,95 @@ export default function Overview({ productDetails, productImages }) {
       {productDetails?.product?.long_desc && (
         <>
           <hr className="border-gray-300 my-8" />
-          <div className="px-6 md:py-2">
-            {/* Overview Section */}
+          <motion.div 
+            className="px-6 md:py-2"
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <div className="mb-4">
-              <h2 className="text-gray-900 font-bold text-2xl mb-2">Overview</h2>
-              <div className="flex flex-col md:flex-row">
+              <motion.h2 
+                className="text-gray-900 font-bold md:text-2xl mb-2"
+                variants={itemVariants}
+              >
+                Description
+              </motion.h2>
+              <motion.div 
+                className="flex flex-col md:flex-row"
+                variants={itemVariants}
+              >
                 <div className="md:w-[60%] pr-6">
-                  <p
-                    className="text-gray-700 text-lg leading-8"
+                  <motion.p
+                    className="text-gray-700 md:text-lg leading-8"
                     dangerouslySetInnerHTML={{ __html: productDetails.product.long_desc }}
+                    variants={itemVariants}
                   />
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </>
       )}
 
-      {/* Specification Section */}
-      {/* <div className="mb-12">
-        <h2 className="text-gray-900 font-bold text-2xl mb-6">Specification</h2>
-        <p className="text-lg text-gray-700 mb-6">{`To prevent white edges, make sure your design extends to the full bleed size.`}</p>
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-col gap-6">
-            <div>
-              <p className="font-semibold text-lg">{`Full Bleed Size`}</p>
-              <p className="text-lg">{`5.5" x 14.5"`}</p>
-              <p className="text-lg">{`139.7 x 368.3 mm`}</p>
-            </div>
-            <div>
-              <p className="font-semibold text-lg">{`Document Trim Size`}</p>
-              <p className="text-lg">{`5" x 14"`}</p>
-              <p className="text-lg">{`127 x 355.6 mm`}</p>
-            </div>
-            <div>
-              <p className="font-semibold text-lg">{`Safety Area`}</p>
-              <p className="text-lg">{`4.5" x 13.5"`}</p>
-              <p className="text-lg">{`114.3 x 342.9 mm`}</p>
-            </div>
-          </div>
-          <div className="w-1/2">
-            <img src={speci.src} alt="Specification Diagram" className="w-[50vw] h-[55vh]" />
-          </div>
-        </div>
-      </div> */}
-
       {/* FAQs Section */}
-      <div>
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {isLoading ? (
           <Loader />
         ) : faqs.length > 0 ? (
           <div>
-            <h2 className="text-gray-900 font-bold text-2xl mb-4">FAQs</h2>
+            <motion.h2 
+              className="text-gray-900 font-bold text-2xl mb-4"
+              variants={itemVariants}
+            >
+              FAQs
+            </motion.h2>
             {faqs.map((faq, index) => (
-              <div key={faq.id} className="border-b border-gray-300 py-4">
-                <div
+              <motion.div 
+                key={faq.id} 
+                className="border-b border-gray-300 py-4"
+                variants={itemVariants}
+              >
+                <motion.div
                   className="flex justify-between items-center cursor-pointer"
                   onClick={() => toggleFaq(index)}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <p className="text-lg text-gray-700 font-semibold">Q. {faq.question}</p>
-                  <span className="text-2xl text-gray-500">
+                  <p className="text-lg text-gray-700 font-semibold">
+                    Q. {faq.question}
+                  </p>
+                  <motion.span 
+                    className="text-2xl text-gray-500"
+                    animate={{ rotate: expandedFaq === index ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     {expandedFaq === index ? '-' : '+'}
-                  </span>
-                </div>
-                {expandedFaq === index && (
-                  <p className="text-lg text-gray-600 mt-2 ">A. {faq.answer}</p>
-                )}
-              </div>
+                  </motion.span>
+                </motion.div>
+                <AnimatePresence>
+                  {expandedFaq === index && (
+                    <motion.p
+                      className="text-lg text-gray-600 mt-2"
+                      variants={faqVariants}
+                      initial="collapsed"
+                      animate="expanded"
+                      exit="collapsed"
+                    >
+                      A. {faq.answer}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             ))}
           </div>
         ) : (
           <p></p>
         )}
-      </div>
+      </motion.div>
     </>
   );
 }

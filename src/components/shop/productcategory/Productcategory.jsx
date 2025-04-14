@@ -1,78 +1,95 @@
-import React, { useRef, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay, Pagination } from "swiper/modules";
-import { IoChevronForward, IoChevronBack } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import { motion } from "framer-motion";
 
 const Productcategory = ({ categoryData }) => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-  const swiperRef = useRef(null);
+  // Track window width to determine mobile vs desktop
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
 
-  // Ensure navigation buttons are properly initialized
   useEffect(() => {
-    if (swiperRef.current && prevRef.current && nextRef.current) {
-      const swiper = swiperRef.current.swiper;
-      swiper.navigation.update();
-    }
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Define breakpoints and dimensions
+  const isMobile = windowWidth < 768;
+  const desktopCardWidth = 340;
+  const desktopGap = 32;
+  const mobileCardWidth = 200;
+  const mobileGap = 16;
+
+  // Use different dimensions based on viewport
+  const cardWidth = isMobile ? mobileCardWidth : desktopCardWidth;
+  const gap = isMobile ? mobileGap : desktopGap;
+
+  // Calculate how wide the container would be at 100% zoom
+  const viewportWidth = cardWidth * 4 + gap * 3;
+  
+  // Calculate total width for one copy of the items
+  const n = categoryData.length;
+  const copyWidth = n * cardWidth + (n - 1) * gap;
+
+  // Marquee scroll speed (pixels/second) and duration of one full cycle
+  const speed = 100;
+  const duration = copyWidth / speed;
+
+  // Duplicate items for a seamless loop
+  const marqueeItems = [...categoryData, ...categoryData];
 
   return (
     <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="relative">
-        <Swiper
-          ref={swiperRef}
-          modules={[Navigation, Autoplay, Pagination]}
-          spaceBetween={24} // 24px gap (Tailwind gap-6)
-          slidesPerView="auto" // use auto so each slide can have a fixed width
-          centeredSlides={false}
-          // Center slides if they do not fill the container
-          centerInsufficientSlides={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
+      {/*
+        Container:
+        - Uses a fixed width (viewportWidth) at 100% zoom,
+        - maxWidth: 100% so it shrinks if the screen is smaller,
+        - overflow-hidden hides any horizontal scrolling.
+      */}
+      <div
+        className="mx-auto text-center mt-4 font-bold text-4xl text-gray-800 relative overflow-hidden"
+        style={{
+          width: `${viewportWidth}px`,
+          maxWidth: "100%",
+        }}
+      >
+        For Every Industry
+        <motion.div
+          className="flex md:mt-12"
+          style={{ gap: `${gap}px` }}
+          initial={{ x: 0 }}
+          animate={{ x: -copyWidth }}
+          transition={{
+            ease: "linear",
+            duration: duration,
+            repeat: Infinity,
           }}
-          loop={true}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-            enabled: true,
-          }}
-          onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }}
-          pagination={false}
-          className="px-2 sm:px-4"
         >
-          {categoryData.map((category) => (
-            <SwiperSlide
-              key={category.name}
-              style={{ width: "220px" }} // fixed card width to mimic grid-cols-[repeat(4,220px)]
+          {marqueeItems.map((category, index) => (
+            <div
+              key={index}
+              style={{
+                flex: "0 0 auto",
+                width: `${cardWidth}px`,
+              }}
+              className="
+                bg-[#ECE0CC]
+                shadow-lg
+                p-2
+                pb-4
+                border
+                hover:shadow-md
+                transition-shadow
+                duration-300
+                rounded-xl
+                overflow-hidden
+              "
             >
               <Link href={`/category/${category.cat_url}`} passHref>
-                <div
-                  className="
-                    bg-[#ECE0CC]
-                    h-auto
-                    shadow-lg
-                    p-2
-                    pb-4
-                    border
-                    hover:shadow-md
-                    transition-shadow
-                    duration-300
-                    rounded-xl
-                    overflow-hidden
-                    mx-auto
-                  "
-                >
+                <div>
                   <div className="relative h-48 md:h-[400px] lg:h-[400px] w-full flex items-center justify-center">
                     <Image
                       src={`${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`}
@@ -85,8 +102,9 @@ const Productcategory = ({ categoryData }) => {
                     />
                   </div>
                   <div className="flex flex-col items-center justify-center text-center mt-2">
-                    <h2
+                    <div
                       className="
+                        w-full
                         px-2
                         py-1
                         sm:px-3
@@ -99,6 +117,7 @@ const Productcategory = ({ categoryData }) => {
                         font-semibold
                         text-xs
                         sm:text-sm
+                        text-center
                         truncate
                         hover:bg-black
                         hover:text-white
@@ -107,35 +126,13 @@ const Productcategory = ({ categoryData }) => {
                       "
                     >
                       {category.name}
-                    </h2>
+                    </div>
                   </div>
                 </div>
               </Link>
-            </SwiperSlide>
+            </div>
           ))}
-        </Swiper>
-
-        {/* Custom navigation buttons - hidden on mobile */}
-        <div
-          ref={prevRef}
-          className="absolute top-1/2 -left-2 sm:-left-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"
-          aria-label="Previous"
-        >
-          <IoChevronBack
-            className="text-black hover:text-red-500 transition-colors duration-200"
-            size={20}
-          />
-        </div>
-        <div
-          ref={nextRef}
-          className="absolute top-1/2 -right-2 sm:-right-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"
-          aria-label="Next"
-        >
-          <IoChevronForward
-            className="text-black hover:text-red-500 transition-colors duration-200"
-            size={20}
-          />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

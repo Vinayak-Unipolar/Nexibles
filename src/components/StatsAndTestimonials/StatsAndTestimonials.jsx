@@ -147,7 +147,7 @@ export default function StatsAndTestimonials() {
     <div className="flex flex-col w-full">
       {/* ===================== STATS SECTION ===================== */}
       <motion.div
-        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 py-12 px-4 md:px-8"
+        className=" mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 py-12 px-4 md:px-8"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}

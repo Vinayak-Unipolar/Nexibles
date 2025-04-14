@@ -13,6 +13,8 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../../redux/store/cartSlice';
 import Link from 'next/link';
+import SKUSelector from './SKUSelector';
+import DeliveryOptions from './DeliveryOptions';
 export default function PCCardDetails({ productDetails }) {
 
   const dispatch = useDispatch();
@@ -54,7 +56,7 @@ export default function PCCardDetails({ productDetails }) {
     try {
       const totalWeight = parseFloat(productDetails.product?.weight || 1) * selectedQuantity;
       const weightToUse = (totalWeight > 0 ? totalWeight : 1) / 1000;
-  
+
       const response = await fetch(`${APIURL}/api/shipping/check`, {
         method: 'POST',
         headers: {
@@ -65,19 +67,19 @@ export default function PCCardDetails({ productDetails }) {
           weight: weightToUse,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch shipping cost');
       }
-  
+
       const data = await response.json();
       if (data.status && data.rateOfFirstIndex) {
         setIsDeliveryAvailable(true);
         const shippingFee = parseFloat(data.rateOfFirstIndex);
         setShippingCost(shippingFee);
-        const productionTime = 21; 
+        const productionTime = 21;
         const shippingDays = parseInt(data.estimated_delivery_daysOfFirstIndex, 10) || 4;
-        const currentDate = new Date(); 
+        const currentDate = new Date();
         const deliveryDate = new Date(currentDate);
         deliveryDate.setDate(currentDate.getDate() + productionTime + shippingDays);
         const formattedDeliveryDate = deliveryDate.toLocaleDateString('en-US', {
@@ -132,6 +134,7 @@ export default function PCCardDetails({ productDetails }) {
       quantity: qtyToUse,
       totalPrice: totalPrice,
       skuCount: selectedSKU,
+      material: productDetails.product.material,
     };
 
     dispatch(addToCart(productToAdd));
@@ -231,143 +234,40 @@ export default function PCCardDetails({ productDetails }) {
 
           <div className="w-full md:w-1/2 md:mt-0">
             <ProductDetails
+              productDetails={productDetails}
+              debouncedDecrease={debouncedDecrease}
+              debouncedIncrease={debouncedIncrease}
               name={productDetails.product.name}
               description={productDetails.product.description}
               price={productPrice || productDetails.product.price}
               material={productDetails.product.material}
+              selectedQuantity={selectedQuantity}
+              handleQuantityInputChange={handleQuantityInputChange}
+              priceAfterCalculation={priceAfterCalculation}
+              minimumQuantity={minimumQuantity}
             />
-            <div className="mt-4 md:mt-6">
-              {productPrice !== null || productDetails.product.price ? (
-                <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4 md:mb-6">
-                  <span className="text-base md:text-lg font-semibold text-gray-800">₹{productPrice || productDetails.product.price}</span>
-                  <span className="text-gray-500 text-base md:text-lg">×</span>
-                  <div className="flex items-center rounded-md border border-gray-200 bg-white shadow-sm">
-                    <button
-                      onClick={debouncedDecrease}
-                      className="w-8 md:w-9 h-8 md:h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors rounded-l-md disabled:opacity-40 disabled:cursor-not-allowed"
-                      disabled={parseInt(selectedQuantity || 0, 10) <= 1}
-                    >
-                      <span className="text-lg md:text-xl font-medium">-</span>
-                    </button>
-                    <input
-                      type="text"
-                      value={selectedQuantity}
-                      onChange={handleQuantityInputChange}
-                      className="w-12 md:w-16 h-8 md:h-9 text-center border-none focus:outline-none text-gray-800 font-medium"
-                    />
-                    <button
-                      onClick={debouncedIncrease}
-                      className="w-8 md:w-9 h-8 md:h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors rounded-r-md"
-                    >
-                      <span className="text-lg md:text-xl font-medium">+</span>
-                    </button>
-                  </div>
-                  <span className="text-gray-500 text-base md:text-lg mx-1 md:mx-2">=</span>
-                  <span className="text-base md:text-lg font-bold text-gray-900 ">₹{priceAfterCalculation}</span>
-                  <span className="text-gray-400 text-xs w-full md:w-auto md:ml-2">
-                    (Minimum Quantity: {minimumQuantity})
-                  </span>
-                </div>
-              ) : null}
-            </div>
-            <div className="">
-              <label htmlFor="skuSelect" className="block text-sm font-medium text-gray-700 mb-1">
-                Number of SKUs
-              </label>
-              <div className="md:flex w-full items-center">
-                <div className="md:w-1/3 md:pr-1 md:pb-0 pb-2">
-                  <select
-                    id="skuSelect"
-                    value={selectedSKU}
-                    onChange={handleSKUChange}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black text-sm"
-                    disabled={numberOfSKUs < 1}
-                  >
-                    {Array.from({ length: numberOfSKUs }, (_, index) => (
-                      <option key={index + 1} value={index + 1}>
-                        {index + 1}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="md:w-1/2 md:pl-1">
-                  <div className="">
-                    {(parseInt(selectedQuantity, 10) || 0) >= minimumQuantity ? (
-                      <button
-                        onClick={handleAddToCart}
-                        className="w-full md:w-auto bg-[#30384E] hover:bg-[#252b3d] rounded-md px-8 md:px-24 py-2 text-white font-medium transition-all duration-200 shadow-sm hover:shadow flex items-center justify-center gap-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="9" cy="21" r="1"></circle>
-                          <circle cx="20" cy="21" r="1"></circle>
-                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        Add to Cart
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleAddToCart}
-                        className="w-full md:w-auto bg-[#30384E] hover:bg-[#252b3d] rounded-md px-8 md:px-12 py-3 text-white font-medium transition-all duration-200 shadow-sm hover:shadow flex items-center justify-center gap-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="9" cy="21" r="1"></circle>
-                          <circle cx="20" cy="21" r="1"></circle>
-                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        Add to Cart
-                      </button>
-                    )}
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            {/* Delivery Options (unchanged) */}
-            <div className="mt-4 md:mt-6">
-              <div className="flex gap-2 items-center">
-                <div className="text-gray-800 font-bold text-xs md:text-sm uppercase flex items-center">
-                  DELIVERY OPTIONS
-                </div>
-                <TbTruckDelivery size={24} />
-              </div>
-              <input
-                id="zipCode"
-                type="text"
-                value={zipCode}
-                onChange={handleZipCodeChange}
-                placeholder="Enter 6-digit zip code"
-                maxLength={6}
-                className="w-full md:w-[15rem] p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black mt-2 text-sm md:text-base"
-              />
-              {zipCode.length === 6 && (
-                <div className="mt-3 md:mt-4">
-                  {isDeliveryAvailable ? (
-                    <div className="text-sm md:text-md">
-                      {deliveryEstimate.productionDays && deliveryEstimate.shippingDays && deliveryEstimate.date && (
-                        <>
-                          <p className="font-medium text-red-700">Get it by: {deliveryEstimate.date}</p>
-                          <p className="text-gray-700">Production: {deliveryEstimate.productionDays} days + Shipping: {deliveryEstimate.shippingDays} days</p>
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="bg-red-50 p-2 md:p-3 rounded-md border border-red-200">
-                      <p className="text-red-600 font-semibold text-sm md:text-base">Delivery Not Available</p>
-                      <p className="text-red-500 text-xs md:text-sm">
-                        We currently do not deliver to this zip code.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+            <SKUSelector
+              selectedSKU={selectedSKU}
+              setSelectedSKU={setSelectedSKU}
+              numberOfSKUs={numberOfSKUs}
+              selectedQuantity={selectedQuantity}
+              minimumQuantity={minimumQuantity}
+              handleAddToCart={handleAddToCart}
+            />
+            <DeliveryOptions
+              zipCode={zipCode}
+              setZipCode={setZipCode}
+              CheckShippingCost={CheckShippingCost}
+              isDeliveryAvailable={isDeliveryAvailable}
+              deliveryEstimate={deliveryEstimate}
+            />
+            
           </div>
         </div>
-
-        {/* Remaining sections (unchanged) */}
         <div className="mt-8 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
         </div>
+        <hr className="border-gray-300 mb-6" />
         <div className="mt-6 md:mt-10">
           <ReviewSection productDetails={productDetails} />
         </div>

@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import Loader from "@/components/comman/Loader";
+import { IoChevronForward, IoChevronBack } from "react-icons/io5";
 
 // Import Swiper styles
 import "swiper/css";
@@ -11,34 +12,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 
-// Styles for navigation buttons
-const customStyles = {
-  ".swiper-button-next, .swiper-button-prev": {
-    backgroundColor: "white", // White background for arrows
-    borderRadius: "50%",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    color: "#000000", // Black arrow color for contrast
-    width: "32px",
-    height: "32px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    // Hide arrows on phone view (below 640px)
-    "@media (max-width: 639px)": {
-      display: "none", // Explicitly hide arrows for phone view
-    },
-  },
-  ".swiper-button-next:after, .swiper-button-prev:after": {
-    fontSize: "16px",
-    fontWeight: "bold", // Ensure arrow visibility on larger screens
-  },
-};
-
 export default function RelatedProducts({ productDetails }) {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const currentProductId = productDetails?.product?.id;
   const category = productDetails?.product?.category || "";
+  
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
+  const swiperRef = useRef(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
@@ -82,11 +64,18 @@ export default function RelatedProducts({ productDetails }) {
     fetchRelatedProducts();
   }, [category, currentProductId, APIURL, apiKey]);
 
+  useEffect(() => {
+    if (swiperRef.current && prevRef.current && nextRef.current) {
+      const swiper = swiperRef.current.swiper;
+      swiper.navigation.update();
+    }
+  }, []);
+
   if (loading) {
     return (
-      <div className="px-4 max-w-screen-xl mx-auto">
-        <h2 className="text-xl font-bold mb-4">Related Products</h2>
-        <div className="flex justify-center py-8">
+      <div className="px-2 sm:px-4 md:px-6 lg:px-8 max-w-screen-xl mx-auto">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4">Related Products</h2>
+        <div className="flex justify-center py-6 sm:py-8">
           <Loader />
         </div>
       </div>
@@ -101,87 +90,110 @@ export default function RelatedProducts({ productDetails }) {
     <>
       {relatedProducts && relatedProducts.length > 0 && (
         <>
-          <hr className="border-gray-300 my-8" />
-          <div className="px-4 pb-8 max-w-screen-xl mx-auto">
-            <h2 className="text-xl font-bold mb-4">Related Products</h2>
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={10}
-              slidesPerView={2}
-              navigation={{
-                enabled: true,
-                // Hide navigation on mobile screens
-                hideOnClick: true
-              }}
-              freeMode={true} // Enable scrollable behavior on mobile
-              pagination={{ clickable: true, enabled: false }} // Disable pagination dots
-              autoplay={{ delay: 3000, reverseDirection: false }}
-              loop={relatedProducts.length > 4}
-              breakpoints={{
-                0: {
-                  slidesPerView: 2,
-                  spaceBetween: 10,
-                  navigation: {
-                    enabled: false, // Explicitly disable navigation for mobile
-                  }
-                },
-                640: {
-                  slidesPerView: 3,
-                  spaceBetween: 15,
-                  navigation: {
-                    enabled: true, // Enable navigation for tablets and larger
-                  }
-                },
-                768: {
-                  slidesPerView: 4,
-                  spaceBetween: 15,
-                },
-                1024: {
-                  slidesPerView: 5,
-                  spaceBetween: 20,
-                },
-                1280: {
-                  slidesPerView: 5,
-                  spaceBetween: 20,
-                },
-              }}
-              className="mySwiper"
-              style={customStyles}
-            >
-              {relatedProducts.map((product) => (
-                <SwiperSlide key={product.id}>
-                  <div
-                    className="text-left p-2 sm:p-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white w-full sm:w-[15rem] cursor-pointer border border-gray-200"
-                    onClick={() =>
-                      (window.location.href = `/product/${encodeURIComponent(
-                        product.category.toLowerCase()
-                      ).replace(/%20/g, "-")}/${encodeURIComponent(
-                        product.name.toLowerCase()
-                      ).replace(/%20/g, "-")}/${product.id}`)
-                    }
-                  >
-                    <div className="relative w-full h-32 sm:h-40 md:h-52 mb-2">
-                      <Image
-                        src={
-                          product.image
-                            ? `${CDN_URL}/${product.image}`
-                            : "/placeholder-product.png"
-                        }
-                        alt={product.name}
-                        layout="fill"
-                        objectFit="contain"
-                        className="rounded-md transition-transform duration-300 hover:scale-105"
-                      />
+          <hr className="border-gray-300 my-6 sm:my-8" />
+          <section className="px-2 sm:px-4 md:px-6 lg:px-8 pb-6 sm:pb-8 max-w-screen-xl mx-auto relative">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6">
+              Related Products
+            </h2>
+            <div className="relative">
+              <Swiper
+                ref={swiperRef}
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={8}
+                slidesPerView={2}
+                navigation={{
+                  prevEl: prevRef.current,
+                  nextEl: nextRef.current,
+                  enabled: true,
+                }}
+                onBeforeInit={(swiper) => {
+                  swiper.params.navigation.prevEl = prevRef.current;
+                  swiper.params.navigation.nextEl = nextRef.current;
+                }}
+                freeMode={true}
+                pagination={{ clickable: true, enabled: false }}
+                autoplay={{ delay: 3000, reverseDirection: false }}
+                loop={relatedProducts.length > 4}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 2,
+                    spaceBetween: 8,
+                  },
+                  480: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                  },
+                  640: {
+                    slidesPerView: 3,
+                    spaceBetween: 12,
+                  },
+                  768: {
+                    slidesPerView: 4,
+                    spaceBetween: 15,
+                  },
+                  1024: {
+                    slidesPerView: 5,
+                    spaceBetween: 20,
+                  },
+                }}
+                className="mySwiper"
+              >
+                {relatedProducts.map((product) => (
+                  <SwiperSlide key={product.id}>
+                    <div
+                      className="text-left p-2 sm:p-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white w-full cursor-pointer border border-gray-200"
+                      onClick={() =>
+                        (window.location.href = `/product/${encodeURIComponent(
+                          product.category.toLowerCase()
+                        ).replace(/%20/g, "-")}/${encodeURIComponent(
+                          product.name.toLowerCase()
+                        ).replace(/%20/g, "-")}/${product.id}`)
+                      }
+                    >
+                      <div className="relative w-full h-28 sm:h-36 md:h-40 lg:h-52 mb-2">
+                        <Image
+                          src={
+                            product.image
+                              ? `${CDN_URL}/${product.image}`
+                              : "/placeholder-product.png"
+                          }
+                          alt={product.name}
+                          layout="fill"
+                          objectFit="contain"
+                          className="rounded-md transition-transform duration-300 hover:scale-105"
+                        />
+                      </div>
+                      <h3 className="font-bold text-xs sm:text-sm md:text-base truncate">
+                        {product.name}
+                      </h3>
                     </div>
-                    <h3 className="font-bold text-xs sm:text-sm md:text-base truncate">
-                      {product.name}
-                    </h3>
-                    {/* <p className="text-gray-600 text-xs sm:text-sm">₹{product.price}</p> */}
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              {/* Custom navigation buttons */}
+              <div
+                ref={prevRef}
+                className="absolute top-1/2 -left-1 sm:-left-2 md:-left-3 lg:-left-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"
+                aria-label="Previous"
+              >
+                <IoChevronBack
+                  className="text-black hover:text-red-500 transition-colors duration-200"
+                  size={16}
+                />
+              </div>
+              <div
+                ref={nextRef}
+                className="absolute top-1/2 -right-1 sm:-right-2 md:-right-3 lg:-right-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"
+                aria-label="Next"
+              >
+                <IoChevronForward
+                  className="text-black hover:text-red-500 transition-colors duration-200"
+                  size={16}
+                />
+              </div>
+            </div>
+          </section>
         </>
       )}
     </>

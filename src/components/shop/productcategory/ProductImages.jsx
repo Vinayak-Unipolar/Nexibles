@@ -78,7 +78,7 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
       </div>
 
       {/* Desktop View: Main Image with Vertical Thumbnails on Left */}
-      <div className="hidden md:flex w-full">
+      <div className="hidden md:flex w-full bg-[#E9E9E9] rounded-md">
         {/* Vertical Thumbnail Column with Arrows */}
         <div className="w-32 flex flex-col items-center relative">
           {productImages.length > 4 && (
@@ -99,23 +99,23 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
           >
             <style jsx>{`
               .scrollbar-hidden::-webkit-scrollbar {
-                display: none; // Chrome/Safari
+                display: none;
               }
             `}</style>
             {productImages.map((image, index) => (
               <div
-                key={index}
-                className={`w-20 h-28 flex-shrink-0 cursor-pointer border-[1px] rounded-sm ${
-                  index === currentImageIndex ? 'border-[#30384E] rounded-md' : 'border-gray-300 hover:border-[#30384E]'
-                }`}
-                onClick={() => setCurrentImageIndex(index)}
-              >
-                <img
-                  src={image}
-                  alt={`Product view ${index + 1}`}
-                  className="w-full h-full object-contain rounded-sm"
-                />
-              </div>
+              key={index}
+              className={`w-20 h-28 flex-shrink-0 cursor-pointer border-[1px] rounded-lg ${
+                index === currentImageIndex ? ' bg-white' : 'border-gray-300 hover:border-[#30384E]'
+              }`}
+              onClick={() => setCurrentImageIndex(index)}
+            >
+              <img
+                src={image}
+                alt={`Product view ${index + 1}`}
+                className="w-full h-full object-contain rounded-lg"
+              />
+            </div>
             ))}
           </div>
           {productImages.length > 4 && (

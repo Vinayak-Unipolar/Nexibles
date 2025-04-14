@@ -108,6 +108,7 @@ const Industries = () => {
                       hover:text-white
                       transition-all
                       duration-300
+                      
                     "
                   >
                     {category.name}

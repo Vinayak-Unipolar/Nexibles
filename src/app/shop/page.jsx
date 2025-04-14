@@ -49,7 +49,7 @@ const Shop = () => {
         {/* <Banner categoryData={categoryData} /> */}
          <PopularProducts />
          <AllProducts/>
-         {/* <SubscribeBanner/> */}
+         <SubscribeBanner/>
         {/* <Trendingproducts /> */}
         {/* <Productcategory categoryData={categoryData} /> */}
         {/* <Advantages /> */}

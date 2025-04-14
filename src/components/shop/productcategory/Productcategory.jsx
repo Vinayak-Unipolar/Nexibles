@@ -50,14 +50,15 @@ const Productcategory = ({ categoryData }) => {
         - overflow-hidden hides any horizontal scrolling.
       */}
       <div
-        className="mx-auto relative overflow-hidden"
+        className="mx-auto text-center mt-4 font-bold text-4xl text-gray-800 relative overflow-hidden"
         style={{
           width: `${viewportWidth}px`,
           maxWidth: "100%",
         }}
       >
+        For Every Industry
         <motion.div
-          className="flex"
+          className="flex md:mt-12"
           style={{ gap: `${gap}px` }}
           initial={{ x: 0 }}
           animate={{ x: -copyWidth }}

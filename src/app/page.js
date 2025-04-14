@@ -12,6 +12,7 @@ import Popularproducts from '@/components/shop/popularproducts/Popularproducts'
 import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials'
 import ProductSections from '@/components/shop/ProductSections'
 import NexiblesInstagramSection from '@/components/home/NexiblesInstagramSection'
+import Industries from '@/components/home/Industries'
 
 const Home = () => {
   const [categoryData, setData] = useState([])
@@ -46,7 +47,8 @@ const Home = () => {
     <div>
       <Navbar />
       <HeaderSection />
-      <Productcategory categoryData={categoryData} />
+      {/* <Productcategory categoryData={categoryData} /> */}
+      <Industries/>
       <Popularproducts />
       <ProductSections />
       <Trendingproducts />

@@ -161,7 +161,7 @@ const Page = () => {
           </div>
 
           <div className="space-y-3 px-4 md:px-10 text-gray-700">
-            Whether you’re launching a limited edition or refreshing a brand's packaging strategy, our team is here to help.
+            {`Whether you’re launching a limited edition or refreshing a brand's packaging strategy, our team is here to help.`}
             <br /><br />
             We support agencies with fast prototyping, scalable options, and client-approved quality.
             <br /><br />

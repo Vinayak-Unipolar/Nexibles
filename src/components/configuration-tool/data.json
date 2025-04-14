@@ -1,0 +1,55 @@
+{
+    "sizes": [
+    { "label": "Stand Up Pouch - 4x6 inch", "price": 0.2 },
+    { "label": "Stand Up Pouch - 5x8 inch", "price": 0.25 },
+    { "label": "Stand Up Pouch - 6x9 inch", "price": 0.3 },
+    { "label": "Stand Up Pouch - 7x10 inch", "price": 0.35 },
+    { "label": "Stand Up Pouch - 8x12 inch", "price": 0.4 },
+    { "label": "Flat Pouch - 5x7 inch", "price": 0.22 },
+    { "label": "Flat Pouch - 6x8 inch", "price": 0.28 },
+    { "label": "Gusseted Pouch - 4x6x2 inch", "price": 0.32 },
+    { "label": "Gusseted Pouch - 5x8x3 inch", "price": 0.38 },
+    { "label": "Gusseted Pouch - 6x9x3.5 inch", "price": 0.45 }
+  ],
+    "materials": [
+      "Aluminum Foil - Alu/PE",
+      "Kraft Paper - Kraft/PE",
+      "Clear Plastic - PET/PE",
+      "Metalized PET - MPET/PE",
+      "Matte Finish - Matte PET/PE",
+      "Recyclable - Mono PE",
+      "Biodegradable - PLA/PE",
+      "Glossy - PET/VMPET/PE",
+      "Transparent - BOPP/PE",
+      "Paper Laminated - Paper/Alu/PE"
+    ],
+    "optionalFeatures": [
+      "None",
+      "Zipper",
+      "Punch Hole",
+      "Tear Notch",
+      "Window",
+      "Handle",
+      "Euro Slot",
+      "Degassing Valve",
+      "Spout Cap",
+      "Hanger Tab"
+    ],
+    "cornerTypes": [
+      "Square Corners",
+      "Rounded Corners"
+    ],
+    "skus": [
+        { "id": 1 },
+        { "id": 2 },
+        { "id": 3 },
+        { "id": 4 },
+        { "id": 5 },
+        { "id": 6 },
+        { "id": 7 },
+        { "id": 8 },
+        { "id": 9 },
+        { "id": 10 }
+      ]
+  }
+  

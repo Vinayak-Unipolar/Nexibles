@@ -134,6 +134,7 @@ export default function PCCardDetails({ productDetails }) {
       quantity: qtyToUse,
       totalPrice: totalPrice,
       skuCount: selectedSKU,
+      material: productDetails.product.material,
     };
 
     dispatch(addToCart(productToAdd));

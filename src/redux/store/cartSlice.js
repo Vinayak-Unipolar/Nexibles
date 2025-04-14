@@ -28,7 +28,8 @@ const cartSlice = createSlice({
           price: product.price,
           quantity: product.quantity,
           totalPrice: product.totalPrice,
-          skuCount: product.skuCount  // Ensure SKU is stored properly
+          skuCount: product.skuCount,
+          material: product.material  // Ensure SKU is stored properly
         });
       }
     },    

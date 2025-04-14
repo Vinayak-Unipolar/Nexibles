@@ -46,7 +46,7 @@ const Industries = () => {
   const viewportWidth = cardWidth * 4 + gap * 3;
   const n = industries.length;
   const copyWidth = n * cardWidth + (n - 1) * gap;
-  const speed = 100;
+  const speed = 150;
   const duration = copyWidth / speed;
 
   // Duplicate items for seamless marquee

@@ -9,11 +9,12 @@ export default function PopularProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://nexiblesapp.barecms.com/api/category_master', {
+        const response = await fetch(`${APIURL}/api/category_master`, {
           headers: {
             'Content-Type': 'application/json',
             'API-Key': apiKey,
@@ -44,7 +45,7 @@ export default function PopularProducts() {
 
       setLoading(true);
       try {
-        const response = await fetch(`https://nexiblesapp.barecms.com/api/product/get_list/${selectedCategory}`, {
+        const response = await fetch(`${APIURL}/api/product/get_list/${selectedCategory}`, {
           headers: {
             'Content-Type': 'application/json',
             'API-Key': apiKey,

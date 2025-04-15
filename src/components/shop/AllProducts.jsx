@@ -7,13 +7,14 @@ export default function NexiblesProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
   useEffect(() => {
     const fetchNexiblesProducts = async () => {
       setLoading(true);
       try {
         const response = await fetch(
-          'https://nexiblesapp.barecms.com/api/product/get_list/All',
+          `${APIURL}/api/product/get_list/All`,
           {
             headers: {
               'Content-Type': 'application/json',

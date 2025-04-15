@@ -14,7 +14,7 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-
+import Pop_up_image from "../../public/home/pop_up.png"
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
 
@@ -33,9 +33,9 @@ const Modal = ({ isOpen, onClose }) => {
         {/* Top Half: Image */}
         <div className="relative w-full h-48">
           <img
-            src="/home/modal.png" // Using the image from public/home/modal.png
+            src={Pop_up_image.src} // Using the image from public/home/modal.png
             alt="Modal Banner"
-            className="w-full h-full object-cover rounded-t-3xl"
+            className="w-full h-full object-contain rounded-t-3xl"
           />
           <button
             onClick={onClose}
@@ -162,8 +162,8 @@ const Home = () => {
       <Modal isOpen={showModal} onClose={closeModal} />
       <Navbar />
       <HeaderSection />
+      <Industries />
       {/* <Productcategory categoryData={categoryData} /> */}
-      <Industries/>
       <Popularproducts />
       <ProductSections />
       <Trendingproducts />

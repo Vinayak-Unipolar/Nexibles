@@ -1,4 +1,3 @@
-// app/server-layout.js
 import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({

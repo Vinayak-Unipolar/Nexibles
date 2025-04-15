@@ -13,8 +13,6 @@ export const metadata = {
 
 export default function ServerLayout({ children }) {
   return (
-    <html lang="en">
       <body className={poppins.className}>{children}</body>
-    </html>
   );
 }

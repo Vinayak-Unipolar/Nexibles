@@ -1,35 +1,66 @@
-import React from 'react';
+"use client";
 
-export async function generateStaticParams() {
-    const res = await fetch('https://nexiblesapp.barecms.com/api/pages');
-    const data = await res.json();
+import React, { useState, useEffect } from 'react';
+import Navbar from '@/components/shop/Navbar';
+import Footer from '@/components/shop/Footer';
+import Loader from '@/components/comman/Loader';
 
-    return data.data.map(page => ({
-        slug: page.title.toLowerCase().replace(/\s+/g, '-')
-    }));
-}
+const Page = ({ params }) => {
+  const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const token = process.env.NEXT_PUBLIC_API_KEY;
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
 
-async function getPageData(slug) {
-    const res = await fetch('https://nexiblesapp.barecms.com/api/pages');
-    const data = await res.json();
+  // Fetching page data based on the slug
+  useEffect(() => {
+    const fetchPageData = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`${APIURL}/api/pages`, {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+            'API-Key': token,
+          },
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const page = data.data.find((p) => slugify(p.title) === params.slug);
+          setPageData(page);
+        } else {
+          console.error('Failed to fetch pages', data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching page data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPageData();
+  }, [params.slug]);
 
-    return data.data.find(page =>
-        page.title.toLowerCase().replace(/\s+/g, '-') === slug
-    );
-}
+  const slugify = (title) => {
+    return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+  };
 
-export default async function Page({ params }) {
-    const page = await getPageData(params.slug);
+  if (loading) {
+    return <Loader />;
+  }
 
-    if (!page) {
-        return <h1>Page Not Found</h1>;
-    }
+  if (!pageData) {
+    return <div className="p-10 text-red-600 text-xl">Page not found</div>;
+  }
 
-    return (
-        <div className="mt-[4rem]">
-            {/* <h1>{page.title}</h1> */}
-            {/* <p>{page.metadescription}</p> */}
-            <div dangerouslySetInnerHTML={{ __html: page.content }} />
-        </div>
-    );
-}
+  return (
+    <div>
+      <Navbar />
+      <div className="p-10 max-w-5xl mx-auto">
+        <h1 className="text-4xl font-bold mb-6">{pageData.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default Page;

@@ -15,14 +15,11 @@ const About = () => {
        With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink`}<br />
         {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br />
         {`high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8 md:mt-10 w-full max-w-5xl">
-        <div className="grid grid-cols-3 gap-2 mt-10">
-          <img src={Factory.src} alt="factory" className="w-full max-h-72 object-contain" />
-          <img src={FactoryImage.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
-          <img src={Image3.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
-        </div>
+      <div className="grid grid-cols-3 gap-2 mt-2">
+        <img src={Factory.src} alt="factory" className="w-full max-h-72 object-contain" />
+        <img src={FactoryImage.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
+        <img src={Image3.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
       </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6 sm:mt-8 md:mt-10 w-full max-w-5xl">
         <div className="flex flex-col items-center">
           <div className="flex justify-center">

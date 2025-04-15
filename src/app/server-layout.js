@@ -1,4 +1,3 @@
-// app/server-layout.js
 import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({
@@ -13,6 +12,8 @@ export const metadata = {
 
 export default function ServerLayout({ children }) {
   return (
+    <html lang="en">
       <body className={poppins.className}>{children}</body>
+    </html>
   );
 }

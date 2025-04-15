@@ -105,7 +105,7 @@ export default function Configuration() {
               <div className="mb-6">
                 <label className="block text-lg font-medium mb-2">Quantity</label>
                 <div className="mb-4">
-                  <p className="text-sm mb-1">Number Of SKU's</p>
+                  <p className="text-sm mb-1">Number Of SKUs</p>
                   <select
                     className="w-full md:w-60 px-4 py-2 rounded"
                     value={quantity}

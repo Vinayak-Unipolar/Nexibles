@@ -166,7 +166,7 @@ const Home = () => {
       {/* <Productcategory categoryData={categoryData} /> */}
       <Popularproducts />
       <ProductSections />
-      <Trendingproducts />
+      {/* <Trendingproducts /> */}
       <AdvantageItem />
       <StatsAndTestimonials />
       <NexiblesInstagramSection />

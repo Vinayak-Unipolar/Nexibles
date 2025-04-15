@@ -36,7 +36,7 @@ export default function Configuration() {
           <div className="flex flex-col md:flex-row md:justify-between">
             <div className="md:w-2/3">
               {/* Project Name */}
-              <div className="mb-6 w-1/2">
+              <div className="mb-6 md:w-1/2">
                 <label className="block text-lg font-medium mb-2">Project Name</label>
                 <input
                   type="text"

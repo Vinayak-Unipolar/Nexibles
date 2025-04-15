@@ -120,7 +120,7 @@ const Home = () => {
     // Modal logic
     const lastShown = localStorage.getItem("modalLastShown");
     const now = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const oneDay = 24 * 60 * 60 * 1000; 
 
     if (!lastShown || now - parseInt(lastShown) > oneDay) {
       setShowModal(true);

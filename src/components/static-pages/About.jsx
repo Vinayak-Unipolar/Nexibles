@@ -2,21 +2,23 @@ import React from 'react'
 
 const About = () => {
   return (
-    <div className=" p-10 mt-10 flex flex-col gap-4 items-center bg-white">
-      <h1 className='text-4xl text-black font-[1000] text-center'>About Us</h1>
-      <h3 className='text-3xl text-black font-[1000] text-center'>{`Revolutionizing Flexible Packaging with Innovation`}</h3>
-      <p className='text-black text-sm text-center mt-3'>{`At Nexibles, we are redefining the future of flexible packaging with cutting-edge digital printing solutions. Under our<br/> 
-      brand "NEXt generation flexIBLES", we bring creativity, speed, and efficiency to packaging, eliminating traditional<br/>
-       constraints like high MOQs and plate costs. <br/>
-       With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink<br/>
-        sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables<br/>
-         high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
-      <div className='grid grid-cols-3 gap-6 mt-10'>
-        <div className='h-[26rem] w-80 rounded-lg bg-gray-200'></div>
-        <div className='h-[26rem] w-80 rounded-lg bg-gray-200'></div>
-        <div className='h-[26rem] w-80 rounded-lg bg-gray-200'></div>
+    <div className="p-4 sm:p-6 md:p-10 mt-6 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-white">
+    <h1 className="text-2xl sm:text-3xl md:text-4xl text-black font-extrabold text-center">About Us</h1>
+       <h3 className="text-xl sm:text-2xl md:text-3xl text-black font-extrabold text-center">
+{`Revolutionizing Flexible Packaging with Innovation`}</h3>
+<p className="text-black text-xs sm:text-sm md:text-base text-center mt-3 leading-relaxed">{`At Nexibles, we are redefining the future of flexible packaging with cutting-edge digital printing solutions. Under our`}<br/> 
+      {`brand "NEXt generation flexIBLES", we bring creativity, speed, and efficiency to packaging, eliminating traditional`}<br/>
+       {`constraints like high MOQs and plate costs. `}<br/>{` 
+       With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink`}<br/>
+        {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br/>
+         {`high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8 md:mt-10 w-full max-w-5xl">
+        <div className="h-48 sm:h-64 md:h-96 w-full max-w-xs rounded-lg bg-gray-200 mx-auto"></div>
+        <div className="h-48 sm:h-64 md:h-96 w-full max-w-xs rounded-lg bg-gray-200 mx-auto"></div>
+        <div className="h-48 sm:h-64 md:h-96 w-full max-w-xs rounded-lg bg-gray-200 mx-auto"></div>
       </div>
-      <div className='grid grid-cols-4 gap-6 px-32 mt-10'>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6 sm:mt-8 md:mt-10 w-full max-w-5xl">
         <div className="flex flex-col items-center">
           <div className="flex justify-center">
             <svg width="61" height="60" viewBox="0 0 61 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,8 +29,8 @@ const About = () => {
               <path d="M31.1836 18.4904C31.1836 20.0703 32.4689 21.3557 34.049 21.3557C35.6291 21.3557 36.9144 20.0703 36.9144 18.4904C36.9144 16.9104 35.629 15.625 34.049 15.625C32.469 15.625 31.1836 16.9104 31.1836 18.4904ZM34.049 17.2656C34.7244 17.2656 35.2738 17.815 35.2738 18.4904C35.2738 19.1658 34.7244 19.7151 34.049 19.7151C33.3736 19.7151 32.8243 19.1658 32.8243 18.4904C32.8243 17.815 33.3736 17.2656 34.049 17.2656Z" fill="#1F1F1F" />
             </svg>
           </div>
-          <h1 className='text-center font-bold mt-2'>24/7 Customer Service</h1>
-          <p className='text-center text-xs mt-2'>{`We're here to help you with any questions or concerns you have, 24/7.`}</p>
+          <h1 className="text-center font-bold mt-2 text-sm sm:text-base">24/7 Customer Service</h1>
+          <p className="text-center text-xs sm:text-sm mt-2">{`We're here to help you with any questions or concerns you have, 24/7.`}</p>
 
         </div>
         <div className="flex flex-col items-center">
@@ -41,8 +43,8 @@ const About = () => {
               <path d="M46.3049 45.5556C46.0493 45.5556 45.7916 45.4667 45.5827 45.2867L37.8049 38.62C37.556 38.4112 37.416 38.1023 37.416 37.7778C37.416 37.4534 37.556 37.1445 37.8049 36.9356L45.5827 30.2689C46.0471 29.8711 46.7449 29.9223 47.1493 30.3889C47.5493 30.8534 47.4938 31.5556 47.0271 31.9556L40.236 37.7778L47.0293 43.6023C47.496 44.0023 47.5493 44.7023 47.1516 45.1689C46.9271 45.4245 46.6182 45.5556 46.3049 45.5556Z" fill="#1F1F1F" />
             </svg>
           </div>
-          <h1 className='text-center font-bold mt-2'>14-Day Money Back</h1>
-          <p className='text-center text-xs mt-2'>{`If you're not satisfied with your purchase, simply return it within 14 days for a refund.`}</p>
+          <h1 className="text-center font-bold mt-2 text-sm sm:text-base">14-Day Money Back</h1>
+          <p className="text-center text-xs sm:text-sm mt-2">{`If you're not satisfied with your purchase, simply return it within 14 days for a refund.`}</p>
         </div>
         <div className="flex flex-col items-center">
           <div className="flex justify-center">
@@ -50,8 +52,8 @@ const About = () => {
               <path d="M57.8967 33.2202C57.5801 32.0733 57.282 30.9892 57.282 30C57.282 29.0108 57.5801 27.9268 57.8967 26.7799C58.4005 24.9542 58.9203 23.0657 58.2983 21.2302C57.6528 19.3208 56.0441 18.0729 54.4884 16.8681C53.5559 16.145 52.6752 15.4626 52.1036 14.7111C51.5222 13.9449 51.1108 12.9224 50.6772 11.8396C49.9615 10.0607 49.2225 8.22031 47.5669 7.0648C45.9385 5.92654 43.9061 5.8169 41.9438 5.71219C40.7194 5.6469 39.5616 5.58408 38.5921 5.28227C37.6855 5.00016 36.7469 4.41502 35.7541 3.79538C34.1565 2.79756 32.3445 1.66669 30.2492 1.66669C28.154 1.66669 26.342 2.79756 24.7444 3.79661C23.7516 4.41625 22.8154 5.00263 21.9076 5.2835C20.9369 5.58531 19.7791 5.64814 18.5547 5.71343C16.5912 5.81937 14.5612 5.92777 12.9316 7.06603C11.276 8.22154 10.537 10.0607 9.82129 11.8396C9.38524 12.9224 8.97382 13.9461 8.39242 14.7123C7.82087 15.4663 6.94014 16.1487 6.00768 16.8731C4.45317 18.0791 2.84692 19.3245 2.20146 21.2315C1.57941 23.0682 2.09922 24.9555 2.60179 26.7823C2.91836 27.9292 3.21645 29.012 3.21645 30.0013C3.21645 30.9905 2.91836 32.0745 2.60179 33.2214C2.09922 35.047 1.57941 36.9355 2.20146 38.7735C2.84692 40.6805 4.4544 41.9284 6.00891 43.1331C6.94138 43.855 7.8221 44.5387 8.39242 45.2902C8.97506 46.0564 9.38647 47.0789 9.82129 48.1629C10.537 49.9418 11.2773 51.7822 12.934 52.9402C14.5612 54.076 16.5924 54.1844 18.5547 54.2891C19.7791 54.3544 20.9369 54.4172 21.9064 54.719C22.813 55.0011 23.7503 55.5863 24.7419 56.2047C26.3408 57.2012 28.1527 58.3334 30.2492 58.3334C32.3457 58.3334 34.1589 57.2012 35.759 56.2034C36.7506 55.585 37.6868 54.9999 38.5946 54.7178C39.564 54.416 40.7219 54.3531 41.9463 54.2878C43.9098 54.1831 45.9398 54.0747 47.5669 52.9389C49.2262 51.781 49.9652 49.9381 50.6809 48.158C51.1157 47.0764 51.5259 46.0539 52.1048 45.2902C52.6764 44.5387 53.5571 43.855 54.4896 43.1331C56.0453 41.9271 57.6528 40.6805 58.2995 38.7723C58.9216 36.9343 58.4005 35.047 57.8967 33.2202ZM55.9651 37.9826C55.5574 39.1874 54.3047 40.1581 52.9793 41.1855C51.963 41.9739 50.9111 42.7894 50.1425 43.7996C49.3627 44.8294 48.87 46.0539 48.3933 47.2402C47.786 48.753 47.212 50.1807 46.1564 50.9174C45.1044 51.6516 43.5068 51.7366 41.8143 51.8265C40.4926 51.8968 39.1241 51.9694 37.8603 52.3636C36.6519 52.7418 35.5335 53.4378 34.4532 54.1129C33.0058 55.0171 31.6398 55.8696 30.2491 55.8696C28.8584 55.8696 27.4936 55.0171 26.0462 54.1129C24.9672 53.4391 23.85 52.7418 22.6403 52.3636C21.3765 51.9707 20.008 51.8968 18.6863 51.8265C16.9938 51.7366 15.395 51.6504 14.3443 50.9174C13.2899 50.1807 12.7146 48.753 12.1073 47.2415C11.6306 46.0552 11.1367 44.8294 10.3557 43.7996C9.58833 42.7894 8.53639 41.9739 7.51893 41.1843C6.19476 40.1569 4.94326 39.1874 4.53554 37.9826C4.15492 36.8604 4.55525 35.4092 4.97775 33.8743C5.32265 32.619 5.67987 31.3231 5.67987 29.9988C5.67987 28.6745 5.32265 27.3798 4.97775 26.1245C4.55402 24.5896 4.15492 23.1397 4.53554 22.0174C4.94326 20.8126 6.19353 19.8431 7.5177 18.8157C8.53515 18.0261 9.58833 17.2094 10.3545 16.198C11.1379 15.1681 11.6306 13.9412 12.1086 12.7549C12.7146 11.2434 13.2886 9.81683 14.3418 9.08263C15.3937 8.34719 16.9938 8.26219 18.6875 8.17227C20.008 8.10082 21.3765 8.02814 22.6391 7.63393C23.85 7.25698 24.9684 6.5585 26.0499 5.88343C27.4948 4.98292 28.8596 4.13046 30.2491 4.13046C31.6386 4.13046 33.0046 4.98292 34.4507 5.88589C35.5322 6.56219 36.6495 7.25944 37.8603 7.6364C39.1229 8.02937 40.4902 8.10205 41.8119 8.1735C43.5056 8.26343 45.1044 8.35089 46.1564 9.08509C47.2108 9.82176 47.7848 11.2483 48.3909 12.7573C48.8688 13.9449 49.3603 15.1706 50.1437 16.2005C50.9111 17.2106 51.963 18.0261 52.9793 18.8145C54.3047 19.8431 55.5574 20.8139 55.9651 22.0211C56.3457 23.1409 55.9442 24.5908 55.5217 26.1257C55.1755 27.381 54.8183 28.677 54.8183 30.0013C54.8183 31.3255 55.1743 32.6215 55.5217 33.8755C55.9456 35.4105 56.3457 36.8604 55.9651 37.9826Z" fill="#1F1F1F" />
               <path d="M30.2493 11.5212C20.0612 11.5212 11.7725 19.8105 11.7725 29.9994C11.7725 40.1884 20.0612 48.4777 30.2493 48.4777C40.4374 48.4777 48.7261 40.1884 48.7261 29.9994C48.7261 19.8105 40.4374 11.5212 30.2493 11.5212ZM30.2493 46.0139C21.4198 46.0139 14.236 38.8296 14.236 29.9994C14.236 21.1693 21.4198 13.9849 30.2493 13.9849C34.8032 13.9849 38.9087 15.9055 41.8281 18.9679L30.0891 35.4887L23.7294 29.1285C23.2478 28.6468 22.4693 28.6468 21.9877 29.1285C21.506 29.6102 21.506 30.3887 21.9877 30.8704L29.3784 38.2617C29.61 38.4945 29.9241 38.6226 30.2493 38.6226C30.2825 38.6226 30.3182 38.6214 30.3527 38.6177C30.7136 38.5881 31.0438 38.3997 31.2532 38.104L43.4442 20.9463C45.2179 23.5234 46.2625 26.6401 46.2625 29.9994C46.2625 38.8296 39.0787 46.0139 30.2493 46.0139Z" fill="#1F1F1F" />
             </svg></div>
-          <h1 className='text-center font-bold mt-2'>Our Guarantee</h1>
-          <p className='text-center text-xs mt-2 '>We stand behind our products and services and guarantee your satisfaction.</p>
+            <h1 className="text-center font-bold mt-2 text-sm sm:text-base">Our Guarantee</h1>
+            <p className="text-center text-xs sm:text-sm mt-2">We stand behind our products and services and guarantee your satisfaction.</p>
         </div>
         <div className="flex flex-col items-center">
           <div className="flex justify-center">
@@ -61,8 +63,8 @@ const About = () => {
               <path d="M44.6426 44.4758C44.6426 43.0609 45.7869 41.9142 47.1862 41.9142C48.5855 41.9142 49.7298 43.061 49.7298 44.4758C49.7298 45.8906 48.5855 47.0373 47.1862 47.0373C45.7869 47.0373 44.6426 45.8906 44.6426 44.4758ZM45.3027 44.4758C45.3027 45.5165 46.1444 46.3674 47.1862 46.3674C48.228 46.3674 49.0697 45.5165 49.0697 44.4758C49.0697 43.435 48.228 42.5841 47.1862 42.5841C46.1444 42.5841 45.3027 43.435 45.3027 44.4758Z" fill="#1F1F1F" stroke="#1F1F1F" />
               <path d="M10.2749 22.4884H6.2168C5.75826 22.4884 5.38672 22.8622 5.38672 23.3234C5.38672 23.7845 5.75826 24.1584 6.2168 24.1584H10.2749C10.7334 24.1584 11.105 23.7845 11.105 23.3234C11.105 22.8622 10.7334 22.4884 10.2749 22.4884Z" fill="#1F1F1F" stroke="#1F1F1F" stroke-width="0.3" />
             </svg></div>
-          <h1 className='text-center font-bold mt-2'>Speed Delivery</h1>
-          <p className='text-center text-xs mt-2'>We ship our products worldwide, making them accessible to customers everywhere.</p>
+            <h1 className="text-center font-bold mt-2 text-sm sm:text-base">Speed Delivery</h1>
+            <p className="text-center text-xs sm:text-sm mt-2">We ship our products worldwide, making them accessible to customers everywhere.</p>
 
         </div>
       </div>

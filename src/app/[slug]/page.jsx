@@ -6,7 +6,7 @@ import Footer from '@/components/shop/Footer';
 import Loader from '@/components/comman/Loader';
 
 const Page = ({ params: paramsPromise }) => {
-    const params = React.use(paramsPromise); // Unwrap the params Promise
+    const params = React.use(paramsPromise); 
     const [pageData, setPageData] = useState(null);
     const [loading, setLoading] = useState(true);
     const token = process.env.NEXT_PUBLIC_API_KEY;

@@ -1,5 +1,8 @@
 import React from 'react'
-
+import Factory from '../../../public/Pictures/Factory.png'
+import FactoryImage from '../../../public/Pictures/Factory Facade.png'
+import Image3 from '../../../public/Pictures/Customer Centric .png'
+import Image from 'next/image';
 const About = () => {
   return (
     <div className=" p-10 mt-10 flex flex-col gap-4 items-center bg-white">
@@ -11,10 +14,10 @@ const About = () => {
        With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink<br/>
         sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables<br/>
          high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
-      <div className='grid grid-cols-3 gap-6 mt-10'>
-        <div className='h-[26rem] w-80 rounded-lg bg-gray-200'></div>
-        <div className='h-[26rem] w-80 rounded-lg bg-gray-200'></div>
-        <div className='h-[26rem] w-80 rounded-lg bg-gray-200'></div>
+      <div className="grid grid-cols-3 gap-2 mt-10">
+        <img src={Factory.src} alt="factory" className="w-full max-h-72 object-contain" />
+        <img src={FactoryImage.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
+        <img src={Image3.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
       </div>
       <div className='grid grid-cols-4 gap-6 px-32 mt-10'>
         <div className="flex flex-col items-center">

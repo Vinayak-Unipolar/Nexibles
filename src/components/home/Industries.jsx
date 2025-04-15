@@ -9,12 +9,13 @@ const Industries = () => {
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
   const [industries, setIndustries] = useState([]);
-
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
   // Fetch industries from API
   useEffect(() => {
     const fetchIndustries = async () => {
       try {
-        const res = await fetch("https://nexiblesapp.barecms.com/api/industries");
+        const res = await fetch(`${APIURL}/api/industries`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setIndustries(data);

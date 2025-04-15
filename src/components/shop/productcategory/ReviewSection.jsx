@@ -207,14 +207,16 @@ const ReviewSection = ({ productDetails }) => {
                 key={index}
                 className="border-b border-gray-200 py-3"
               >
-                <div className="flex flex-col sm:flex-row justify-between gap-2">
+                <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
-                    <div className="text-yellow-400 text-sm sm:text-base">
+                  <span className="text-gray-800 font-bold">{review.user}</span>
+                    <div className="text-yellow-400 text-lg">
                       {renderStars(review.rating)}
                     </div>
                   </div>
+                  <span className="text-sm text-gray-500">{new Date(review.time).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}</span>
                 </div>
-                <p className="mt-2 text-sm sm:text-base">{review.comment}</p>
+                <p className="mt-2 text-gray-800 text-base">{review.comment}</p>
               </div>
             ))}
             {reviews.length > 4 && (

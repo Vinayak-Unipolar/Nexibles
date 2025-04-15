@@ -268,9 +268,9 @@ export default function MyCart() {
                         <li className="font-semibold mt-1 list-none">
                           Quantity: {item.quantity}
                         </li>
-                        <li className="font-semibold mt-1 list-none">
+                        <div className="flex justify-end"><li className="font-semibold mt-1 list-none">
                           Total: {item.totalPrice}
-                        </li>
+                        </li></div>
                       </>
                     )}
                   </div>

@@ -67,7 +67,7 @@ const Footer = () => {
 
   return (
     <footer>
-      <div className="h-auto bg-blue-1">
+      <div className="h-auto bg-gray-500">
         <div className="px-6 py-14 md:px-16 xl:px-24">
           <div className="flex flex-col md:flex-row md:justify-around">
             <div className="mb-8 md:mb-0">

@@ -6,7 +6,7 @@ import Footer from '@/components/shop/Footer'
 import HeadingRoutes from '@/components/all-category/HeadingRoutes'
 import CategoryImageBg from '@/components/all-category/CategoryImageBg'
 import Loader from '@/components/comman/Loader'
-import Configuration from '@/components/configuration-tool/configuration.jsx'; // ✅ Corrected import name
+import Configuration from '@/components/configuration-tool/configuration.jsx'; 
 const Page = () => {
   const [categoryData, setCategoryData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -50,7 +50,7 @@ const Page = () => {
       <CategoryImageBg />
       <div className="md:flex ">
         <div className="md:w-full bg-white">
-          <Configuration categoryData={categoryData} /> {/* ✅ Replaced component */}
+          <Configuration categoryData={categoryData} />
         </div>
       </div>
       <Footer />

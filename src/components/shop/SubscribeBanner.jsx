@@ -65,6 +65,7 @@ export default function SubscribeBanner() {
         {message && (
           <p className="mt-4 text-sm text-gray-700">{message}</p>
         )}
+        
       </div>
     </section>
   );

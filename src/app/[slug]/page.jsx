@@ -55,7 +55,7 @@ const Page = ({ params: paramsPromise }) => {
         <div>
             <Navbar />
             <div className="p-10 max-w-5xl mx-auto">
-                <h1 className="text-4xl font-bold mb-6">{pageData.title}</h1>
+                {/* <h1 className="text-4xl font-bold mb-6">{pageData.title}</h1> */}
                 <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
             </div>
             <Footer />

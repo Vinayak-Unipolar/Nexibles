@@ -124,6 +124,9 @@ const Footer = () => {
                 <Link href="/infrastructure">
                   <li className="text-white mb-2">Infrastructure</li>
                 </Link>
+                <Link href="/blogs">
+                  <li className="text-white mb-2">Blogs</li>
+                </Link>
               </ul>
             </div>
 

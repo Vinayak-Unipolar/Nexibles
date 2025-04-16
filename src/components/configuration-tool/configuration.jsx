@@ -48,7 +48,7 @@ export default function Configuration() {
               {/* Pouch Features */}
               <div className="mb-6">
                 <label className="block text-lg font-medium mb-2">Pouch Features</label>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Sizes */}
                   <div>
                     <p className="text-sm mb-1">Sizes</p>
@@ -107,7 +107,7 @@ export default function Configuration() {
                 <div className="mb-4">
                   <p className="text-sm mb-1">Number Of SKUs</p>
                   <select
-                    className="w-full md:w-60 px-4 py-2 rounded"
+                    className="w-full md:w-1/2 px-4 py-2 rounded"
                     value={quantity}
                     onChange={(e) => {
                       const q = parseInt(e.target.value);
@@ -203,11 +203,14 @@ export default function Configuration() {
                 </div>
               </div>
 
-
-              <button className="w-3/4 py-3 mt-4 rounded-xl bg-black text-white font-semibold shadow-md transition-all duration-300 hover:bg-white hover:text-black hover:border hover:border-black">
+              <div className='flex w-3/4 gap-4 '>
+              <button className=" w-full py-3 mt-4 rounded-xl bg-black text-white font-semibold shadow-md transition-all duration-300 hover:bg-white hover:text-black hover:border hover:border-black">
+                Save
+              </button>
+              <button className=" w-full py-3 mt-4 rounded-xl bg-black text-white font-semibold shadow-md transition-all duration-300 hover:bg-white hover:text-black hover:border hover:border-black">
                 Add To Cart
               </button>
-
+              </div>
             </div>
           </div>
         </div>

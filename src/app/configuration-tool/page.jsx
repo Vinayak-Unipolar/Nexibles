@@ -4,7 +4,7 @@ import Navbar from '@/components/shop/Navbar'
 import Footer from '@/components/shop/Footer'
 // Removed: import AllCategoryCards from '@/components/all-category/AllCategoryCards'
 import HeadingRoutes from '@/components/all-category/HeadingRoutes'
-import CategoryImageBg from '@/components/all-category/CategoryImageBg'
+import CategoryImageBg from '@/components/configuration-tool/configimage'
 import Loader from '@/components/comman/Loader'
 import Configuration from '@/components/configuration-tool/configuration.jsx'; 
 const Page = () => {

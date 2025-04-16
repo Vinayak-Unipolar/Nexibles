@@ -5,7 +5,7 @@ import Image3 from '../../../public/Pictures/Customer Centric .png'
 import Image from 'next/image';
 const About = () => {
   return (
-    <div className="p-4 sm:p-6 md:p-10 mt-6 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-white">
+    <div className="p-4 sm:p-6 md:p-10 mt-12 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-white">
       <h1 className="text-2xl sm:text-3xl md:text-4xl text-black font-extrabold text-center">About Us</h1>
       <h3 className="text-xl sm:text-2xl md:text-3xl text-black font-extrabold text-center">
         {`Revolutionizing Flexible Packaging with Innovation`}</h3>

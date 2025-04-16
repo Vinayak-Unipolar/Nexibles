@@ -47,8 +47,8 @@ const Page = () => {
   return (
     <div className="">
       <Navbar />
-      <CategoryImageBg />
-      <div className="md:flex ">
+      {/* <CategoryImageBg /> */}
+      <div className="md:flex mt-12">
         <div className="md:w-full bg-white">
           <Configuration categoryData={categoryData} />
         </div>

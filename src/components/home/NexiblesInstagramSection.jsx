@@ -4,8 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function NexiblesInstagramSection() {
-  // Example placeholders for an Instagram feed
-  // Replace these with real images or dynamic data
+  // Instagram feed placeholders
   const [instaFeed, setInstaFeed] = useState([
     {
       image: "/insta-post1.jpg",
@@ -25,14 +24,25 @@ export default function NexiblesInstagramSection() {
     },
   ]);
 
-  // Example brand logos for the marquee
-  // Replace with your brand logos as needed
+  // Brand logos from your brands directory
   const brandLogos = [
-    { src: "/brand1.png", alt: "Brand 1" },
-    { src: "/brand2.png", alt: "Brand 2" },
-    { src: "/brand3.png", alt: "Brand 3" },
-    { src: "/brand4.png", alt: "Brand 4" },
-    { src: "/brand5.png", alt: "Brand 5" },
+    { src: "/brands/bigbasket.png", alt: "Big Basket" },
+    { src: "/brands/blue_tribe.png", alt: "Blue Tribe" },
+    { src: "/brands/continental_coffee.png", alt: "Continental Coffee" },
+    { src: "/brands/cremica.png", alt: "Cremica" },
+    { src: "/brands/crizpo.png", alt: "Crizpo" },
+    { src: "/brands/eat_better.png", alt: "Eat Better" },
+    { src: "/brands/hindustan unilever.png", alt: "Hindustan Unilever" },
+    { src: "/brands/mom.png", alt: "Mom" },
+    { src: "/brands/p&g.png", alt: "P&G" },
+    { src: "/brands/raw.png", alt: "Raw" },
+    { src: "/brands/simplinamdhari.png", alt: "Simpli Namdhari" },
+    { src: "/brands/snack_comp.png", alt: "Snack Comp" },
+    { src: "/brands/starbucks.png", alt: "Starbucks" },
+    { src: "/brands/steadfast.png", alt: "Steadfast" },
+    { src: "/brands/tata.png", alt: "Tata" },
+    { src: "/brands/yogabar.png", alt: "Yogabar" },
+    { src: "/brands/zama.png", alt: "Zama" },
   ];
 
   /**
@@ -159,7 +169,7 @@ export default function NexiblesInstagramSection() {
           transition={{
             repeat: Infinity,
             repeatType: "loop",
-            duration: 10,
+            duration: 20,
             ease: "linear",
           }}
         >

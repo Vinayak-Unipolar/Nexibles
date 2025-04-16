@@ -109,6 +109,30 @@ const HeaderSection = () => {
     }),
   };
 
+  const handlePrev = () => {
+    clearInterval(timerRef.current);
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    
+    // Restart auto-slide timer
+    timerRef.current = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+  };
+
+  const handleNext = () => {
+    clearInterval(timerRef.current);
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+    
+    // Restart auto-slide timer
+    timerRef.current = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+  };
+
   return (
     <div className="relative w-full h-[50vh] md:h-[84vh] overflow-hidden">
       <AnimatePresence initial={false} custom={direction}>
@@ -138,6 +162,32 @@ const HeaderSection = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      
+      {/* Previous arrow */}
+      <button 
+        onClick={handlePrev}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        aria-label="Previous slide"
+      >
+        <div className="w-6 h-6 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </div>
+      </button>
+      
+      {/* Next arrow */}
+      <button 
+        onClick={handleNext}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        aria-label="Next slide"
+      >
+        <div className="w-6 h-6 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </button>
     </div>
   );
 };

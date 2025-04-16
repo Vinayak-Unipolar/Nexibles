@@ -130,7 +130,7 @@ const Industries = () => {
           >
             {marqueeItems.map((category, index) => (
               <Link
-                href={`/${category.name
+                href={`/blog/${category.name
                   .toLowerCase()
                   .replace(/\s+/g, "-")}`}
                 key={index}

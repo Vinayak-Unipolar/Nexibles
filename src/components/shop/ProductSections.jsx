@@ -7,7 +7,7 @@ const ProductSections = () => {
         <div className="relative bg-[#A0A0A0]  flex items-center justify-center text-white text-center  overflow-hidden">
           <div className="z-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-2">Stock Products</h2>
-            <a href="#" className="hover:underline text-sm md:text-base">Click here</a>
+            <a href="/all-category" className="hover:underline text-sm md:text-base">Click here</a>
           </div>
         </div>
 

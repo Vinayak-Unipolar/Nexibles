@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose }) => {
           <img
             src={Pop_up_image.src} // Using the image from public/home/modal.png
             alt="Modal Banner"
-            className="w-full h-full object-contain rounded-t-3xl"
+            className="w-full h-full object-cover rounded-t-3xl"
           />
           <button
             onClick={onClose}
@@ -61,7 +61,7 @@ const Modal = ({ isOpen, onClose }) => {
           <h2 className="text-gray-600 mb- text-center ">
             Subscribe To Our Newsletter!
           </h2>
-          <p className="text-2xl font-bold mb-2 text-center">
+          <p className="text-xl font-bold mb-2 text-center">
             Receive Offers your next order, exclusive offers & more!
           </p>
           <input
@@ -78,7 +78,7 @@ const Modal = ({ isOpen, onClose }) => {
             SUBSCRIBE
           </button>
           
-          <div className="flex gap-4 mt-2">
+          {/* <div className="flex gap-4 mt-2">
             <a
               href="https://instagram.com"
               target="_blank"
@@ -103,7 +103,7 @@ const Modal = ({ isOpen, onClose }) => {
             >
               <FaTwitter className="w-4 h-4 text-gray-600 hover:text-blue-600" />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

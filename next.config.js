@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images:{
-        domains:["cdn.nexigifting.com","nexiblesapp.barecms.com"]
+        domains:["cdn.nexigifting.com","nexiblesapp.barecms.com"  ]
     }
 }
 

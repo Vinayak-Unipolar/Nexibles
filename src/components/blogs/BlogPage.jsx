@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 function BlogPage() {
   const [industries, setIndustries] = useState([]);
@@ -33,7 +34,6 @@ function BlogPage() {
     fetchIndustries();
   }, [APIURL]);
 
-  // Animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,13 +68,13 @@ function BlogPage() {
       </div>
     </div>
   );
+  
   const featuredIndustry = industries.length > 0 ? industries[0] : null;
   const restIndustries = industries.length > 0 ? industries.slice(1) : [];
 
   return (
     <div className="bg-gray-50 min-h-screen mt-12">
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {/* Featured Banner */}
         {featuredIndustry && (
           <motion.div 
             className="mb-10"
@@ -94,23 +94,23 @@ function BlogPage() {
                 <p className="mb-4">
                   Explore the latest trends and insights in the {featuredIndustry.name.toLowerCase()} industry
                 </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white text-gray-800 px-4 py-2 rounded font-medium text-sm hover:bg-blue-50"
-                >
-                  Read More
-                </motion.button>
+                <Link href={`/blog/${featuredIndustry.name.toLowerCase()}`}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-white text-gray-800 px-4 py-2 rounded font-medium text-sm hover:bg-blue-50"
+                  >
+                    Read More
+                  </motion.button>
+                </Link>
               </div>
             </div>
           </motion.div>
         )}
 
-        {/* Industry Cards */}
         <h2 className="text-xl font-bold text-gray-800 mb-6">Explore Industries</h2>
-        
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -121,18 +121,19 @@ function BlogPage() {
               variants={itemVariants}
               className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow duration-300"
             >
-              <div className="relative h-40">
+              <div className="relative h-45">
                 <img 
-                  src={`${CDN_URL || ""}/${industry.image}`}
+                  src={`${CDN_URL}/${industry.image}`}
                   alt={industry.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">{industry.name}</h3>
-                <p className="text-gray-500 text-xs mb-3">
+                <h3 className="text-xs text-gray-900 mb-1">{industry.description}</h3>
+                <Link href={`/blog/${industry.name.toLowerCase()}`} className="text-gray-500 text-xs mb-3">
                   Read more →
-                </p>
+                </Link>
               </div>
             </motion.div>
           ))}

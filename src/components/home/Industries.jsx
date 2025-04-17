@@ -58,58 +58,60 @@ const Industries = () => {
 
   // Start the continuous marquee animation
   const startMarqueeAnimation = () => {
+    const remainingDistance = -copyWidth - currentPosition;
+    const remainingDuration = (remainingDistance / -copyWidth) * duration;
+    
     controls.start({
-      x: [currentPosition, -copyWidth + currentPosition],
+      x: [currentPosition, -copyWidth],
       transition: {
         ease: "linear",
-        duration: duration,
+        duration: remainingDuration > 0 ? remainingDuration : duration,
         repeat: Infinity,
       },
     });
   };
 
-  // Start animation when industries are loaded
+  // Start animation when industries are loaded or position changes
   useEffect(() => {
     if (industries.length > 0) {
       startMarqueeAnimation();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [industries]);
+  }, [industries, currentPosition]);
 
   // Duplicate items for seamless marquee
   const marqueeItems = [...industries, ...industries];
 
   // Handle scroll left (previous button)
   const handlePrev = () => {
-    // Move marquee to the right by one card
     let newPosition = currentPosition + (cardWidth + gap);
-
-    // If we're going past the start, loop to the end
     if (newPosition > 0) {
-      newPosition = -copyWidth + (cardWidth + gap);
+      newPosition = -copyWidth;
     }
 
     setCurrentPosition(newPosition);
+    controls.stop();
     controls.start({
       x: newPosition,
-      transition: { duration: 0.3, ease: "easeOut" },
+      transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] },
+    }).then(() => {
+      startMarqueeAnimation();
     });
   };
 
   // Handle scroll right (next button)
   const handleNext = () => {
-    // Move marquee to the left by one card
     let newPosition = currentPosition - (cardWidth + gap);
-
-    // If we're going past the end, loop to the start
-    if (Math.abs(newPosition) >= copyWidth) {
+    if (newPosition < -copyWidth) {
       newPosition = 0;
     }
 
     setCurrentPosition(newPosition);
+    controls.stop();
     controls.start({
       x: newPosition,
-      transition: { duration: 0.3, ease: "easeOut" },
+      transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] },
+    }).then(() => {
+      startMarqueeAnimation();
     });
   };
 
@@ -182,7 +184,7 @@ const Industries = () => {
           {/* Previous arrow */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-md transition-all -ml-3"
+            className="absolute left-0 top UPPERCASE-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-md transition-all -ml-3"
             aria-label="Previous items"
           >
             <div className="w-6 h-6 flex items-center justify-center">

@@ -3,6 +3,29 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+// Import brand logos
+import BigBasket from "../../../public/brands/bigbasket.png";
+import BlueTribe from "../../../public/brands/blue_tribe.png";
+import ContinentalCoffee from "../../../public/brands/continental_coffee.png";
+import Cremica from "../../../public/brands/cremica.png";
+import Crizpo from "../../../public/brands/crizpo.png";
+import EatBetter from "../../../public/brands/eat_better.png";
+import HindustanUnilever from "../../../public/brands/hindustan unilever.png";
+import Mom from "../../../public/brands/mom.png";
+import PG from "../../../public/brands/p&g.png";
+import Raw from "../../../public/brands/raw.png";
+import SimpliNamdhari from "../../../public/brands/simplinamdhari.png";
+import SnackComp from "../../../public/brands/snack_comp.png";
+import Starbucks from "../../../public/brands/starbucks.png";
+import Steadfast from "../../../public/brands/steadfast.png";
+import Tata from "../../../public/brands/tata.png";
+import Yogabar from "../../../public/brands/yogabar.png";
+import Zama from "../../../public/brands/zama.png";
+
+// Ensure images are placed in the `public` directory:
+// - Instagram posts: e.g., `public/insta-post1.jpg`
+// - Brand logos: e.g., `public/brands/bigbasket.png`
+
 export default function NexiblesInstagramSection() {
   // Instagram feed placeholders
   const [instaFeed, setInstaFeed] = useState([
@@ -26,23 +49,23 @@ export default function NexiblesInstagramSection() {
 
   // Brand logos from your brands directory
   const brandLogos = [
-    { src: "/brands/bigbasket.png", alt: "Big Basket" },
-    { src: "/brands/blue_tribe.png", alt: "Blue Tribe" },
-    { src: "/brands/continental_coffee.png", alt: "Continental Coffee" },
-    { src: "/brands/cremica.png", alt: "Cremica" },
-    { src: "/brands/crizpo.png", alt: "Crizpo" },
-    { src: "/brands/eat_better.png", alt: "Eat Better" },
-    { src: "/brands/hindustan unilever.png", alt: "Hindustan Unilever" },
-    { src: "/brands/mom.png", alt: "Mom" },
-    { src: "/brands/p&g.png", alt: "P&G" },
-    { src: "/brands/raw.png", alt: "Raw" },
-    { src: "/brands/simplinamdhari.png", alt: "Simpli Namdhari" },
-    { src: "/brands/snack_comp.png", alt: "Snack Comp" },
-    { src: "/brands/starbucks.png", alt: "Starbucks" },
-    { src: "/brands/steadfast.png", alt: "Steadfast" },
-    { src: "/brands/tata.png", alt: "Tata" },
-    { src: "/brands/yogabar.png", alt: "Yogabar" },
-    { src: "/brands/zama.png", alt: "Zama" },
+    { src: BigBasket, alt: "Big Basket" },
+    { src: BlueTribe, alt: "Blue Tribe" },
+    { src: ContinentalCoffee, alt: "Continental Coffee" },
+    { src: Cremica, alt: "Cremica" },
+    { src: Crizpo, alt: "Crizpo" },
+    { src: EatBetter, alt: "Eat Better" },
+    { src: HindustanUnilever, alt: "Hindustan Unilever" },
+    { src: Mom, alt: "Mom" },
+    { src: PG, alt: "P&G" },
+    { src: Raw, alt: "Raw" },
+    { src: SimpliNamdhari, alt: "Simpli Namdhari" },
+    { src: SnackComp, alt: "Snack Comp" },
+    { src: Starbucks, alt: "Starbucks" },
+    { src: Steadfast, alt: "Steadfast" },
+    { src: Tata, alt: "Tata" },
+    { src: Yogabar, alt: "Yogabar" },
+    { src: Zama, alt: "Zama" },
   ];
 
   /**

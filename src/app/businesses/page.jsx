@@ -2,7 +2,7 @@ import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import React from "react";
 
-const Contact = () => {
+const Page = () => {
   // Custom color variables for consistent usage
   const primaryColor = "#00b08d"; // Teal/mint green
   const secondaryColor = "#662f90"; // Purple
@@ -183,4 +183,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Page;

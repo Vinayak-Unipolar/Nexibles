@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import client1 from '../../../public/client/client1.png';
 
 export default function StatsAndTestimonials() {
   // Which stat card is currently active
@@ -43,61 +45,42 @@ export default function StatsAndTestimonials() {
   const testimonials = [
     {
       id: 1,
-      rating: 5,
-      title: "Variety Of Styles!",
+      name: "Rajesh",
+      designationcompany: "Variety Of Styles!",
       content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
-      author: "Lisa K.",
-      date: "August 13, 2023"
-    },
-    {
+      image: client1,
+    }, {
       id: 2,
-      rating: 5,
-      title: "Quality Of Pouches!",
-      content: "I absolutely love this shop! The products are high-quality and the customer service is excellent. I always leave with exactly what I need and a smile on my face.",
-      author: "Mark G.",
-      date: "August 15, 2023"
-    },
-    {
-      id: 3,
-      rating: 5,
-      title: "Customer Service!",
-      content: "I love this shop! The products are always top-quality, and the staff is incredibly friendly and helpful. They go out of their way to make sure that I'm satisfied with my purchase.",
-      author: "Emily S.",
-      date: "August 12, 2023"
-    },
-    {
-      id: 4,
-      rating: 5,
-      title: "Variety Of Style!",
+      name: "Rajesh",
+      designationcompany: "Variety Of Styles!",
       content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
-      author: "Lisa K.",
-      date: "August 13, 2023"
-    },
-    {
+      image: client1,
+    }, {
+      id: 3,
+      name: "Rajesh",
+      designationcompany: "Variety Of Styles!",
+      content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
+      image: client1,
+    }, {
+      id: 4,
+      name: "Rajesh",
+      designationcompany: "Variety Of Styles!",
+      content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
+      image: client1,
+    }, {
       id: 5,
-      rating: 5,
-      title: "Quality Of Pouches!",
-      content: "I absolutely love this shop! The products are high-quality and the customer service is excellent. I always leave with exactly what I need and a smile on my face.",
-      author: "Mark G.",
-      date: "August 15, 2023"
-    },
-    {
-      id: 6,
-      rating: 5,
-      title: "Customer Service!",
-      content: "I love this shop! The products are always top-quality, and the staff is incredibly friendly and helpful. They go out of their way to make sure that I'm satisfied with my purchase.",
-      author: "Emily S.",
-      date: "August 12, 2023"
-    },
+      name: "Rajesh",
+      designationcompany: "Variety Of Styles!",
+      content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
+      image: client1,
+    }
   ];
 
   // ===================== HANDLERS =====================
-  // Switch to a specific group of testimonials
   const goToTestimonial = (index) => {
     setActiveTestimonial(index);
   };
 
-  // Switch active stat card
   const setActiveCard = (cardId) => {
     setActiveStatCard(cardId);
   };
@@ -147,7 +130,7 @@ export default function StatsAndTestimonials() {
     <div className="flex flex-col w-full">
       {/* ===================== STATS SECTION ===================== */}
       <motion.div
-        className=" mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 py-12 px-4 md:px-8"
+        className="mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 py-12 px-4 md:px-8"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
@@ -240,62 +223,51 @@ export default function StatsAndTestimonials() {
 
         {/* 3 Testimonials at a time */}
         <div className="flex flex-col md:flex-row gap-4 justify-center max-w-6xl mx-auto">
-          {testimonials.slice(activeTestimonial, activeTestimonial + 3).map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              className="bg-white rounded-lg p-6 shadow-lg w-full md:w-1/3"
-              variants={testimonialCardVariants}
-              initial="hidden"
-              animate="visible"
-              custom={index}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-              }}
-              transition={{ type: 'spring', stiffness: 400 }}
-            >
-              {/* Star Rating */}
+          {testimonials.slice(activeTestimonial, activeTestimonial + 2).map((testimonial, index) => {
+            const [isVisible, setIsVisible] = useState(false);
+            useEffect(() => {
+              setIsVisible(true);
+            }, []);
+
+            return (
               <motion.div
-                className="flex text-yellow-400 mb-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
+                key={testimonial.id}
+                className="max-w-md mx-auto bg-white rounded-lg p-6 shadow-lg transform transition-all duration-500 ease-in-out relative"
+                style={{ opacity: isVisible ? 1 : 0 }}
+                variants={testimonialCardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={index}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                }}
+                transition={{ type: 'spring', stiffness: 400 }}
               >
-                {'★'.repeat(testimonial.rating)}
+                <div className="">
+                  <div className="absolute top-[110px] -left-6 transform -translate-y-1/2 -translate-x-1/3 p-4">
+                    <div className="p-2 bg-white rounded-full">
+                      <Image
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        width={120}
+                        height={120}
+                        className="rounded-full bg-orange-100 shadow-md"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pl-16 text-gray-700">
+                  {testimonial.content}
+                  <p className="text-lg font-semibold text-gray-800">{testimonial.name}</p>
+                  <p className="text-sm text-gray-600">{testimonial.designationcompany}</p>
+                </div>
+               
               </motion.div>
 
-              {/* Title */}
-              <motion.h3
-                className="font-bold text-gray-800 mb-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-              >
-                {testimonial.title}
-              </motion.h3>
-
-              {/* Content */}
-              <motion.p
-                className="text-gray-600 text-sm mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
-              >
-                &quot;{testimonial.content}&quot;
-              </motion.p>
-
-              {/* Author & Date */}
-              <motion.div
-                className="text-sm text-gray-500"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-              >
-                <p className="font-medium">{testimonial.author}</p>
-                <p>{testimonial.date}</p>
-              </motion.div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Pagination Dots */}

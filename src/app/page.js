@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa"; // Import react-icons
+import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 import WhatWeDo from "@/components/home/WhatWeDo";
 import Footer from "@/components/shop/Footer";
 import GreenPart from "@/components/home/GreenPart";
@@ -14,17 +16,39 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/pop_up.png"
+import Pop_up_image from "../../public/home/pop_up.png";
+
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
+  const token = process.env.NEXT_PUBLIC_API_KEY; // Ensure this is configured in your environment
 
   if (!isOpen) return null;
 
-  const handleSubscribe = () => {
-    // Placeholder for subscription logic
-    console.log("Subscribed with email:", email);
-    setEmail("");
-    onClose(); // Close modal after subscribing
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter a valid email.");
+      return;
+    }
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          "API-Key": token,
+        },
+        body: JSON.stringify({ email: email,origin: "nexibles" }),
+      });
+      if (response.ok) {
+        toast.success("Successfully subscribed!");
+        setEmail("");
+        onClose(); // Close modal after successful subscription
+      } else {
+        toast.error("Subscription failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again later.");
+    }
   };
 
   return (
@@ -33,7 +57,7 @@ const Modal = ({ isOpen, onClose }) => {
         {/* Top Half: Image */}
         <div className="relative w-full h-48">
           <img
-            src={Pop_up_image.src} // Using the image from public/home/modal.png
+            src={Pop_up_image.src}
             alt="Modal Banner"
             className="w-full h-full object-cover rounded-t-3xl"
           />
@@ -58,7 +82,7 @@ const Modal = ({ isOpen, onClose }) => {
         </div>
         {/* Bottom Half: Text, Email Input, Button, and Social Icons */}
         <div className="px-6 pb-3 pt-1 flex flex-col items-center">
-          <h2 className="text-gray-600 mb- text-center ">
+          <h2 className="text-gray-600 mb- text-center">
             Subscribe To Our Newsletter!
           </h2>
           <p className="text-xl font-bold mb-2 text-center">
@@ -71,39 +95,12 @@ const Modal = ({ isOpen, onClose }) => {
             placeholder="Enter your email"
             className="w-full p-2 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
-         <button
+          <button
             onClick={handleSubscribe}
             className="w-full bg-black text-white py-2.5 rounded-full border-2 border-transparent hover:bg-white hover:text-black hover:border-black font-semibold transition-all duration-300"
           >
             SUBSCRIBE
           </button>
-          
-          {/* <div className="flex gap-4 mt-2">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            >
-              <FaInstagram className="w-4 h-4 text-gray-600 hover:text-blue-600" />
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-            >
-              <FaFacebookF className="w-4 h-4 text-gray-600 hover:text-blue-600" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-            >
-              <FaTwitter className="w-4 h-4 text-gray-600 hover:text-blue-600" />
-            </a>
-          </div> */}
         </div>
       </div>
     </div>
@@ -115,7 +112,7 @@ const Home = () => {
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showModal, setShowModal] = useState(false);
-  
+
   useEffect(() => {
     // Modal logic
     const lastShown = localStorage.getItem("modalLastShown");
@@ -159,14 +156,13 @@ const Home = () => {
 
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Modal isOpen={showModal} onClose={closeModal} />
       <Navbar />
       <HeaderSection />
       <Industries />
-      {/* <Productcategory categoryData={categoryData} /> */}
       <Popularproducts />
       <ProductSections />
-      {/* <Trendingproducts /> */}
       <AdvantageItem />
       <StatsAndTestimonials />
       <NexiblesInstagramSection />

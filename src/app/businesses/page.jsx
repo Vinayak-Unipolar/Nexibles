@@ -93,7 +93,7 @@ function Page() {
             {restIndustries.map((industry) => (
               <Link
                 key={industry.id}
-                href={`/blog/${industry.name.toLowerCase()}`}
+                href={`/industries/${industry.name.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <motion.div
                   variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.5 } } }}

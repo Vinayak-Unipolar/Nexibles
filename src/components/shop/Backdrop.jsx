@@ -11,17 +11,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const images = [
-  "/home/Nexibles-07.png",
-  "/home/Nexibles-08.png",
-  "/home/Nexibles-09.png",
+  "/home/Types_of_pouch.webp"
 ];
 
 const content = [
   {
-    title: "Your Print & Packaging Solution",
-    subtitle: "High-Quality Print & Packaging Tailored to Your Business",
-    description: "Personalize Your Business Stationery with Premium Designs!",
-    cta: "Start Personalizing Now",
+    title: "",
+    subtitle: "",
+    description: "",
+    cta: "",
   },
   {
     title: "Branded Packaging for Every Need",
@@ -45,7 +43,7 @@ const content = [
 
 export default function Backdrop() {
   return (
-    <div className="h-[55vh] overflow-hidden relative">
+    <div className="h-[500px] overflow-hidden relative">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
@@ -66,12 +64,12 @@ export default function Backdrop() {
                 src={img}
                 alt={`Slide ${index + 1}`}
                 layout="fill"
-                objectFit="cover"
+                objectFit="fill"
               />
               <div className="absolute inset-0 flex flex-col justify-center md:justify-start px-4 md:px-24 pt-16 md:pt-24 items-start text-black text-start">
                 <p className="mb-2 text-2xl md:text-4xl text-gray-800">
                   {content[index]?.title}
-                  <span className="inline-block w-5 h-2 bg-red-500"></span>
+                  {/* <span className="inline-block w-5 h-2 bg-red-500"></span> */}
                 </p>
                 <p className="text-xl md:text-xl mb-2">
                   {content[index]?.subtitle}
@@ -81,7 +79,7 @@ export default function Backdrop() {
                 </p>
                 <Link
                   href="/all-category"
-                  className="bg-white text-black px-6 py-2 rounded-md text-lg hover:bg-opacity-80 transition-colors"
+                  className="text-black px-6 py-2 rounded-md text-lg hover:bg-opacity-80 transition-colors"
                 >
                   {content[index]?.cta}
                 </Link>

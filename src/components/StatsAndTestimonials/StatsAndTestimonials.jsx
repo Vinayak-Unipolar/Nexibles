@@ -207,7 +207,7 @@ export default function StatsAndTestimonials() {
  
       {/* ===================== TESTIMONIALS SECTION ===================== */}
       <motion.div
-        className="w-full bg-gradient-to-r from-emerald-500 to-purple-800 py-12 px-4 md:px-8"
+        className="w-full bg-[#ffd13e] py-12 px-4 md:px-8"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}

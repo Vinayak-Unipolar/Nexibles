@@ -246,6 +246,7 @@ export default function Configuration() {
                   </div>
                 </motion.div>
               </div>
+              <hr className="my-4 border-gray-200" />
 
               {/* Preview & Quotation */}
               <motion.div 

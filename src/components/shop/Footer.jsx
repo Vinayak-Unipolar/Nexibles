@@ -71,7 +71,7 @@ const Footer = () => {
         <div className="px-6 py-14 md:px-16 xl:px-24">
           <div className="flex flex-col md:flex-row md:justify-around">
             <div className="mb-8 md:mb-0">
-              <ul className="text-white tracking-widest">
+              {/* <ul className="text-white tracking-widest">
                 <li className="font-bold mb-4 text-white">PRODUCTS</li>
                 {productData.length > 0 ? (
                   productData.map((product) => (
@@ -89,7 +89,7 @@ const Footer = () => {
                     Loading...
                   </li>
                 )}
-              </ul>
+              </ul> */}
             </div>
 
             <div className="mb-8 md:mb-0">
@@ -124,8 +124,8 @@ const Footer = () => {
                 <Link href="/infrastructure">
                   <li className="text-white mb-2">Infrastructure</li>
                 </Link>
-                <Link href="/blogs">
-                  <li className="text-white mb-2">Blogs</li>
+                <Link href="/businesses">
+                  <li className="text-white mb-2">Industries</li>
                 </Link>
               </ul>
             </div>
@@ -196,9 +196,9 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="text-start mt-10 text-gray-300 px-14">
+          {/* <div className="text-start mt-10 text-gray-300 px-14">
             <p>{`© 2024 Artnext Pvt Ltd, All Rights Reserved.`}</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

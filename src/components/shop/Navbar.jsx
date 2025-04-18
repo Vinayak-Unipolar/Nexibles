@@ -49,7 +49,7 @@ const Navbar = () => {
   const handleToggleOpen = () => setShowPersonDropdown(!showPersonDropdown);
 
   const navItems = [
-    { name: "Pouches", path: "/pouches" },
+    { name: "Pouches", path: "/all-category" },
     { name: "Businesses", path: "/businesses" },
     { name: "Agencies", path: "/agencies" },
     { name: "Shop", path: "/shop" },
@@ -179,7 +179,7 @@ const Navbar = () => {
             <ul className="text-black text-2xl mt-12 space-y-6 text-center">
               {[
                 { name: "Home", path: "/" },
-                { name: "Pouches", path: "/pouches" },
+                { name: "Pouches", path: "/all-category" },
                 { name: "Businesses", path: "/businesses" },
                 { name: "Agencies", path: "/agencies" },
                 { name: "Shop", path: "/shop" },

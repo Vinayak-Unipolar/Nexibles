@@ -82,8 +82,6 @@ const Industries = () => {
   const copyWidth = n * cardWidth + (n - 1) * gap;
   const speed = 150;
   const duration = copyWidth / speed;
-
-  // Duplicate items for seamless marquee
   const marqueeItems = [...industries, ...industries];
 
   return (
@@ -103,7 +101,7 @@ const Industries = () => {
         >
           {marqueeItems.map((category, index) => (
             <Link
-              href={`/${category.name
+              href={`/blog/${category.name
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`}
               key={index}

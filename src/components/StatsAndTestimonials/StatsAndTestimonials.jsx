@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import client1 from '../../../public/client/client1.png';
@@ -221,53 +221,41 @@ export default function StatsAndTestimonials() {
           What People Are Saying
         </motion.h2>
 
-        {/* 3 Testimonials at a time */}
+        {/* 2 Testimonials at a time */}
         <div className="flex flex-col md:flex-row gap-4 justify-center max-w-6xl mx-auto">
-          {testimonials.slice(activeTestimonial, activeTestimonial + 2).map((testimonial, index) => {
-            const [isVisible, setIsVisible] = useState(false);
-            useEffect(() => {
-              setIsVisible(true);
-            }, []);
-
-            return (
-              <motion.div
-                key={testimonial.id}
-                className="max-w-md mx-auto bg-white rounded-lg p-6 shadow-lg transform transition-all duration-500 ease-in-out relative"
-                style={{ opacity: isVisible ? 1 : 0 }}
-                variants={testimonialCardVariants}
-                initial="hidden"
-                animate="visible"
-                custom={index}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                <div className="">
-                  <div className="absolute top-[110px] -left-6 transform -translate-y-1/2 -translate-x-1/3 p-4">
-                    <div className="p-2 bg-white rounded-full">
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        width={120}
-                        height={120}
-                        className="rounded-full bg-orange-100 shadow-md"
-                      />
-                    </div>
-                  </div>
+          {testimonials.slice(activeTestimonial, activeTestimonial + 2).map((testimonial, index) => (
+            <motion.div
+              key={testimonial.id}
+              className="max-w-md mx-auto bg-white rounded-lg p-6 shadow-lg transform transition-all duration-500 ease-in-out relative"
+              variants={testimonialCardVariants}
+              initial="hidden"
+              animate="visible"
+              custom={index}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+              }}
+              transition={{ type: 'spring', stiffness: 400 }}
+            >
+              <div className="absolute top-[110px] -left-6 transform -translate-y-1/2 -translate-x-1/3 p-4">
+                <div className="p-2 bg-white rounded-full">
+                  <Image
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    width={120}
+                    height={120}
+                    className="rounded-full bg-orange-100 shadow-md"
+                  />
                 </div>
+              </div>
 
-                <div className="pl-16 text-gray-700">
-                  {testimonial.content}
-                  <p className="text-lg font-semibold text-gray-800">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.designationcompany}</p>
-                </div>
-               
-              </motion.div>
-
-            );
-          })}
+              <div className="pl-16 text-gray-700">
+                {testimonial.content}
+                <p className="text-lg font-semibold text-gray-800">{testimonial.name}</p>
+                <p className="text-sm text-gray-600">{testimonial.designationcompany}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* Pagination Dots */}

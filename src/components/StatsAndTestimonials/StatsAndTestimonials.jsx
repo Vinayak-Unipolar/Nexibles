@@ -8,6 +8,7 @@ import client4 from '../../../public/client/client4.png';
 import client5 from '../../../public/client/client5.png';
 
 import doublequotes from '../../../public/home/doublequotes.svg';
+import flip from '../../../public/home/flip.svg';
 
 export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
@@ -47,35 +48,35 @@ export default function StatsAndTestimonials() {
   const testimonials = [
     {
       id: 1,
-      name: "Shivanand Jagtap",
+      name: "Mr. Shivanand Jagtap",
       designationcompany: "Director - Raidaar Masale",
       content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
       image: client1,
     },
     {
       id: 2,
-      name: "Ms Preethi Dekhne",
+      name: "Ms. Preethi Dekhne",
       designationcompany: "Tarvoti!",
       content: "The first benefit was MOQ, cost effective & very convenient for start-ups, Quick turnaround time, very happy with quality, delivery was as per timeline shared. ",
       image: client2,
     },
     {
       id: 3,
-      name: "Mr.Arka Narayan De",
+      name: "Mr. Arka Narayan De",
       designationcompany: "Business Development Head - Aman Tea Group",
       content: "Nexi Standard Sizes have been a game-changer for us at Aman Tea Group. The quality, consistency, and quick turnaround have streamlined our packaging process, helping us maintain efficiency in our tea product launches. Nexibles' reliability and service have made them our go-to packaging partner.",
       image: client3,
     },
     {
       id: 4,
-      name: "Mr Dheeraj  Deotarse",
+      name: "Mr. Dheeraj  Deotarse",
       designationcompany: "",
       content: "Nexi Classic sizes have transformed our tea and coffee packaging with cutting-edge digital printing, making it more striking and market-ready. Their precision, quality, and marketing support set them apart. Highly recommended for brands that demand excellence!",
       image: client4,
     },
     {
       id: 5,
-      name: "Tuhin Samanta",
+      name: "Mr. Tuhin Samanta",
       designationcompany: "Founder - Nutkhut Delight",
       content: "Nexi Standard Sizes by Nexibles has been a game-changer for us! Their low MOQ made it easy to launch new products quickly, which is invaluable for an emerging brand like ours. Fast production and excellent customer service are just the cherry on top!",
       image: client5,
@@ -225,7 +226,7 @@ export default function StatsAndTestimonials() {
         </motion.h2>
 
         {/* Testimonial Carousel */}
-        <div className="relative max-w-6xl mx-auto px-4 md:px-0 mb-16">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-0 mb-16">
           {/* Carousel Navigation */}
           <div className="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 w-full flex justify-between">
             <button 
@@ -250,10 +251,10 @@ export default function StatsAndTestimonials() {
 
           {/* Carousel Content - Now using the flex directly without overflow container */}
           <div className="flex flex-col mx-10 md:flex-row gap-6 md:gap-6 justify-center">
-            {testimonials.slice(activeTestimonial, activeTestimonial + 3).map((testimonial, index) => (
+            {testimonials.slice(activeTestimonial, activeTestimonial + 2).map((testimonial, index) => (
               <motion.div
                 key={testimonial.id}
-                className="relative w-72 mx-auto bg-white rounded-lg pt-16 pb-6 px-6 shadow-lg mb-14"
+                className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-20 md:mt-0 pt-16 pb-6 px-6 shadow-lg "
                 variants={testimonialCardVariants}
                 initial="hidden"
                 animate="visible"
@@ -278,15 +279,18 @@ export default function StatsAndTestimonials() {
                 </div>
                 
                 {/* Testimonial content */}
-                <div className="flex flex-col  text-center text-gray-700">
+                <div className="flex flex-col text-center text-gray-700">
                   <p className="mt-4 mb-4 text-left">{testimonial.content}</p>
                   <p className="text-lg text-left font-semibold text-gray-800">{testimonial.name}</p>
-                  <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
+                  <p className="text-sm text-left  text-gray-600">{testimonial.designationcompany}</p>
                 </div>
 
                 {/* Quote icon in bottom right */}
-                <div className="absolute -bottom-12 right-4 w-20 h-20">
+                <div className="absolute -bottom-[45px] right-4 w-20 h-20">
                   <Image src={doublequotes} alt="quotes" width={70} height={70} />
+                </div>
+                <div className="absolute -top-9 left-7  w-20 h-20">
+                  <Image src={flip} alt="quotes" width={70} height={70} />
                 </div>
               </motion.div>
             ))}

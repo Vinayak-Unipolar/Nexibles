@@ -71,7 +71,7 @@ function Page() {
               transition={{ duration: 0.7 }}
             >
               <div className="relative overflow-hidden shadow-lg h-[80vh]">
-                <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent opacity-70"></div>
+                <div className="absolute inset-0 "></div>
                 <img
                   src="/home/Types_of_pouch.webp"
                   alt={featuredIndustry.name}

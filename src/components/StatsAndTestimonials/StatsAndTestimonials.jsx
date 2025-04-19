@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import client1 from '../../../public/client/client1.png';

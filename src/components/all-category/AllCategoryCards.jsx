@@ -20,7 +20,7 @@ const AllCategoryCards = ({ categoryData }) => {
       <div className="mb-10 px-4 md:px-40 xl:px-64">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
           {/* Left box (full height of the row) - First category */}
-          <div className="bg-gray-200 rounded-lg pb-6 text-center relative h-full">
+          <div className="bg-gray-100 rounded-lg pb-6 text-center relative h-full">
             <Link href={`/category/${topThreeCategories[0].cat_url}`} passHref>
               <div className="relative w-full h-72 md:h-full">
                 <Image
@@ -39,7 +39,7 @@ const AllCategoryCards = ({ categoryData }) => {
           {/* Right side (two boxes split vertically) */}
           <div className="grid grid-cols-1 md:grid--2 gap-6">
             {/* Second category */}
-            <div className="bg-gray-200 rounded-lg pb-4 text-center relative">
+            <div className="bg-gray-100 rounded-lg pb-4 text-center relative">
               <Link href={`/category/${topThreeCategories[1].cat_url}`} passHref>
                 <div className="relative w-full h-[200px]">
                   <Image
@@ -56,7 +56,7 @@ const AllCategoryCards = ({ categoryData }) => {
               </p>
             </div>
             {/* Third category */}
-            <div className="bg-gray-200 rounded-lg pb-4 text-center relative">
+            <div className="bg-gray-100 rounded-lg pb-4 text-center relative">
               <Link href={`/category/${topThreeCategories[2].cat_url}`} passHref>
                 <div className="relative w-full h-[200px]">
                   <Image
@@ -88,7 +88,7 @@ const AllCategoryCards = ({ categoryData }) => {
         {categoryData.map((category) => (
           <div key={category.id} className="mt-4 flex flex-col items-center">
             <div
-              className="relative rounded-full overflow-hidden transition-all duration-300 border border-gray-300 shadow-md hover:shadow-2xl hover:-translate-y-1 w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52"
+              className="relative rounded-full overflow-hidden transition-all duration-300 border border-gray-300 shadow-md hover:shadow-lg hover:-translate-y-1 w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52"
             >
               <Link href={`/category/${category.cat_url}`} passHref>
                 <Image

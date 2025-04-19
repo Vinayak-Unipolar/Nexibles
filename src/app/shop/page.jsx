@@ -45,7 +45,7 @@ const Shop = () => {
     <>
       <Navbar />
       <Backdrop />
-      <div className=' mt-[3%]'>
+      <div className=''>
         {/* <Banner categoryData={categoryData} /> */}
          <PopularProducts />
          <AllProducts/>

@@ -70,7 +70,7 @@ function Page() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative overflow-hidden shadow-lg h-[400px]">
+              <div className="relative overflow-hidden  h-[400px]">
                 <div className="absolute inset-0 "></div>
                 <img
                   src={categoryimg.src}

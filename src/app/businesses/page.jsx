@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
-
+import categoryimg from '../../../public/home/Types_of_pouch.webp';
 function Page() {
   const [industries, setIndustries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,10 +70,10 @@ function Page() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative overflow-hidden shadow-lg h-[80vh]">
+              <div className="relative overflow-hidden shadow-lg h-[400px]">
                 <div className="absolute inset-0 "></div>
                 <img
-                  src="/home/Types_of_pouch.webp"
+                  src={categoryimg.src}
                   alt={featuredIndustry.name}
                   className="w-full h-full object-cover"
                 />

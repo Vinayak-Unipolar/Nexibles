@@ -11,7 +11,7 @@ const getMediaType = (fileName) => {
   return "image";
 };
 
-const MediaComponent = ({ media, alt, isActive }) => {
+const MediaComponent = ({ media, alt, isActive, onVideoEnd }) => {
   const mediaType = getMediaType(media);
   const videoRef = useRef(null);
 
@@ -26,13 +26,26 @@ const MediaComponent = ({ media, alt, isActive }) => {
     }
   }, [isActive, mediaType]);
 
+  useEffect(() => {
+    if (mediaType === "video" && videoRef.current) {
+      const video = videoRef.current;
+      const handleEnded = () => {
+        if (isActive && onVideoEnd) {
+          onVideoEnd();
+        }
+      };
+      video.addEventListener("ended", handleEnded);
+      return () => video.removeEventListener("ended", handleEnded);
+    }
+  }, [mediaType, isActive, onVideoEnd]);
+
   if (mediaType === "video") {
     return (
       <video
         ref={videoRef}
         src={media}
         autoPlay
-        loop
+        loop={false} // Disable loop to allow 'ended' event
         muted
         playsInline
         className="w-full h-full object-cover"
@@ -78,14 +91,28 @@ const HeaderSection = () => {
     fetchBanners();
   }, [BASE_IMAGE_URL]);
 
+  const startTimer = () => {
+    clearInterval(timerRef.current);
+    const currentSlide = slides[currentIndex];
+    const mediaType = getMediaType(currentSlide?.bgMedia);
+    if (mediaType === "image") {
+      timerRef.current = setInterval(() => {
+        setDirection(1);
+        setCurrentIndex((prev) => (prev + 1) % slides.length);
+      }, 5000);
+    }
+  };
+
   useEffect(() => {
     if (!slides.length) return;
-    timerRef.current = setInterval(() => {
-      setDirection(1);
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    startTimer();
     return () => clearInterval(timerRef.current);
-  }, [slides]);
+  }, [slides, currentIndex]);
+
+  const handleVideoEnd = () => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+  };
 
   const slideVariants = {
     enter: (dir) => ({ x: dir > 0 ? "100%" : "-100%" }),
@@ -97,20 +124,21 @@ const HeaderSection = () => {
     clearInterval(timerRef.current);
     setDirection(-1);
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    timerRef.current = setInterval(() => {
-      setDirection(1);
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
   };
 
   const handleNext = () => {
     clearInterval(timerRef.current);
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % slides.length);
-    timerRef.current = setInterval(() => {
-      setDirection(1);
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
+  };
+  
+  // Custom CSS for hollow/outlined text effect with thinner border and slight italic
+  const outlineTextStyle = {
+    color: "transparent",
+    WebkitTextStroke: "0.5px white",
+    textStroke: "0.5px white",
+    fontStyle: "italic",
+    letterSpacing: "0.05em",
   };
 
   return (
@@ -130,7 +158,50 @@ const HeaderSection = () => {
             >
               <Link href={slide.link}>
                 <div className="relative w-full h-full">
-                  <MediaComponent media={slide.bgMedia} alt={slide.title} isActive={true} />
+                  <MediaComponent
+                    media={slide.bgMedia}
+                    alt={slide.title}
+                    isActive={true}
+                    onVideoEnd={handleVideoEnd}
+                  />
+                  
+                  {/* Text Overlay - Only shown on the first slide */}
+                  {index === 0 && (
+                    <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none mt-20">
+                      <h2 
+                        className="text-5xl md:text-7xl font-bold tracking-wider text-center mb-4 md:mb-6"
+                        style={outlineTextStyle}
+                      >
+                        ENDLESS POUCHES
+                      </h2>
+                      <h1 
+                        className="text-6xl md:text-[100px] font-extrabold tracking-wider text-center font-[1000] italic"
+                      >
+                        ENDLESS POSSIBILITIES
+                      </h1>
+                      <div className="mt-8 pointer-events-auto">
+                        <a 
+                          href="/shop" 
+                          className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-lg transition-colors"
+                        >
+                          Explore Pouches
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                   {index === 1 && (
+                    <div className="absolute inset-0 flex flex-col top-[52%] left-[52%] text-white z-10 pointer-events-none mt-20">
+                    
+                      <div className="mt-8 pointer-events-auto">
+                        <a 
+                          href="/shop" 
+                          className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-xl transition-colors"
+                        >
+                          Explore Industries
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Link>
             </motion.div>

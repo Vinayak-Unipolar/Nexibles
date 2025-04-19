@@ -59,7 +59,7 @@ export default function PopularProducts() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-      {`What's New`}
+      {`Explore Pouch Types`}
         </motion.h2>
 
         <div className="grid gap-6 justify-center grid-cols-2 md:grid-cols-[repeat(4,220px)]">

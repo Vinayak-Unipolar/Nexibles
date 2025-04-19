@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-=======
 import React, { useState,useEffect } from 'react';
->>>>>>> 267b2fa3da73edf0f0045e6a27de93369cc3bca9
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import client1 from '../../../public/client/client1.png';

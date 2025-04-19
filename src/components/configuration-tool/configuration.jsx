@@ -307,7 +307,7 @@ export default function Configuration() {
           className="lg:w-w-1/2"
           variants={itemVariants}
         >
-          <div className="sticky top-8 ">
+          <div className="sticky top-16 ">
             <div className="bg-gray-50 rounded-xl p-6 mb-6">
               <motion.div
                 className="flex justify-center"

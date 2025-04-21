@@ -50,7 +50,7 @@ const Page = ({ params }) => {
   return (
     <div>
       <Navbar />
-      <div className="p-10 mx-auto mt-16">
+      <div className="mx-auto mt-16">
         {/* <h1 className="text-4xl font-bold mb-6">{pageData.title}</h1> */}
         {/* <p>{pageData.metadescription}</p> */}
         <div dangerouslySetInnerHTML={{ __html: pageData.content }} />

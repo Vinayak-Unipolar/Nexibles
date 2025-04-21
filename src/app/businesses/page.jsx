@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
-
+import categoryimg from '../../../public/home/Types_of_pouch.webp';
 function Page() {
   const [industries, setIndustries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
 
@@ -70,13 +70,23 @@ function Page() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative overflow-hidden shadow-lg h-[80vh]">
-                <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent opacity-70"></div>
+              <div className="relative overflow-hidden  h-[400px]">
+                <div className="absolute inset-0 "></div>
                 <img
-                  src="/home/Types_of_pouch.webp"
+                  src={categoryimg.src}
                   alt={featuredIndustry.name}
                   className="w-full h-full object-cover"
                 />
+                 <div className="absolute bottom-[10%] left-[2%] z-10">
+              <div className="border-b border-t border-gray-800 py-2 px-4">
+                <h1 className="text-4xl md:text-5xl font-medium text-[#231f20]">
+                  TYPES OF
+                </h1>
+                <h1 className="text-5xl md:text-6xl font-[1000] text-[#231f20] mt-2">
+                  POUCHES
+                </h1>
+              </div>
+            </div>
               </div>
             </motion.div>
           )}

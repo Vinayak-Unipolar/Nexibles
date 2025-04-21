@@ -64,30 +64,47 @@ const Industries = () => {
     setCurrentIndex(prev => (prev + 1) % industries.length);
   };
 
+  // Create a circular array for continuous scrolling
+  const getCircularArray = () => {
+    if (industries.length === 0) return [...industries];
+    
+    // Create a circular version of the array to handle the looping effect
+    // We duplicate some items at the beginning and end to create the illusion of infinite scroll
+    const displayItems = [...industries];
+    
+    // For a true circular effect, add enough items to fill the viewport
+    for (let i = 0; i < visibleCount + 1; i++) {
+      displayItems.push(industries[i % industries.length]);
+    }
+    
+    return displayItems;
+  };
+
+  const circularItems = getCircularArray();
   const translateX = -(cardWidth + gap) * currentIndex;
 
   return (
     <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto text-center mt-4 pb font-bold text-4xl text-gray-800">
-        For Every Industry
+        Explore Industries
       </div>
       <div
         className="relative overflow-hidden mt-6 md:mt-12 mx-auto"
         style={{ width: `${viewportWidth}px`, maxWidth: "100%" }}
       >
         <div
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex transition-transform duration-700 ease-in-out"  
           style={{
             transform: `translateX(${translateX}px)`,
             gap: `${gap}px`
           }}
         >
-          {industries.map((category, index) => (
+          {circularItems.map((category, index) => (
             <Link
-              href={`/blog/${category.name
+              href={`/industries/${category.name
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`}
-              key={index}
+              key={`${category.name}-${index}`}
               style={{ flex: "0 0 auto", width: `${cardWidth}px` }}
               className="bg-white p-2 pb-4 border border-gray-200 rounded-xl overflow-hidden"
             >

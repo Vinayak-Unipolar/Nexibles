@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -11,6 +11,7 @@ import {
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useAuth } from "@/utils/authContext";
 import { useSelector } from "react-redux";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,6 +22,9 @@ const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
   const cartItemCount = cartItems.length;
+  const navbarRef = useRef(null);
+  const contactRef = useRef(null);
+  const isNavbarInView = useInView(navbarRef, { once: true, amount: 0.5 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,24 +53,82 @@ const Navbar = () => {
   const handleToggleOpen = () => setShowPersonDropdown(!showPersonDropdown);
 
   const navItems = [
+    { name: "Home", path: "/" },
     { name: "Pouches", path: "/all-category" },
     { name: "Industries", path: "/businesses" },
-    // { name: "Agencies", path: "/agencies" },
     { name: "Shop", path: "/shop" },
     { name: "Request Quote", path: "/request-quote" },
-    
+    { name: "About Nexibles", path: "/about" },
+    { name: "Contact Us", path: "/contact" },
   ];
+
+  // Animation variants
+  const logoVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const navLinkVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" },
+    }),
+  };
+
+  const iconVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: (i) => ({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.4, delay: i * 0.1 + 0.4, ease: "easeOut" },
+    }),
+  };
+
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+  };
+
+  const mobileMenuVariants = {
+    hidden: { y: "-100%" },
+    visible: { y: 0, transition: { type: "tween", duration: 0.3, ease: "easeOut" } },
+  };
+
+  const mobileLinkVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" },
+    }),
+  };
+
+  const contactVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: 0.2, ease: "easeOut" },
+    },
+  };
 
   return (
     <>
       <nav
+        ref={navbarRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           hasScrolled ? "bg-white shadow-xl" : "bg-white"
         }`}
       >
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex-shrink-0">
-            <div>
+          <motion.div
+            initial="hidden"
+            animate={isNavbarInView ? "visible" : "hidden"}
+            variants={logoVariants}
+          >
+            <Link href="/" className="flex-shrink-0">
               <Image
                 src="/home/nexible.gif"
                 alt="Nexibles"
@@ -75,12 +137,19 @@ const Navbar = () => {
                 className="w-[100px] h-[30px] object-contain"
                 priority
               />
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
 
           <div className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <div key={item.name} className="relative">
+            {navItems.slice(1, 5).map((item, index) => (
+              <motion.div
+                key={item.name}
+                className="relative"
+                custom={index}
+                initial="hidden"
+                animate={isNavbarInView ? "visible" : "hidden"}
+                variants={navLinkVariants}
+              >
                 <Link
                   href={item.path}
                   className="text-black text-xs sm:text-md hover:underline"
@@ -88,12 +157,17 @@ const Navbar = () => {
                   {item.name}
                 </Link>
                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full mt-1"></span>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           <div className="flex items-center space-x-4">
-            <div>
+            <motion.div
+              custom={0}
+              initial="hidden"
+              animate={isNavbarInView ? "visible" : "hidden"}
+              variants={iconVariants}
+            >
               <Link href="/my-cart" className="relative flex items-center text-black">
                 <div className="relative">
                   <IoCartOutline size={24} />
@@ -104,98 +178,222 @@ const Navbar = () => {
                   )}
                 </div>
               </Link>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              custom={1}
+              initial="hidden"
+              animate={isNavbarInView ? "visible" : "hidden"}
+              variants={iconVariants}
               className="relative flex items-center cursor-pointer"
               onClick={handleToggleOpen}
             >
-              <div>
-                <IoPersonOutline size={24} />
-              </div>
-              {showPersonDropdown && (
-                <div className="absolute top-full right-0 mt-2 bg-white text-gray-900 p-4 shadow-md flex flex-col items-center w-40 rounded-md">
-                  {user ? (
-                    <>
+              <IoPersonOutline size={24} />
+              <AnimatePresence>
+                {showPersonDropdown && (
+                  <motion.div
+                    className="absolute top-full right-0 mt-2 bg-white text-gray-900 p-4 shadow-md flex flex-col items-center w-40 rounded-md"
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={dropdownVariants}
+                  >
+                    {user ? (
+                      <>
+                        <Link
+                          href="/my-dashboard"
+                          className="text-white text-center px-4 py-2 w-full bg-[#30384E] rounded-md transition duration-300 ease-in-out mb-2"
+                        >
+                          Profile
+                        </Link>
+                        <button
+                          onClick={logout}
+                          className="text-white text-center px-4 py-2 w-full bg-[#30384E] rounded-md transition duration-300 ease-in-out"
+                        >
+                          Log out
+                        </button>
+                      </>
+                    ) : (
                       <Link
-                        href="/my-dashboard"
-                        className="text-white text-center px-4 py-2 w-full bg-[#30384E] rounded-md transition duration-300 ease-in-out mb-2"
-                      >
-                        Profile
-                      </Link>
-                      <button
-                        onClick={logout}
+                        href="/login"
                         className="text-white text-center px-4 py-2 w-full bg-[#30384E] rounded-md transition duration-300 ease-in-out"
                       >
-                        Log out
-                      </button>
-                    </>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="text-white text-center px-4 py-2 w-full bg-[#30384E] rounded-md transition duration-300 ease-in-out"
-                    >
-                      Sign In
-                    </Link>
-                  )}
-                </div>
-              )}
-            </div>
+                        Sign In
+                      </Link>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
 
-            <div className="relative">
+            <motion.div
+              custom={2}
+              initial="hidden"
+              animate={isNavbarInView ? "visible" : "hidden"}
+              variants={iconVariants}
+              className="relative"
+            >
               <button
                 className="flex items-center text-gray-900 text-sm sm:text-md"
                 onClick={toggleDropdown}
               >
                 ENGLISH <RiArrowDropDownLine size={24} />
               </button>
-              {isDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md">
-                  {["FRENCH", "SPANISH"].map((lang) => (
-                    <div key={lang}>
-                      <Link
-                        href="#"
-                        className="block px-4 py-2 text-gray-900"
-                        onClick={() => setIsDropdownOpen(false)}
-                      >
-                        {lang}
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md"
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={dropdownVariants}
+                  >
+                    {["FRENCH", "SPANISH"].map((lang) => (
+                      <div key={lang}>
+                        <Link
+                          href="#"
+                          className="block px-4 py-2 text-gray-900"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          {lang}
+                        </Link>
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
 
-            <button className="md:hidden text-gray-900 z-50" onClick={toggleMenu}>
-              {isMenuOpen ? <IoCloseOutline size={24} /> : <IoMenuOutline size={24} />}
-            </button>
+            <motion.button
+              className="md:hidden text-gray-900 z-50"
+              onClick={toggleMenu}
+              whileTap={{ scale: 0.95 }}
+              custom={3}
+              initial="hidden"
+              animate={isNavbarInView ? "visible" : "hidden"}
+              variants={iconVariants}
+            >
+              {isMenuOpen ? (
+                <motion.div
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <IoCloseOutline size={24} />
+                </motion.div>
+              ) : (
+                <IoMenuOutline size={24} />
+              )}
+            </motion.button>
           </div>
         </div>
       </nav>
 
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-white z-40">
-          <div className="flex flex-col h-full p-6">
-            <ul className="text-black text-2xl mt-12 space-y-6 text-center">
-              {[
-                { name: "Home", path: "/" },
-                { name: "Pouches", path: "/all-category" },
-                { name: "Businesses", path: "/businesses" },
-                // { name: "Agencies", path: "/agencies" },
-                { name: "Shop", path: "/shop" },
-                { name: "Request Quote", path: "/request-quote" },
-                
-              ].map((item) => (
-                <li key={item.name}>
-                  <Link href={item.path} onClick={toggleMenu}>
-                    {item.name}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 bg-white z-40 flex flex-col"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={mobileMenuVariants}
+          >
+            <div className="flex justify-between items-center px-6 py-4 border-b shadow-sm">
+              <div className="text-black font-bold text-lg">
+                NE<span className="text-red-600">•</span>IBLES
+              </div>
+              <div className="flex items-center space-x-4">
+                <motion.div
+                  custom={0}
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                >
+                  <Link href="/my-cart">
+                    <IoCartOutline size={24} />
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+                </motion.div>
+                <motion.div
+                  custom={1}
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                >
+                  <IoPersonOutline size={24} />
+                </motion.div>
+                <motion.div
+                  custom={2}
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                  className="flex items-center"
+                >
+                  ENGLISH <RiArrowDropDownLine size={24} />
+                </motion.div>
+                <motion.button
+                  onClick={toggleMenu}
+                  whileTap={{ scale: 0.95 }}
+                  custom={3}
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                >
+                  <motion.div
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <IoCloseOutline size={24} />
+                  </motion.div>
+                </motion.button>
+              </div>
+            </div>
+
+            <div className="flex-1 flex flex-col px-6 py-4">
+              <ul className="text-black space-y-5">
+                {navItems.map((item, index) => (
+                  <motion.li
+                    key={item.name}
+                    custom={index}
+                    initial="hidden"
+                    animate="visible"
+                    variants={mobileLinkVariants}
+                  >
+                    <Link
+                      href={item.path}
+                      onClick={toggleMenu}
+                      className="block py-2 text-lg font-medium"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+
+            <motion.div
+              ref={contactRef}
+              className="bg-red-500 text-white p-6 space-y-4"
+              initial="hidden"
+              animate="visible"
+              variants={contactVariants}
+            >
+              <motion.div variants={contactVariants}>
+                <h3 className="font-bold text-lg mb-2">Meet With US</h3>
+                <p>Art NEXT Pvt Ltd,</p>
+                <p>A/463, Ground Floor,</p>
+                <p>TTC Industrial Area,</p>
+                <p>Mahape, MIDC, Navi Mumbai,</p>
+                <p>Thane - 400710, MH, India</p>
+              </motion.div>
+              <motion.div variants={contactVariants}>
+                <h3 className="font-bold text-lg mb-2">Call US</h3>
+                <p>+91 9821045101</p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

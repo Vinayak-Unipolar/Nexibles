@@ -6,6 +6,11 @@ import { motion, useInView } from "framer-motion";
 import ProductStock from "../../../public/home/Reference NexiClassic Banner.webp";
 import Customization from "../../../public/home/Reference Customisation Banner.webp";
 
+const fadeSlide = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+};
+
 const ProductSections = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });

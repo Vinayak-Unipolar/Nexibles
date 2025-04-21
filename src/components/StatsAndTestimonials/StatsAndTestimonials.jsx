@@ -100,6 +100,26 @@ export default function StatsAndTestimonials() {
     },
   ];
 
+   {/* Function to adjust testimonials mobile and desktop view */}
+  function useWindowWidth() {
+    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+
+    useEffect(() => {
+      const handleResize = () => setWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+  
+    return width;
+  };
+
+  const width = useWindowWidth();
+  const isMobile = width < 768;
+  const visibleTestimonials = testimonials.slice(
+    activeTestimonial,
+    activeTestimonial + (isMobile ? 1 : 2)
+  );
+
   // Function to go to the next testimonial
   const nextTestimonial = () => {
     setActiveTestimonial((prev) =>
@@ -292,7 +312,7 @@ export default function StatsAndTestimonials() {
 
           {/* Carousel Content */}
           <div className="flex flex-col mx-10 md:flex-row gap-6 md:gap-6 justify-center">
-            {testimonials.slice(activeTestimonial, activeTestimonial + 2).map((testimonial, index) => (
+            {visibleTestimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.id}
                 className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-20 md:mt-0 pt-16 pb-6 px-6 shadow-lg"
@@ -321,7 +341,7 @@ export default function StatsAndTestimonials() {
 
                 {/* Testimonial content */}
                 <div className="flex flex-col text-center text-gray-700">
-                  <p className="mt-4 mb-4 text-left">{testimonial.content}</p>
+                  <p className="mt-4 mb-4 line-clamp-5 text-left">{testimonial.content}</p>
                   <p className="text-lg text-left font-semibold text-gray-800">{testimonial.name}</p>
                   <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
                 </div>
@@ -339,7 +359,7 @@ export default function StatsAndTestimonials() {
         </div>
 
         {/* Carousel Indicators */}
-        <div className="flex justify-center space-x-2 mt-2">
+        <div className="flex justify-center space-x-2 mt-2 mb-4">
           {testimonials.slice(0, testimonials.length - 2).map((_, index) => (
             <motion.button
               key={index}

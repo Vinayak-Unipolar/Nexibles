@@ -16,7 +16,7 @@ const AllCategoryCards = ({ categoryData }) => {
 
   return (
     <div className="h-auto bg-white">
-   
+
       {/* All Categories title */}
       <div className="px-4 md:px-64 mb-10">
         <p className="text-center text-[30px] md:text-[40px] font-semibold">
@@ -25,17 +25,17 @@ const AllCategoryCards = ({ categoryData }) => {
       </div>
 
       {/* Existing category cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 px-4 md:px-40">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 px-4 md:px-20">
         {categoryData.map((category) => (
           <div key={category.id} className="mt-4 flex flex-col items-center">
             <div
-              className="relative rounded-full overflow-hidden transition-all duration-300 border border-gray-300 shadow-md hover:shadow-lg hover:-translate-y-1 w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52"
+              className="relative rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-72"
             >
               <Link href={`/category/${category.cat_url}`} passHref>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`}
                   alt={category.name}
-                  className="object-contain p-2 sm:p-3 md:p-4 transition-transform duration-300 hover:scale-105"
+                  className="object-contain transition-transform duration-300 hover:scale-105"
                   layout="fill"
                   objectFit="contain"
                 />

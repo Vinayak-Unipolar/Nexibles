@@ -179,7 +179,7 @@ const HeaderSection = () => {
                         >
                           ENDLESS POUCHES
                         </h2>
-                        <h1 className="text-6xl md:text-[8vw] font-extrabold tracking-wider text-center font-[1000] italic">
+                        <h1 className="text-6xl md:text-[8vw]  tracking-wider text-center font-[1000] italic">
                           ENDLESS POSSIBILITIES
                         </h1>
                         <div className="mt-8 pointer-events-auto">

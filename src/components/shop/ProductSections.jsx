@@ -30,7 +30,7 @@ const ProductSections = () => {
             layout
             className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[60%] md:left-[57%] border-t-2 w-[300px]"
           >
-            <h2 className="text-xl md:text-4xl font-semibold pr-2">EXPLORE</h2>
+            <h2 className="text-xl md:text-4xl font-light pr-2">EXPLORE</h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[300px]">NEXICLASSIC</h1>
           </motion.div>
         </Link>
@@ -51,7 +51,7 @@ const ProductSections = () => {
             layout
             className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[15%] left-[3%] right-[35%] md:top-[20%] md:left-[5%] md:right-[35%]"
           >
-            <h2 className="text-xl md:text-4xl font-semibold pr-4 border-t-2 w-[80%] md:w-[350px]">MAKE YOUR OWN</h2>
+            <h2 className="text-xl md:text-4xl font-light pr-4 border-t-2 w-[80%] md:w-[350px]">MAKE YOUR OWN</h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[350px]">POUCH</h1>
           </motion.div>
         </Link>

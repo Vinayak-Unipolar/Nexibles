@@ -198,12 +198,17 @@ export default function NexiblesInstagramSection() {
         variants={marqueeVariants}
       >
         <motion.div
+<<<<<<< HEAD
           className="flex items-center space-x-8"
           animate={isInView ? { x: ["0%", "-50%"] } : { x: "0%" }}
+=======
+          className="flex items-center space-x-8 min-w-max"
+          animate={{ x: ["0%", "-70%"] }}
+>>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
           transition={{
             repeat: Infinity,
             repeatType: "loop",
-            duration: 20,
+            duration: 30,
             ease: "linear",
           }}
         >

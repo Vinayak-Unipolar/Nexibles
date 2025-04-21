@@ -100,6 +100,26 @@ export default function StatsAndTestimonials() {
     },
   ];
 
+   {/* Function to adjust testimonials mobile and desktop view */}
+  function useWindowWidth() {
+    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+
+    useEffect(() => {
+      const handleResize = () => setWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+  
+    return width;
+  };
+
+  const width = useWindowWidth();
+  const isMobile = width < 768;
+  const visibleTestimonials = testimonials.slice(
+    activeTestimonial,
+    activeTestimonial + (isMobile ? 1 : 2)
+  );
+
   // Function to go to the next testimonial
   const nextTestimonial = () => {
     setActiveTestimonial((prev) =>
@@ -228,12 +248,26 @@ export default function StatsAndTestimonials() {
       </div>
 
       {/* ===================== TESTIMONIALS SECTION WITH CAROUSEL ===================== */}
+<<<<<<< HEAD
       <div ref={testimonialsRef} className="w-full bg-[#ffd13e] py-12 px-4 md:px-8">
         <motion.h2
           className="text-2xl md:text-3xl font-bold text-center text-black mb-24"
           variants={titleVariants}
           initial="hidden"
           animate={isTestimonialsInView ? "visible" : "hidden"}
+=======
+      <motion.div
+        className="w-full bg-[#ffd13e] md:py-12  px-4 md:px-8"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <motion.h2
+          className="text-2xl md:text-3xl font-bold text-center text-black mb-12 mt-6 md:mt-0"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+>>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
         >
           What People Are Saying
         </motion.h2>
@@ -292,7 +326,7 @@ export default function StatsAndTestimonials() {
 
           {/* Carousel Content */}
           <div className="flex flex-col mx-10 md:flex-row gap-6 md:gap-6 justify-center">
-            {testimonials.slice(activeTestimonial, activeTestimonial + 2).map((testimonial, index) => (
+            {visibleTestimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.id}
                 className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-20 md:mt-0 pt-16 pb-6 px-6 shadow-lg"
@@ -321,7 +355,7 @@ export default function StatsAndTestimonials() {
 
                 {/* Testimonial content */}
                 <div className="flex flex-col text-center text-gray-700">
-                  <p className="mt-4 mb-4 text-left">{testimonial.content}</p>
+                  <p className="mt-4 mb-4 line-clamp-5 text-left">{testimonial.content}</p>
                   <p className="text-lg text-left font-semibold text-gray-800">{testimonial.name}</p>
                   <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
                 </div>
@@ -330,7 +364,11 @@ export default function StatsAndTestimonials() {
                 <div className="absolute -bottom-[45px] right-4 w-20 h-20">
                   <Image src={doublequotes} alt="quotes" width={70} height={70} />
                 </div>
+<<<<<<< HEAD
                 <div className="absolute -top-9 left-7 w-20 h-20">
+=======
+                <div className="absolute  invisible md:visible -top-9 left-7  w-20 h-20">
+>>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
                   <Image src={flip} alt="quotes" width={70} height={70} />
                 </div>
               </motion.div>
@@ -339,7 +377,7 @@ export default function StatsAndTestimonials() {
         </div>
 
         {/* Carousel Indicators */}
-        <div className="flex justify-center space-x-2 mt-2">
+        <div className="flex justify-center space-x-2 mt-2 mb-4">
           {testimonials.slice(0, testimonials.length - 2).map((_, index) => (
             <motion.button
               key={index}

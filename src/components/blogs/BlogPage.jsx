@@ -94,7 +94,7 @@ function BlogPage() {
                 <p className="mb-4">
                   Explore the latest trends and insights in the {featuredIndustry.name.toLowerCase()} industry
                 </p>
-                <Link href={`/blog/${featuredIndustry.name.toLowerCase()}`}>
+                <Link href={`/industries/${featuredIndustry.name.toLowerCase().replace(/\s+/g, '-')}`}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -131,7 +131,7 @@ function BlogPage() {
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">{industry.name}</h3>
                 <h3 className="text-xs text-gray-900 mb-1">{industry.description}</h3>
-                <Link href={`/blog/${industry.name.toLowerCase()}`} className="text-gray-500 text-xs mb-3">
+                <Link href={`/industries/${industry.name.toLowerCase().replace(/\s+/g, '-')}`} className="text-gray-500 text-xs mb-3">
                   Read more →
                 </Link>
               </div>

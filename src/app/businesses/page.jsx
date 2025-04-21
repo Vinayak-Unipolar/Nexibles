@@ -87,7 +87,7 @@ function Page() {
             Explore Industries
           </h2>
           <motion.div
-            className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
+            className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 p-2"
             initial="hidden"
             animate="visible"
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
@@ -110,7 +110,9 @@ function Page() {
                   </div>
                   <div className="p-4">
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">{industry.name}</h3>
-                    <p className="text-xs sm:text-sm text-gray-700 mb-3 line-clamp-3">{industry.description}</p>
+                    <p className="text-xs sm:text-sm text-gray-700 mb-3 line-clamp-2">
+                      {industry.description}
+                    </p>
                     <span className="text-blue-600 text-sm font-semibold">
                       Read more →
                     </span>

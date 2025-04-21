@@ -67,7 +67,7 @@ const Footer = () => {
 
   return (
     <footer>
-      <div className="h-auto bg-gray-500">
+      <div className="h-auto bg-[#103b60]">
         <div className="px-6 py-14 md:px-16 xl:px-24">
           <div className="flex flex-col md:flex-row md:justify-around">
             <div className="mb-8 md:mb-0">
@@ -157,10 +157,10 @@ const Footer = () => {
                     className="px-2 md:px-2 py-2 md:py-2 border-0 focus:outline-none text-black text-sm md:text-base flex-grow"
                     required
                   />
-                  <button 
-                    className="bg-[#ffd13e] text-white mr-1 rounded-md px-2 md:px-6 py-2 hover:bg-red-900 focus:outline-none text-sm md:text-base"
+                  <button
+                    className="bg-[#ffd13e] text-white mr-1 rounded-md px-2 md:px-6 py-2 hover:bg-[#fffc39] focus:outline-none text-sm md:text-base"
                   >
-                    <BsSendFill />
+                    <BsSendFill style={{ color: 'black' }} />
                   </button>
                 </form>
                 {message && (
@@ -174,20 +174,20 @@ const Footer = () => {
                   FOLLOW US
                 </h3>
                 <div className="flex gap-x-7">
-                  <a 
-                    href="https://wa.me/919821045101" 
+                  <a
+                    href="https://wa.me/919821045101"
                     className="hover:text-gray-300"
                   >
                     <FaWhatsapp size={25} />
                   </a>
-                  <a 
-                    href="tel:+919821045101" 
+                  <a
+                    href="tel:+919821045101"
                     className="hover:text-gray-300"
                   >
                     <IoCallOutline size={25} />
                   </a>
-                  <a 
-                    href="mailto:sales@artnext.in" 
+                  <a
+                    href="mailto:sales@artnext.in"
                     className="hover:text-gray-300"
                   >
                     <FiMail size={25} />

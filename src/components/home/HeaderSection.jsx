@@ -162,7 +162,7 @@ const HeaderSection = () => {
                 className="absolute inset-0 w-full h-full"
               >
                 <Link href="/all-category">
-                  <div className="relative w-full h-full">
+                  <div className="relative md:mt-[8vh] mt-[6vh] h-[30vh] md:w-full md:h-full">
                     <MediaComponent
                       media={slide.bgMedia}
                       alt={slide.title}
@@ -172,20 +172,20 @@ const HeaderSection = () => {
 
                     {/* Text Overlay - Only shown on the first slide */}
                     {index === 0 && (
-                      <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none mt-20">
+                      <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]">
                         <h2
-                          className="text-5xl md:text-[6vw] font-bold tracking-wider text-center mb-4 md:mb-6"
+                          className="text-[5vw] md:text-[6vw] font-bold tracking-wider text-center mb-2 md:mb-0"
                           style={outlineTextStyle}
                         >
                           ENDLESS POUCHES
                         </h2>
-                        <h1 className="text-6xl md:text-[8vw] font-extrabold tracking-wider text-center font-[1000] italic">
+                        <h1 className="text-[7vw] md:text-[7.6vw] font-extrabold tracking-wider text-center font-[1000] italic">
                           ENDLESS POSSIBILITIES
                         </h1>
-                        <div className="mt-8 pointer-events-auto">
+                        <div className="md:mt-4 mt-4 pointer-events-auto">
                           <a
                             href="/shop"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-lg transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
                           >
                             Explore Pouches
                           </a>
@@ -193,11 +193,11 @@ const HeaderSection = () => {
                       </div>
                     )}
                     {index === 1 && (
-                      <div className="absolute inset-0 flex flex-col top-[52%] left-[52%] text-white z-10 pointer-events-none mt-20">
+                      <div className="absolute inset-0 flex flex-col top-[26%] left-[50%] md:top-[55%] md:left-[52%] text-white z-10 pointer-events-none mt-20">
                         <div className="mt-8 pointer-events-auto">
                           <a
                             href="/all-category"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-xl transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
                           >
                             Explore Industries
                           </a>

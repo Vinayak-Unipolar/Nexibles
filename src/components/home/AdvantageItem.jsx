@@ -1,29 +1,36 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const AdvantageCard = ({ videoSrc, title, description }) => {
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -30 }
+};
+
+const AdvantageCard = ({ videoSrc, title, description, onVideoEnd }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
       transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="flex flex-col lg:flex-row items-center bg-white shadow-lg rounded-2xl overflow-hidden mb-12"
+      className="flex flex-col lg:flex-row items-center bg-white shadow-lg rounded-2xl overflow-hidden w-full  mb-1"
     >
       {/* Video Left */}
-      <div className="w-full lg:w-1/2 h-[300px] lg:h-auto bg-blue-900 flex items-center justify-center">
+      <div className="w-full  h-[300px] md:h-[500px] bg-blue-900 flex items-center justify-center">
         <video
           src={videoSrc}
           className="w-full h-full object-cover"
           autoPlay
-          loop
           muted
           playsInline
+          onEnded={onVideoEnd}
         />
       </div>
 
       {/* Text Right */}
-      <div className="w-full lg:w-1/2 p-8 text-center lg:text-left">
+      <div className="w-full p-8 text-center ">
         <h2 className="text-4xl font-extrabold text-blue-900 mb-4">{title}</h2>
         <p className="text-blue-900 font-semibold text-base leading-relaxed">
           {description}
@@ -34,18 +41,30 @@ const AdvantageCard = ({ videoSrc, title, description }) => {
 };
 
 const Advantages = () => {
+  const [currentCard, setCurrentCard] = useState(1);
+
   return (
-    <div className="bg-white py-16 px-4 sm:px-8">
-      <AdvantageCard
-        videoSrc="/videos/sample1.mp4" // <- Replace with your actual path
-        title="Low MOQ"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat..."
-      />
-      <AdvantageCard
-        videoSrc="/videos/sample2.mp4" // <- Replace with your actual path
-        title="Fast Production"
-        description="Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat..."
-      />
+    <div className="bg-white min-h-screen flex items-center justify-center">
+      <AnimatePresence mode="wait">
+        {currentCard === 1 && (
+          <AdvantageCard
+            key="card1"
+            videoSrc="/home/packets.mp4" // replace with your file
+            title="Low MOQ"
+            description="We support small businesses with flexible order quantities and scalable packaging."
+            onVideoEnd={() => setCurrentCard(2)}
+          />
+        )}
+        {currentCard === 2 && (
+          <AdvantageCard
+            key="card2"
+            videoSrc="/home/packets.mp4" // replace with your file
+            title="Fast Production"
+            description="Quick turnaround from design to delivery ensures your product gets to market faster."
+            onVideoEnd={() => console.log('All cards finished')}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

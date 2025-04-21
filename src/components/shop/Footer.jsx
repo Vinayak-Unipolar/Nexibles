@@ -158,7 +158,7 @@ const Footer = () => {
                     required
                   />
                   <button 
-                    className="bg-red-1 text-white mr-1 rounded-md px-2 md:px-6 py-2 hover:bg-red-900 focus:outline-none text-sm md:text-base"
+                    className="bg-[#ffd13e] text-white mr-1 rounded-md px-2 md:px-6 py-2 hover:bg-red-900 focus:outline-none text-sm md:text-base"
                   >
                     <BsSendFill />
                   </button>

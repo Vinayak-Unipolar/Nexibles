@@ -200,16 +200,11 @@ const HeaderSection = () => {
                           variants={textVariants}
                         >
                           ENDLESS POUCHES
-<<<<<<< HEAD
-                        </h2>
-                        <h1 className="text-6xl md:text-[8vw]  tracking-wider text-center font-[1000] italic">
-=======
                         </motion.h2>
                         <motion.h1
-                          className="text-[7vw] md:text-[7.6vw] font-extrabold tracking-wider text-center font-[1000] italic"
+                          className="text-[7vw] md:text-[7.6vw] tracking-wider text-center font-[1000] italic"
                           variants={textVariants}
                         >
->>>>>>> 327d8f317ef8aee38da2d356255ec2ed0fc2fb62
                           ENDLESS POSSIBILITIES
                         </motion.h1>
                         <motion.div

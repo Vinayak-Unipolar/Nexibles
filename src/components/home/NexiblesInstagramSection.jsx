@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 // Import brand logos
 import BigBasket from "../../../public/brands/bigbasket.png";
@@ -22,13 +22,12 @@ import Tata from "../../../public/brands/tata.png";
 import Yogabar from "../../../public/brands/yogabar.png";
 import Zama from "../../../public/brands/zama.png";
 
-// Ensure images are placed in the `public` directory:
-// - Instagram posts: e.g., `public/insta-post1.jpg`
-// - Brand logos: e.g., `public/brands/bigbasket.png`
-
 export default function NexiblesInstagramSection() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+
   // Instagram feed placeholders
-  const [instaFeed, setInstaFeed] = useState([
+  const [instaFeed] = useState([
     {
       image: "/insta-post1.jpg",
       link: "https://www.instagram.com/p/XXXXXXXX/",
@@ -47,7 +46,7 @@ export default function NexiblesInstagramSection() {
     },
   ]);
 
-  // Brand logos from your brands directory
+  // Brand logos
   const brandLogos = [
     { src: BigBasket, alt: "Big Basket" },
     { src: BlueTribe, alt: "Blue Tribe" },
@@ -68,46 +67,67 @@ export default function NexiblesInstagramSection() {
     { src: Zama, alt: "Zama" },
   ];
 
-  /**
-   * If you want to fetch your own Instagram feed dynamically,
-   * you could do that in a useEffect here, once you have an access token.
-   *
-   * Example (pseudo-code):
-   *
-   * useEffect(() => {
-   *   async function fetchInstagram() {
-   *     const res = await fetch("/api/instagram-feed");
-   *     const data = await res.json();
-   *     setInstaFeed(data.posts); // or however your data is shaped
-   *   }
-   *   fetchInstagram();
-   * }, []);
-   */
+  // Animation variants
+  const titleVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const subtitleVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } },
+  };
+
+  const postVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: i * 0.1 + 0.4, ease: "easeOut" },
+    }),
+  };
+
+  const marqueeVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.6, delay: 0.8, ease: "easeOut" },
+    },
+  };
 
   return (
-    <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
+    <div ref={sectionRef} className="bg-white py-8 px-4 sm:px-6 lg:px-8">
       {/* Section Title & Subtitle */}
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-2">Nexibles On Instagram</h2>
-        <p className="text-gray-600 mb-8">#Nexibles</p>
+        <motion.h2
+          className="text-3xl sm:text-4xl font-bold mb-2"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={titleVariants}
+        >
+          Nexibles On Instagram
+        </motion.h2>
+        <motion.p
+          className="text-gray-600 mb-8"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={subtitleVariants}
+        >
+          #Nexibles
+        </motion.p>
       </div>
 
-      {/* Instagram Feed (4 items in a grid on desktop, fewer on smaller screens) */}
+      {/* Instagram Feed */}
       <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {instaFeed.map((post, idx) => (
-          <div
+          <motion.div
             key={idx}
-            className="
-              relative
-              overflow-hidden
-              rounded-lg
-              group
-              aspect-square
-              border
-              border-gray-200
-            "
+            className="relative overflow-hidden rounded-lg group aspect-square border border-gray-200"
+            custom={idx}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={postVariants}
           >
-            {/* Instagram Post Image */}
             <Image
               src={post.image}
               alt="Instagram Post"
@@ -115,27 +135,13 @@ export default function NexiblesInstagramSection() {
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 25vw"
               className="object-cover"
             />
-
-            {/* Hover Overlay with Insta Icon */}
-            <div
-              className="
-                absolute inset-0
-                bg-black/50
-                flex items-center justify-center
-                opacity-0
-                group-hover:opacity-100
-                transition-opacity
-                duration-300
-              "
-            >
-              {/* Link to the actual Instagram post or reel */}
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <a
                 href={post.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white text-3xl flex items-center justify-center"
               >
-                {/* Instagram SVG Icon */}
                 <svg
                   fill="currentColor"
                   viewBox="0 0 448 512"
@@ -180,15 +186,20 @@ export default function NexiblesInstagramSection() {
                 </svg>
               </a>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {/* Marquee of brand logos */}
-      <div className="max-w-5xl mx-auto relative overflow-hidden">
+      <motion.div
+        className="max-w-5xl mx-auto relative overflow-hidden"
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={marqueeVariants}
+      >
         <motion.div
           className="flex items-center space-x-8"
-          animate={{ x: ["0%", "-50%"] }}
+          animate={isInView ? { x: ["0%", "-50%"] } : { x: "0%" }}
           transition={{
             repeat: Infinity,
             repeatType: "loop",
@@ -210,8 +221,6 @@ export default function NexiblesInstagramSection() {
               />
             </div>
           ))}
-
-          {/* Duplicate logos for seamless looping */}
           {brandLogos.map((brand, idx) => (
             <div
               key={`dup-${idx}`}
@@ -227,7 +236,7 @@ export default function NexiblesInstagramSection() {
             </div>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }

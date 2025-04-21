@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
 
 const getMediaType = (fileName) => {
   const extension = fileName?.split(".").pop().toLowerCase();
@@ -47,7 +47,7 @@ const MediaComponent = ({ media, alt, isActive, onVideoEnd }) => {
         ref={videoRef}
         src={media}
         autoPlay
-        loop={false} // Disable loop to allow 'ended' event
+        loop={false}
         muted
         playsInline
         className="w-full h-full object-cover"
@@ -72,6 +72,8 @@ const HeaderSection = () => {
   const [direction, setDirection] = useState(1);
   const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_CDN_URL;
   const timerRef = useRef(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   useEffect(() => {
     const fetchBanners = async () => {
@@ -122,6 +124,21 @@ const HeaderSection = () => {
     exit: (dir) => ({ x: dir > 0 ? "-100%" : "100%" }),
   };
 
+  const textVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } },
+  };
+
+  const arrowVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.4, ease: "easeOut" } },
+  };
+
   const handlePrev = () => {
     clearInterval(timerRef.current);
     setDirection(-1);
@@ -134,7 +151,6 @@ const HeaderSection = () => {
     setCurrentIndex((prev) => (prev + 1) % slides.length);
   };
 
-  // Custom CSS for hollow/outlined text effect with thinner border and slight italic
   const outlineTextStyle = {
     color: "transparent",
     WebkitTextStroke: "0.5px white",
@@ -144,7 +160,7 @@ const HeaderSection = () => {
   };
 
   return (
-    <div className="relative w-full h-[50vh] md:h-[84vh] overflow-hidden">
+    <div ref={sectionRef} className="relative w-full h-[50vh] md:h-[84vh] overflow-hidden">
       <AnimatePresence initial={false} custom={direction}>
         {slides.map(
           (slide, index) =>
@@ -172,37 +188,57 @@ const HeaderSection = () => {
 
                     {/* Text Overlay - Only shown on the first slide */}
                     {index === 0 && (
-                      <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]">
-                        <h2
+                      <motion.div
+                        className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]"
+                        initial="hidden"
+                        animate={isInView ? "visible" : "hidden"}
+                        variants={textVariants}
+                      >
+                        <motion.h2
                           className="text-[5vw] md:text-[6vw] font-bold tracking-wider text-center mb-2 md:mb-0"
                           style={outlineTextStyle}
+                          variants={textVariants}
                         >
                           ENDLESS POUCHES
-                        </h2>
-                        <h1 className="text-[7vw] md:text-[7.6vw] font-extrabold tracking-wider text-center font-[1000] italic">
+                        </motion.h2>
+                        <motion.h1
+                          className="text-[7vw] md:text-[7.6vw] font-extrabold tracking-wider text-center font-[1000] italic"
+                          variants={textVariants}
+                        >
                           ENDLESS POSSIBILITIES
-                        </h1>
-                        <div className="md:mt-4 mt-4 pointer-events-auto">
+                        </motion.h1>
+                        <motion.div
+                          className="md:mt-4 mt-4 pointer-events-auto"
+                          variants={buttonVariants}
+                        >
                           <a
                             href="/shop"
                             className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
                           >
                             Explore Pouches
                           </a>
-                        </div>
-                      </div>
+                        </motion.div>
+                      </motion.div>
                     )}
                     {index === 1 && (
-                      <div className="absolute inset-0 flex flex-col top-[26%] left-[50%] md:top-[55%] md:left-[52%] text-white z-10 pointer-events-none mt-20">
-                        <div className="mt-8 pointer-events-auto">
+                      <motion.div
+                        className="absolute inset-0 flex flex-col top-[26%] left-[50%] md:top-[55%] md:left-[52%] text-white z-10 pointer-events-none mt-20"
+                        initial="hidden"
+                        animate={isInView ? "visible" : "hidden"}
+                        variants={textVariants}
+                      >
+                        <motion.div
+                          className="mt-8 pointer-events-auto"
+                          variants={buttonVariants}
+                        >
                           <a
                             href="/all-category"
                             className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
                           >
                             Explore Industries
                           </a>
-                        </div>
-                      </div>
+                        </motion.div>
+                      </motion.div>
                     )}
                   </div>
                 </Link>
@@ -211,10 +247,13 @@ const HeaderSection = () => {
         )}
       </AnimatePresence>
 
-      <button
+      <motion.button
         onClick={handlePrev}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Previous slide"
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={arrowVariants}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -228,12 +267,15 @@ const HeaderSection = () => {
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>
-      </button>
+      </motion.button>
 
-      <button
+      <motion.button
         onClick={handleNext}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Next slide"
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={arrowVariants}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -247,7 +289,7 @@ const HeaderSection = () => {
         >
           <polyline points="9 18 15 12 9 6" />
         </svg>
-      </button>
+      </motion.button>
     </div>
   );
 };

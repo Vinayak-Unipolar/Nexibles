@@ -84,8 +84,8 @@ const Industries = () => {
   const translateX = -(cardWidth + gap) * currentIndex;
 
   return (
-    <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto text-center mt-4 pb font-bold text-4xl text-gray-800">
+    <div className="bg-white py-8 px-4 sm:px-6 lg:px-8 mt-[-16vh] md:mt-0">
+      <div className="mx-auto text-center mt-4 pb font-bold text-3xl md:text-4xl text-gray-800">
         Explore Industries
       </div>
       <div

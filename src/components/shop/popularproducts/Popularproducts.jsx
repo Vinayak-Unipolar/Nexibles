@@ -57,7 +57,7 @@ export default function PopularProducts() {
     <div className="bg-white py-4 md:py-8">
       <div className="container mx-auto px-4">
         <motion.h2
-          className="text-4xl font-bold text-center text-[#333] mb-8"
+          className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8"
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}

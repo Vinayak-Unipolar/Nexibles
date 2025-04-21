@@ -11,6 +11,7 @@ import {
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useAuth } from "@/utils/authContext";
 import { useSelector } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,12 +50,13 @@ const Navbar = () => {
   const handleToggleOpen = () => setShowPersonDropdown(!showPersonDropdown);
 
   const navItems = [
+    { name: "Home", path: "/" },
     { name: "Pouches", path: "/all-category" },
     { name: "Industries", path: "/businesses" },
-    // { name: "Agencies", path: "/agencies" },
     { name: "Shop", path: "/shop" },
     { name: "Request Quote", path: "/request-quote" },
-    
+    { name: "About Nexibles", path: "/about" },
+    { name: "Contact Us", path: "/contact" },
   ];
 
   return (
@@ -79,7 +81,7 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
+            {navItems.slice(1, 5).map((item) => (
               <div key={item.name} className="relative">
                 <Link
                   href={item.path}
@@ -166,36 +168,99 @@ const Navbar = () => {
               )}
             </div>
 
-            <button className="md:hidden text-gray-900 z-50" onClick={toggleMenu}>
-              {isMenuOpen ? <IoCloseOutline size={24} /> : <IoMenuOutline size={24} />}
-            </button>
+            <motion.button
+              className="md:hidden text-gray-900 z-50"
+              onClick={toggleMenu}
+              whileTap={{ scale: 0.95 }}
+            >
+              {isMenuOpen ? (
+                <motion.div
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <IoCloseOutline size={24} />
+                </motion.div>
+              ) : (
+                <IoMenuOutline size={24} />
+              )}
+            </motion.button>
           </div>
         </div>
       </nav>
 
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-white z-40">
-          <div className="flex flex-col h-full p-6">
-            <ul className="text-black text-2xl mt-12 space-y-6 text-center">
-              {[
-                { name: "Home", path: "/" },
-                { name: "Pouches", path: "/all-category" },
-                { name: "Businesses", path: "/businesses" },
-                // { name: "Agencies", path: "/agencies" },
-                { name: "Shop", path: "/shop" },
-                { name: "Request Quote", path: "/request-quote" },
-                
-              ].map((item) => (
-                <li key={item.name}>
-                  <Link href={item.path} onClick={toggleMenu}>
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 bg-white z-40 flex flex-col"
+            initial={{ y: "-100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+          >
+            <div className="flex justify-between items-center px-6 py-4 border-b shadow-sm">
+              <div className="text-black font-bold text-lg">
+                NE<span className="text-red-600">•</span>IBLES
+              </div>
+              <div className="flex items-center space-x-4">
+                <Link href="/my-cart">
+                  <IoCartOutline size={24} />
+                </Link>
+                <div>
+                  <IoPersonOutline size={24} />
+                </div>
+                <div className="flex items-center">
+                  ENGLISH <RiArrowDropDownLine size={24} />
+                </div>
+                <motion.button
+                  onClick={toggleMenu}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <IoCloseOutline size={24} />
+                  </motion.div>
+                </motion.button>
+              </div>
+            </div>
+            
+            <div className="flex-1 flex flex-col px-6 py-4">
+              <ul className="text-black space-y-5">
+                {navItems.map((item, index) => (
+                  <li key={item.name}>
+                    <Link
+                      href={item.path}
+                      onClick={toggleMenu}
+                      className="block py-2 text-lg font-medium"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="bg-red-500 text-white p-6 space-y-4">
+              <div>
+                <h3 className="font-bold text-lg mb-2">Meet With US</h3>
+                <p>Art NEXT Pvt Ltd,</p>
+                <p>A/463, Ground Floor,</p>
+                <p>TTC Industrial Area,</p>
+                <p>Mahape, MIDC, Navi Mumbai,</p>
+                <p>Thane - 400710, MH, India</p>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2">Call US</h3>
+                <p>+91 9821045101</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -14,11 +14,12 @@ const ProductSections = () => {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:h-[500px]">
 
-        {/* 1 */}
+        {/* Stock Products Section */}
         <Link href="/all-category" className="relative overflow-hidden group">
           <img
             src={ProductStock.src}
             alt="Stock Products"
+            loading="lazy"
             className="w-full h-full object-contain"
           />
           <motion.div
@@ -26,20 +27,20 @@ const ProductSections = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeSlide}
-            className="absolute inset-0 bg-black bg-opacity-0 flex flex-col text-white space-y-2 top-[52%] left-[49%]"
+            layout
+            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[60%] md:left-[57%] border-t-2 w-[300px]"
           >
-            <h2 className="text-2xl md:text-4xl font-semibold inline-block pr-2">
-              EXPLORE
-            </h2>
-            <h1 className="text-3xl md:text-5xl font-bold">NEXICLASSIC</h1>
+            <h2 className="text-xl md:text-4xl font-semibold pr-2">EXPLORE</h2>
+            <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[300px]">NEXICLASSIC</h1>
           </motion.div>
         </Link>
 
-        {/* 2 */}
+        {/* Customization Tool Section */}
         <Link href="/configuration-tool" className="relative overflow-hidden group">
           <img
             src={Customization.src}
             alt="Customization Tool"
+            loading="lazy"
             className="w-full h-full object-contain"
           />
           <motion.div
@@ -47,12 +48,11 @@ const ProductSections = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeSlide}
-            className="absolute inset-0 bg-black bg-opacity-0 flex flex-col top-[30%] right-[35%] left-[7%] text-white space-y-2"
+            layout
+            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[15%] left-[3%] right-[35%] md:top-[20%] md:left-[5%] md:right-[35%]"
           >
-            <h2 className="text-2xl md:text-4xl font-semibold inline-block pr-4">
-              MAKE YOUR OWN
-            </h2>
-            <h1 className="text-3xl md:text-5xl font-bold">POUCH</h1>
+            <h2 className="text-xl md:text-4xl font-semibold pr-4 border-t-2 w-[80%] md:w-[350px]">MAKE YOUR OWN</h2>
+            <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[350px]">POUCH</h1>
           </motion.div>
         </Link>
 

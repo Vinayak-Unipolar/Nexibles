@@ -78,8 +78,12 @@ export default function Configuration() {
         <title>Custom Pouches | Configuration Tool</title>
         <meta name="description" content="Configure your custom pouches with our interactive tool" />
       </Head>
- 
+      {/* <div className='text-center'>
+      <h1 className="text-4xl font-bold text-gray-800 mb-2">Pouch Configuration Tool</h1>
+      <p className="text-lg text-gray-600">Design your perfect packaging solution</p>
+      </div> */}
       <div className="flex flex-col lg:flex-row justify-center mx-auto gap-8">
+        
         {/* Main Configuration Content */}
         <motion.div
           className="lg:w-2/3"
@@ -87,6 +91,7 @@ export default function Configuration() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
+          
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

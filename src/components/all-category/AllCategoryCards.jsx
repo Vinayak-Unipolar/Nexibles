@@ -16,66 +16,7 @@ const AllCategoryCards = ({ categoryData }) => {
 
   return (
     <div className="h-auto bg-white">
-      {/* New 3-box grid section */}
-      <div className="mb-10 px-4 md:px-40 xl:px-64">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-          {/* Left box (full height of the row) - First category */}
-          <div className="bg-gray-100 rounded-lg pb-6 text-center relative h-full">
-            <Link href={`/category/${topThreeCategories[0].cat_url}`} passHref>
-              <div className="relative w-full h-72 md:h-full">
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_CDN_URL}/${topThreeCategories[0].bg_Img}`}
-                  alt={topThreeCategories[0].name}
-                  className="rounded-lg object-contain"
-                  layout="fill"
-                  objectFit="contain"
-                />
-              </div>
-            </Link>
-            <p className="text-gray-900 font-semibold absolute bottom-4 left-1/2 transform -translate-x-1/2 w-full">
-              {topThreeCategories[0].name}
-            </p>
-          </div>
-          {/* Right side (two boxes split vertically) */}
-          <div className="grid grid-cols-1 md:grid--2 gap-6">
-            {/* Second category */}
-            <div className="bg-gray-100 rounded-lg pb-4 text-center relative">
-              <Link href={`/category/${topThreeCategories[1].cat_url}`} passHref>
-                <div className="relative w-full h-[200px]">
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/${topThreeCategories[1].bg_Img}`}
-                    alt={topThreeCategories[1].name}
-                    className="rounded-lg object-contain"
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
-              </Link>
-              <p className="text-gray-900 font-semibold mt-2">
-                {topThreeCategories[1].name}
-              </p>
-            </div>
-            {/* Third category */}
-            <div className="bg-gray-100 rounded-lg pb-4 text-center relative">
-              <Link href={`/category/${topThreeCategories[2].cat_url}`} passHref>
-                <div className="relative w-full h-[200px]">
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/${topThreeCategories[2].bg_Img}`}
-                    alt={topThreeCategories[2].name}
-                    className="rounded-lg object-contain"
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
-              </Link>
-              <p className="text-gray-900 font-semibold mt-2">
-                {topThreeCategories[2].name}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+   
       {/* All Categories title */}
       <div className="px-4 md:px-64 mb-10">
         <p className="text-center text-[30px] md:text-[40px] font-semibold">

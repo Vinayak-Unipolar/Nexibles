@@ -70,13 +70,23 @@ function Page() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="relative overflow-hidden shadow-lg h-[400px]">
+              <div className="relative overflow-hidden  h-[400px]">
                 <div className="absolute inset-0 "></div>
                 <img
                   src={categoryimg.src}
                   alt={featuredIndustry.name}
                   className="w-full h-full object-cover"
                 />
+                 <div className="absolute bottom-[10%] left-[2%] z-10">
+              <div className="border-b border-t border-gray-800 py-2 px-4">
+                <h1 className="text-4xl md:text-5xl font-medium text-[#231f20]">
+                  TYPES OF
+                </h1>
+                <h1 className="text-5xl md:text-6xl font-[1000] text-[#231f20] mt-2">
+                  POUCHES
+                </h1>
+              </div>
+            </div>
               </div>
             </motion.div>
           )}
@@ -93,7 +103,7 @@ function Page() {
             {restIndustries.map((industry) => (
               <Link
                 key={industry.id}
-                href={`/blog/${industry.name.toLowerCase()}`}
+                href={`/industries/${industry.name.toLowerCase()}`}
               >
                 <motion.div
                   variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.5 } } }}

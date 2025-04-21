@@ -50,7 +50,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Pouches", path: "/all-category" },
-    { name: "Businesses", path: "/businesses" },
+    { name: "Industries", path: "/businesses" },
     // { name: "Agencies", path: "/agencies" },
     { name: "Shop", path: "/shop" },
     { name: "Request Quote", path: "/request-quote" },

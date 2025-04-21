@@ -187,12 +187,12 @@ export default function NexiblesInstagramSection() {
       {/* Marquee of brand logos */}
       <div className="max-w-5xl mx-auto relative overflow-hidden">
         <motion.div
-          className="flex items-center space-x-8"
-          animate={{ x: ["0%", "-50%"] }}
+          className="flex items-center space-x-8 min-w-max"
+          animate={{ x: ["0%", "-70%"] }}
           transition={{
             repeat: Infinity,
             repeatType: "loop",
-            duration: 20,
+            duration: 30,
             ease: "linear",
           }}
         >

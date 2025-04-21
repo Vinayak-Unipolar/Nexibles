@@ -1,28 +1,51 @@
 import React from 'react';
-import { FaTruck, FaLeaf, FaBox, FaShieldAlt, FaLayerGroup, FaBan, FaBarcode } from 'react-icons/fa';
-import { RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { motion } from 'framer-motion';
 
-const AdvantageItem = ({ icon, text }) => (
-  <div className="flex flex-col items-center">
-    {icon}
-    <p className="text-lg mt-2 text-center md:text-base sm:text-xs">{text}</p> {/* Decreased text size for phone view */}
-  </div>
-);
+const AdvantageCard = ({ videoSrc, title, description }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="flex flex-col lg:flex-row items-center bg-white shadow-lg rounded-2xl overflow-hidden mb-12"
+    >
+      {/* Video Left */}
+      <div className="w-full lg:w-1/2 h-[300px] lg:h-auto bg-blue-900 flex items-center justify-center">
+        <video
+          src={videoSrc}
+          className="w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      </div>
+
+      {/* Text Right */}
+      <div className="w-full lg:w-1/2 p-8 text-center lg:text-left">
+        <h2 className="text-4xl font-extrabold text-blue-900 mb-4">{title}</h2>
+        <p className="text-blue-900 font-semibold text-base leading-relaxed">
+          {description}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
 
 const Advantages = () => {
   return (
-    <div className="bg-white py-12 w-full">
-      <h2 className="md:text-4xl text-2xl font-bold text-center mb-8">Our advantages</h2>
-      <div className="container mx-auto grid grid-cols-2 gap-8 md:grid-cols-4 sm:grid-cols-1">
-        <AdvantageItem icon={<FaTruck size={26} className="md:size-14 sm:size-16" />} text="Speed to market" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<RiMoneyDollarCircleLine size={26} className="md:size-14 sm:size-16" />} text="No cylinder and plate cost" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<FaLeaf size={26} className="md:size-14 sm:size-16" />} text="Sustainable" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<FaBox size={26} className="md:size-14 sm:size-16" />} text="Low inventory" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<FaShieldAlt size={26} className="md:size-14 sm:size-16" />} text="Security printing" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<FaLayerGroup size={26} className="md:size-14 sm:size-16" />} text="Multiple SKUs" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<FaBan size={26} className="md:size-14 sm:size-16" />} text="No MOQ" /> {/* Adjusted icon size */}
-        <AdvantageItem icon={<FaBarcode size={26} className="md:size-14 sm:size-16" />} text="Variable data" /> {/* Adjusted icon size */}
-      </div>
+    <div className="bg-white py-16 px-4 sm:px-8">
+      <AdvantageCard
+        videoSrc="/videos/sample1.mp4" // <- Replace with your actual path
+        title="Low MOQ"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat..."
+      />
+      <AdvantageCard
+        videoSrc="/videos/sample2.mp4" // <- Replace with your actual path
+        title="Fast Production"
+        description="Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat..."
+      />
     </div>
   );
 };

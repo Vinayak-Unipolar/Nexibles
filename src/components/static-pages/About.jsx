@@ -10,7 +10,7 @@ const About = () => {
       <h3 className="text-xl sm:text-2xl md:text-3xl text-black font-extrabold text-center">
         {`Revolutionizing Flexible Packaging with Innovation`}</h3>
       <p className="text-black text-xs sm:text-sm md:text-base text-center mt-3 leading-relaxed">{`At Nexibles, we are redefining the future of flexible packaging with cutting-edge digital printing solutions. Under our`}<br />
-        {`brand "NEXt generation flexIBLES", we bring creativity, speed, and efficiency to packaging, eliminating traditional`}<br />
+        {`brand "NEXt generation flexIBLES", we bring creativity, speed, and ef ficiency to packaging, eliminating traditional`}<br />
         {`constraints like high MOQs and plate costs. `}<br />{` 
        With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink`}<br />
         {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br />

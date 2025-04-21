@@ -101,7 +101,7 @@ const Industries = () => {
         >
           {circularItems.map((category, index) => (
             <Link
-              href={`/blog/${category.name
+              href={`/industries/${category.name
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`}
               key={`${category.name}-${index}`}

@@ -19,7 +19,9 @@ const MediaComponent = ({ media, alt, isActive, onVideoEnd }) => {
     if (mediaType === "video" && videoRef.current) {
       if (isActive) {
         videoRef.current.currentTime = 0;
-        videoRef.current.play().catch((err) => console.warn("Error playing video:", err));
+        videoRef.current
+          .play()
+          .catch((err) => console.warn("Error playing video:", err));
       } else {
         videoRef.current.pause();
       }
@@ -131,7 +133,7 @@ const HeaderSection = () => {
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % slides.length);
   };
-  
+
   // Custom CSS for hollow/outlined text effect with thinner border and slight italic
   const outlineTextStyle = {
     color: "transparent",
@@ -144,69 +146,69 @@ const HeaderSection = () => {
   return (
     <div className="relative w-full h-[50vh] md:h-[84vh] overflow-hidden">
       <AnimatePresence initial={false} custom={direction}>
-        {slides.map((slide, index) => (
-          index === currentIndex && (
-            <motion.div
-              key={index}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ x: { type: "tween", ease: "easeInOut", duration: 0.5 } }}
-              className="absolute inset-0 w-full h-full"
-            >
-              <Link href={slide.link}>
-                <div className="relative w-full h-full">
-                  <MediaComponent
-                    media={slide.bgMedia}
-                    alt={slide.title}
-                    isActive={true}
-                    onVideoEnd={handleVideoEnd}
-                  />
-                  
-                  {/* Text Overlay - Only shown on the first slide */}
-                  {index === 0 && (
-                    <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none mt-20">
-                      <h2 
-                        className="text-5xl md:text-7xl font-bold tracking-wider text-center mb-4 md:mb-6"
-                        style={outlineTextStyle}
-                      >
-                        ENDLESS POUCHES
-                      </h2>
-                      <h1 
-                        className="text-6xl md:text-[100px] font-extrabold tracking-wider text-center font-[1000] italic"
-                      >
-                        ENDLESS POSSIBILITIES
-                      </h1>
-                      <div className="mt-8 pointer-events-auto">
-                        <a 
-                          href="/shop" 
-                          className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-lg transition-colors"
+        {slides.map(
+          (slide, index) =>
+            index === currentIndex && (
+              <motion.div
+                key={index}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "tween", ease: "easeInOut", duration: 0.5 },
+                }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <Link href="/all-category">
+                  <div className="relative w-full h-full">
+                    <MediaComponent
+                      media={slide.bgMedia}
+                      alt={slide.title}
+                      isActive={true}
+                      onVideoEnd={handleVideoEnd}
+                    />
+
+                    {/* Text Overlay - Only shown on the first slide */}
+                    {index === 0 && (
+                      <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none mt-20">
+                        <h2
+                          className="text-5xl md:text-[6vw] font-bold tracking-wider text-center mb-4 md:mb-6"
+                          style={outlineTextStyle}
                         >
-                          Explore Pouches
-                        </a>
+                          ENDLESS POUCHES
+                        </h2>
+                        <h1 className="text-6xl md:text-[8vw] font-extrabold tracking-wider text-center font-[1000] italic">
+                          ENDLESS POSSIBILITIES
+                        </h1>
+                        <div className="mt-8 pointer-events-auto">
+                          <a
+                            href="/shop"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-lg transition-colors"
+                          >
+                            Explore Pouches
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                   {index === 1 && (
-                    <div className="absolute inset-0 flex flex-col top-[52%] left-[52%] text-white z-10 pointer-events-none mt-20">
-                    
-                      <div className="mt-8 pointer-events-auto">
-                        <a 
-                          href="/shop" 
-                          className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-xl transition-colors"
-                        >
-                          Explore Industries
-                        </a>
+                    )}
+                    {index === 1 && (
+                      <div className="absolute inset-0 flex flex-col top-[52%] left-[52%] text-white z-10 pointer-events-none mt-20">
+                        <div className="mt-8 pointer-events-auto">
+                          <a
+                            href="/all-category"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-xl transition-colors"
+                          >
+                            Explore Industries
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </Link>
-            </motion.div>
-          )
-        ))}
+                    )}
+                  </div>
+                </Link>
+              </motion.div>
+            )
+        )}
       </AnimatePresence>
 
       <button

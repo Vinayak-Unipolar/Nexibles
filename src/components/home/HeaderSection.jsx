@@ -174,18 +174,18 @@ const HeaderSection = () => {
                     {index === 0 && (
                       <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none mt-20">
                         <h2
-                          className="text-5xl md:text-[6vw] font-bold tracking-wider text-center mb-4 md:mb-6"
+                          className="text-[6vw] md:text-[6vw] font-bold tracking-wider text-center mb-2 md:mb-6"
                           style={outlineTextStyle}
                         >
                           ENDLESS POUCHES
                         </h2>
-                        <h1 className="text-6xl md:text-[8vw] font-extrabold tracking-wider text-center font-[1000] italic">
+                        <h1 className="text-[8vw] md:text-[8vw] font-extrabold tracking-wider text-center font-[1000] italic">
                           ENDLESS POSSIBILITIES
                         </h1>
-                        <div className="mt-8 pointer-events-auto">
+                        <div className="md:mt-8 mt-4 pointer-events-auto">
                           <a
                             href="/shop"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold py-3 px-8 rounded-full text-lg transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold  :py-3px-8 rounded-full text-sm transition-colors"
                           >
                             Explore Pouches
                           </a>

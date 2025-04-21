@@ -1,7 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FaWhatsapp, FaMobile } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
+import { LuPhoneCall } from "react-icons/lu";
 import { FiMail } from "react-icons/fi";
+import { FaMobile } from "react-icons/fa6";
 import { BsSendFill } from "react-icons/bs";
 import { IoCallOutline } from "react-icons/io5";
 import Link from "next/link";
@@ -12,8 +15,12 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const token = "irrv211vui9kuwn11efsb4xd4zdkuq";
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+  const footerRef = useRef(null);
+  const isInView = useInView(footerRef, {
+    once: true,
+    amount: 0.5,
+    margin: "0px 0px -100px 0px", // Delay until section is closer to viewport center
+  });
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -65,7 +72,7 @@ const Footer = () => {
     fetchData();
   }, []);
 
-  // Animation variants
+  // Framer Motion variants for animations
   const titleVariants = {
     hidden: { opacity: 0, x: -100 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -80,22 +87,17 @@ const Footer = () => {
     }),
   };
 
-  const formVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4, ease: "easeOut" } },
-  };
-
-  const socialVariants = {
+  const iconVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: (i) => ({
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.4, delay: i * 0.1 + 0.6, ease: "easeOut" },
+      transition: { duration: 0.4, delay: i * 0.1 + 0.4, ease: "easeOut" },
     }),
   };
 
   return (
-    <footer ref={sectionRef}>
+    <footer ref={footerRef}>
       <div className="h-auto bg-[#103b60]">
         <div className="px-6 py-14 md:px-16 xl:px-24">
           <div className="flex flex-col md:flex-row md:justify-around">
@@ -106,28 +108,36 @@ const Footer = () => {
                 animate={isInView ? "visible" : "hidden"}
               >
                 <motion.li
-                  className="font-bold mb-4 text-white uppercase"
+                  className="font-bold mb-4 text-white"
+                  custom={0}
                   variants={titleVariants}
                 >
-                  Customer Service
+                  PRODUCTS
                 </motion.li>
-                {[
-                  { href: "/my-dashboard", text: "My Account" },
-                  { href: "/privacy-policy", text: "Privacy Policy" },
-                  { href: "/shipping-policy", text: "Shipping Policy" },
-                  { href: "/return-and-refund-policy", text: "Returns & Refund" },
-                  { href: "/terms-conditions", text: "Terms & Conditions" },
-                ].map((item, index) => (
+                {productData.length > 0 ? (
+                  productData.map((product, index) => (
+                    <motion.li
+                      key={product.id}
+                      className="text-white mb-2 cursor-pointer"
+                      custom={index + 1}
+                      variants={itemVariants}
+                    >
+                      <Link
+                        href={`/product/${encodeURIComponent(product.category.toLowerCase()).replace(/%20/g, "-")}/${encodeURIComponent(product.name.toLowerCase()).replace(/%20/g, "-")}/${product.id}`}
+                      >
+                        {product.name}
+                      </Link>
+                    </motion.li>
+                  ))
+                ) : (
                   <motion.li
-                    key={item.text}
-                    custom={index}
+                    className="text-white mb-2"
+                    custom={1}
                     variants={itemVariants}
                   >
-                    <Link href={item.href}>
-                      <span className="text-white mb-2 block">{item.text}</span>
-                    </Link>
+                    Loading...
                   </motion.li>
-                ))}
+                )}
               </motion.ul>
             </div>
 
@@ -139,25 +149,91 @@ const Footer = () => {
               >
                 <motion.li
                   className="font-bold mb-4 text-white uppercase"
+                  custom={0}
+                  variants={titleVariants}
+                >
+                  Customer service
+                </motion.li>
+                <motion.li
+                  custom={1}
+                  variants={itemVariants}
+                >
+                  <Link href="/my-dashboard">
+                    <span className="text-white mb-2">My Account</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  custom={2}
+                  variants={itemVariants}
+                >
+                  <Link href="/privacy-policy">
+                    <span className="text-white mb-2">Privacy Policy</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  custom={3}
+                  variants={itemVariants}
+                >
+                  <Link href="/shipping-policy">
+                    <span className="text-white mb-2">Shipping Policy</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  custom={4}
+                  variants={itemVariants}
+                >
+                  <Link href="/return-and-refund-policy">
+                    <span className="text-white mb-2">Returns & Refund</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  custom={5}
+                  variants={itemVariants}
+                >
+                  <Link href="/terms-conditions">
+                    <span className="text-white mb-2">Terms & Conditions</span>
+                  </Link>
+                </motion.li>
+              </motion.ul>
+            </div>
+
+            <div className="mb-8 md:mb-0">
+              <motion.ul
+                className="text-white tracking-widest"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+              >
+                <motion.li
+                  className="font-bold mb-4 text-white uppercase"
+                  custom={0}
                   variants={titleVariants}
                 >
                   Company
                 </motion.li>
-                {[
-                  { href: "/about", text: "About" },
-                  { href: "/infrastructure", text: "Infrastructure" },
-                  { href: "/businesses", text: "Industries" },
-                ].map((item, index) => (
-                  <motion.li
-                    key={item.text}
-                    custom={index}
-                    variants={itemVariants}
-                  >
-                    <Link href={item.href}>
-                      <span className="text-white mb-2 block">{item.text}</span>
-                    </Link>
-                  </motion.li>
-                ))}
+                <motion.li
+                  custom={1}
+                  variants={itemVariants}
+                >
+                  <Link href="/about">
+                    <span className="text-white mb-2">About</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  custom={2}
+                  variants={itemVariants}
+                >
+                  <Link href="/infrastructure">
+                    <span className="text-white mb-2">Infrastructure</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  custom={3}
+                  variants={itemVariants}
+                >
+                  <Link href="/businesses">
+                    <span className="text-white mb-2">Industries</span>
+                  </Link>
+                </motion.li>
               </motion.ul>
             </div>
 
@@ -167,15 +243,16 @@ const Footer = () => {
                 animate={isInView ? "visible" : "hidden"}
               >
                 <motion.h3
-                  className="font-bold text-white mr-3 mb-4 tracking-widest uppercase"
+                  className="font-bold text-white mr-3 mb-4 tracking-widest"
+                  custom={0}
                   variants={titleVariants}
                 >
-                  Subscribe
+                  SUBSCRIBE
                 </motion.h3>
                 <motion.p
                   className="text-white mb-4 tracking-wider"
+                  custom={1}
                   variants={itemVariants}
-                  custom={0}
                 >
                   Do you want to get notified ?<br />
                   Sign up for our newsletter<br />
@@ -186,7 +263,8 @@ const Footer = () => {
                 <motion.form
                   className="flex items-center justify-between bg-white rounded-md overflow-hidden"
                   onSubmit={handleSubscribe}
-                  variants={formVariants}
+                  custom={2}
+                  variants={itemVariants}
                 >
                   <span className="text-blue-3 px-4 py-2">
                     <FiMail size={20} />
@@ -199,54 +277,72 @@ const Footer = () => {
                     className="px-2 md:px-2 py-2 md:py-2 border-0 focus:outline-none text-black text-sm md:text-base flex-grow"
                     required
                   />
-                  <button
-                    className="bg-red-1 text-white mr-1 rounded-md px-2 md:px-6 py-2 hover:bg-red-900 focus:outline-none text-sm md:text-base"
+                  <motion.button
+                    className="bg-[#ffd13e] text-white mr-1 rounded-md px-2 md:px-6 py-2 hover:bg-[#fffc39] focus:outline-none text-sm md:text-base"
+                    custom={3}
+                    variants={itemVariants}
                   >
-                    <BsSendFill />
-                  </button>
+                    <BsSendFill style={{ color: "black" }} />
+                  </motion.button>
                 </motion.form>
                 {message && (
                   <motion.p
                     className="text-white mt-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4 }}
+                    custom={4}
+                    variants={itemVariants}
                   >
                     {message}
                   </motion.p>
                 )}
               </motion.div>
               <motion.div
-                className="text-white"
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
+                className="text-white"
               >
                 <motion.h3
-                  className="font-bold py-4 tracking-widest uppercase"
+                  className="font-bold py-4 tracking-widest"
+                  custom={0}
                   variants={titleVariants}
                 >
-                  Follow Us
+                  FOLLOW US
                 </motion.h3>
-                <div className="flex gap-x-7">
-                  {[
-                    { href: "https://wa.me/919821045101", icon: <FaWhatsapp size={25} /> },
-                    { href: "tel:+919821045101", icon: <IoCallOutline size={25} /> },
-                    { href: "mailto:sales@artnext.in", icon: <FiMail size={25} /> },
-                  ].map((social, index) => (
-                    <motion.a
-                      key={index}
-                      href={social.href}
-                      className="hover:text-gray-300"
-                      custom={index}
-                      variants={socialVariants}
-                    >
-                      {social.icon}
-                    </motion.a>
-                  ))}
-                </div>
+                <motion.div
+                  className="flex gap-x-7"
+                  custom={1}
+                  variants={itemVariants}
+                >
+                  <motion.a
+                    href="https://wa.me/919821045101"
+                    className="hover:text-gray-300"
+                    custom={0}
+                    variants={iconVariants}
+                  >
+                    <FaWhatsapp size={25} />
+                  </motion.a>
+                  <motion.a
+                    href="tel:+919821045101"
+                    className="hover:text-gray-300"
+                    custom={1}
+                    variants={iconVariants}
+                  >
+                    <IoCallOutline size={25} />
+                  </motion.a>
+                  <motion.a
+                    href="mailto:sales@artnext.in"
+                    className="hover:text-gray-300"
+                    custom={2}
+                    variants={iconVariants}
+                  >
+                    <FiMail size={25} />
+                  </motion.a>
+                </motion.div>
               </motion.div>
             </div>
           </div>
+          {/* <div className="text-start mt-10 text-gray-300 px-14">
+            <p>{`© 2024 Artnext Pvt Ltd, All Rights Reserved.`}</p>
+          </div> */}
         </div>
       </div>
     </footer>

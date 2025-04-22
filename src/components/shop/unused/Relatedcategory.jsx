@@ -122,8 +122,8 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
                         className="w-full h-64 rounded-t-lg object-contain"
                       />
                     </div>
-                    <div className="flex flex-col justify-center items-center py-5 ml-2">
-                      <h2 className="text-gray-900 text-base font-semibold">{product.name}</h2>
+                    <div className="flex flex-col justify-center items-center ml-2">
+                      <h2 className="text-gray-900 text-base font-semibold line-clamp-1">{product.name}</h2>
                       <div className="text-gray-500 text-xs mt-1">
                         <p>({product.material})</p>
                       </div>

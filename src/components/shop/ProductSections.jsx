@@ -26,7 +26,7 @@ const ProductSections = () => {
  
   return (
     <div ref={sectionRef}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:h-[500px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:h-full">
         {/* Stock Products Section */}
         <motion.div
           initial="hidden"
@@ -46,7 +46,7 @@ const ProductSections = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeSlide}
-              className="absolute flex flex-col text-white space-y-0 bottom-[10%] md:bottom-[20%] left-[50%] md:left-[50%] 
+              className="absolute flex flex-col text-white space-y-0 bottom-[10%] md:bottom-[20%] left-[50%] md:left-[50%]
               translate-x-[-50%]"
             >
               <h2 className="text-2xl md:text-5xl font-thin border-t-2 md:w-[12vw] w-[25vw] pt-0 md:pt-2 md:pb-4">
@@ -95,4 +95,3 @@ const ProductSections = () => {
 };
  
 export default ProductSections;
- 

@@ -1,14 +1,16 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import Image from "next/image";
 
 export default function PopularProducts() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -16,51 +18,53 @@ export default function PopularProducts() {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
           headers: {
-            'Content-Type': 'application/json',
-            'API-Key': apiKey,
+            "Content-Type": "application/json",
+            "API-Key": apiKey,
           },
         });
         const data = await response.json();
 
-        if (data.status === 'success') {
+        if (data.status === "success") {
           const nexiblesCategories = data.data.filter(
-            (category) => category.origin?.toLowerCase() === 'nexibles'
+            (category) => category.origin?.toLowerCase() === "nexibles"
           );
           setCategories(nexiblesCategories);
         } else {
-          console.error('Failed to fetch categories:', data.error);
+          console.error("Failed to fetch categories:", data.error);
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCategories();
-  }, [apiKey]);
+  }, [apiKey, APIURL]);
 
-  const cardAnimation = {
-    hidden: { opacity: 0, y: 20 },
+  // Animation variants
+  const titleVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.4,
-        ease: 'easeOut',
-      },
+      transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" },
     }),
   };
 
   return (
-    <div className="bg-white py-4 md:py-8">
+    <div ref={sectionRef} className="bg-white py-4 md:py-8">
       <div className="container mx-auto px-4">
         <motion.h2
           className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={titleVariants}
         >
           Explore Pouch Types
         </motion.h2>
@@ -71,12 +75,11 @@ export default function PopularProducts() {
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className="border border-gray-200 rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
+                  className=" rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
                   custom={index}
                   initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={cardAnimation}
+                  animate={isInView ? "visible" : "hidden"}
+                  variants={cardVariants}
                 >
                   <Link href={`/category/${category.cat_url}`} passHref>
                     <div className="flex-grow flex items-center justify-center h-56">
@@ -84,7 +87,7 @@ export default function PopularProducts() {
                         src={
                           category.bg_Img
                             ? `${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`
-                            : '/placeholder.png'
+                            : "/placeholder.png"
                         }
                         alt={category.name}
                         width={200}

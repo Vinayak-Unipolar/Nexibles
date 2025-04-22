@@ -101,7 +101,7 @@ const Footer = () => {
       <div className="h-auto bg-[#103b60]">
         <div className="px-6 py-14 md:px-16 xl:px-24">
           <div className="flex flex-col md:flex-row md:justify-around">
-            <div className="mb-8 md:mb-0">
+            {/* <div className="mb-8 md:mb-0">
               <motion.ul
                 className="text-white tracking-widest"
                 initial="hidden"
@@ -139,7 +139,7 @@ const Footer = () => {
                   </motion.li>
                 )}
               </motion.ul>
-            </div>
+            </div> */}
 
             <div className="mb-8 md:mb-0">
               <motion.ul

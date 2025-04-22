@@ -12,7 +12,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
   const products = Array.isArray(relatedProducts) ? relatedProducts.flat() : [];
 
   const filteredProducts = useMemo(() => {
-    const filtered = products.filter(product => 
+    const filtered = products.filter(product =>
       !currentProductIds.includes(product.id)
     );
     const uniqueProducts = Array.from(
@@ -26,7 +26,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
       sliderRef.slickGoTo(0); // Reset to first slide when filteredProducts change
     }
   }, [filteredProducts, sliderRef]);
-  
+
   if (!relatedProducts || filteredProducts.length === 0) {
     return null;
   }
@@ -122,9 +122,13 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
                         className="w-full h-64 rounded-t-lg object-contain"
                       />
                     </div>
-                    <div className="flex justify-center items-center py-5 ml-2">
-                      <h2 className="text-gray-900 text-base font-semibold">{product.name}</h2>
+                    <div className="flex flex-col justify-center items-center ml-2">
+                      <h2 className="text-gray-900 text-base font-semibold line-clamp-1">{product.name}</h2>
+                      <div className="text-gray-500 text-xs mt-1">
+                        <p>({product.material})</p>
+                      </div>
                     </div>
+
                   </div>
                 </div>
               </Link>

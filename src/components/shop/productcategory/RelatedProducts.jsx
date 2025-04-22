@@ -17,7 +17,7 @@ export default function RelatedProducts({ productDetails }) {
   const [loading, setLoading] = useState(true);
   const currentProductId = productDetails?.product?.id;
   const category = productDetails?.product?.category || "";
-  
+
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
@@ -143,11 +143,11 @@ export default function RelatedProducts({ productDetails }) {
                     <div
                       className="text-left p-2 sm:p-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white w-full cursor-pointer border border-gray-200"
                       onClick={() =>
-                        (window.location.href = `/product/${encodeURIComponent(
-                          product.category.toLowerCase()
-                        ).replace(/%20/g, "-")}/${encodeURIComponent(
-                          product.name.toLowerCase()
-                        ).replace(/%20/g, "-")}/${product.id}`)
+                      (window.location.href = `/product/${encodeURIComponent(
+                        product.category.toLowerCase()
+                      ).replace(/%20/g, "-")}/${encodeURIComponent(
+                        product.name.toLowerCase()
+                      ).replace(/%20/g, "-")}/${product.id}`)
                       }
                     >
                       <div className="relative w-full h-28 sm:h-36 md:h-40 lg:h-52 mb-2">
@@ -166,6 +166,11 @@ export default function RelatedProducts({ productDetails }) {
                       <h3 className="font-bold text-xs sm:text-sm md:text-base truncate">
                         {product.name}
                       </h3>
+                      <div className="flex items-center justify-center mt-1">
+                        <h3 className="text-[5pt] sm:text-xs md:text-xs truncate ">
+                          ({product.material})
+                        </h3>
+                      </div>
                     </div>
                   </SwiperSlide>
                 ))}

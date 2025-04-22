@@ -149,7 +149,7 @@ export default function NexiblesInstagramSection() {
           <div className="max-w-5xl mx-auto relative overflow-hidden">
             <motion.div
               className="flex items-center space-x-8"
-              animate={isInView ? { x: ["0%", "-50%"] } : { x: "0%" }}
+              animate={isInView ? { x: ["0%", "-100%"] } : { x: "0%" }}
               transition={{
                 repeat: Infinity,
                 repeatType: "loop",

@@ -1,102 +1,81 @@
-"use client";
-import React, { useRef } from "react";
-import { FaTruck, FaLeaf, FaBox, FaShieldAlt, FaLayerGroup, FaBan, FaBarcode } from "react-icons/fa";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
-import { motion, useInView } from "framer-motion";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const AdvantageItem = ({ icon, text, index, isInView }) => (
+const cardVariants = {
+  hidden: { opacity: 0, x: 100 },  // Start from the right
+  visible: { opacity: 1, x: 0 },   // Slide into place
+  exit: { opacity: 0, x: -100 },   // Slide out to the left
+};
+
+const cards = [
+  {
+    videoSrc: '/home/packets.mp4',
+    title: 'Low MOQ',
+    description:
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.',
+  },
+  {
+    videoSrc: '/home/banner.mp4',
+    title: 'Fast Production',
+    description:
+      'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.',
+  },
+  
+];
+
+const AdvantageCard = ({ videoSrc, title, description, onVideoEnd }) => (
   <motion.div
-    className="flex flex-col items-center"
-    custom={index}
+    variants={cardVariants}
     initial="hidden"
-    animate={isInView ? "visible" : "hidden"}
-    variants={{
-      hidden: { opacity: 0, y: 50 },
-      visible: (i) => ({
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" },
-      }),
-    }}
+    animate="visible"
+    exit="exit"
+    transition={{ duration: 0.8 }}
+    className="flex flex-col lg:flex-row items-center bg-white shadow-lg  overflow-hidden w-full "
   >
-    {icon}
-    <p className="text-lg mt-2 text-center md:text-base sm:text-xs">{text}</p>
+    {/* Video Section */}
+    <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] bg-blue-900 flex items-center justify-center">
+      <video
+        src={videoSrc}
+        className="w-full h-full object-cover"
+        autoPlay
+        muted
+        playsInline
+        onEnded={onVideoEnd}
+      />
+    </div>
+
+    {/* Text Section */}
+    <div className="w-full text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-[1000] text-blue-900 mb-4">
+        {title}
+      </h2>
+      <p className="text-blue-900 text-sm sm:text-base md:text-lg font-medium leading-relaxed">
+        {description}
+      </p>
+    </div>
   </motion.div>
 );
 
 const Advantages = () => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, {
-    once: true,
-    amount: 0.5,
-    margin: "0px 0px -100px 0px", // Delay until section is closer to viewport center
-  });
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const titleVariants = {
-    hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  const handleVideoEnd = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % cards.length);
   };
 
+  const currentCard = cards[currentIndex];
+
   return (
-    <div ref={sectionRef} className="bg-white py-12 w-full">
-      <motion.h2
-        className="md:text-4xl text-2xl font-bold text-center mb-8"
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        variants={titleVariants}
-      >
-        Our Advantages
-      </motion.h2>
-      <div className="container mx-auto grid grid-cols-2 gap-8 md:grid-cols-4 sm:grid-cols-1">
-        <AdvantageItem
-          icon={<FaBan size={26} className="md:size-14 sm:size-16" />}
-          text="No MOQ"
-          index={0}
-          isInView={isInView}
+    <div className="bg-white min-h-screen flex items-center justify-center">
+      <AnimatePresence mode="wait">
+        <AdvantageCard
+          key={currentIndex}
+          videoSrc={currentCard.videoSrc}
+          title={currentCard.title}
+          description={currentCard.description}
+          onVideoEnd={handleVideoEnd}
         />
-        <AdvantageItem
-          icon={<FaLayerGroup size={26} className="md:size-14 sm:size-16" />}
-          text="Multiple SKUs"
-          index={1}
-          isInView={isInView}
-        />
-        <AdvantageItem
-          icon={<RiMoneyDollarCircleLine size={26} className="md:size-14 sm:size-16" />}
-          text="No cylinder and plate cost"
-          index={2}
-          isInView={isInView}
-        />
-        <AdvantageItem
-          icon={<FaBox size={26} className="md:size-14 sm:size-16" />}
-          text="Low inventory"
-          index={3}
-          isInView={isInView}
-        />
-        <AdvantageItem
-          icon={<FaTruck size={26} className="md:size-14 sm:size-16" />}
-          text="Speed to market"
-          index={4}
-          isInView={isInView}
-        />
-        <AdvantageItem
-          icon={<FaLeaf size={26} className="md:size-14 sm:size-16" />}
-          text="Sustainable"
-          index={5}
-          isInView={isInView}
-        />
-        <AdvantageItem
-          icon={<FaBarcode size={26} className="md:size-14 sm:size-16" />}
-          text="Variable data"
-          index={6}
-          isInView={isInView}
-        />
-        <AdvantageItem
-          icon={<FaShieldAlt size={26} className="md:size-14 sm:size-16" />}
-          text="Security printing"
-          index={7}
-          isInView={isInView}
-        />
-      </div>
+      </AnimatePresence>
     </div>
   );
 };

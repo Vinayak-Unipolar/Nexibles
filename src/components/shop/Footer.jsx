@@ -95,13 +95,8 @@ const Footer = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <footer ref={sectionRef}>
-      <div className="h-auto bg-gray-500">
-=======
     <footer>
       <div className="h-auto bg-[#103b60]">
->>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
         <div className="px-6 py-14 md:px-16 xl:px-24">
           <div className="flex flex-col md:flex-row md:justify-around">
             <div className="mb-8 md:mb-0">
@@ -233,23 +228,6 @@ const Footer = () => {
                   Follow Us
                 </motion.h3>
                 <div className="flex gap-x-7">
-<<<<<<< HEAD
-                  {[
-                    { href: "https://wa.me/919821045101", icon: <FaWhatsapp size={25} /> },
-                    { href: "tel:+919821045101", icon: <IoCallOutline size={25} /> },
-                    { href: "mailto:sales@artnext.in", icon: <FiMail size={25} /> },
-                  ].map((social, index) => (
-                    <motion.a
-                      key={index}
-                      href={social.href}
-                      className="hover:text-gray-300"
-                      custom={index}
-                      variants={socialVariants}
-                    >
-                      {social.icon}
-                    </motion.a>
-                  ))}
-=======
                   <a
                     href="https://wa.me/919821045101"
                     className="hover:text-gray-300"
@@ -268,7 +246,6 @@ const Footer = () => {
                   >
                     <FiMail size={25} />
                   </a>
->>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
                 </div>
               </motion.div>
             </div>

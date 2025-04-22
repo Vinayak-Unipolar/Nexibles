@@ -248,26 +248,12 @@ export default function StatsAndTestimonials() {
       </div>
 
       {/* ===================== TESTIMONIALS SECTION WITH CAROUSEL ===================== */}
-<<<<<<< HEAD
       <div ref={testimonialsRef} className="w-full bg-[#ffd13e] py-12 px-4 md:px-8">
         <motion.h2
           className="text-2xl md:text-3xl font-bold text-center text-black mb-24"
           variants={titleVariants}
           initial="hidden"
           animate={isTestimonialsInView ? "visible" : "hidden"}
-=======
-      <motion.div
-        className="w-full bg-[#ffd13e] md:py-12  px-4 md:px-8"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <motion.h2
-          className="text-2xl md:text-3xl font-bold text-center text-black mb-12 mt-6 md:mt-0"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
->>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
         >
           What People Are Saying
         </motion.h2>
@@ -364,11 +350,7 @@ export default function StatsAndTestimonials() {
                 <div className="absolute -bottom-[45px] right-4 w-20 h-20">
                   <Image src={doublequotes} alt="quotes" width={70} height={70} />
                 </div>
-<<<<<<< HEAD
                 <div className="absolute -top-9 left-7 w-20 h-20">
-=======
-                <div className="absolute  invisible md:visible -top-9 left-7  w-20 h-20">
->>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
                   <Image src={flip} alt="quotes" width={70} height={70} />
                 </div>
               </motion.div>

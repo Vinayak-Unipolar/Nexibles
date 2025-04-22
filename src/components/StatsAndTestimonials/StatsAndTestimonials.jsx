@@ -350,7 +350,7 @@ export default function StatsAndTestimonials() {
                 <div className="absolute -bottom-[45px] right-4 w-20 h-20">
                   <Image src={doublequotes} alt="quotes" width={70} height={70} />
                 </div>
-                <div className="absolute -top-9 left-7 w-20 h-20">
+                <div className="absolute -top-9 left-7 w-20 h-20 invisible md:visible">
                   <Image src={flip} alt="quotes" width={70} height={70} />
                 </div>
               </motion.div>

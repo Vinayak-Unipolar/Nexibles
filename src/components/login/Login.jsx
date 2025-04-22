@@ -244,8 +244,8 @@ function Login() {
                                             </span>
                                         </div>
 
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center">
+                                        <div className="flex items-center justify-center">
+                                            {/* <div className="flex items-center">
                                                 <input
                                                     type="checkbox"
                                                     id="remember"
@@ -254,7 +254,7 @@ function Login() {
                                                 <label htmlFor="remember" className="block ml-2 text-sm text-gray-700">
                                                     Remember me
                                                 </label>
-                                            </div>
+                                            </div> */}
                                             <div
                                                 onClick={() => setShowModal(true)}
                                                 className="text-sm font-medium text-[#103b60] hover:text-[#103b60] cursor-pointer"

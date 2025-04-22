@@ -14,9 +14,6 @@ const AllCategoryCards = ({ categoryData }) => {
   // Take the first three items from categoryData for the 3-box grid
   const topThreeCategories = categoryData.slice(0, 3);
 
-
-
-  
   return (
     <div className="h-auto bg-white">
 

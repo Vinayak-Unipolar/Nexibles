@@ -82,15 +82,15 @@ export default function NexiblesInstagramSection() {
   };
 
   return (
-    <div ref={sectionRef} className="bg-white py-8 px-4 sm:px-6 lg:px-8">
-      {loading && <div className="text-center py-4">Loading brand logos...</div>}
-      {error && <div className="text-center text-red-500 py-4">{error}</div>}
+    <div ref={sectionRef} className="px-4 py-8 bg-white sm:px-6 lg:px-8">
+      {loading && <div className="py-4 text-center">Loading brand logos...</div>}
+      {error && <div className="py-4 text-center text-red-500">{error}</div>}
       {!loading && !error && (
         <>
           {/* Section Title & Subtitle */}
           <div className="max-w-5xl mx-auto text-center">
             <motion.h2
-              className="text-3xl sm:text-4xl font-bold mb-2"
+              className="mb-2 text-3xl font-bold sm:text-4xl"
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
               variants={titleVariants}
@@ -98,7 +98,7 @@ export default function NexiblesInstagramSection() {
               Nexibles On Instagram
             </motion.h2>
             <motion.p
-              className="text-gray-600 mb-8"
+              className="mb-8 text-gray-600"
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
               variants={subtitleVariants}
@@ -108,11 +108,11 @@ export default function NexiblesInstagramSection() {
           </div>
 
           {/* Instagram Feed */}
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="grid max-w-5xl grid-cols-2 gap-4 mx-auto mb-12 md:grid-cols-4">
             {instaFeed.map((post, idx) => (
               <motion.div
                 key={idx}
-                className="relative overflow-hidden rounded-lg group aspect-square border border-gray-200"
+                className="relative overflow-hidden border border-gray-200 rounded-lg group aspect-square"
                 custom={idx}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
@@ -125,12 +125,12 @@ export default function NexiblesInstagramSection() {
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 25vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 bg-black/50 group-hover:opacity-100">
                   <a
                     href={post.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white text-3xl flex items-center justify-center"
+                    className="flex items-center justify-center text-3xl text-white"
                   >
                     <svg
                       fill="currentColor"
@@ -146,7 +146,7 @@ export default function NexiblesInstagramSection() {
           </div>
 
           {/* Marquee Brand Logos */}
-          <div className="max-w-5xl mx-auto relative overflow-hidden">
+          <div className="relative max-w-5xl mx-auto overflow-hidden">
             <motion.div
               className="flex items-center space-x-8"
               animate={isInView ? { x: ["0%", "-100%"] } : { x: "0%" }}
@@ -160,14 +160,14 @@ export default function NexiblesInstagramSection() {
               {brandLogos.map((brand, idx) => (
                 <motion.div
                   key={brand.id}
-                  className="w-24 h-24 flex-shrink-0 flex items-center justify-center"
+                  className="flex items-center justify-center flex-shrink-0 w-24 h-24"
                   custom={idx}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                   variants={marqueeItemVariants}
                 >
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/${brand.image}` || "/placeholder.png"}
+                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/clients/${brand.image}` || "/placeholder.png"}
                     alt={`Brand ${brand.id}`}
                     width={80}
                     height={80}
@@ -183,14 +183,14 @@ export default function NexiblesInstagramSection() {
               {brandLogos.map((brand, idx) => (
                 <motion.div
                   key={`dup-${brand.id || idx}`}
-                  className="w-24 h-24 flex-shrink-0 flex items-center justify-center"
+                  className="flex items-center justify-center flex-shrink-0 w-24 h-24"
                   custom={idx + brandLogos.length}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                   variants={marqueeItemVariants}
                 >
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/${brand.image}` || "/placeholder.png"}
+                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/clients/${brand.image}` || "/placeholder.png"}
                     alt={`Brand ${brand.id}`}
                     width={80}
                     height={80}

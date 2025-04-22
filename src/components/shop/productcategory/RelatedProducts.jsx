@@ -73,8 +73,8 @@ export default function RelatedProducts({ productDetails }) {
 
   if (loading) {
     return (
-      <div className="px-2 sm:px-4 md:px-6 lg:px-8 max-w-screen-xl mx-auto">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4">Related Products</h2>
+      <div className="max-w-screen-xl px-2 mx-auto sm:px-4 md:px-6 lg:px-8">
+        <h2 className="mb-4 text-lg font-bold sm:text-xl md:text-2xl">Related Products</h2>
         <div className="flex justify-center py-6 sm:py-8">
           <Loader />
         </div>
@@ -90,9 +90,9 @@ export default function RelatedProducts({ productDetails }) {
     <>
       {relatedProducts && relatedProducts.length > 0 && (
         <>
-          <hr className="border-gray-300 my-6 sm:my-8" />
-          <section className="px-2 sm:px-4 md:px-6 lg:px-8 pb-6 sm:pb-8 max-w-screen-xl mx-auto relative">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6">
+          <hr className="my-6 border-gray-300 sm:my-8" />
+          <section className="relative max-w-screen-xl px-2 pb-6 mx-auto sm:px-4 md:px-6 lg:px-8 sm:pb-8">
+            <h2 className="mb-4 text-lg font-bold sm:text-xl md:text-2xl sm:mb-6">
               Related Products
             </h2>
             <div className="relative">
@@ -141,7 +141,7 @@ export default function RelatedProducts({ productDetails }) {
                 {relatedProducts.map((product) => (
                   <SwiperSlide key={product.id}>
                     <div
-                      className="text-left p-2 sm:p-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white w-full cursor-pointer border border-gray-200"
+                      className="w-full p-2 text-left transition-all duration-300 bg-white border border-gray-200 rounded-lg cursor-pointer sm:p-3 hover:shadow-lg hover:-translate-y-1"
                       onClick={() =>
                       (window.location.href = `/product/${encodeURIComponent(
                         product.category.toLowerCase()
@@ -150,20 +150,20 @@ export default function RelatedProducts({ productDetails }) {
                       ).replace(/%20/g, "-")}/${product.id}`)
                       }
                     >
-                      <div className="relative w-full h-28 sm:h-36 md:h-40 lg:h-52 mb-2">
+                      <div className="relative w-full mb-2 h-28 sm:h-36 md:h-40 lg:h-52">
                         <Image
                           src={
                             product.image
-                              ? `${CDN_URL}/${product.image}`
+                              ? `${CDN_URL}/product/${product.image}`
                               : "/placeholder-product.png"
                           }
                           alt={product.name}
                           layout="fill"
                           objectFit="contain"
-                          className="rounded-md transition-transform duration-300 hover:scale-105"
+                          className="transition-transform duration-300 rounded-md hover:scale-105"
                         />
                       </div>
-                      <h3 className="font-bold text-xs sm:text-sm md:text-base truncate">
+                      <h3 className="text-xs font-bold truncate sm:text-sm md:text-base">
                         {product.name}
                       </h3>
                       <div className="flex items-center justify-center mt-1">
@@ -179,21 +179,21 @@ export default function RelatedProducts({ productDetails }) {
               {/* Custom navigation buttons */}
               <div
                 ref={prevRef}
-                className="absolute top-1/2 -left-1 sm:-left-2 md:-left-3 lg:-left-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"
+                className="absolute z-10 hidden p-1 transition-shadow duration-200 transform -translate-y-1/2 bg-white rounded-full shadow-md cursor-pointer top-1/2 -left-1 sm:-left-2 md:-left-3 lg:-left-4 sm:p-2 hover:shadow-lg sm:block"
                 aria-label="Previous"
               >
                 <IoChevronBack
-                  className="text-black hover:text-red-500 transition-colors duration-200"
+                  className="text-black transition-colors duration-200 hover:text-red-500"
                   size={16}
                 />
               </div>
               <div
                 ref={nextRef}
-                className="absolute top-1/2 -right-1 sm:-right-2 md:-right-3 lg:-right-4 transform -translate-y-1/2 z-10 bg-white rounded-full p-1 sm:p-2 shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer hidden sm:block"
+                className="absolute z-10 hidden p-1 transition-shadow duration-200 transform -translate-y-1/2 bg-white rounded-full shadow-md cursor-pointer top-1/2 -right-1 sm:-right-2 md:-right-3 lg:-right-4 sm:p-2 hover:shadow-lg sm:block"
                 aria-label="Next"
               >
                 <IoChevronForward
-                  className="text-black hover:text-red-500 transition-colors duration-200"
+                  className="text-black transition-colors duration-200 hover:text-red-500"
                   size={16}
                 />
               </div>

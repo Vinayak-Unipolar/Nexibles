@@ -2469,6 +2469,7 @@ natural-compare@^1.4.0:
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 next@14.2.5:
 =======
 <<<<<<< HEAD
@@ -2477,6 +2478,9 @@ next@14.2.5:
 next@^14.2.5:
 >>>>>>> 948e39d29eb811015270b830dfd765f26776aa69
 >>>>>>> bc13dc7be0b62d58ae6f607b1793d336ee4d9d13
+=======
+next@^14.2.5:
+>>>>>>> be1776f54d796daba4941789de90ba69b1dc5e53
   version "14.2.5"
   resolved "https://registry.npmjs.org/next/-/next-14.2.5.tgz"
   integrity sha512-0f8aRfBVL+mpzfBjYfQuLWh2WyAwtJXCRfkPF4UJ5qd2YwrHczsrSzXU4tRMV0OAxR8ZJZWPFn6uhSC56UTsLA==

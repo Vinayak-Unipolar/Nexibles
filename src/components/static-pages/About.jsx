@@ -5,13 +5,18 @@ import Image3 from '../../../public/Pictures/Customer Centric .png'
 import Image from 'next/image';
 const About = () => {
   return (
-    <div className="p-4 sm:p-6 md:p-10 mt-12 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-white">
+    <div className="p-4 sm:p-6 md:p-10 mt-12 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-[#fafafa]">
       <h1 className="text-2xl sm:text-3xl md:text-4xl text-black font-extrabold text-center">About Us</h1>
       <h3 className="text-xl sm:text-2xl md:text-3xl text-black font-extrabold text-center">
         {`Revolutionizing Flexible Packaging with Innovation`}</h3>
       <p className="text-black text-xs sm:text-sm md:text-base text-center mt-3 leading-relaxed">{`At Nexibles, we are redefining the future of flexible packaging with cutting-edge digital printing solutions. Under our`}<br />
+<<<<<<< HEAD
         {`brand "NEXt generation flexIBLES", we bring creativity, speed, and ef ficiency to packaging, eliminating traditional`}<br />
         {`constraints like high MOQs and plate costs. `}<br />{` 
+=======
+        {`brand "NEXt generation flexIBLES", we bring creativity, speed, and efficiency to packaging, eliminating traditional`}<br />
+        {`constraints like high MOQs and plate costs. `}<br />{`
+>>>>>>> be1776f54d796daba4941789de90ba69b1dc5e53
        With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink`}<br />
         {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br />
         {`high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>

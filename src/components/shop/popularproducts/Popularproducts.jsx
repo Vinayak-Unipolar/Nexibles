@@ -58,8 +58,8 @@ export default function PopularProducts() {
   };
 
   return (
-    <div ref={sectionRef} className="bg-white py-4 md:py-8">
-      <div className="container mx-auto px-4">
+    <div ref={sectionRef} className="py-4 bg-white md:py-8">
+      <div className="container px-4 mx-auto">
         <motion.h2
           className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8"
           initial="hidden"
@@ -82,21 +82,21 @@ export default function PopularProducts() {
                   variants={cardVariants}
                 >
                   <Link href={`/category/${category.cat_url}`} passHref>
-                    <div className="flex-grow flex items-center justify-center h-56">
+                    <div className="flex items-center justify-center flex-grow h-56">
                       <Image
                         src={
                           category.bg_Img
-                            ? `${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`
+                            ? `${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`
                             : "/placeholder.png"
                         }
                         alt={category.name}
                         width={200}
                         height={192}
-                        className="max-w-full max-h-48 object-contain"
+                        className="object-contain max-w-full max-h-48"
                       />
                     </div>
                     <div className="mt-4 text-center min-h-[40px]">
-                      <p className="text-black font-bold text-xs uppercase tracking-wider">
+                      <p className="text-xs font-bold tracking-wider text-black uppercase">
                         {category.name}
                       </p>
                     </div>
@@ -110,13 +110,13 @@ export default function PopularProducts() {
               .map((_, index) => (
                 <div
                   key={index}
-                  className="border border-gray-200 rounded-xl p-4 flex flex-col"
+                  className="flex flex-col p-4 border border-gray-200 rounded-xl"
                 >
-                  <div className="flex-grow flex items-center justify-center h-56">
-                    <div className="bg-gray-200 w-36 h-40 rounded animate-pulse"></div>
+                  <div className="flex items-center justify-center flex-grow h-56">
+                    <div className="h-40 bg-gray-200 rounded w-36 animate-pulse"></div>
                   </div>
                   <div className="mt-4 text-center min-h-[40px]">
-                    <div className="bg-gray-200 h-4 w-32 mx-auto rounded animate-pulse"></div>
+                    <div className="w-32 h-4 mx-auto bg-gray-200 rounded animate-pulse"></div>
                   </div>
                 </div>
               ))

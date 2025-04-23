@@ -114,12 +114,12 @@ const Industries = () => {
 
   return (
     <div ref={sectionRef} className="bg-white py-8 px-4 sm:px-6 lg:px-8 mt-[-16vh] md:mt-0">
-      {loading && <div className="text-center py-4">Loading industries...</div>}
-      {error && <div className="text-center text-red-500 py-4">{error}</div>}
+      {loading && <div className="py-4 text-center">Loading industries...</div>}
+      {error && <div className="py-4 text-center text-red-500">{error}</div>}
       {!loading && !error && (
         <>
           <motion.div
-            className="mx-auto text-center mt-4 pb font-bold text-3xl md:text-4xl text-gray-800"
+            className="mx-auto mt-4 text-3xl font-bold text-center text-gray-800 pb md:text-4xl"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={titleVariants}
@@ -127,7 +127,7 @@ const Industries = () => {
             Explore Industries
           </motion.div>
           <div
-            className="relative overflow-hidden mt-6 md:mt-12 mx-auto"
+            className="relative mx-auto mt-6 overflow-hidden md:mt-12"
             style={{ width: `${viewportWidth}px`, maxWidth: "100%" }}
           >
             <motion.div
@@ -149,25 +149,22 @@ const Industries = () => {
                     href={`/industries/${category.name
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}
-                    className="bg-white p-2 pb-4 border border-gray-200 rounded-xl overflow-hidden"
+                    className="p-2 pb-4 overflow-hidden bg-white border border-gray-200 rounded-xl"
                   >
                     <div className="relative h-48 md:h-[400px] w-full flex items-center justify-center">
                       <Image
-                        src={`${CDN_URL || ""}/${category.image}` || "/placeholder.png"}
+                        src={`${CDN_URL}/industries/${category.image}`}
                         width={400}
                         height={400}
                         alt={`Image for ${category.name}`}
                         quality={100}
-                        className="w-full h-full object-contain pt-2"
+                        className="object-contain w-full h-full pt-2"
                         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        onError={(e) => {
-                          e.target.src = "/placeholder.png";
-                        }}
                       />
                     </div>
-                    <div className="flex flex-col items-center justify-center text-center mt-2">
+                    <div className="flex flex-col items-center justify-center mt-2 text-center">
                       <div
-                        className="w-full px-2 py-1 sm:px-3 sm:py-2 bg-white rounded-lg text-gray-900 font-semibold text-xs md:text-lg text-center truncate hover:bg-black hover:text-white transition-all duration-300"
+                        className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 bg-white rounded-lg sm:px-3 sm:py-2 md:text-lg hover:bg-black hover:text-white"
                       >
                         {category.name}
                       </div>
@@ -179,7 +176,7 @@ const Industries = () => {
             {/* Prev Button */}
             <motion.button
               onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-md transition-all -ml-3"
+              className="absolute left-0 z-10 p-2 -ml-3 transition-all transform -translate-y-1/2 bg-white rounded-full shadow-md top-1/2 bg-opacity-80 hover:bg-opacity-100"
               aria-label="Previous"
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -201,7 +198,7 @@ const Industries = () => {
             {/* Next Button */}
             <motion.button
               onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-md transition-all -mr-3"
+              className="absolute right-0 z-10 p-2 -mr-3 transition-all transform -translate-y-1/2 bg-white rounded-full shadow-md top-1/2 bg-opacity-80 hover:bg-opacity-100"
               aria-label="Next"
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}

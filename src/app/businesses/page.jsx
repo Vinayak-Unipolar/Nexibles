@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -13,7 +12,7 @@ function Page() {
   const [error, setError] = useState(null);
 
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
-  const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
+  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDNNEW_URL;
 
   useEffect(() => {
     const fetchIndustries = async () => {
@@ -34,6 +33,18 @@ function Page() {
 
     fetchIndustries();
   }, [APIURL]);
+
+  // Helper function to determine image URL with format fallback
+  const getImageUrl = (image) => {
+    if (!image || !NEXI_CDN_URL) return "/placeholder.png";
+    
+    // Remove any existing extension if present
+    const baseImageName = image.replace(/\.(webp|png)$/i, "");
+    
+    // Try .webp first, then .png
+    const extension = ".webp"; // Default to .webp
+    return `${NEXI_CDN_URL}/industries/${baseImageName}${extension}`;
+  };
 
   if (loading) {
     return (
@@ -101,11 +112,19 @@ function Page() {
                   variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.5 } } }}
                   className="overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow cursor-pointer hover:shadow-md"
                 >
-                  <div className="relative h-40 sm:h-auto">
+                  <div className="relative h-40 sm:h-[350px]">
                     <img
-                      src={`${CDN_URL}/industries/${industry.image}`}
+                      src={getImageUrl(industry.image)}
                       alt={industry.name}
                       className="object-cover w-full h-full"
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${getImageUrl(industry.image)}`);
+                        if (e.target.src.includes(".webp")) {
+                          e.target.src = getImageUrl(industry.image).replace(".webp", ".png");
+                        } else {
+                          e.target.src = "/placeholder.png";
+                        }
+                      }}
                     />
                   </div>
                   <div className="p-4">

@@ -28,7 +28,7 @@ const ProductSections = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:h-[500px]">
+      <div className="md:flex md:flex-row justify-center md:h-[500px]">
 
         {/* Stock Products Section */}
         <Link href="/all-category" className="relative overflow-hidden group">
@@ -44,11 +44,14 @@ const ProductSections = () => {
             viewport={{ once: true }}
             variants={fadeSlide}
             layout
-            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[60%] md:left-[57%] border-t-2 w-[300px]"
+            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[50%] md:left-[57%] border-t-2 md:w-[300px]"
           >
             <h2 className="pr-2 text-xl font-light md:text-4xl">EXPLORE</h2>
-            <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[300px]">NEXICLASSIC</h1>
+            <h1 className="text-2xl md:text-5xl font-bold border-b-2 md:w-[300px]">NEXICLASSIC</h1>
           </motion.div>
+          <button className="absolute  bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] left-[72%] md:top-[73%] md:left-[66%] ">
+            Shop Now
+          </button>
         </Link>
 
         {/* Customization Tool Section */}
@@ -70,6 +73,9 @@ const ProductSections = () => {
             <h2 className="text-xl md:text-4xl font-light pr-4 border-t-2 w-[80%] md:w-[350px]">MAKE YOUR OWN</h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[350px]">POUCH</h1>
           </motion.div>
+          <button className="absolute  bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] right-[58%] md:top-[42%] md:right-[62%] ">
+            Configure Now
+          </button>
         </Link>
 
       </div>

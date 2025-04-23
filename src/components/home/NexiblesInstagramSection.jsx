@@ -24,6 +24,7 @@ export default function NexiblesInstagramSection() {
   ]);
 
   const [brandLogos, setBrandLogos] = useState([]);
+  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDNNEW_URL; // Fallback for safety
 
   useEffect(() => {
     async function fetchBrands() {
@@ -86,7 +87,7 @@ export default function NexiblesInstagramSection() {
       </div>
 
       {/* Infinite Marquee */}
-      <div className="relative  overflow-hidden w-full pt-8">
+      <div className="relative overflow-hidden w-full pt-8">
         <motion.div
           className="flex space-x-8 w-max"
           animate={{ x: ["0%", "-30%"] }}
@@ -103,11 +104,21 @@ export default function NexiblesInstagramSection() {
               className="w-24 h-24 flex-shrink-0 flex items-center justify-center"
             >
               <Image
-                src={`${process.env.NEXT_NEXIBLES_CDN_URL}/${brand.image}`}
+                src={
+                  NEXI_CDN_URL && brand.image
+                    ? `${NEXI_CDN_URL}/clients/${brand.image}`
+                    : "/placeholder.png"
+                }
                 alt={`Brand ${brand.id}`}
                 width={80}
                 height={80}
                 className="object-contain"
+                onError={(e) => {
+                  console.error(
+                    `Failed to load image: ${NEXI_CDN_URL}/clients/${brand.image}`
+                  );
+                  e.target.src = "/placeholder.png";
+                }}
               />
             </div>
           ))}

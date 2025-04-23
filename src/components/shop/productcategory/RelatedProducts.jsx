@@ -24,7 +24,7 @@ export default function RelatedProducts({ productDetails }) {
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
-  const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
+  const CDN_URL = process.env.NEXT_PUBLIC_CDNNEW_URL;
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {

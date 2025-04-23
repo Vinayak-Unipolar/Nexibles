@@ -188,12 +188,12 @@ export default function PCCardDetails({ productDetails }) {
       Promise.all([fetchAdditionalImages])
         .then(([additionalImagesData]) => {
           const defaultImage = productDetails?.product?.image
-            ? `${process.env.NEXT_PUBLIC_CDN_URL}/product/${productDetails.product.image}`
+            ? `${process.env.NEXT_PUBLIC_CDNNEW_URL}/product/${productDetails.product.image}`
             : null;
 
           const additionalImages =
             additionalImagesData.status === 'success' && additionalImagesData.data
-              ? additionalImagesData.data.map(img => `${process.env.NEXT_PUBLIC_CDN_URL}/product/${img.image_url}`)
+              ? additionalImagesData.data.map(img => `${process.env.NEXT_PUBLIC_CDNNEW_URL}/product/${img.image_url}`)
               : [];
 
           setProductImages([defaultImage, ...additionalImages].filter(Boolean));
@@ -226,7 +226,7 @@ export default function PCCardDetails({ productDetails }) {
               productImages={productImages}
               defaultImage={
                 productImages[0] ||
-                `${process.env.NEXT_PUBLIC_CDN_URL}/product/${productDetails.product.image}`
+                `${process.env.NEXT_PUBLIC_CDNNEW_URL}/product/${productDetails.product.image}`
               }
               onImageClick={() => setIsModalOpen(true)}
             />

@@ -11,6 +11,7 @@ export default function PopularProducts() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDNNEW_URL; // Fallback for safety
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -75,7 +76,7 @@ export default function PopularProducts() {
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className=" rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
+                  className="rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
                   custom={index}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -85,14 +86,20 @@ export default function PopularProducts() {
                     <div className="flex items-center justify-center flex-grow h-56">
                       <Image
                         src={
-                          category.bg_Img
-                            ? `${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`
+                          NEXI_CDN_URL && category.bg_Img
+                            ? `${NEXI_CDN_URL}/category/${category.bg_Img}`
                             : "/placeholder.png"
                         }
                         alt={category.name}
                         width={200}
                         height={192}
                         className="object-contain max-w-full max-h-48"
+                        onError={(e) => {
+                          console.error(
+                            `Failed to load image: ${NEXI_CDN_URL}/category/${category.bg_Img}`
+                          );
+                          e.target.src = "/placeholder.png";
+                        }}
                       />
                     </div>
                     <div className="mt-4 text-center min-h-[40px]">
@@ -125,4 +132,4 @@ export default function PopularProducts() {
       </div>
     </div>
   );
-}
+} 

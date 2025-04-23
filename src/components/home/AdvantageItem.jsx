@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Slide & fade variant for section entrance
+const fadeSlide = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+};
+
+// Card animation variants for entry & exit
 const cardVariants = {
-  hidden: { opacity: 0, x: 100 },  
-  visible: { opacity: 1, x: 0 },   
-  exit: { opacity: 0, x: -100 },   
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+  exit: { opacity: 0, x: -100, transition: { duration: 0.8, ease: 'easeIn' } },
 };
 
 const cards = [
   {
-    videoSrc: '/home/packets.mp4',
+    videoSrc: '/home/packet.mp4',
     title: 'Low MOQ',
     description:
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.',
@@ -20,7 +28,6 @@ const cards = [
     description:
       'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.',
   },
-  
 ];
 
 const AdvantageCard = ({ videoSrc, title, description, onVideoEnd }) => (
@@ -29,11 +36,9 @@ const AdvantageCard = ({ videoSrc, title, description, onVideoEnd }) => (
     initial="hidden"
     animate="visible"
     exit="exit"
-    transition={{ duration: 0.8 }}
-    className="flex flex-col lg:flex-row items-center bg-white shadow-lg  overflow-hidden w-full "
+    className="flex flex-col lg:flex-row items-center bg-white overflow-hidden w-full my-16 "
   >
-    {/* Video Section */}
-    <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] bg-blue-900 flex items-center justify-center">
+    <div className="w-full h-64 sm:h-80 md:h-full bg-blue-900 flex items-center justify-center">
       <video
         src={videoSrc}
         className="w-full h-full object-cover"
@@ -43,10 +48,8 @@ const AdvantageCard = ({ videoSrc, title, description, onVideoEnd }) => (
         onEnded={onVideoEnd}
       />
     </div>
-
-    {/* Text Section */}
-    <div className="w-full text-center">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-[1000] text-blue-900 mb-4">
+    <div className="w-full p-6 text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-900 mb-4">
         {title}
       </h2>
       <p className="text-blue-900 text-sm sm:text-base md:text-lg font-medium leading-relaxed">
@@ -57,26 +60,58 @@ const AdvantageCard = ({ videoSrc, title, description, onVideoEnd }) => (
 );
 
 const Advantages = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleVideoEnd = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % cards.length);
+    setCurrentIndex((prev) => (prev + 1) % cards.length);
+  };
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + cards.length) % cards.length);
+  };
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % cards.length);
   };
 
   const currentCard = cards[currentIndex];
 
   return (
-    <div className="bg-white min-h-screen flex items-center justify-center">
-      <AnimatePresence mode="wait">
-        <AdvantageCard
-          key={currentIndex}
-          videoSrc={currentCard.videoSrc}
-          title={currentCard.title}
-          description={currentCard.description}
-          onVideoEnd={handleVideoEnd}
-        />
-      </AnimatePresence>
-    </div>
+    <motion.section
+      ref={sectionRef}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+      variants={fadeSlide}
+      className="relative bg-white w-full min-h-full  flex items-center justify-center"
+    >
+      <div className="relative w-full">
+        <AnimatePresence mode="wait">
+          <AdvantageCard
+            key={currentIndex}
+            videoSrc={cards[currentIndex].videoSrc}
+            title={cards[currentIndex].title}
+            description={cards[currentIndex].description}
+            onVideoEnd={handleVideoEnd}
+          />
+        </AnimatePresence>
+
+        {/* Arrow Controls */}
+        <div className="absolute inset-0 flex items-center justify-between px-2">
+          <button
+            onClick={goToPrevious}
+            className="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100"
+          >
+            <ChevronLeft size={24} className="text-blue-900" />
+          </button>
+          <button
+            onClick={goToNext}
+            className="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100"
+          >
+            <ChevronRight size={24} className="text-blue-900" />
+          </button>
+        </div>
+      </div>
+    </motion.section>
   );
 };
 

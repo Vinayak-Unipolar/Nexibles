@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
           <AuthProvider>
             <TextInputProvider>
               <div>
+              
                 {children}
               </div>
               <ToastContainer />

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const cardVariants = {
-  hidden: { opacity: 0, x: 100 },  // Start from the right
-  visible: { opacity: 1, x: 0 },   // Slide into place
-  exit: { opacity: 0, x: -100 },   // Slide out to the left
+  hidden: { opacity: 0, x: 100 },  
+  visible: { opacity: 1, x: 0 },   
+  exit: { opacity: 0, x: -100 },   
 };
 
 const cards = [

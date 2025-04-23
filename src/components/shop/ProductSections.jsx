@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import ProductStock from "../../../public/home/NexiClassic Banner.webp";
 import Customization from "../../../public/home/Customisation Banner.webp";
@@ -11,22 +10,21 @@ const fadeSlide = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
 };
 
+const imageVariants = {
+  hidden: (direction) => ({
+    opacity: 0,
+    x: direction === "left" ? -100 : 100,
+  }),
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
 const ProductSections = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-
-  // Animation variants
-  const imageVariants = {
-    hidden: (direction) => ({
-      opacity: 0,
-      x: direction === "left" ? -100 : 100,
-    }),
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
 
   return (
     <div>
@@ -38,7 +36,7 @@ const ProductSections = () => {
             src={ProductStock.src}
             alt="Stock Products"
             loading="lazy"
-            className="w-full h-full object-contain"
+            className="object-contain w-full h-full"
           />
           <motion.div
             initial="hidden"
@@ -48,7 +46,7 @@ const ProductSections = () => {
             layout
             className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[60%] md:left-[57%] border-t-2 w-[300px]"
           >
-            <h2 className="text-xl md:text-4xl font-light pr-2">EXPLORE</h2>
+            <h2 className="pr-2 text-xl font-light md:text-4xl">EXPLORE</h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[300px]">NEXICLASSIC</h1>
           </motion.div>
         </Link>
@@ -59,7 +57,7 @@ const ProductSections = () => {
             src={Customization.src}
             alt="Customization Tool"
             loading="lazy"
-            className="w-full h-full object-contain"
+            className="object-contain w-full h-full"
           />
           <motion.div
             initial="hidden"

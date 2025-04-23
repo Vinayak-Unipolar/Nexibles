@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 import WhatWeDo from "@/components/home/WhatWeDo";
@@ -20,7 +20,7 @@ import Pop_up_image from "../../public/home/pop_up.png";
 
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
-  const token = process.env.NEXT_PUBLIC_API_KEY; // Ensure this is configured in your environment
+  const token = process.env.NEXT_PUBLIC_API_KEY;
 
   if (!isOpen) return null;
 
@@ -37,12 +37,12 @@ const Modal = ({ isOpen, onClose }) => {
           "Content-type": "application/json",
           "API-Key": token,
         },
-        body: JSON.stringify({ email: email,origin: "nexibles" }),
+        body: JSON.stringify({ email: email, origin: "nexibles" }),
       });
       if (response.ok) {
         toast.success("Successfully subscribed!");
         setEmail("");
-        onClose(); // Close modal after successful subscription
+        onClose();
       } else {
         toast.error("Subscription failed. Please try again.");
       }
@@ -53,54 +53,77 @@ const Modal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-3xl max-w-md w-full mx-4 relative flex flex-col">
-        {/* Top Half: Image */}
-        <div className="relative w-full h-48">
+      <div className="bg-white rounded-2xl max-w-md w-full mx-4 relative overflow-hidden">
+        {/* Close button (X) */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-black hover:text-gray-700 z-10 bg-white rounded-full p-1"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        {/* Top Half: Product Image */}
+        <div className="relative w-full h-52">
           <img
             src={Pop_up_image.src}
-            alt="Modal Banner"
-            className="w-full h-full object-cover rounded-t-3xl"
+            alt="Nexibles Product"
+            className="w-full h-full object-cover"
           />
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 text-white hover:text-gray-300 bg-gray-800 bg-opacity-50 rounded-full p-1"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
         </div>
-        {/* Bottom Half: Text, Email Input, Button, and Social Icons */}
-        <div className="px-6 pb-3 pt-1 flex flex-col items-center">
-          <h2 className="text-gray-600 mb- text-center">
-            Subscribe To Our Newsletter!
-          </h2>
-          <p className="text-xl font-bold mb-2 text-center">
-            Receive Offers your next order, exclusive offers & more!
+
+        {/* Bottom Half: Content */}
+        <div className="p-6 flex flex-col items-center">
+          <p className="text-gray-500 uppercase text-xs tracking-wide mb-1">
+            SUBSCRIBE TO OUR NEWSLETTER!
           </p>
+          
+          <h2 className="text-xl font-bold mb-6 text-center">
+            Receive Offers Your Next Order,<br />
+            Exclusive Offers & More!
+          </h2>
+          
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="w-full p-2 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600"
+            placeholder="Enter your e-mail"
+            className="w-[80%] p-3 mb-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-gray-400"
           />
+          
           <button
             onClick={handleSubscribe}
-            className="w-full bg-black text-white py-2.5 rounded-full border-2 border-transparent hover:bg-white hover:text-black hover:border-black font-semibold transition-all duration-300"
+            className="w-[80%] bg-black text-white py-3 rounded-xl border-2 border-transparent hover:bg-white hover:text-black hover:border-black font-medium transition-all duration-300 uppercase mb-6"
           >
-            SUBSCRIBE
+            Subscribe
           </button>
+          
+          {/* Social Media Icons */}
+          <div className="flex space-x-4 justify-center">
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaFacebookF size={18} />
+            </a>
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaTwitter size={18} />
+            </a>
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaInstagram size={18} />
+            </a>
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaPinterestP size={18} />
+            </a>
+          </div>
         </div>
       </div>
     </div>

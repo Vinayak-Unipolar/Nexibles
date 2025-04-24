@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import ForgotPassword from './ForgotPassword';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
-
+import login_image from '../../../public/Pictures/Factory Facade.png';
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
@@ -194,7 +194,7 @@ function Login() {
                         >
                             <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
-                                    src="/Pictures/Factory Facade.png"
+                                    src={login_image.src}
                                     alt="Auth illustration"
                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                 />

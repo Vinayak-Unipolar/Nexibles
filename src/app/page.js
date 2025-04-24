@@ -16,7 +16,7 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/pop_up.png";
+import Pop_up_image from "../../public/home/Tea.jpg";
 
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
@@ -78,7 +78,7 @@ const Modal = ({ isOpen, onClose }) => {
           <img
             src={Pop_up_image.src}
             alt="Nexibles Product"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-fill"
           />
         </div>
 

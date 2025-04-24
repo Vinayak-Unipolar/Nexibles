@@ -272,7 +272,7 @@ function Login() {
 
                                         <div className="mt-4 text-center">
                                             <p className="text-gray-600">
-                                                Don't have an account?{" "}
+                                                {`Don't have an account?`}{" "}
                                                 <span
                                                     onClick={toggleForm}
                                                     className="text-[#103b60] cursor-pointer font-medium"

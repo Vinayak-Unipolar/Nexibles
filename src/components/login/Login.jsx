@@ -194,9 +194,9 @@ function Login() {
                         >
                             <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
-                                    src="/Pictures/Factory.png"
+                                    src="/Pictures/Factory Facade.png"
                                     alt="Auth illustration"
-                                    className="object-fill w-full h-full rounded-lg shadow-lg"
+                                    className="object-cover w-full h-full rounded-lg shadow-lg"
                                 />
                             </div>
                         </motion.div>

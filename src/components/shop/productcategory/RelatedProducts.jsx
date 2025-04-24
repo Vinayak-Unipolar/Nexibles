@@ -167,7 +167,7 @@ export default function RelatedProducts({ productDetails }) {
                         {product.name}
                       </h3>
                       <div className="flex items-center justify-center mt-1">
-                        <h3 className="text-[5pt] sm:text-xs md:text-xs truncate ">
+                        <h3 className="mt-1 text-xs text-gray-500 line-clamp-1">
                           ({product.material})
                         </h3>
                       </div>

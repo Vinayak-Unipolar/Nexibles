@@ -12,9 +12,9 @@ const Mydashboard = () => {
         <div>
             <Navbar />
             <div className="md:flex bg-white containers">
-                <div className="md:w-1/3 w-full">
+                {/* <div className="md:w-1/3 w-full">
                     <MyAccount />
-                </div>
+                </div> */}
                 <div className="md:w-full w-full">
                     <MyDashboard />
                 </div>

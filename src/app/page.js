@@ -88,13 +88,22 @@ const Modal = ({ isOpen, onClose }) => {
           >
             Subscribe
           </button>
-
-          <div className="flex space-x-4 justify-center">
-            <a href="#" className="text-black hover:text-gray-600"><FaFacebookF size={18} /></a>
-            <a href="#" className="text-black hover:text-gray-600"><FaTwitter size={18} /></a>
-            <a href="#" className="text-black hover:text-gray-600"><FaInstagram size={18} /></a>
-            <a href="#" className="text-black hover:text-gray-600"><FaPinterestP size={18} /></a>
-          </div>
+          
+          {/* Social Media Icons */}
+          {/* <div className="flex space-x-4 justify-center">
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaFacebookF size={18} />
+            </a>
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaTwitter size={18} />
+            </a>
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaInstagram size={18} />
+            </a>
+            <a href="#" className="text-black hover:text-gray-600">
+              <FaPinterestP size={18} />
+            </a>
+          </div> */}
         </div>
       </div>
     </div>

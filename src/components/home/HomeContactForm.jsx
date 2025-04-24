@@ -128,7 +128,7 @@ const HomeContactForm = () => {
               </div>
               <div>
                 <button
-                  className="px-6 py-2 bg-[#30384E] rounded-md text-white border-[3px] border-white-2"
+                  className="px-6 py-2 bg-[#103b60] rounded-md text-white border-[3px] border-white-2"
                   type="submit"
                   disabled={isSubmitting}
                 >

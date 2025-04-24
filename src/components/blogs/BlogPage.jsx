@@ -98,7 +98,7 @@ function BlogPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-4 py-2 text-sm font-medium text-gray-800 bg-white rounded hover:bg-blue-50"
+                    className="px-4 py-2 text-sm font-medium text-gray-800 bg-yellow-500 rounded hover:bg-blue-50"
                   >
                     Read More
                   </motion.button>

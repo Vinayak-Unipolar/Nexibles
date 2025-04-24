@@ -7,16 +7,29 @@ import finishoptions from '../../../public/features/finishoptions.png';
 import highlyadaptable from '../../../public/features/highlyadaptable.png';
 import degree from '../../../public/features/degree.png';
 
+
 const AllCategoryCards = ({ categoryData }) => {
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
 
   // Take the first three items from categoryData for the 3-box grid
   const topThreeCategories = categoryData.slice(0, 3);
 
+  // Helper function to determine image URL with format fallback
+  const getImageUrl = (imageName) => {
+    if (!imageName || !NEXI_CDN_URL) return "/placeholder.png";
+    
+    // Remove any existing extension if present
+    const baseImageName = imageName.replace(/\.(webp|png)$/i, "");
+    
+    // Try .webp first, then .png
+    const extension = ".webp"; // Default to .webp
+    return `${NEXI_CDN_URL}/features/${baseImageName}${extension}`;
+  };
+
   return (
     <div className="h-auto bg-white">
-
       {/* All Categories title */}
       <div className="px-4 mb-10 md:px-64">
         <p className="text-center text-[30px] md:text-[40px] font-semibold">
@@ -33,11 +46,19 @@ const AllCategoryCards = ({ categoryData }) => {
             >
               <Link href={`/category/${category.cat_url}`} passHref>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`}
+                  src={`${NEXI_CDN_URL}/category/${category.bg_Img}`}
                   alt={category.name}
                   className="object-contain transition-transform duration-300 hover:scale-105"
                   layout="fill"
                   objectFit="contain"
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${getImageUrl(category.bg_Img)}`);
+                    if (e.target.src.includes(".webp")) {
+                      e.target.src = getImageUrl(category.bg_Img).replace(".webp", ".png");
+                    } else {
+                      e.target.src = "/placeholder.png";
+                    }
+                  }}
                 />
               </Link>
             </div>

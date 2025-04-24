@@ -28,6 +28,7 @@
     "react-redux": "^9.2.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.27.0",
+    "react-select": "^5.10.1",
     "react-shapes": "^0.1.0",
     "react-slick": "^0.29.0",
     "react-toastify": "^10.0.3",

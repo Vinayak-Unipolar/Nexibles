@@ -18,7 +18,7 @@ const Industries = () => {
   const isInView = useInView(sectionRef, {
     once: true,
     amount: 0.5,
-    margin: "0px 0px -100px 0px", // Delay until section is closer to viewport center
+    margin: "0px 0px -100px 0px",
   });
 
   // Fetch industries data

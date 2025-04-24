@@ -21,7 +21,6 @@ const Industries = () => {
     margin: "0px 0px -100px 0px",
   });
 
-  // Fetch industries data
   useEffect(() => {
     const fetchIndustries = async () => {
       try {

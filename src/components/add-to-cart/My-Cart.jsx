@@ -330,7 +330,7 @@ export default function MyCart() {
               />
               <button
                 onClick={applyPromoCode}
-                className="px-4 py-2 bg-black text-white rounded-b-md sm:rounded-b-none sm:rounded-r-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-black"
+                className="px-4 py-2 bg-[#103b60] text-white rounded-b-md sm:rounded-b-none sm:rounded-r-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-black"
               >
                 Apply
               </button>
@@ -356,7 +356,7 @@ export default function MyCart() {
             <p className="text-gray-900 font-bold text-xl md:text-2xl">₹ {calculateGrandTotal().toFixed(2)}</p>
           </div>
           <button
-            className="w-full px-6 py-3 bg-black text-white rounded-md uppercase font-bold text-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            className="w-full px-6 py-3 bg-[#103b60] text-white rounded-md uppercase font-bold text-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
             onClick={createOrder}
             disabled={isProcessingOrder}
           >

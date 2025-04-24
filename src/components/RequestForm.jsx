@@ -690,7 +690,7 @@ function RequestForm() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#252A3D] text-white p-2 rounded-md hover:bg-[#252A3D] focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base"
+                className="w-full bg-[#103b60] text-white p-2 rounded-md hover:bg-[#103b60] focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base"
               >
                 Submit
               </button>

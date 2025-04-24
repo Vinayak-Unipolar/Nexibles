@@ -124,7 +124,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
                     </div>
                     <div className="flex flex-col items-center justify-center ml-2">
                       <h2 className="text-base font-semibold text-gray-900 line-clamp-1">{product.name}</h2>
-                      <div className="mt-1 text-xs text-gray-500">
+                      <div className="mt-1 text-xs text-gray-500 line-clamp-1">
                         <p>({product.material})</p>
                       </div>
                     </div>

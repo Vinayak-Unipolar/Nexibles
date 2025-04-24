@@ -64,8 +64,8 @@ export default function AddToCart() {
                                 <option value="">300 QTY</option>
                             </select>
                             <Link href="/ordersummary">
-                                <button className="bg-[#111B36] text-white px-7 md:py-2 uppercase rounded-full">
-                                    add to cart
+                                <button className="bg-[#103b60] text-white px-7 md:py-2 uppercase rounded-full">
+                                    Add to cart
                                 </button>
                             </Link>
                         </div>

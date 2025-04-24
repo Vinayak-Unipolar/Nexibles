@@ -368,15 +368,15 @@ export default function Configuration() {
               </div>
  
               <div className="mt-8 space-y-4">
-                <motion.button
-                  className="w-full py-3 px-4 bg-black text-white font-medium rounded-lg transition-all duration-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                {/* <motion.button
+                  className="w-full py-3 px-4 bg-[#103b60] text-white font-medium rounded-lg transition-all duration-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   Add To Cart
-                </motion.button>
+                </motion.button> */}
                 <motion.button
-                  className="w-full py-3 px-4 bg-white text-black font-medium rounded-lg border border-gray-300 transition-all duration-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+                  className="w-full py-3 px-4 bg-[#103b60] text-black font-medium rounded-lg border border-gray-300 transition-all duration-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >

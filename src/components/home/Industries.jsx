@@ -130,7 +130,7 @@ const Industries = () => {
             style={{ width: `${viewportWidth}px`, maxWidth: "100%" }}
           >
             <motion.div
-              className="flex"
+              className="flex "
               style={{ gap: `${gap}px` }}
               animate={isInView ? { x: -(cardWidth + gap) * currentIndex } : { x: 0 }}
               transition={{ duration: 0.7, ease: "easeInOut" }}
@@ -150,7 +150,7 @@ const Industries = () => {
                       .replace(/\s+/g, "-")}`}
                     className="p-2 pb-4  rounded-xl"
                   >
-                    <div className="relative h-48 md:h-[400px] w-full flex items-center justify-center">
+                    <div className="relative h-48 md:h-[400px] w-full flex items-center  justify-center">
                       <Image
                         src={`${CDN_URL}/industries/${category.image}`}
                         width={400}

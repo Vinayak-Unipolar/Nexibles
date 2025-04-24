@@ -149,7 +149,7 @@ const Industries = () => {
                     href={`/industries/${category.name
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}
-                    className="p-2 pb-4 overflow-hidden bg-white border border-gray-200 rounded-xl"
+                    className="p-2 pb-4  rounded-xl"
                   >
                     <div className="relative h-48 md:h-[400px] w-full flex items-center justify-center">
                       <Image
@@ -162,9 +162,9 @@ const Industries = () => {
                         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       />
                     </div>
-                    <div className="flex flex-col items-center justify-center mt-2 text-center">
+                    <div className="flex flex-col items-center justify-center mt-2 mx-[22px] text-center">
                       <div
-                        className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 bg-white rounded-lg sm:px-3 sm:py-2 md:text-lg hover:bg-black hover:text-white"
+                        className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 bg-[#ffd13e] rounded-lg sm:px-3 sm:py-2 md:text-lg hover:bg-yellow-500"
                       >
                         {category.name}
                       </div>

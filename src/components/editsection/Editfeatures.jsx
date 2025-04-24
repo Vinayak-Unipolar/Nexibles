@@ -20,7 +20,7 @@ const Editfeatures = ({ selectedComponent, onPreviewClick }) => {
                 </div>
                 <div className="flex justify-center items-center">
                     <div className="h-8 w-0.5 bg-gray-400 mx-4"></div>
-                    {/* save button */}
+                 
                     <Link href="/design-preview">
                         <div className="bg-gray-100 border border-gray-300 h-8 w-8 p-1 rounded-full text-gray-900 flex items-center justify-center cursor-pointer">
                             <MdDoneOutline />
@@ -38,17 +38,17 @@ const Editfeatures = ({ selectedComponent, onPreviewClick }) => {
                     </div>
                 </div>
                 <div className="flex justify-end items-center space-x-4 ml-36 mt-2">
-                    {/* Preview Button */}
+                 
                     <div>
-                        <button className="bg-[#30384E] rounded-md px-4 py-2 uppercase flex items-center justify-center space-x-2"
+                        <button className="bg-[#103b60] rounded-md px-4 py-2 uppercase flex items-center justify-center space-x-2"
                             onClick={onPreviewClick}>
                             <IoMdEye className="text-white" size={24} />
                             <span className="text-white">Preview</span>
                         </button>
                     </div>
-                    {/* Download Button */}
+                
                     <div>
-                        <button className="bg-black px-4 py-2 uppercase rounded-full flex items-center justify-center space-x-2">
+                        <button className="bg-[#103b60] px-4 py-2 uppercase rounded-full flex items-center justify-center space-x-2">
                             <MdOutlineFileDownload className="text-white" size={24} />
                             <span className="text-white">Download</span>
                         </button>

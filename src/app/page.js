@@ -54,7 +54,6 @@ const Modal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl max-w-md w-full mx-4 relative overflow-hidden">
-        {/* Close button (X) */}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-black hover:text-gray-700 z-10 bg-white rounded-full p-1"
@@ -110,7 +109,7 @@ const Modal = ({ isOpen, onClose }) => {
           </button>
           
           {/* Social Media Icons */}
-          <div className="flex space-x-4 justify-center">
+          {/* <div className="flex space-x-4 justify-center">
             <a href="#" className="text-black hover:text-gray-600">
               <FaFacebookF size={18} />
             </a>
@@ -123,7 +122,7 @@ const Modal = ({ isOpen, onClose }) => {
             <a href="#" className="text-black hover:text-gray-600">
               <FaPinterestP size={18} />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -202,7 +202,7 @@ const HeaderSection = () => {
                           ENDLESS POUCHES
                         </motion.h2>
                         <motion.h1
-                          className="text-[7vw] md:text-[7.6vw] font-extrabold tracking-wider text-center font-[1000] italic"
+                          className="text-[7vw] md:text-[7.6vw] tracking-wider text-center font-[1000] italic"
                           variants={textVariants}
                         >
                           ENDLESS POSSIBILITIES
@@ -213,7 +213,7 @@ const HeaderSection = () => {
                         >
                           <a
                             href="/shop"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
                           >
                             Explore Pouches
                           </a>
@@ -232,8 +232,8 @@ const HeaderSection = () => {
                           variants={buttonVariants}
                         >
                           <a
-                            href="/all-category"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
+                            href="/businesses"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
                           >
                             Explore Industries
                           </a>

@@ -264,16 +264,16 @@ const MyOrderHistory = () => {
 
     return (
         <div className="min-h-screen">
-            
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+            <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-12">
                 <div className="space-y-6 md:mt-16">
                     {orders.length === 0 ? (
                         <p className="text-gray-900">No orders found.</p>
                     ) : (
                         Object.entries(groupOrdersByOrderNo()).map(([orderNo, orderGroup]) => (
-                            <div key={orderNo} className="bg-white rounded-lg shadow-lg border border-gray-200">
+                            <div key={orderNo} className="bg-white border border-gray-200 rounded-lg shadow-lg">
                                 <div className="p-4 sm:p-6">
-                                    <h2 className="font-bold text-lg sm:text-xl mb-4">Order #{orderNo}</h2>
+                                    <h2 className="mb-4 text-lg font-bold sm:text-xl">Order #{orderNo}</h2>
 
                                     {orderGroup.map(order => {
                                         const displayPrice = order.discountedPrice ? parseFloat(order.discountedPrice) : order.price;
@@ -281,19 +281,19 @@ const MyOrderHistory = () => {
                                         const skus = generateSkuData(order.skuCount);
 
                                         return (
-                                            <div key={order.id} className="flex flex-col lg:flex-row gap-6 py-4 border-t first:border-t-0">
-                                                <div className="w-full lg:w-80 flex-shrink-0">
+                                            <div key={order.id} className="flex flex-col gap-6 py-4 border-t lg:flex-row first:border-t-0">
+                                                <div className="flex-shrink-0 w-full lg:w-80">
                                                     <img
-                                                        src={`${CDN_URL}/${order.image}`}
+                                                        src={`${CDN_URL}/product/${order.image}`}
                                                         alt={order.product_name}
-                                                        className="w-full h-64 lg:h-80 object-contain rounded-md"
+                                                        className="object-contain w-full h-64 rounded-md lg:h-80"
                                                     />
                                                 </div>
 
                                                 <div className="flex-grow space-y-4">
-                                                    <h3 className="font-bold text-xl text-gray-900">{order.product_name}</h3>
+                                                    <h3 className="text-xl font-bold text-gray-900">{order.product_name}</h3>
 
-                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                                    <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
                                                         <p><span className="font-semibold">Order Date:</span> {formatDate(order.orderDate)}</p>
                                                         <p><span className="font-semibold">Quantity:</span> {order.quantity}</p>
                                                         <p><span className="font-semibold">Sku Count:</span> {order.skuCount}</p>
@@ -314,9 +314,9 @@ const MyOrderHistory = () => {
                                                         )}
                                                     </div>
 
-                                                    <div className="space-y-4 pt-4">
+                                                    <div className="pt-4 space-y-4">
                                                         <button
-                                                            className="inline-flex items-center px-4 py-2 bg-[#30384E] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm"
+                                                            className="inline-flex items-center px-4 py-2 bg-[#103b60] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm"
                                                             onClick={() => handleKeylineDownload(orderNo, order.product_id)}
                                                         >
                                                             <FiDownload className="mr-2" size={16} />
@@ -334,7 +334,7 @@ const MyOrderHistory = () => {
                                                                                     type="text"
                                                                                     value={skuNames[`${orderNo}_${sku.sku_no}`] }
                                                                                     onChange={(e) => handleSkuNameChange(orderNo, sku.sku_no, e.target.value)}
-                                                                                    className="border border-gray-300 rounded-md px-2 py-1 w-40"
+                                                                                    className="w-40 px-2 py-1 border border-gray-300 rounded-md"
                                                                                     placeholder="Enter SKU Name"
                                                                                 />
                                                                                 <label
@@ -361,7 +361,7 @@ const MyOrderHistory = () => {
 
                                                                 {orderFiles[orderNo] && orderFiles[orderNo].length > 0 && (
                                                                     <div className="mt-4 text-sm">
-                                                                        <h3 className="font-semibold mb-2">Uploaded Files:</h3>
+                                                                        <h3 className="mb-2 font-semibold">Uploaded Files:</h3>
                                                                         <div className="space-y-2">
                                                                             {orderFiles[orderNo].map((file) => (
                                                                                 <div
@@ -383,7 +383,7 @@ const MyOrderHistory = () => {
                                                         )}
 
                                                         {!keylineDownloaded[orderNo] && !hasOrderFiles(orderNo) && (
-                                                            <p className="text-gray-600 text-sm italic">
+                                                            <p className="text-sm italic text-gray-600">
                                                                 Download the keyline to upload the design
                                                             </p>
                                                         )}

@@ -31,7 +31,6 @@ export default function DesignPreview() {
                                 className="h-[449px] w-[449px]"
                             />
                         </div>
-                        {/* Front Back toggle switch button */}
                         <div className="mt-4">
                             <label htmlFor="toggle" className="flex items-center cursor-pointer">
                                 <span className="text-gray-700 font-medium mr-2">

@@ -51,7 +51,7 @@ export default function MyProjects() {
                                 </div>
                                 <div className="flex justify-start items-center px-6 py-4">
                                     <div className="space-x-4 flex justify-start items-center">
-                                        <button className="bg-[#30384E] rounded-md text-white w-44 px-2 py-1 uppercase">add to cart</button>
+                                        <button className="bg-[#103b60] rounded-md text-white w-44 px-2 py-1 uppercase">Add to cart</button>
                                         <p className="text-gray-900 font-bold">QTY {project.quantity} at &#8377; {project.price}</p>
                                     </div>
                                     <div className="flex items-center justify-center space-x-4 ml-16">

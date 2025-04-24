@@ -188,12 +188,12 @@ export default function PCCardDetails({ productDetails }) {
       Promise.all([fetchAdditionalImages])
         .then(([additionalImagesData]) => {
           const defaultImage = productDetails?.product?.image
-            ? `${process.env.NEXT_PUBLIC_CDN_URL}/${productDetails.product.image}`
+            ? `${process.env.NEXT_PUBLIC_CDN_URL}/product/${productDetails.product.image}`
             : null;
 
           const additionalImages =
             additionalImagesData.status === 'success' && additionalImagesData.data
-              ? additionalImagesData.data.map(img => `${process.env.NEXT_PUBLIC_CDN_URL}/${img.image_url}`)
+              ? additionalImagesData.data.map(img => `${process.env.NEXT_PUBLIC_CDN_URL}/product/${img.image_url}`)
               : [];
 
           setProductImages([defaultImage, ...additionalImages].filter(Boolean));
@@ -218,15 +218,15 @@ export default function PCCardDetails({ productDetails }) {
   }
 
   return (
-    <div className="min-h-screen h-auto">
-      <div className="containers mx-auto px-4 ">
+    <div className="h-auto min-h-screen">
+      <div className="px-4 mx-auto containers ">
         <div className="flex flex-col md:flex-row md:gap-8">
           <div className="w-full h-[45vh] md:w-1/2">
             <ProductImages
               productImages={productImages}
               defaultImage={
                 productImages[0] ||
-                `${process.env.NEXT_PUBLIC_CDN_URL}/${productDetails.product.image}`
+                `${process.env.NEXT_PUBLIC_CDN_URL}/product/${productDetails.product.image}`
               }
               onImageClick={() => setIsModalOpen(true)}
             />
@@ -261,17 +261,17 @@ export default function PCCardDetails({ productDetails }) {
               isDeliveryAvailable={isDeliveryAvailable}
               deliveryEstimate={deliveryEstimate}
             />
-            
+
           </div>
         </div>
         <div className="mt-8 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
         </div>
-        <hr className="border-gray-300 mb-6" />
+        <hr className="mb-6 border-gray-300" />
         <div className="mt-6 md:mt-10">
           <ReviewSection productDetails={productDetails} />
         </div>
-        <div className="mt-6 md:mt-20 mb-8 md:mb-12">
+        <div className="mt-6 mb-8 md:mt-20 md:mb-12">
           <RelatedProducts productDetails={productDetails} />
         </div>
       </div>

@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import speci from '../../../../public/home/speci.png';
+// import speci from '../../../../public/home/speci.png';
 import Loader from '@/components/comman/Loader';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Animation variants
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { 
+    transition: {
       duration: 0.5,
       when: "beforeChildren",
-      staggerChildren: 0.1 
+      staggerChildren: 0.1
     }
   }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.4 }
   }
 };
 
 const faqVariants = {
-  collapsed: { 
-    opacity: 0, 
+  collapsed: {
+    opacity: 0,
     height: 0,
     transition: { duration: 0.3 }
   },
-  expanded: { 
-    opacity: 1, 
+  expanded: {
+    opacity: 1,
     height: "auto",
     transition: { duration: 0.3 }
   }
@@ -60,7 +60,7 @@ export default function Overview({ productDetails, productImages }) {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
-            'API-Key': token, 
+            'API-Key': token,
           },
         });
         const data = await response.json();
@@ -92,20 +92,20 @@ export default function Overview({ productDetails, productImages }) {
       {productDetails?.product?.long_desc && (
         <>
           <hr className="border-gray-300 my-8" />
-          <motion.div 
+          <motion.div
             className="px-6 md:py-2"
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
           >
             <div className="mb-4">
-              <motion.h2 
+              <motion.h2
                 className="text-gray-900 font-bold md:text-2xl mb-2"
                 variants={itemVariants}
               >
                 Description
               </motion.h2>
-              <motion.div 
+              <motion.div
                 className="flex flex-col md:flex-row"
                 variants={itemVariants}
               >
@@ -132,15 +132,15 @@ export default function Overview({ productDetails, productImages }) {
           <Loader />
         ) : faqs.length > 0 ? (
           <div>
-            <motion.h2 
+            <motion.h2
               className="text-gray-900 font-bold text-2xl mb-4"
               variants={itemVariants}
             >
               FAQs
             </motion.h2>
             {faqs.map((faq, index) => (
-              <motion.div 
-                key={faq.id} 
+              <motion.div
+                key={faq.id}
                 className="border-b border-gray-300 py-4"
                 variants={itemVariants}
               >
@@ -153,7 +153,7 @@ export default function Overview({ productDetails, productImages }) {
                   <p className="text-lg text-gray-700 font-semibold">
                     Q. {faq.question}
                   </p>
-                  <motion.span 
+                  <motion.span
                     className="text-2xl text-gray-500"
                     animate={{ rotate: expandedFaq === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}

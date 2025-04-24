@@ -37,16 +37,16 @@ function Page() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen px-4">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded max-w-md w-full text-center">
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div className="w-full max-w-md px-4 py-3 text-center text-red-700 bg-red-100 border border-red-400 rounded">
           <p>{error}</p>
         </div>
       </div>
@@ -56,7 +56,7 @@ function Page() {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-50 min-h-screen pt-14 pb-12">
+      <div className="min-h-screen pb-12 bg-gray-50 pt-14">
         <main className="">
           <motion.div
             className="mb-8 sm:mb-10"
@@ -68,10 +68,10 @@ function Page() {
               <img
                 src={categoryimg.src}
                 alt="Types of Pouches"
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
               />
               <div className="absolute bottom-[8%] left-[2%] z-10">
-                <div className="border-b border-t border-gray-800 px-3 sm:py-2 sm:px-4">
+                <div className="px-3 border-t border-b border-gray-800 sm:py-2 sm:px-4">
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-[#231f20]">
                     TYPES OF
                   </h1>
@@ -83,11 +83,11 @@ function Page() {
             </div>
           </motion.div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl text-center font-bold text-gray-800 mb-8 sm:mb-12">
+          <h2 className="mb-8 text-2xl font-bold text-center text-gray-800 sm:text-3xl md:text-4xl sm:mb-12">
             Explore Industries
           </h2>
           <motion.div
-            className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 p-2"
+            className="grid grid-cols-2 gap-4 p-2 mx-auto max-w-7xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-6"
             initial="hidden"
             animate="visible"
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
@@ -99,21 +99,21 @@ function Page() {
               >
                 <motion.div
                   variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.5 } } }}
-                  className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+                  className="overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow cursor-pointer hover:shadow-md"
                 >
                   <div className="relative h-40 sm:h-auto">
                     <img
-                      src={`${CDN_URL}/${industry.image}`}
+                      src={`${CDN_URL}/industries/${industry.image}`}
                       alt={industry.name}
-                      className="w-full h-full object-cover"
+                      className="object-cover w-full h-full"
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">{industry.name}</h3>
-                    <p className="text-xs sm:text-sm text-gray-700 mb-3 line-clamp-2">
+                    <h3 className="mb-1 text-base font-semibold text-gray-900 sm:text-lg">{industry.name}</h3>
+                    <p className="mb-3 text-xs text-gray-700 sm:text-sm line-clamp-2">
                       {industry.description}
                     </p>
-                    <span className="text-blue-600 text-sm font-semibold">
+                    <span className="text-sm font-semibold text-blue-600">
                       Read more →
                     </span>
                   </div>

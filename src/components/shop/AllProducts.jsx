@@ -67,7 +67,7 @@ export default function NexiblesProducts() {
           All Products
         </motion.h2>
 
-        {/* 
+        {/*
           Responsive grid:
           - On phone (below md): 2 columns per row
           - On md and above: 4 fixed columns (220px each)
@@ -103,6 +103,9 @@ export default function NexiblesProducts() {
                     <div className="mt-4 text-center min-h-[40px]">
                       <p className="text-black font-bold text-xs uppercase tracking-wider">
                         {product.name}
+                      </p>
+                      <p className="text-gray-700 text-[8pt] mt-1">
+                        ({product.material})
                       </p>
                     </div>
                   </Link>

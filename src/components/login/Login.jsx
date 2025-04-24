@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;
-    const APIURL = process.env.NEXT_PUBLIC_API_URL;  
+    const APIURL = process.env.NEXT_PUBLIC_API_URL;
     const [showPasswordRegister, setShowPasswordRegister] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
@@ -169,9 +169,9 @@ function Login() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const togglePasswordVisibilityRegister = () => setShowPasswordRegister(!showPasswordRegister);
-    
+
     const toggleForm = () => {
         setIsLogin(!isLogin);
     };
@@ -182,40 +182,40 @@ function Login() {
     return (
         <>
             {loading && <Loader btnLoad={false} />}
-            <div className="bg-white min-h-screen flex items-center justify-center p-4 mt-8">
-                <div className="w-full max-w-6xl shadow-xl rounded-xl border overflow-hidden">
+            <div className="flex items-center justify-center min-h-screen p-4 bg-white mt-14">
+                <div className="w-full max-w-6xl overflow-hidden border shadow-xl rounded-xl">
                     <div className="flex flex-col md:flex-row h-[600px]">
                         {/* Image Section */}
-                        <motion.div 
-                            className="md:w-1/2 w-full "
+                        <motion.div
+                            className="w-full md:w-1/2 "
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <div className="h-full flex items-center justify-center p-6 bg-gray-100">
+                            <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
                                     src="/Pictures/Factory.png"
                                     alt="Auth illustration"
-                                    className="w-full h-full object-fill rounded-lg shadow-lg"
+                                    className="object-fill w-full h-full rounded-lg shadow-lg"
                                 />
                             </div>
                         </motion.div>
-                        
+
                         {/* Form Section */}
-                        <motion.div 
-                            className="md:w-1/2 w-full bg-white p-8 overflow-y-auto"
+                        <motion.div
+                            className="w-full p-8 overflow-y-auto bg-white md:w-1/2"
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
                             {isLogin ? (
                                 <>
-                                    <h2 className="text-3xl font-bold text-gray-900 mb-4">Welcome back!</h2>
-                                    <p className="text-gray-600 mb-6">Enter to get unlimited access to data & information.</p>
-                                    
+                                    <h2 className="mb-4 text-3xl font-bold text-gray-900">Welcome back!</h2>
+                                    <p className="mb-6 text-gray-600">Enter to get unlimited access to data & information.</p>
+
                                     <form onSubmit={handleLogin} className="flex flex-col space-y-5">
                                         <div className="relative">
-                                            <FaEnvelope className="absolute top-1/2 transform -translate-y-1/2 left-4 text-gray-500" />
+                                            <FaEnvelope className="absolute text-gray-500 transform -translate-y-1/2 top-1/2 left-4" />
                                             <input
                                                 type="email"
                                                 onChange={(e) => setEmail(e.target.value)}
@@ -225,9 +225,9 @@ function Login() {
                                                 className="w-full rounded-lg border border-gray-300 py-3 pl-12 pr-4 text-gray-700 focus:border-[#103b60] focus:outline-none"
                                             />
                                         </div>
-                                        
+
                                         <div className="relative">
-                                            <FaLock className="absolute top-1/2 transform -translate-y-1/2 left-4 text-gray-500" />
+                                            <FaLock className="absolute text-gray-500 transform -translate-y-1/2 top-1/2 left-4" />
                                             <input
                                                 type={showPassword ? "text" : "password"}
                                                 onChange={(e) => setPassword(e.target.value)}
@@ -238,23 +238,23 @@ function Login() {
                                             />
                                             <span
                                                 onClick={togglePasswordVisibility}
-                                                className="absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-gray-500"
+                                                className="absolute text-gray-500 transform -translate-y-1/2 cursor-pointer top-1/2 right-4"
                                             >
                                                 {showPassword ? <FaEye /> : <FaEyeSlash />}
                                             </span>
                                         </div>
-                                        
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center">
+
+                                        <div className="flex items-center justify-center">
+                                            {/* <div className="flex items-center">
                                                 <input
                                                     type="checkbox"
                                                     id="remember"
                                                     className="h-4 w-4 text-[#103b60] focus:ring-[#103b60] border-gray-300 rounded"
                                                 />
-                                                <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+                                                <label htmlFor="remember" className="block ml-2 text-sm text-gray-700">
                                                     Remember me
                                                 </label>
-                                            </div>
+                                            </div> */}
                                             <div
                                                 onClick={() => setShowModal(true)}
                                                 className="text-sm font-medium text-[#103b60] hover:text-[#103b60] cursor-pointer"
@@ -262,15 +262,15 @@ function Login() {
                                                 Forgot your password?
                                             </div>
                                         </div>
-                                        
+
                                         <button
                                             type="submit"
                                             className="w-full bg-[#103b60] text-white py-3 rounded-lg font-medium  transition-colors"
                                         >
                                             Log in
                                         </button>
-                                        
-                                        <div className="text-center mt-4">
+
+                                        <div className="mt-4 text-center">
                                             <p className="text-gray-600">
                                                 Don't have an account?{" "}
                                                 <span
@@ -282,34 +282,17 @@ function Login() {
                                             </p>
                                         </div>
                                     </form>
-                                    
-                                    <div className="mt-6">
-                                        <div className="relative">
-                                            <div className="absolute inset-0 flex items-center">
-                                                <div className="w-full border-t border-gray-300"></div>
-                                            </div>
-                                            <div className="relative flex justify-center text-sm">
-                                                <span className="px-2 bg-white text-gray-500">Or login with</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="mt-6">
-    <button className="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-        <FcGoogle className="h-5 w-5" />
-        Sign up with Google
-    </button>
-</div>
-                                    </div>
+
                                 </>
                             ) : (
                                 <>
-                                    <h2 className="text-3xl font-bold text-gray-900 mb-4">Create an account</h2>
-                                    <p className="text-gray-600 mb-6">Join us today and get access to all features</p>
-                                    
+                                    <h2 className="mb-4 text-3xl font-bold text-gray-900">Create an account</h2>
+                                    <p className="mb-6 text-gray-600">Join us today and get access to all features</p>
+
                                     <form onSubmit={handleRegister} className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                             <div className="flex flex-col">
-                                                <label htmlFor="firstName" className="text-sm font-medium text-gray-700 mb-1">
+                                                <label htmlFor="firstName" className="mb-1 text-sm font-medium text-gray-700">
                                                     First Name
                                                 </label>
                                                 <input
@@ -321,9 +304,9 @@ function Login() {
                                                     onChange={(e) => setUserDetails({ ...userDetails, firstName: e.target.value })}
                                                 />
                                             </div>
-                                            
+
                                             <div className="flex flex-col">
-                                                <label htmlFor="lastName" className="text-sm font-medium text-gray-700 mb-1">
+                                                <label htmlFor="lastName" className="mb-1 text-sm font-medium text-gray-700">
                                                     Last Name
                                                 </label>
                                                 <input
@@ -335,9 +318,9 @@ function Login() {
                                                     onChange={(e) => setUserDetails({ ...userDetails, lastName: e.target.value })}
                                                 />
                                             </div>
-                                            
+
                                             <div className="flex flex-col">
-                                                <label htmlFor="email" className="text-sm font-medium text-gray-700 mb-1">
+                                                <label htmlFor="email" className="mb-1 text-sm font-medium text-gray-700">
                                                     Email Address
                                                 </label>
                                                 <input
@@ -349,9 +332,9 @@ function Login() {
                                                     onChange={(e) => setUserDetails({ ...userDetails, emailAddress: e.target.value })}
                                                 />
                                             </div>
-                                            
-                                            <div className="flex flex-col relative">
-                                                <label htmlFor="password" className="text-sm font-medium text-gray-700 mb-1">
+
+                                            <div className="relative flex flex-col">
+                                                <label htmlFor="password" className="mb-1 text-sm font-medium text-gray-700">
                                                     Password
                                                 </label>
                                                 <input
@@ -370,14 +353,14 @@ function Login() {
                                                 </span>
                                             </div>
                                         </div>
-                                        
+
                                         <button
                                             type="submit"
                                             className="w-full bg-[#103b60] text-white py-3 rounded-lg font-medium  transition-colors"
                                         >
                                             Create account
                                         </button>
-                                        
+
                                         <div className="text-center">
                                             <p className="text-gray-600">
                                                 Already have an account?{" "}
@@ -392,8 +375,8 @@ function Login() {
                                     </form>
                                 </>
                             )}
-                            
-                            <div className="mt-6 text-xs text-gray-500">
+
+                            <div className="flex justify-center mt-6 text-xs text-gray-500">
                                 <p>
                                     By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
                                     <Link href="#" className="text-[#103b60] hover:underline">

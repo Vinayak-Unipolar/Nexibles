@@ -204,7 +204,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                     )} */}
                 </div>
                 <div className="mt-4">
-                    <button type="submit" className="bg-[#30384E] rounded-md text-white px-8 py-2">
+                    <button type="submit" className="bg-[#103b60] rounded-md text-white px-8 py-2">
                         Use this address
                     </button>
                 </div>

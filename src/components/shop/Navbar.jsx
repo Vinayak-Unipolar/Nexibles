@@ -58,8 +58,10 @@ const Navbar = () => {
     { name: "Industries", path: "/businesses" },
     { name: "Shop", path: "/shop" },
     { name: "Request Quote", path: "/request-quote" },
+    { name: "Configuration Tool", path: "/configuration-tool" },
     { name: "About Nexibles", path: "/about" },
     { name: "Contact Us", path: "/contact" },
+    
   ];
 
   // Animation variants

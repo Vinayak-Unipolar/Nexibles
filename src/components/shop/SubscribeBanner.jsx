@@ -41,9 +41,9 @@ export default function SubscribeBanner() {
     <section className="mx-auto my-6 px-4 w-full max-w-7xl sm:my-8 md:my-10">
       <div className="bg-gradient-to-r from-[#FDF5EC] to-[#FAF5EB] rounded-2xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center text-center">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-2">
-          Sign Up And Get 10% Off
+          Sign Up And Get Your Pouches Ready
         </h2>
-        <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-4 sm:mb-6 max-w-md">
+        <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-4 sm:mb-6 max-w-lg">
           Sign up for early sale access, new in, promotions and more
         </p>
         <div className="w-full max-w-md flex flex-col sm:flex-row gap-2 sm:gap-0">

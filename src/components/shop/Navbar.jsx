@@ -375,22 +375,22 @@ const Navbar = () => {
 
             <motion.div
               ref={contactRef}
-              className="bg-red-500 text-white p-6 space-y-4"
+              className="bg-[#30384E] text-white p-6"
               initial="hidden"
               animate="visible"
               variants={contactVariants}
             >
-              <motion.div variants={contactVariants}>
-                <h3 className="font-bold text-lg mb-2">Meet With US</h3>
-                <p>Art NEXT Pvt Ltd,</p>
-                <p>A/463, Ground Floor,</p>
-                <p>TTC Industrial Area,</p>
-                <p>Mahape, MIDC, Navi Mumbai,</p>
-                <p>Thane - 400710, MH, India</p>
+              <motion.div className="space-y-1 mb-6" variants={contactVariants}>
+                <h3 className="font-bold text-lg mb-3">Meet With US</h3>
+                <p className="leading-tight">Art NEXT Pvt Ltd,</p>
+                <p className="leading-tight">Unit A6C, Lodha Industrial & Logistics Park - II,</p>
+                <p className="leading-tight">Taloja Bypass Road, Usatane Village,</p>
+                <p className="leading-tight">Thane Maharashtra</p>
+                <p className="leading-tight">PIN code 421306, MH, India</p>
               </motion.div>
-              <motion.div variants={contactVariants}>
-                <h3 className="font-bold text-lg mb-2">Call US</h3>
-                <p>+91 9821045101</p>
+              <motion.div className="space-y-1" variants={contactVariants}>
+                <h3 className="font-bold text-lg mb-3">Call US</h3>
+                <p className="leading-tight">+91 9821045101</p>
               </motion.div>
             </motion.div>
           </motion.div>

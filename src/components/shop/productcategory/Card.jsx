@@ -28,7 +28,7 @@ export default function Card({ product, isLoading }) {
                   <div className="flex flex-col h-full overflow-hidden bg-gray-100 rounded-lg shadow-md">
                     <div className="relative w-full h-44 sm:h-64 md:h-72">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${data.image}`}
+                        src={`${process.env.NEXT_PUBLIC_CDNNEW_URL}/product/${data.image}`}
                         alt={data.name}
                         layout="fill"
                         objectFit="contain"

@@ -15,8 +15,8 @@ import { addToCart } from '../../../redux/store/cartSlice';
 import Link from 'next/link';
 import SKUSelector from './SKUSelector';
 import DeliveryOptions from './DeliveryOptions';
-export default function PCCardDetails({ productDetails }) {
 
+export default function PCCardDetails({ productDetails }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const initialQty = parseInt(productDetails.product?.qty, 10) || 1;
@@ -153,6 +153,7 @@ export default function PCCardDetails({ productDetails }) {
       return currentQty > 1 ? currentQty - 1 : 1;
     });
   }, []);
+  
   const handleQuantityInputChange = (e) => {
     const value = e.target.value;
     setSelectedQuantity(value);
@@ -160,6 +161,7 @@ export default function PCCardDetails({ productDetails }) {
       setSelectedSKU(1);
     }
   };
+  
   const handleSKUChange = (e) => {
     setSelectedSKU(parseInt(e.target.value, 10));
   };
@@ -218,10 +220,11 @@ export default function PCCardDetails({ productDetails }) {
   }
 
   return (
-    <div className="h-auto min-h-screen">
-      <div className="px-4 mx-auto containers ">
-        <div className="flex flex-col md:flex-row md:gap-8">
-          <div className="w-full h-[45vh] md:w-1/2">
+    <div className="h-auto min-h-screen bg-white">
+      <div className="px-4 md:px-6 lg:px-8 mx-auto containers max-w-7xl">
+        <div className="flex flex-col md:flex-row md:gap-12 pt-6 md:pt-10">
+          {/* Product Images Section */}
+          <div className="w-full h-[45vh] md:w-1/2 md:h-[60vh] mb-8 md:mb-0">
             <ProductImages
               productImages={productImages}
               defaultImage={
@@ -232,7 +235,8 @@ export default function PCCardDetails({ productDetails }) {
             />
           </div>
 
-          <div className="w-full md:w-1/2 md:mt-0">
+          {/* Product Details Section */}
+          <div className="w-full md:w-1/2 md:pl-4">
             <ProductDetails
               productDetails={productDetails}
               debouncedDecrease={debouncedDecrease}
@@ -246,35 +250,49 @@ export default function PCCardDetails({ productDetails }) {
               priceAfterCalculation={priceAfterCalculation}
               minimumQuantity={minimumQuantity}
             />
-            <SKUSelector
-              selectedSKU={selectedSKU}
-              setSelectedSKU={setSelectedSKU}
-              numberOfSKUs={numberOfSKUs}
-              selectedQuantity={selectedQuantity}
-              minimumQuantity={minimumQuantity}
-              handleAddToCart={handleAddToCart}
-            />
-            <DeliveryOptions
-              zipCode={zipCode}
-              setZipCode={setZipCode}
-              CheckShippingCost={CheckShippingCost}
-              isDeliveryAvailable={isDeliveryAvailable}
-              deliveryEstimate={deliveryEstimate}
-            />
-
+            
+            <div className="mt-8">
+              <SKUSelector
+                selectedSKU={selectedSKU}
+                setSelectedSKU={setSelectedSKU}
+                numberOfSKUs={numberOfSKUs}
+                selectedQuantity={selectedQuantity}
+                minimumQuantity={minimumQuantity}
+                handleAddToCart={handleAddToCart}
+              />
+            </div>
+            
+            <div className="mt-8">
+              <DeliveryOptions
+                zipCode={zipCode}
+                setZipCode={setZipCode}
+                CheckShippingCost={CheckShippingCost}
+                isDeliveryAvailable={isDeliveryAvailable}
+                deliveryEstimate={deliveryEstimate}
+              />
+            </div>
           </div>
         </div>
-        <div className="mt-8 md:mt-24">
+        
+        {/* Product Overview Section */}
+        <div className="mt-16 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
         </div>
-        <hr className="mb-6 border-gray-300" />
-        <div className="mt-6 md:mt-10">
+        
+        <hr className="my-12 border-gray-200" />
+        
+        {/* Review Section */}
+        <div className="my-12">
           <ReviewSection productDetails={productDetails} />
         </div>
-        <div className="mt-6 mb-8 md:mt-20 md:mb-12">
+        
+        {/* Related Products Section */}
+        <div className="mt-12 mb-16">
           <RelatedProducts productDetails={productDetails} />
         </div>
       </div>
+      
+      {/* Product Modal */}
       <ProductModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP, FaWhatsapp } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 import WhatWeDo from "@/components/home/WhatWeDo";
@@ -54,46 +54,27 @@ const Modal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl max-w-md w-full mx-4 relative overflow-hidden">
-        {/* Close button (X) */}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-black hover:text-gray-700 z-10 bg-white rounded-full p-1"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Top Half: Product Image */}
         <div className="relative w-full h-52">
-          <img
-            src={Pop_up_image.src}
-            alt="Nexibles Product"
-            className="w-full h-full object-cover"
-          />
+          <img src={Pop_up_image.src} alt="Nexibles Product" className="w-full h-full object-cover" />
         </div>
 
-        {/* Bottom Half: Content */}
         <div className="p-6 flex flex-col items-center">
           <p className="text-gray-500 uppercase text-xs tracking-wide mb-1">
             SUBSCRIBE TO OUR NEWSLETTER!
           </p>
-          
           <h2 className="text-xl font-bold mb-6 text-center">
-            Receive Offers Your Next Order,<br />
-            Exclusive Offers & More!
+            Receive Offers Your Next Order,<br /> Exclusive Offers & More!
           </h2>
-          
+
           <input
             type="email"
             value={email}
@@ -101,28 +82,18 @@ const Modal = ({ isOpen, onClose }) => {
             placeholder="Enter your e-mail"
             className="w-[80%] p-3 mb-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-gray-400"
           />
-          
           <button
             onClick={handleSubscribe}
             className="w-[80%] bg-black text-white py-3 rounded-xl border-2 border-transparent hover:bg-white hover:text-black hover:border-black font-medium transition-all duration-300 uppercase mb-6"
           >
             Subscribe
           </button>
-          
-          {/* Social Media Icons */}
+
           <div className="flex space-x-4 justify-center">
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaFacebookF size={18} />
-            </a>
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaTwitter size={18} />
-            </a>
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaInstagram size={18} />
-            </a>
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaPinterestP size={18} />
-            </a>
+            <a href="#" className="text-black hover:text-gray-600"><FaFacebookF size={18} /></a>
+            <a href="#" className="text-black hover:text-gray-600"><FaTwitter size={18} /></a>
+            <a href="#" className="text-black hover:text-gray-600"><FaInstagram size={18} /></a>
+            <a href="#" className="text-black hover:text-gray-600"><FaPinterestP size={18} /></a>
           </div>
         </div>
       </div>
@@ -137,17 +108,15 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Modal logic
     const lastShown = localStorage.getItem("modalLastShown");
     const now = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const oneDay = 24 * 60 * 60 * 1000;
 
     if (!lastShown || now - parseInt(lastShown) > oneDay) {
       setShowModal(true);
       localStorage.setItem("modalLastShown", now.toString());
     }
 
-    // Category fetch logic
     const fetchData = async () => {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
@@ -190,6 +159,16 @@ const Home = () => {
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
       <Footer />
+
+      {/* Floating WhatsApp Button */}
+      <a
+         href="https://wa.me/919821045101" // Replace with your number
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300"
+      >
+        <FaWhatsapp size={28} />
+      </a>
     </div>
   );
 };

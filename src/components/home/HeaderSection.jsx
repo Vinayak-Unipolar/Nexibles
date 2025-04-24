@@ -213,7 +213,7 @@ const HeaderSection = () => {
                         >
                           <a
                             href="/shop"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
                           >
                             Explore Pouches
                           </a>
@@ -233,7 +233,7 @@ const HeaderSection = () => {
                         >
                           <a
                             href="/all-category"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
                           >
                             Explore Industries
                           </a>

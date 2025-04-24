@@ -24,7 +24,7 @@ export default function NexiblesInstagramSection() {
   ]);
 
   const [brandLogos, setBrandLogos] = useState([]);
-  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDNNEW_URL; // Fallback for safety
+  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDN_URL; // Fallback for safety
 
   useEffect(() => {
     async function fetchBrands() {

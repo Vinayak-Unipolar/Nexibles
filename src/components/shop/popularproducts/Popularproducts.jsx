@@ -69,20 +69,20 @@ export default function PopularProducts() {
           Explore Pouch Types
         </motion.h2>
 
-        <div className="grid gap-6 justify-center grid-cols-2 md:grid-cols-[repeat(5,220px)]">
+        <div className="grid grid-cols-2 gap-4 px-4 md:grid-cols-5 md:px-20">
           {!loading ? (
             <AnimatePresence>
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className=" rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
+                  className="relative w-32 h-32 overflow-hidden transition-all duration-300 rounded-lg hover:shadow-lg hover:-translate-y-1 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-72"
                   custom={index}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                   variants={cardVariants}
                 >
                   <Link href={`/category/${category.cat_url}`} passHref>
-                    <div className="flex items-center justify-center flex-grow h-56">
+                    <div className="object-contain transition-transform duration-300 hover:scale-105">
                       <Image
                         src={
                           category.bg_Img
@@ -92,7 +92,7 @@ export default function PopularProducts() {
                         alt={category.name}
                         width={200}
                         height={192}
-                        className="object-contain max-w-full max-h-48"
+                        className="object-contain max-h-56"
                       />
                     </div>
                     <div className="mt-4 text-center min-h-[40px]">

@@ -112,7 +112,7 @@ function Page() {
                     <p className="mb-3 text-xs text-gray-700 sm:text-sm line-clamp-2">
                       {industry.description}
                     </p>
-                    <span className="text-sm font-semibold text-blue-600">
+                    <span className="text-sm font-semibold text-[#103b60]">
                       Read more →
                     </span>
                   </div>

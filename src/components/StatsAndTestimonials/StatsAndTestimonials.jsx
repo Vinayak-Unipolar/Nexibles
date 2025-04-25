@@ -93,7 +93,6 @@ export default function StatsAndTestimonials() {
   ];
 
   const sliderSettings = {
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 2,
@@ -101,6 +100,7 @@ export default function StatsAndTestimonials() {
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: true,
+    drag: true,
     responsive: [
       {
         breakpoint: 768,

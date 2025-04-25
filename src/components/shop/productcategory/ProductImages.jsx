@@ -20,9 +20,10 @@ const DownArrow = () => (
 const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const thumbnailContainerRef = useRef(null);
-  const transformComponentRef = useRef(null);
 
-  const handleImageClick = (index) => onImageClick(index);
+  const handleImageClick = (index) => {
+    onImageClick(index);
+  };
 
   const scrollThumbnails = (direction) => {
     if (thumbnailContainerRef.current) {
@@ -124,32 +125,46 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
             minScale={1}
             maxScale={3}
             centerOnInit={true}
-            ref={transformComponentRef}
+            wheel={{ disabled: true }}
+            doubleClick={{ disabled: true }}
+            panning={{ disabled: false }}
+            onPanning={() => {}}
+            onPinch={() => {}}
           >
             {({ zoomIn, zoomOut, resetTransform }) => (
               <>
+                <div
+                  className="absolute inset-0 z-10 cursor-pointer"
+                  onClick={() => handleImageClick(currentImageIndex)}
+                ></div>
+
                 <TransformComponent
                   wrapperClass="w-full h-full flex items-center justify-center"
-                  contentClass="max-w-full max-h-full"
+                  contentClass="max-w-full max-h-[52vh]"
                 >
                   <img
                     src={productImages[currentImageIndex] || defaultImage}
                     alt="Product main image"
                     className="max-w-full max-h-[52vh] object-contain mx-auto"
-                    onClick={() => handleImageClick(currentImageIndex)}
                   />
                 </TransformComponent>
 
-                <div className="absolute flex gap-2 p-2 rounded-md bottom-4 right-4">
+                <div className="absolute z-20 flex gap-2 p-2 rounded-md bottom-4 right-4">
                   <button
-                    onClick={() => zoomOut()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      zoomOut();
+                    }}
                     className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
                     aria-label="Zoom out"
                   >
                     -
                   </button>
                   <button
-                    onClick={() => resetTransform()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      resetTransform();
+                    }}
                     className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
                     aria-label="Reset zoom"
                   >
@@ -158,7 +173,10 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
                     </svg>
                   </button>
                   <button
-                    onClick={() => zoomIn()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      zoomIn();
+                    }}
                     className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
                     aria-label="Zoom in"
                   >

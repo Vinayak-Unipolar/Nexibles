@@ -61,7 +61,7 @@ export default function PopularProducts() {
     <div ref={sectionRef} className="py-4 bg-white md:py-2">
       <div className="container px-4 mx-auto">
         <motion.h2
-          className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8"
+          className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8 mt-2"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
 import categoryimg from '../../../public/home/Types_of_pouch.webp';
+import Loader from '@/components/comman/Loader';
 
 function Page() {
   const [industries, setIndustries] = useState([]);
@@ -37,9 +38,7 @@ function Page() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-      </div>
+      <Loader />
     );
   }
 

@@ -34,7 +34,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
   const NextArrow = ({ onClick }) => (
     <div className="absolute transform -translate-y-1/2 top-1/2 right-4">
       <button
-        className="p-3 bg-white rounded-full shadow-md"
+        className="p-0.5 bg-white rounded-full shadow-md"
         onClick={onClick}
         aria-label="Next"
       >
@@ -46,7 +46,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
   const PrevArrow = ({ onClick }) => (
     <div className="absolute z-10 transform -translate-y-1/2 top-1/2 left-8">
       <button
-        className="p-3 bg-white rounded-full shadow-md"
+        className="p-0.5 bg-white rounded-full shadow-md"
         onClick={onClick}
         aria-label="Previous"
       >

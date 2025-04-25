@@ -153,7 +153,7 @@ export default function PCCardDetails({ productDetails }) {
       return currentQty > 1 ? currentQty - 1 : 1;
     });
   }, []);
-  
+
   const handleQuantityInputChange = (e) => {
     const value = e.target.value;
     setSelectedQuantity(value);
@@ -161,7 +161,7 @@ export default function PCCardDetails({ productDetails }) {
       setSelectedSKU(1);
     }
   };
-  
+
   const handleSKUChange = (e) => {
     setSelectedSKU(parseInt(e.target.value, 10));
   };
@@ -221,10 +221,10 @@ export default function PCCardDetails({ productDetails }) {
 
   return (
     <div className="h-auto min-h-screen bg-white">
-      <div className="px-4 md:px-6 lg:px-8 mx-auto containers max-w-7xl">
-        <div className="flex flex-col md:flex-row md:gap-12 pt-6 md:pt-10">
+      <div className="px-4 mx-auto md:px-6 lg:px-8 containers max-w-7xl">
+        <div className="flex flex-col pt-6 md:flex-row md:gap-12 md:pt-10">
           {/* Product Images Section */}
-          <div className="w-full h-[45vh] md:w-1/2 md:h-[60vh] mb-8 md:mb-0">
+          <div className="w-full h-[45vh] md:w-1/2 md:h-[60vh] mb-8 md:mb-0 sticky top-[15%]">
             <ProductImages
               productImages={productImages}
               defaultImage={
@@ -250,7 +250,7 @@ export default function PCCardDetails({ productDetails }) {
               priceAfterCalculation={priceAfterCalculation}
               minimumQuantity={minimumQuantity}
             />
-            
+
             <div className="mt-8">
               <SKUSelector
                 selectedSKU={selectedSKU}
@@ -261,7 +261,7 @@ export default function PCCardDetails({ productDetails }) {
                 handleAddToCart={handleAddToCart}
               />
             </div>
-            
+
             <div className="mt-8">
               <DeliveryOptions
                 zipCode={zipCode}
@@ -273,25 +273,25 @@ export default function PCCardDetails({ productDetails }) {
             </div>
           </div>
         </div>
-        
+
         {/* Product Overview Section */}
         <div className="mt-16 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
         </div>
-        
+
         <hr className="my-12 border-gray-200" />
-        
+
         {/* Review Section */}
         <div className="my-12">
           <ReviewSection productDetails={productDetails} />
         </div>
-        
+
         {/* Related Products Section */}
         <div className="mt-12 mb-16">
           <RelatedProducts productDetails={productDetails} />
         </div>
       </div>
-      
+
       {/* Product Modal */}
       <ProductModal
         isOpen={isModalOpen}

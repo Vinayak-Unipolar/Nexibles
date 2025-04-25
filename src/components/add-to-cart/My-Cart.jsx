@@ -191,15 +191,15 @@ export default function MyCart() {
   };
 
   return (
-    <div className="bg-white mt-20 md:flex">
-      <div className="w-full md:w-1/2 bg-white border-t">
-        <h2 className="text-blue-3 py-4 px-4 md:px-8 font-bold text-2xl md:text-3xl border-gray-200 flex items-center">
+    <div className="mt-20 bg-white md:flex">
+      <div className="w-full bg-white border-t md:w-1/2">
+        <h2 className="flex items-center px-4 py-4 text-2xl font-bold border-gray-200 text-blue-3 md:px-8 md:text-3xl">
           My Cart <BsCart3 className="ml-2 md:ml-4" size={24} />
         </h2>
-        <div className="flex flex-col space-y-4 py-2 px-4">
+        <div className="flex flex-col px-4 py-2 space-y-4">
           {cartItems.map((item, index) => (
             <div key={index} className="w-full">
-              <div className="flex flex-col md:flex-col justify-between p-2 m-2 rounded-md border border-gray-400">
+              <div className="flex flex-col justify-between p-2 m-2 border border-gray-400 rounded-md md:flex-col">
                 <div className="flex w-full md:w-auto">
                   <Link
                     href={`/product/${encodeURIComponent(
@@ -212,11 +212,11 @@ export default function MyCart() {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="h-24 w-24 md:h-40 md:w-44 object-contain"
+                      className="object-contain w-24 h-24 md:h-40 md:w-44"
                     />
                   </Link>
-                  <div className="px-2 md:px-2 flex-grow">
-                    <div className="flex justify-between items-start">
+                  <div className="flex-grow px-2 md:px-2">
+                    <div className="flex items-start justify-between">
                       <Link
                         href={`/product/${encodeURIComponent(
                           item.category.toLowerCase()
@@ -225,7 +225,7 @@ export default function MyCart() {
                         ).replace(/%20/g, "-")}/${item.id}`}
                         className="cursor-pointer"
                       >
-                        <p className="text-gray-900 font-bold text-lg md:text-xl mb-2">
+                        <p className="mb-2 text-lg font-bold text-gray-900 md:text-xl">
                           {item.name}
                         </p>
                       </Link>
@@ -237,7 +237,7 @@ export default function MyCart() {
                     </div>
                     {item?.selectedOptions &&
                       Object.keys(item.selectedOptions).length > 0 ? (
-                      <div className="bg-white w-full">
+                      <div className="w-full bg-white">
                         <ul className="text-sm md:text-base">
                           {item?.selectedOptions &&
                             Object.entries(item.selectedOptions).map(
@@ -248,7 +248,7 @@ export default function MyCart() {
                                 </li>
                               )
                             )}
-                          <li className="font-semibold mt-1">
+                          <li className="mt-1 font-semibold">
                             Quantity: {item.quantity}
                           </li>
 
@@ -256,19 +256,19 @@ export default function MyCart() {
                       </div>
                     ) : (
                       <>
-                        <li className="mt-1 list-none">
+                        <li className="mt-1 text-sm list-none">
                           Material: {item.material}
                         </li>
-                        <li className="mt-1 list-none">
+                        <li className="mt-1 text-sm list-none">
                           Price: ₹ {item.price} / Sku: {item.skuCount}</li>
                         {/* <li className="mt-1 list-none">
-                          
+
                         </li> */}
 
-                        <li className="font-semibold mt-1 list-none">
+                        <li className="mt-1 font-semibold list-none">
                           Quantity: {item.quantity}
                         </li>
-                        <div className="flex justify-end"><li className="font-semibold mt-1 list-none">
+                        <div className="flex justify-end"><li className="mt-1 font-semibold list-none">
                           Total: {item.totalPrice}
                         </li></div>
                       </>
@@ -280,17 +280,17 @@ export default function MyCart() {
           ))}
         </div>
         <div className="px-4 py-2 border-t border-gray-300">
-          <div className="flex justify-between items-center">
-            <p className="text-gray-900 font-bold text-lg md:text-xl">
+          <div className="flex items-center justify-between">
+            <p className="text-lg font-bold text-gray-900 md:text-xl">
               Items Total
             </p>
-            <p className="text-gray-900 font-bold text-lg md:text-xl">
+            <p className="text-lg font-bold text-gray-900 md:text-xl">
               ₹ {calculateSubTotal().toFixed(2)}
             </p>
           </div>
         </div>
         {cartItems.length === 0 && (
-          <p className="text-gray-600 px-4 py-4 font-bold text-xl md:text-2xl">
+          <p className="px-4 py-4 text-xl font-bold text-gray-600 md:text-2xl">
             Your Cart is empty.{" "}
             <Link href="/all-category" className="underline">
               Continue Shopping
@@ -299,31 +299,31 @@ export default function MyCart() {
         )}
       </div>
 
-      <div className="w-full md:w-1/2  bg-gray-100 p-4 md:p-8 rounded-md">
-        <div className="bg-white p-4 md:p-8 rounded-lg shadow-md sticky top-24">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Order Summary</h3>
+      <div className="w-full p-4 bg-gray-100 rounded-md md:w-1/2 md:p-8">
+        <div className="sticky p-4 bg-white rounded-lg shadow-md md:p-8 top-24">
+          <h3 className="mb-6 text-2xl font-bold text-gray-900 md:text-3xl">Order Summary</h3>
 
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-gray-900 font-bold md:text-lg text-md">Total (excl. GST)</p>
-            <p className="text-gray-900 font-bold md:text-lg text-md">₹ {calculateTotalAfterDiscount().toFixed(2)}</p>
+          <div className="flex items-center justify-between mb-4">
+            <p className="font-bold text-gray-900 md:text-lg text-md">Total (excl. GST)</p>
+            <p className="font-bold text-gray-900 md:text-lg text-md">₹ {calculateTotalAfterDiscount().toFixed(2)}</p>
           </div>
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-gray-900 font-bold md:text-lg text-md">GST (18%)</p>
-            <p className="text-gray-900 font-bold md:text-lg text-md"> + ₹ {gstAmount}</p>
+          <div className="flex items-center justify-between mb-4">
+            <p className="font-bold text-gray-900 md:text-lg text-md">GST (18%)</p>
+            <p className="font-bold text-gray-900 md:text-lg text-md"> + ₹ {gstAmount}</p>
           </div>
           {appliedCoupon && (
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-gray-900 font-bold md:text-lg text-md">Discount</p>
-              <p className="text-gray-900 font-bold md:text-lg text-md">- ₹{calculateTotalSavings()}</p>
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-bold text-gray-900 md:text-lg text-md">Discount</p>
+              <p className="font-bold text-gray-900 md:text-lg text-md">- ₹{calculateTotalSavings()}</p>
             </div>
           )}
-          <hr className="border-gray-300 my-4" />
+          <hr className="my-4 border-gray-300" />
           <div className="mb-6">
-            <p className="text-gray-900 font-bold md:text-lg text-md mb-2">Apply Coupon</p>
+            <p className="mb-2 font-bold text-gray-900 md:text-lg text-md">Apply Coupon</p>
             <div className="flex flex-col sm:flex-row">
               <input
                 type="text"
-                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md  focus:outline-none focus:ring-2 focus:ring-black"
+                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="Enter coupon code"
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value)}
@@ -335,11 +335,11 @@ export default function MyCart() {
                 Apply
               </button>
             </div>
-            {couponError && <p className="text-red-500 mt-2">{couponError}</p>}
+            {couponError && <p className="mt-2 text-red-500">{couponError}</p>}
           </div>
           {appliedCoupon && (
             <div className="mt-4">
-              <p className="text-green-600 font-semibold md:text-lg text-md">
+              <p className="font-semibold text-green-600 md:text-lg text-md">
                 Coupon {promoCode} applied!  You saved ₹{calculateTotalSavings()}.
               </p>
               <button
@@ -350,10 +350,10 @@ export default function MyCart() {
               </button>
             </div>
           )}
-          <hr className="border-gray-300 my-4" />
-          <div className="flex justify-between items-center mt-4 mb-6">
-            <p className="text-gray-900 font-bold text-xl md:text-2xl">Grand Total</p>
-            <p className="text-gray-900 font-bold text-xl md:text-2xl">₹ {calculateGrandTotal().toFixed(2)}</p>
+          <hr className="my-4 border-gray-300" />
+          <div className="flex items-center justify-between mt-4 mb-6">
+            <p className="text-xl font-bold text-gray-900 md:text-2xl">Grand Total</p>
+            <p className="text-xl font-bold text-gray-900 md:text-2xl">₹ {calculateGrandTotal().toFixed(2)}</p>
           </div>
           <button
             className="w-full px-6 py-3 bg-[#103b60] text-white rounded-md uppercase font-bold text-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"

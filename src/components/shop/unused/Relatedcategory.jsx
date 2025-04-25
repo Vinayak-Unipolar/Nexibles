@@ -64,7 +64,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
     autoplay: false,
     autoplaySpeed: 2100,
     pauseOnHover: true,
-    draggable: false,
+    draggable: true,
     swipeToSlide: true,
     cssEase: 'ease-in-out',
     nextArrow: <NextArrow />,

@@ -95,7 +95,7 @@ export default function ShippingAddress({
               <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none" placeholder="Phone" maxLength={10} />
             </div>
             <div className="mt-4">
-              <button type="submit" className="bg-[#30384E] rounded-md text-white px-8 py-2">Save Address</button>
+              <button type="submit" className="bg-[#013b60] rounded-md text-white px-8 py-2">Save Address</button>
             </div>
           </form>
         </>

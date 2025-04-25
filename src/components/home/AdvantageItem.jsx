@@ -11,8 +11,8 @@ const AdvantageItem = ({ icon, text }) => (
 
 const Advantages = () => {
   return (
-    <div className="w-full bg-white">
-      <h2 className="mb-8 text-2xl font-bold text-center md:text-4xl">Our advantages</h2>
+    <div className="w-full mt-6 bg-white">
+      <h2 className="mb-8 text-2xl font-bold text-center md:text-4xl">Our Advantages</h2>
       <div className="container grid grid-cols-2 gap-8 mx-auto md:grid-cols-4 sm:grid-cols-1">
         <AdvantageItem icon={<FaBan size={26} className="md:size-14 sm:size-16" />} text="No MOQ" />
         <AdvantageItem icon={<FaLayerGroup size={26} className="md:size-14 sm:size-16" />} text="Multiple SKUs" />

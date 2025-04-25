@@ -230,7 +230,7 @@ export default function MyCart() {
                         </p>
                       </Link>
                       <MdDelete
-                        className="text-gray-900 cursor-pointer"
+                        className="text-red-500 cursor-pointer hover:text-red-700"
                         size={24}
                         onClick={() => removeCartItem(index)}
                       />
@@ -323,14 +323,14 @@ export default function MyCart() {
             <div className="flex flex-col sm:flex-row">
               <input
                 type="text"
-                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-black"
+                className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none"
                 placeholder="Enter coupon code"
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value)}
               />
               <button
                 onClick={applyPromoCode}
-                className="px-4 py-2 bg-[#103b60] text-white rounded-b-md sm:rounded-b-none sm:rounded-r-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-black"
+                className="px-4 py-2 bg-[#103b60] text-white rounded-b-md sm:rounded-b-none sm:rounded-r-md focus:outline-none"
               >
                 Apply
               </button>
@@ -356,7 +356,7 @@ export default function MyCart() {
             <p className="text-xl font-bold text-gray-900 md:text-2xl">₹ {calculateGrandTotal().toFixed(2)}</p>
           </div>
           <button
-            className="w-full px-6 py-3 bg-[#103b60] text-white rounded-md uppercase font-bold text-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            className="w-full px-6 py-3 bg-[#103b60] text-white rounded-md font-bold text-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
             onClick={createOrder}
             disabled={isProcessingOrder}
           >

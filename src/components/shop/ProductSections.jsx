@@ -38,7 +38,7 @@ const ProductSections = () => {
 
   return (
     <div ref={sectionRef}>
-      <div className="md:flex md:flex-row justify-center md:h-[500px]">
+      <div className="md:flex md:flex-row justify-center md:h-full">
         {/* Stock Products Section */}
         <Link href="/all-category" className="relative overflow-hidden group">
           <motion.div
@@ -59,13 +59,13 @@ const ProductSections = () => {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={fadeSlide}
-            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[40%] md:left-[57%] border-t-2 md:w-[300px]"
+            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[55%] md:left-[57%] border-t-2 md:w-[300px]"
           >
             <h2 className="pr-2 text-xl font-light md:text-4xl">EXPLORE</h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 md:w-[300px]">NEXICLASSIC</h1>
           </motion.div>
           <motion.button 
-            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] left-[72%] md:top-[62%] md:left-[66%]"
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-6 rounded-full top-[55%] left-[72%] md:top-[84%] md:left-[66%]"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             whileHover="hover"
@@ -103,7 +103,7 @@ const ProductSections = () => {
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[350px]">POUCH</h1>
           </motion.div>
           <motion.button 
-            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] right-[58%] md:top-[42%] md:right-[62%]"
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-6 rounded-full top-[55%] right-[58%] md:top-[56%] md:right-[62%]"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             whileHover="hover"

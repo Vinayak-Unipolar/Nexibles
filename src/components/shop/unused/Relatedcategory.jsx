@@ -111,7 +111,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
                 passHref
               >
                 <div className="flex items-center justify-center py-2">
-                  <div className="bg-gray-50 h-80 w-64 hover:shadow-[0.2px_2px_5px_0.2px_#4a5568] rounded-lg overflow-hidden mb-4">
+                  <div className=" h-80 w-64 hover:bg-[#ECE0CC] rounded-lg overflow-hidden mb-4">
                     <div>
                       <Image
                         // src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}

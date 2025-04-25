@@ -1,13 +1,14 @@
 "use client";
 import React, { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import ProductStock from "../../../public/home/NexiClassic Banner.webp";
 import Customization from "../../../public/home/Customisation Banner.webp";
 
 const fadeSlide = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
 const imageVariants = {
@@ -22,62 +23,95 @@ const imageVariants = {
   },
 };
 
+const buttonVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.2 } },
+  hover: { 
+    scale: 1.05,
+    transition: { duration: 0.2 }
+  }
+};
+
 const ProductSections = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
-    <div>
+    <div ref={sectionRef}>
       <div className="md:flex md:flex-row justify-center md:h-[500px]">
-
         {/* Stock Products Section */}
         <Link href="/all-category" className="relative overflow-hidden group">
-          <img
-            src={ProductStock.src}
-            alt="Stock Products"
-            loading="lazy"
-            className="object-contain w-full h-full"
-          />
+          <motion.div
+            custom="left"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={imageVariants}
+          >
+            <Image
+              src={ProductStock}
+              alt="Stock Products"
+              loading="lazy"
+              className="object-contain w-full h-full"
+              quality={100}
+            />
+          </motion.div>
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            animate={isInView ? "visible" : "hidden"}
             variants={fadeSlide}
-            layout
-            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[50%] md:left-[57%] border-t-2 md:w-[300px]"
+            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[40%] md:left-[57%] border-t-2 md:w-[300px]"
           >
             <h2 className="pr-2 text-xl font-light md:text-4xl">EXPLORE</h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 md:w-[300px]">NEXICLASSIC</h1>
           </motion.div>
-          <button className="absolute  bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] left-[72%] md:top-[73%] md:left-[66%] ">
+          <motion.button 
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] left-[72%] md:top-[62%] md:left-[66%]"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            whileHover="hover"
+            variants={buttonVariants}
+          >
             Shop Now
-          </button>
+          </motion.button>
         </Link>
 
         {/* Customization Tool Section */}
         <Link href="/configuration-tool" className="relative overflow-hidden group">
-          <img
-            src={Customization.src}
-            alt="Customization Tool"
-            loading="lazy"
-            className="object-contain w-full h-full"
-          />
+          <motion.div
+            custom="right"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={imageVariants}
+          >
+            <Image
+              src={Customization}
+              alt="Customization Tool"
+              loading="lazy"
+              className="object-contain w-full h-full"
+              quality={100}
+            />
+          </motion.div>
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            animate={isInView ? "visible" : "hidden"}
             variants={fadeSlide}
-            layout
             className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[15%] left-[3%] right-[35%] md:top-[20%] md:left-[5%] md:right-[35%]"
           >
-            <h2 className="text-xl md:text-4xl font-light pr-4 border-t-2 w-[80%] md:w-[350px]">MAKE YOUR OWN</h2>
+            <h2 className="text-xl md:text-4xl font-light pr-4 border-t-2 w-[80%] md:w-[350px]">
+              MAKE YOUR OWN
+            </h2>
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[350px]">POUCH</h1>
           </motion.div>
-          <button className="absolute  bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] right-[58%] md:top-[42%] md:right-[62%] ">
+          <motion.button 
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-10 rounded-full top-[55%] right-[58%] md:top-[42%] md:right-[62%]"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            whileHover="hover"
+            variants={buttonVariants}
+          >
             Configure Now
-          </button>
+          </motion.button>
         </Link>
-
       </div>
     </div>
   );

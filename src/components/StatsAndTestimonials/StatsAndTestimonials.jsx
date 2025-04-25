@@ -6,7 +6,8 @@ import client2 from '../../../public/client/client2.png';
 import client3 from '../../../public/client/client3.png';
 import client4 from '../../../public/client/client4.png';
 import client5 from '../../../public/client/client5.png';
- 
+import client6 from '../../../public/client/client6.png';
+
 import doublequotes from '../../../public/home/doublequotes.svg';
 import flip from '../../../public/home/flip.svg';
  
@@ -80,6 +81,13 @@ export default function StatsAndTestimonials() {
       designationcompany: "Founder - Nutkhut Delight",
       content: "Nexi Standard Sizes by Nexibles has been a game-changer for us! Their low MOQ made it easy to launch new products quickly, which is invaluable for an emerging brand like ours. Fast production and excellent customer service are just the cherry on top!",
       image: client5,
+    },
+    {
+      id: 6,
+      name: "Rajiv Raj Jain",
+      designationcompany: "Founder, Svasthyaa",
+      content: "I met Amol at AAHAR and was really impressed with the standard products he had – they were just right for us to launch our products. As a startup, his innovative approach helped us reduce our launch costs by 50%. His team has always been responsive, supportive, and great to work with. Thanks to them, we were able to scale smoothly.",
+      image: client6,
     }
   ];
  

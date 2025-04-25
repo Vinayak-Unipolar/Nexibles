@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import React from 'react'
 import { FaEnvelope, FaLock } from "react-icons/fa"
-import { FcGoogle } from "react-icons/fc"
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
@@ -11,7 +10,8 @@ import { toast } from 'react-toastify';
 import ForgotPassword from './ForgotPassword';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
-import login_image from '../../../public/Pictures/Factory Facade.png';
+import image from "../../../public/Pictures/Factory Facade.png";
+
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
@@ -182,19 +182,19 @@ function Login() {
     return (
         <>
             {loading && <Loader btnLoad={false} />}
-            <div className="flex items-center justify-center min-h-screen p-4 bg-white mt-14">
-                <div className="w-full max-w-6xl overflow-hidden border shadow-xl rounded-xl">
-                    <div className="flex flex-col md:flex-row h-[600px]">
-                        {/* Image Section */}
+            <div className="flex items-center justify-center min-h-screen p-4 bg-white sm:mt-14">
+                <div className="w-full max-w-4xl overflow-hidden border shadow-xl rounded-xl">
+                    <div className="flex flex-col md:flex-row h-auto md:h-[550px]">
+                        {/* Image Section - Hidden on mobile */}
                         <motion.div
-                            className="w-full md:w-1/2 "
+                            className="hidden md:block md:w-1/2"
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
                             <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
-                                    src={login_image.src}
+                                    src={image.src}
                                     alt="Auth illustration"
                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                 />
@@ -203,17 +203,17 @@ function Login() {
 
                         {/* Form Section */}
                         <motion.div
-                            className="w-full p-8 overflow-y-auto bg-white md:w-1/2"
+                            className="w-full p-6 md:p-8 overflow-y-auto bg-white md:w-1/2"
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
                             {isLogin ? (
                                 <>
-                                    <h2 className="mb-4 text-3xl font-bold text-gray-900">Welcome back!</h2>
-                                    <p className="mb-6 text-gray-600">Enter to get unlimited access to data & information.</p>
+                                    <h2 className="mb-4 text-2xl font-bold text-center text-gray-900 md:text-3xl">Welcome back!</h2>
+                                    <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Enter to get unlimited access to data & information.</p>
 
-                                    <form onSubmit={handleLogin} className="flex flex-col space-y-5">
+                                    <form onSubmit={handleLogin} className="flex flex-col space-y-4">
                                         <div className="relative">
                                             <FaEnvelope className="absolute text-gray-500 transform -translate-y-1/2 top-1/2 left-4" />
                                             <input
@@ -222,7 +222,7 @@ function Login() {
                                                 value={email}
                                                 placeholder="Enter your email address"
                                                 required
-                                                className="w-full rounded-lg border border-gray-300 py-3 pl-12 pr-4 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                                className="w-full rounded-lg border border-gray-300 py-2.5 pl-12 pr-4 text-gray-700 focus:border-[#103b60] focus:outline-none"
                                             />
                                         </div>
 
@@ -234,7 +234,7 @@ function Login() {
                                                 value={password}
                                                 placeholder="Enter your password"
                                                 required
-                                                className="w-full rounded-lg border border-gray-300 py-3 pl-12 pr-10 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                                className="w-full rounded-lg border border-gray-300 py-2.5 pl-12 pr-10 text-gray-700 focus:border-[#103b60] focus:outline-none"
                                             />
                                             <span
                                                 onClick={togglePasswordVisibility}
@@ -244,62 +244,51 @@ function Login() {
                                             </span>
                                         </div>
 
-                                        <div className="flex items-center justify-center">
-                                            {/* <div className="flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    id="remember"
-                                                    className="h-4 w-4 text-[#103b60] focus:ring-[#103b60] border-gray-300 rounded"
-                                                />
-                                                <label htmlFor="remember" className="block ml-2 text-sm text-gray-700">
-                                                    Remember me
-                                                </label>
-                                            </div> */}
+                                        <div className="flex items-center justify-end">
                                             <div
                                                 onClick={() => setShowModal(true)}
                                                 className="text-sm font-medium text-[#103b60] hover:text-[#103b60] cursor-pointer"
                                             >
-                                                Forgot your password?
+                                                Forgot password?
                                             </div>
                                         </div>
 
                                         <button
                                             type="submit"
-                                            className="w-full bg-[#103b60] text-white py-3 rounded-lg font-medium  transition-colors"
+                                            className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50"
                                         >
                                             Log in
                                         </button>
 
                                         <div className="mt-4 text-center">
-                                            <p className="text-gray-600">
+                                            <p className="text-sm text-gray-600">
                                                 {`Don't have an account?`}{" "}
                                                 <span
                                                     onClick={toggleForm}
-                                                    className="text-[#103b60] cursor-pointer font-medium"
+                                                    className="text-[#103b60] cursor-pointer font-medium hover:underline"
                                                 >
                                                     Register here
                                                 </span>
                                             </p>
                                         </div>
                                     </form>
-
                                 </>
                             ) : (
                                 <>
-                                    <h2 className="mb-4 text-3xl font-bold text-gray-900">Create an account</h2>
-                                    <p className="mb-6 text-gray-600">Join us today and get access to all features</p>
+                                    <h2 className="mb-4 text-2xl font-bold text-center text-gray-900 md:text-3xl">Create an account</h2>
+                                    <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Join us today and get access to all features</p>
 
-                                    <form onSubmit={handleRegister} className="space-y-6">
-                                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                    <form onSubmit={handleRegister} className="space-y-4">
+                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                             <div className="flex flex-col">
                                                 <label htmlFor="firstName" className="mb-1 text-sm font-medium text-gray-700">
-                                                    First Name
+                                                    First Name*
                                                 </label>
                                                 <input
                                                     type="text"
                                                     id="firstName"
                                                     required
-                                                    className="rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none"
                                                     value={userDetails.firstName}
                                                     onChange={(e) => setUserDetails({ ...userDetails, firstName: e.target.value })}
                                                 />
@@ -307,41 +296,41 @@ function Login() {
 
                                             <div className="flex flex-col">
                                                 <label htmlFor="lastName" className="mb-1 text-sm font-medium text-gray-700">
-                                                    Last Name
+                                                    Last Name*
                                                 </label>
                                                 <input
                                                     type="text"
                                                     id="lastName"
                                                     required
-                                                    className="rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none"
                                                     value={userDetails.lastName}
                                                     onChange={(e) => setUserDetails({ ...userDetails, lastName: e.target.value })}
                                                 />
                                             </div>
 
-                                            <div className="flex flex-col">
+                                            <div className="flex flex-col md:col-span-2">
                                                 <label htmlFor="email" className="mb-1 text-sm font-medium text-gray-700">
-                                                    Email Address
+                                                    Email Address*
                                                 </label>
                                                 <input
                                                     type="email"
                                                     id="email"
                                                     required
-                                                    className="rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none"
                                                     value={userDetails.emailAddress}
                                                     onChange={(e) => setUserDetails({ ...userDetails, emailAddress: e.target.value })}
                                                 />
                                             </div>
 
-                                            <div className="relative flex flex-col">
+                                            <div className="relative flex flex-col md:col-span-2">
                                                 <label htmlFor="password" className="mb-1 text-sm font-medium text-gray-700">
-                                                    Password
+                                                    Password*
                                                 </label>
                                                 <input
                                                     type={showPasswordRegister ? "text" : "password"}
                                                     id="password"
                                                     required
-                                                    className="rounded-lg border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#103b60] focus:outline-none pr-10"
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none pr-10"
                                                     value={userDetails.password}
                                                     onChange={(e) => setUserDetails({ ...userDetails, password: e.target.value })}
                                                 />
@@ -354,19 +343,31 @@ function Login() {
                                             </div>
                                         </div>
 
+                                        <div className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="terms"
+                                                required
+                                                className="w-4 h-4 text-[#103b60] focus:ring-[#103b60] border-gray-300 rounded"
+                                            />
+                                            <label htmlFor="terms" className="block ml-2 text-xs text-gray-700 md:text-sm">
+                                                I agree to the Terms of Service and Privacy Policy
+                                            </label>
+                                        </div>
+
                                         <button
                                             type="submit"
-                                            className="w-full bg-[#103b60] text-white py-3 rounded-lg font-medium  transition-colors"
+                                            className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50"
                                         >
                                             Create account
                                         </button>
 
                                         <div className="text-center">
-                                            <p className="text-gray-600">
+                                            <p className="text-sm text-gray-600">
                                                 Already have an account?{" "}
                                                 <span
                                                     onClick={toggleForm}
-                                                    className="text-[#103b60]  cursor-pointer font-medium"
+                                                    className="text-[#103b60] cursor-pointer font-medium hover:underline"
                                                 >
                                                     Log in
                                                 </span>
@@ -376,7 +377,7 @@ function Login() {
                                 </>
                             )}
 
-                            <div className="flex justify-center mt-6 text-xs text-gray-500">
+                            <div className="mt-6 text-xs text-center text-gray-500">
                                 <p>
                                     By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
                                     <Link href="#" className="text-[#103b60] hover:underline">
@@ -386,7 +387,6 @@ function Login() {
                                     <Link href="#" className="text-[#103b60] hover:underline">
                                         Privacy Policy
                                     </Link>
-                                    .
                                 </p>
                             </div>
                         </motion.div>

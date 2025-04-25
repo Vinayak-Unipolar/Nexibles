@@ -141,7 +141,7 @@ export default function RelatedProducts({ productDetails }) {
                 {relatedProducts.map((product) => (
                   <SwiperSlide key={product.id}>
                     <div
-                      className="w-full p-2 text-left transition-all duration-300 bg-white border border-gray-200 rounded-lg cursor-pointer sm:p-3 hover:shadow-lg hover:-translate-y-1"
+                      className="w-full p-0.5 text-left transition-all duration-300 bg-white border border-gray-200 rounded-lg cursor-pointer p- sm:p-3 hover:shadow-lg hover:-translate-y-1"
                       onClick={() =>
                       (window.location.href = `/product/${encodeURIComponent(
                         product.category.toLowerCase()

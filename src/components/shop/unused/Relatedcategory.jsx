@@ -23,7 +23,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
 
   useEffect(() => {
     if (sliderRef && filteredProducts.length > 0) {
-      sliderRef.slickGoTo(0); // Reset to first slide when filteredProducts change
+      sliderRef.slickGoTo(0);
     }
   }, [filteredProducts, sliderRef]);
 
@@ -59,7 +59,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
     dots: false,
     infinite: false,
     speed: 1000,
-    slidesToShow: 5,
+    slidesToShow: 4.5,
     slidesToScroll: 1,
     autoplay: false,
     autoplaySpeed: 2100,

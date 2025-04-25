@@ -172,7 +172,7 @@ export default function SKUSelector({
                     >
                         <IoShareSocial size={35} className='p-2 border border-gray-300 rounded-lg' />
                     </motion.div>
-                    Share Products
+                    Share Product
                 </motion.button>
             </motion.div>
         </motion.div>

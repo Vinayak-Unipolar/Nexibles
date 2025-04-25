@@ -188,9 +188,9 @@ const ReviewSection = ({ productDetails }) => {
             />
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 sm:px-4 py-2 sm:py-3 bg-[#103b60] text-white font-medium rounded hover:bg-gray-100 hover:text-[#103b60] hover:border-1 text-sm sm:text-md"
+              className="w-full md:w-auto bg-[#103b60] rounded-md px-4 py-2 text-white font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
             >
-              SUBMIT REVIEWS
+              Submit Review
             </button>
             {error && (
               <p className="text-sm text-red-500">

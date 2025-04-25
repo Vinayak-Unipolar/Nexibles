@@ -183,19 +183,14 @@ const Configuration = () => {
     []
   );
 
-  // Initialize authentication and data fetching
+  // Initialize authentication and data fetching on every page load
   useEffect(() => {
     const initialize = async () => {
       setLoading(true);
       setError(null);
 
-      let authToken = localStorage.getItem('token2');
-      if (!authToken) {
-        authToken = await loginForThirdParty();
-      } else {
-        setToken(authToken);
-      }
-
+      // Always perform a fresh login to get a new token
+      const authToken = await loginForThirdParty();
       if (authToken) {
         const success = await fetchProductData(authToken);
         if (!success) {
@@ -673,13 +668,6 @@ const Configuration = () => {
                   disabled={isQuotationLoading}
                 >
                   {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
-                </motion.button>
-                <motion.button
-                  className="w-full py-3 px-4 bg-[#103b60] text-black font-medium rounded-lg border border-gray-300 transition-all duration-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Save Configuration
                 </motion.button>
               </div>
             </motion.div>

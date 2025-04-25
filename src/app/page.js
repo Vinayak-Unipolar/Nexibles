@@ -186,7 +186,6 @@ const Home = () => {
       <Popularproducts />
       <ProductSections />
       <AdvantageItem />
-      
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
       <Footer />

@@ -182,7 +182,7 @@ const Industries = () => {
           >
             Explore Industries
           </motion.div>
-          <div className="relative mx-auto mt-6 md:mt-12" style={{ maxWidth: "100%" }}>
+          <div className="relative mx-auto mt-6 md:mt-6" style={{ maxWidth: "100%" }}>
             <Slider ref={setSliderRef} {...sliderSettings}>
               {circularItems.map((category, index) => (
                 <motion.div
@@ -197,7 +197,7 @@ const Industries = () => {
                     href={`/industries/${category.name
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}
-                    className="p-2 pb-4 rounded-xl"
+                    className="p-1 pb-1 rounded-xl"
                   >
                     <div className="relative h-48 md:h-[400px] w-full flex items-center justify-center">
                       <Image
@@ -211,7 +211,7 @@ const Industries = () => {
                       />
                     </div>
                     <div className="flex flex-col items-center justify-center mt-2 mx-[22px] text-center">
-                      <div className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 bg-[#ffd13e] rounded-lg sm:px-3 sm:py-2 md:text-lg hover:bg-yellow-500">
+                      <div className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 hover:bg-[#ffd13e] rounded-lg sm:px-3 sm:py-2 md:text-lg ">
                         {category.name}
                       </div>
                     </div>

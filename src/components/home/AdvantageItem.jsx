@@ -5,20 +5,20 @@ import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 const AdvantageItem = ({ icon, text }) => (
   <div className="flex flex-col items-center">
     {icon}
-    <p className="text-lg mt-2 text-center md:text-base sm:text-xs">{text}</p> {/* Decreased text size for phone view */}
+    <p className="mt-2 text-lg text-center md:text-base sm:text-xs">{text}</p>
   </div>
 );
 
 const Advantages = () => {
   return (
-    <div className="bg-white w-full">
-      <h2 className="md:text-4xl text-2xl font-bold text-center mb-8">Our advantages</h2>
-      <div className="container mx-auto grid grid-cols-2 gap-8 md:grid-cols-4 sm:grid-cols-1">
+    <div className="w-full bg-white">
+      <h2 className="mb-8 text-2xl font-bold text-center md:text-4xl">Our advantages</h2>
+      <div className="container grid grid-cols-2 gap-8 mx-auto md:grid-cols-4 sm:grid-cols-1">
         <AdvantageItem icon={<FaBan size={26} className="md:size-14 sm:size-16" />} text="No MOQ" />
         <AdvantageItem icon={<FaLayerGroup size={26} className="md:size-14 sm:size-16" />} text="Multiple SKUs" />
         <AdvantageItem icon={<RiMoneyDollarCircleLine size={26} className="md:size-14 sm:size-16" />} text="No cylinder and plate cost" />
         <AdvantageItem icon={<FaBox size={26} className="md:size-14 sm:size-16" />} text="Low inventory" />
-        <AdvantageItem icon={<FaTruck size={26} className="md:size-14 sm:size-16" />} text="Speed to market" /> 
+        <AdvantageItem icon={<FaTruck size={26} className="md:size-14 sm:size-16" />} text="Speed to market" />
         <AdvantageItem icon={<FaLeaf size={26} className="md:size-14 sm:size-16" />} text="Sustainable" />
         <AdvantageItem icon={<FaBarcode size={26} className="md:size-14 sm:size-16" />} text="Variable data" />
         <AdvantageItem icon={<FaShieldAlt size={26} className="md:size-14 sm:size-16" />} text="Security printing" />

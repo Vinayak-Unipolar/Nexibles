@@ -10,6 +10,7 @@ import client3 from '../../../public/client/client3.png';
 import client4 from '../../../public/client/client4.png';
 import client5 from '../../../public/client/client5.png';
 import client6 from '../../../public/client/client6.png';
+import client7 from '../../../public/client/client7.png';
 import doublequotes from '../../../public/home/doublequotes.svg';
 import flip from '../../../public/home/flip.svg';
 
@@ -85,10 +86,17 @@ export default function StatsAndTestimonials() {
     },
     {
       id: 6,
-      name: "Rajiv Raj Jain",
+      name: "Mr. Rajiv Raj Jain",
       designationcompany: "Founder, Svasthyaa",
       content: "I met Amol at AAHAR and was really impressed with the standard products he had – they were just right for us to launch our products. As a startup, his innovative approach helped us reduce our launch costs by 50%. His team has always been responsive, supportive, and great to work with. Thanks to them, we were able to scale smoothly.",
       image: client6,
+    }, 
+    {
+      id: 7,
+      name: "Mr. Hisham Sunesra",
+      designationcompany: "Founder, Cookie Cartel",
+      content: "We’ve been working with Nexibles for over 1.5 years now, and they’ve been an incredible partner in our growth journey. From our very first order of just 1,000 standard stand-up pouches to now producing 10,000 fully customized and perfectly sized printed pouches, they’ve been with us every step of the way. The team — including the founders — has been consistently supportive, responsive, and proactive. Their pricing is highly competitive compared to other players in the market. If you’re looking for a reliable partner to scale with, we highly recommend Nexibles.",
+      image: client7,
     }
   ];
 
@@ -237,7 +245,7 @@ export default function StatsAndTestimonials() {
             {testimonials.map((testimonial, index) => (
               <div key={testimonial.id} className="px-3">
                 <motion.div
-                  className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-20 md:mt-18 mb-8 pt-16 pb-6 px-6 shadow-lg"
+                  className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-24 md:mt-18 mb-10 pt-16 pb-6 px-6 shadow-lg"
                   variants={testimonialCardVariants}
                   initial="hidden"
                   animate="visible"

@@ -235,12 +235,12 @@ const Navbar = () => {
               variants={iconVariants}
               className="relative"
             >
-              <button
+              {/* <button
                 className="flex items-center text-gray-900 text-sm sm:text-md"
                 onClick={toggleDropdown}
               >
                 ENGLISH <RiArrowDropDownLine size={24} />
-              </button>
+              </button> */}
               <AnimatePresence>
                 {isDropdownOpen && (
                   <motion.div

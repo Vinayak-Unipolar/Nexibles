@@ -25,10 +25,10 @@ export default function PaymentMethod({ defaultAddress, addresses, totalPrice, m
       
       <div className="mt-4 mb-8">
         <button
-          className={`py-3 rounded-full uppercase w-full transition-all duration-300 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 ${
+          className={`py-3 rounded-full w-full transition-all duration-300 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 ${
             isDefaultAddressSaved
-              ? 'bg-black text-white hover:bg-gray-800'
-              : 'bg-gray-400 text-gray-700 cursor-not-allowed'
+              ? 'bg-[#103b60] text-white'
+              : 'bg-[#ffd13e] text-gray-700 cursor-not-allowed'
           }`}
           onClick={isDefaultAddressSaved ? makePayment : null} 
           disabled={!isDefaultAddressSaved || loading2 || isProcessingOrder} // Disable if no default address or processing

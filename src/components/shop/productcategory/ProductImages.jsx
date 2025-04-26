@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
-import hoverbox from '../../../../public/home/hoverbox.png';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const UpArrow = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -19,33 +19,11 @@ const DownArrow = () => (
 
 const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const mainImageRef = useRef(null);
-  const zoomRef = useRef(null);
-  const hoverBoxRef = useRef(null);
   const thumbnailContainerRef = useRef(null);
 
-  const handleMouseMove = (e) => {
-    if (!mainImageRef.current || !zoomRef.current || !hoverBoxRef.current) return;
-
-    const { left, top, width, height } = mainImageRef.current.getBoundingClientRect();
-    const x = (e.clientX - left) / width;
-    const y = (e.clientY - top) / height;
-
-    const hoverBoxSize = 100;
-    const hoverBoxLeft = Math.max(0, Math.min(e.clientX - left - hoverBoxSize / 2, width - hoverBoxSize));
-    const hoverBoxTop = Math.max(0, Math.min(e.clientY - top - hoverBoxSize / 2, height - hoverBoxSize));
-    hoverBoxRef.current.style.left = `${hoverBoxLeft}px`;
-    hoverBoxRef.current.style.top = `${hoverBoxTop}px`;
-
-    const zoomX = x * 100;
-    const zoomY = y * 100;
-    zoomRef.current.style.backgroundPosition = `${zoomX}% ${zoomY}%`;
+  const handleImageClick = (index) => {
+    onImageClick(index);
   };
-
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
-  const handleImageClick = (index) => onImageClick(index);
 
   const scrollThumbnails = (direction) => {
     if (thumbnailContainerRef.current) {
@@ -55,9 +33,9 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
   };
 
   return (
-    <div className="flex w-full h-full rounded-lg overflow-hidden">
+    <div className="flex w-full h-full overflow-hidden rounded-lg">
       {/* Mobile View: Swiper Carousel with Pagination */}
-      <div className="block md:hidden w-full">
+      <div className="block w-full md:hidden">
         <Swiper
           modules={[Pagination]}
           pagination={{ clickable: true }}
@@ -71,7 +49,7 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
                 <img
                   src={image}
                   alt={`Product view ${index + 1}`}
-                  className="w-full h-full object-contain"
+                  className="object-contain w-full h-full"
                   onClick={() => handleImageClick(index)}
                 />
               </div>
@@ -81,19 +59,19 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
       </div>
 
       {/* Desktop View: Main Image with Vertical Thumbnails on Left */}
-      <div className="hidden md:flex w-full bg-[#F9F9F9] rounded-lg overflow-hidden">
+      <div className="hidden w-full overflow-hidden rounded-lg md:flex">
         {/* Vertical Thumbnail Column with Arrows */}
-        <div className="w-24 flex flex-col items-center relative p-2 bg-white">
+        <div className="relative flex flex-col items-center w-24 p-2 bg-white">
           {productImages.length > 4 && (
             <button
               onClick={() => scrollThumbnails('up')}
-              className="mb-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="p-1 mb-2 transition-colors bg-gray-100 rounded-full hover:bg-gray-200"
               aria-label="Scroll thumbnails up"
             >
               <UpArrow />
             </button>
           )}
-          
+
           <div
             ref={thumbnailContainerRef}
             className="flex flex-col space-y-2 overflow-y-auto h-[calc(60vh-70px)] scrollbar-hidden"
@@ -107,32 +85,32 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
                 display: none;
               }
             `}</style>
-            
+
             {productImages.map((image, index) => (
               <div
                 key={index}
                 className={`w-20 h-20 flex-shrink-0 cursor-pointer border transition-all duration-200 rounded-md overflow-hidden ${
-                  index === currentImageIndex 
-                    ? 'border-gray-800 shadow-sm' 
+                  index === currentImageIndex
+                    ? 'border-gray-800 shadow-sm'
                     : 'border-gray-200 hover:border-gray-400'
                 }`}
                 onClick={() => setCurrentImageIndex(index)}
               >
-                <div className="w-full h-full flex items-center justify-center bg-white p-1">
+                <div className="flex items-center justify-center w-full h-full p-1 bg-white">
                   <img
                     src={image}
                     alt={`Product view ${index + 1}`}
-                    className="w-full h-full object-contain"
+                    className="object-contain w-full h-full"
                   />
                 </div>
               </div>
             ))}
           </div>
-          
+
           {productImages.length > 4 && (
             <button
               onClick={() => scrollThumbnails('down')}
-              className="mt-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="p-1 mt-2 transition-colors bg-gray-100 rounded-full hover:bg-gray-200"
               aria-label="Scroll thumbnails down"
             >
               <DownArrow />
@@ -140,45 +118,74 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
           )}
         </div>
 
-        {/* Main Image with Hover Zoom */}
-        <div className="flex-1 relative p-4 flex items-center justify-center">
-          <div
-            className="absolute inset-0 z-10 bg-white opacity-0 transition-opacity duration-300"
-            style={{ opacity: isHovered ? 0.7 : 0 }}
-          />
-          
-          <img
-            ref={mainImageRef}
-            src={productImages[currentImageIndex] || defaultImage}
-            alt="Product main image"
-            className="max-w-full max-h-[52vh] object-contain mx-auto cursor-zoom-in relative z-20"
-            onClick={() => handleImageClick(currentImageIndex)}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          />
-          
-          {isHovered && (
-            <>
-              <div
-                ref={hoverBoxRef}
-                className="absolute z-30 pointer-events-none"
-                style={{ width: '100px', height: '100px' }}
-              >
-                <img src={hoverbox.src} alt="Hover box" className="w-full h-full" />
-              </div>
-              
-              <div
-                ref={zoomRef}
-                className="absolute top-0 left-full ml-4 w-[100%] h-[60vh] bg-white shadow-xl border z-40 rounded-md overflow-hidden"
-                style={{
-                  backgroundImage: `url(${productImages[currentImageIndex] || defaultImage})`,
-                  backgroundSize: '200%',
-                  backgroundRepeat: 'no-repeat',
-                }}
-              />
-            </>
-          )}
+        {/* Main Image with Zoom Component */}
+        <div className="relative flex items-center justify-center flex-1 p-4">
+          <TransformWrapper
+            initialScale={1}
+            minScale={1}
+            maxScale={3}
+            centerOnInit={true}
+            wheel={{ disabled: true }}
+            doubleClick={{ disabled: true }}
+            panning={{ disabled: false }}
+            onPanning={() => {}}
+            onPinch={() => {}}
+          >
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                <div
+                  className="absolute inset-0 z-10 cursor-pointer"
+                  onClick={() => handleImageClick(currentImageIndex)}
+                ></div>
+
+                <TransformComponent
+                  wrapperClass="w-full h-full flex items-center justify-center"
+                  contentClass="max-w-full max-h-[52vh]"
+                >
+                  <img
+                    src={productImages[currentImageIndex] || defaultImage}
+                    alt="Product main image"
+                    className="max-w-full max-h-[52vh] object-contain mx-auto"
+                  />
+                </TransformComponent>
+
+                <div className="absolute z-20 flex gap-2 p-2 rounded-md bottom-4 right-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      zoomOut();
+                    }}
+                    className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
+                    aria-label="Zoom out"
+                  >
+                    -
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      resetTransform();
+                    }}
+                    className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
+                    aria-label="Reset zoom"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                      <path fillRule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.645-4.038.75.75 0 00-.53-.919z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      zoomIn();
+                    }}
+                    className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
+                    aria-label="Zoom in"
+                  >
+                    +
+                  </button>
+                </div>
+              </>
+            )}
+          </TransformWrapper>
         </div>
       </div>
     </div>

@@ -38,12 +38,12 @@ export default function SubscribeBanner() {
   };
 
   return (
-    <section className="mx-auto my-6 px-4 w-full max-w-7xl sm:my-8 md:my-10">
-      <div className="bg-gradient-to-r from-[#FDF5EC] to-[#FAF5EB] rounded-2xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center text-center">
+    <section className="mx-auto  m-4 px-4 w-full ">
+      <div className="bg-gradient-to-r from-[#2aace2] to-[#fcee21] rounded-2xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center text-center">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-2">
           Sign Up And Get Your Pouches Ready
         </h2>
-        <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-4 sm:mb-6 max-w-lg">
+        <p className="text-xs sm:text-sm md:text-base mb-4 sm:mb-6 max-w-lg">
           Sign up for early sale access, new in, promotions and more
         </p>
         <div className="w-full max-w-md flex flex-col sm:flex-row gap-2 sm:gap-0">
@@ -52,12 +52,12 @@ export default function SubscribeBanner() {
             placeholder="Enter your e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="flex-1 p-3 rounded-md sm:rounded-l-md sm:rounded-r-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base"
+            className="flex-1 p-3 rounded-md sm:rounded-l-md sm:rounded-r-none border border-gray-300 focus:outline-none text-sm sm:text-base"
           />
           <button
             type="button"
             onClick={handleSubscribe}
-            className="bg-black text-white px-4 py-3 rounded-md sm:rounded-l-none sm:rounded-r-md hover:bg-gray-900 transition-colors text-sm sm:text-base"
+            className="bg-[#103b60] text-white px-4 py-3 rounded-md sm:rounded-l-none sm:rounded-r-md transition-colors text-sm sm:text-base"
           >
             SUBSCRIBE
           </button>

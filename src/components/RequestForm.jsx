@@ -363,12 +363,12 @@ function RequestForm() {
   };
 
   return (
-    <div className="py-4 sm:py-8 bg-[#00b08d] min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="py-4 sm:py-8 bg-[#ece0cc] min-h-screen">
+      <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Left Side: Form */}
           <div className="lg:col-span-2">
-            <h2 className="text-xl sm:text-2xl font-semibold text-white border-b-2 border-white-500 pb-2 mb-4">
+            <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl border-black-500">
               Request A Free Quote
             </h2>
 
@@ -386,9 +386,9 @@ function RequestForm() {
 
             <form onSubmit={handleSubmit}>
               {/* Name Section */}
-              <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 mb-4">
+              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1">
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Name *
                   </label>
                   <div className="flex flex-col sm:flex-row sm:space-x-4">
@@ -398,7 +398,7 @@ function RequestForm() {
                       value={formData.firstName}
                       onChange={handleChange}
                       placeholder="First Name"
-                      className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                       required
                     />
                     <input
@@ -407,7 +407,7 @@ function RequestForm() {
                       value={formData.lastName}
                       onChange={handleChange}
                       placeholder="Last Name"
-                      className="w-full mt-1 sm:mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md sm:mt-1 focus:outline-none "
                       required
                     />
                   </div>
@@ -415,9 +415,9 @@ function RequestForm() {
               </div>
 
               {/* Email and Phone Section */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Email *
                   </label>
                   <input
@@ -426,15 +426,15 @@ function RequestForm() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email"
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   />
                   {emailError && (
-                    <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                    <p className="mt-1 text-sm text-red-500">{emailError}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Phone *
                   </label>
                   <input
@@ -443,7 +443,7 @@ function RequestForm() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Phone"
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                     maxLength={10}
                   />
@@ -451,9 +451,9 @@ function RequestForm() {
               </div>
 
               {/* Company Name and Language Preference Section */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Company Name *
                   </label>
                   <input
@@ -462,19 +462,19 @@ function RequestForm() {
                     value={formData.companyName}
                     onChange={handleChange}
                     placeholder="Company Name"
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Language Preference *
                   </label>
                   <select
                     name="languagePreference"
                     value={formData.languagePreference}
                     onChange={handleChange}
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   >
                     <option value="" className="text-gray-900">
@@ -494,16 +494,16 @@ function RequestForm() {
               </div>
 
               {/* Industry and Company Website Section */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Industry *
                   </label>
                   <select
                     name="industry"
                     value={formData.industry}
                     onChange={handleChange}
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   >
                     <option value="" className="text-gray-900">
@@ -521,7 +521,7 @@ function RequestForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Company Website
                   </label>
                   <input
@@ -530,14 +530,14 @@ function RequestForm() {
                     value={formData.companyWebsite}
                     onChange={handleChange}
                     placeholder="https://"
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                   />
                 </div>
               </div>
 
               {/* Address Section */}
               <div className="mb-4">
-                <label className="block text-sm sm:text-md font-medium text-white">
+                <label className="block text-sm font-medium text-black sm:text-md">
                   Address *
                 </label>
                 <input
@@ -546,7 +546,7 @@ function RequestForm() {
                   value={formData.streetAddress}
                   onChange={handleChange}
                   placeholder="Street Address"
-                  className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                   required
                 />
                 <input
@@ -555,16 +555,16 @@ function RequestForm() {
                   value={formData.addressLine2}
                   onChange={handleChange}
                   placeholder="Address Line 2"
-                  className="w-full mt-3 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                 />
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-3">
+                <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-3">
                   <input
                     type="text"
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
                     placeholder="City"
-                    className="w-full p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   />
                   <input
@@ -573,7 +573,7 @@ function RequestForm() {
                     value={formData.state}
                     onChange={handleChange}
                     placeholder="State"
-                    className="w-full p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   />
                   <input
@@ -582,7 +582,7 @@ function RequestForm() {
                     value={formData.zipPostalCode}
                     onChange={handleChange}
                     placeholder="ZIP / Postal Code"
-                    className="w-full p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                     maxLength={6}
                   />
@@ -591,14 +591,14 @@ function RequestForm() {
 
               {/* Country Section */}
               <div className="mb-4">
-                <label className="block text-sm sm:text-md font-medium text-white">
+                <label className="block text-sm font-medium text-black sm:text-md">
                   Country *
                 </label>
                 <select
                   name="country"
                   value={formData.country}
                   onChange={handleChange}
-                  className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
                   required
                 >
                   <option value="" className="text-gray-900">
@@ -617,19 +617,19 @@ function RequestForm() {
               </div>
 
               {/* Packaging Information Section */}
-              <h3 className="text-lg sm:text-xl font-semibold text-white border-b-2 border-white pb-2 mb-4">
+              <h3 className="pb-2 mb-4 text-lg font-semibold text-black border-b-2 border-black sm:text-xl">
                 Packaging Information
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Order Quantity *
                   </label>
                   <select
                     name="orderQuantity"
                     value={formData.orderQuantity}
                     onChange={handleChange}
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   >
                     <option value="" className="text-gray-900">
@@ -647,14 +647,14 @@ function RequestForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm sm:text-md font-medium text-white">
+                  <label className="block text-sm font-medium text-black sm:text-md">
                     Package Buying History *
                   </label>
                   <select
                     name="packageBuyingHistory"
                     value={formData.packageBuyingHistory}
                     onChange={handleChange}
-                    className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
                     required
                   >
                     <option value="" className="text-gray-900">
@@ -675,7 +675,7 @@ function RequestForm() {
 
               {/* Project Description Section */}
               <div className="mb-4">
-                <label className="block text-sm sm:text-md font-medium text-white">
+                <label className="block text-sm font-medium text-black sm:text-md">
                   Describe Your Project
                 </label>
                 <textarea
@@ -683,14 +683,14 @@ function RequestForm() {
                   value={formData.projectDescription}
                   onChange={handleChange}
                   placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                  className="w-full mt-1 p-2 border border-white rounded-md bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-black h-24 sm:h-32"
+                  className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
                 ></textarea>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#103b60] text-white p-2 rounded-md hover:bg-[#103b60] focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base"
+                className="w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none  text-sm sm:text-base"
               >
                 Submit
               </button>
@@ -698,8 +698,8 @@ function RequestForm() {
           </div>
 
           {/* Right Side: Sample Text */}
-          <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-800 border-b-2 border-orange-500 pb-2 mb-4">
+          <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
+            <h2 className="pb-2 mb-4 text-xl font-semibold text-gray-800 border-b-2 border-orange-500">
               Do More With Nexibles
             </h2>
 
@@ -708,7 +708,7 @@ function RequestForm() {
                 <h3 className="text-lg font-medium text-gray-800">
                   Industry Leading Turnaround Times
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="mt-1 text-sm text-gray-600">
                   We pride ourselves on turnaround times as fast as 15 days from
                   artwork approval (as fast as 10 days for rollstock) with our
                   Nexibles Record Flexible Packaging Solution.
@@ -719,7 +719,7 @@ function RequestForm() {
                 <h3 className="text-lg font-medium text-gray-800">
                   A Truly Global Print Network
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="mt-1 text-sm text-gray-600">
                   Our print capabilities include 25 locations across the globe
                   with a capacity of 8 million linear feet per day.
                 </p>
@@ -729,7 +729,7 @@ function RequestForm() {
                 <h3 className="text-lg font-medium text-gray-800">
                   Transparent MOQs
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="mt-1 text-sm text-gray-600">
                   Our minimum order quantities are easy to understand with no
                   hidden fees or gotchas.
                 </p>
@@ -739,7 +739,7 @@ function RequestForm() {
                 <h3 className="text-lg font-medium text-gray-800">
                   Digital Capabilities At Flexo Prices
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="mt-1 text-sm text-gray-600">
                   The flexibility that digital printing offers with prices
                   competitive with flexographic printers.
                 </p>

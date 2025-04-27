@@ -12,7 +12,7 @@
 // Editcolors.jsx
 
 import React from 'react';
-// import { ChromePicker } from 'react-color';
+// import { ChromePicker } from 'react-color ';
 
 const Editcolors = ({ drawingColor, onColorChange }) => {
   return (

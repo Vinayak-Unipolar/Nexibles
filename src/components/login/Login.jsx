@@ -194,7 +194,7 @@ function Login() {
                         >
                             <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
-                                    src={image.src}
+                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/Create%20an%20account.webp`}
                                     alt="Auth illustration"
                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                 />
@@ -203,7 +203,7 @@ function Login() {
 
                         {/* Form Section */}
                         <motion.div
-                            className="w-full p-6 md:p-8 overflow-y-auto bg-white md:w-1/2"
+                            className="w-full p-6 overflow-y-auto bg-white md:p-8 md:w-1/2"
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}

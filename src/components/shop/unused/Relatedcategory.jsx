@@ -34,7 +34,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
   const NextArrow = ({ onClick }) => (
     <div className="absolute transform -translate-y-1/2 top-1/2 right-4">
       <button
-        className="p-0.5 bg-white rounded-full shadow-md"
+        className="bg-white rounded-full shadow-md p-"
         onClick={onClick}
         aria-label="Next"
       >
@@ -46,7 +46,7 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
   const PrevArrow = ({ onClick }) => (
     <div className="absolute z-10 transform -translate-y-1/2 top-1/2 left-8">
       <button
-        className="p-0.5 bg-white rounded-full shadow-md"
+        className="p-1 bg-white rounded-full shadow-md"
         onClick={onClick}
         aria-label="Previous"
       >
@@ -111,15 +111,14 @@ const RelatedCategory = ({ relatedProducts, currentProductIds = [] }) => {
                 passHref
               >
                 <div className="flex items-center justify-center py-2">
-                  <div className=" h-80 w-64 hover:bg-[#ECE0CC] rounded-lg overflow-hidden mb-4">
+                  <div className="w-64 mb-4 overflow-hidden rounded-lg h-80">
                     <div>
                       <Image
-                        // src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
                         src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
                         alt={`Image for ${product.name}`}
                         width={256}
                         height={256}
-                        className="object-contain w-full h-64 rounded-t-lg"
+                        className="transition-transform duration-300 rounded-md hover:scale-105"
                       />
                     </div>
                     <div className="flex flex-col items-center justify-center ml-2">

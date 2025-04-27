@@ -37,7 +37,7 @@ const ProductSections = () => {
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} className="w-full">
       <div className="md:flex md:flex-row justify-center md:h-full">
         {/* Stock Products Section */}
         <Link href="/all-category" className="relative overflow-hidden group">
@@ -65,7 +65,7 @@ const ProductSections = () => {
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 md:w-[300px]">NEXICLASSIC</h1>
           </motion.div>
           <motion.button 
-            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-6 rounded-full top-[55%] left-[72%] md:top-[84%] md:left-[66%]"
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-6 rounded-full top-[55%] left-[72%] md:top-[85%] md:left-[57%]"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             whileHover="hover"
@@ -103,7 +103,7 @@ const ProductSections = () => {
             <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[350px]">POUCH</h1>
           </motion.div>
           <motion.button 
-            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-6 rounded-full top-[55%] right-[58%] md:top-[56%] md:right-[62%]"
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-3 md:px-6 rounded-full top-[55%] right-[58%] md:top-[50%] md:right-[73%]"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             whileHover="hover"

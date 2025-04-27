@@ -17,10 +17,6 @@ export default function NexiblesInstagramSection() {
       image: "/insta-post3.jpg",
       link: "https://www.instagram.com/p/XXXXXXXX/",
     },
-    {
-      image: "/insta-post4.jpg",
-      link: "https://www.instagram.com/p/XXXXXXXX/",
-    },
   ]);
 
   const [brandLogos, setBrandLogos] = useState([]);
@@ -53,11 +49,11 @@ export default function NexiblesInstagramSection() {
       </div>
 
       {/* Instagram Feed */}
-      <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <div className="max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-3 mb-12">
         {instaFeed.map((post, idx) => (
           <div
             key={idx}
-            className="relative overflow-hidden rounded-lg group aspect-square border border-gray-200"
+            className="relative overflow-hidden  group aspect-square "
           >
             <Image
               src={post.image}
@@ -90,11 +86,11 @@ export default function NexiblesInstagramSection() {
       <div className="relative overflow-hidden w-full pt-8">
         <motion.div
           className="flex space-x-8 w-max"
-          animate={{ x: ["0%", "-30%"] }}
+          animate={{ x: ["0%", "-15%"] }} // Translate by half the total width for seamless looping
           transition={{
             repeat: Infinity,
             repeatType: "loop",
-            duration: 30,
+            duration: 20, // Adjust duration for desired speed
             ease: "linear",
           }}
         >
@@ -127,3 +123,4 @@ export default function NexiblesInstagramSection() {
     </div>
   );
 }
+

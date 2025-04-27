@@ -10,6 +10,7 @@ import client3 from '../../../public/client/client3.png';
 import client4 from '../../../public/client/client4.png';
 import client5 from '../../../public/client/client5.png';
 import client6 from '../../../public/client/client6.png';
+import client7 from '../../../public/client/client7.png';
 import doublequotes from '../../../public/home/doublequotes.svg';
 import flip from '../../../public/home/flip.svg';
 
@@ -85,10 +86,17 @@ export default function StatsAndTestimonials() {
     },
     {
       id: 6,
-      name: "Rajiv Raj Jain",
+      name: "Mr. Rajiv Raj Jain",
       designationcompany: "Founder, Svasthyaa",
       content: "I met Amol at AAHAR and was really impressed with the standard products he had – they were just right for us to launch our products. As a startup, his innovative approach helped us reduce our launch costs by 50%. His team has always been responsive, supportive, and great to work with. Thanks to them, we were able to scale smoothly.",
       image: client6,
+    }, 
+    {
+      id: 7,
+      name: "Mr. Hisham Sunesra",
+      designationcompany: "Founder, Cookie Cartel",
+      content: "We’ve been working with Nexibles for over 1.5 years now, and they’ve been an incredible partner in our growth journey. From our very first order of just 1,000 standard stand-up pouches to now producing 10,000 fully customized and perfectly sized printed pouches, they’ve been with us every step of the way. The team — including the founders — has been consistently supportive, responsive, and proactive. Their pricing is highly competitive compared to other players in the market. If you’re looking for a reliable partner to scale with, we highly recommend Nexibles.",
+      image: client7,
     }
   ];
 
@@ -159,7 +167,7 @@ export default function StatsAndTestimonials() {
     <div className="flex flex-col w-full">
       {/* ===================== STATS SECTION ===================== */}
       <motion.div
-        className="mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 py-12 px-4 md:px-8"
+        className="grid grid-cols-1 gap-6 px-4 py-12 mx-auto md:grid-cols-4 md:gap-8 md:px-8"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
@@ -175,8 +183,8 @@ export default function StatsAndTestimonials() {
                 flex flex-col justify-between
                 cursor-pointer overflow-hidden
                 ${isActive
-                  ? 'bg-gradient-to-br from-[#36296C] to-[#5A45AB] text-white'
-                  : 'bg-white text-[#5A45AB]'}
+                  ? 'bg-[#103b60] text-white'
+                  : 'bg-white text-[#103b60'}
               `}
               style={{ zIndex: 0 }}
               variants={itemVariants}
@@ -188,7 +196,7 @@ export default function StatsAndTestimonials() {
                 <motion.h2
                   className={`
                     text-5xl font-bold leading-none
-                    ${isActive ? 'text-white' : 'text-[#5A45AB]'}
+                    ${isActive ? 'text-white' : 'text-[#103b60]'}
                   `}
                   variants={statCounterVariants}
                   initial="hidden"
@@ -197,16 +205,16 @@ export default function StatsAndTestimonials() {
                 >
                   {stat.bigNumber}
                 </motion.h2>
-                <p className={`mt-1 text-xl ${isActive ? 'text-white' : 'text-[#5A45AB]'}`}>
+                <p className={`mt-1 text-xl ${isActive ? 'text-white' : 'text-[#103b60]'}`}>
                   {stat.label}
                 </p>
               </div>
 
               <div className="mt-4">
-                <p className={`text-lg font-semibold ${isActive ? 'text-teal-300' : 'text-[#5A45AB]'}`}>
+                <p className={`text-lg font-semibold ${isActive ? 'text-teal-300' : 'text-[#103b60]'}`}>
                   {stat.year}
                 </p>
-                <p className={`text-sm ${isActive ? 'text-white' : 'text-[#5A45AB]'}`}>
+                <p className={`text-sm ${isActive ? 'text-white' : 'text-[#103b60]'}`}>
                   {stat.subLabel}
                 </p>
               </div>
@@ -223,7 +231,7 @@ export default function StatsAndTestimonials() {
         transition={{ duration: 0.6 }}
       >
         <motion.h2
-          className="text-2xl md:text-3xl font-bold text-center text-black mb-12 mt-6 md:mt-0"
+          className="mt-6 mb-12 text-2xl font-bold text-center text-black md:text-3xl md:mt-0"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
@@ -232,12 +240,12 @@ export default function StatsAndTestimonials() {
         </motion.h2>
 
         {/* Testimonial Carousel with react-slick */}
-        <div className="relative max-w-7xl mx-auto px-4 md:px-0 mb-16">
+        <div className="relative px-4 mx-auto mb-16 max-w-7xl md:px-0">
           <Slider {...sliderSettings}>
             {testimonials.map((testimonial, index) => (
               <div key={testimonial.id} className="px-3">
                 <motion.div
-                  className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-20 md:mt-18 mb-8 pt-16 pb-6 px-6 shadow-lg"
+                  className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-24 md:mt-18 mb-10 pt-16 pb-6 px-6 shadow-lg"
                   variants={testimonialCardVariants}
                   initial="hidden"
                   animate="visible"
@@ -249,22 +257,22 @@ export default function StatsAndTestimonials() {
                   transition={{ type: 'spring', stiffness: 400 }}
                 >
                   {/* Top centered client image */}
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
                     <div className="p-3 bg-white rounded-full">
                       <Image
                         src={testimonial.image}
                         alt={testimonial.name}
                         width={120}
                         height={120}
-                        className="rounded-full bg-orange-100 shadow-md"
+                        className="bg-orange-100 rounded-full shadow-md"
                       />
                     </div>
                   </div>
 
                   {/* Testimonial content */}
                   <div className="flex flex-col text-center text-gray-700">
-                    <p className="mt-4 mb-4 line-clamp-5 text-left">{testimonial.content}</p>
-                    <p className="text-lg text-left font-semibold text-gray-800">{testimonial.name}</p>
+                    <p className="mt-4 mb-4 text-left line-clamp-5">{testimonial.content}</p>
+                    <p className="text-lg font-semibold text-left text-gray-800">{testimonial.name}</p>
                     <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
                   </div>
 
@@ -272,7 +280,7 @@ export default function StatsAndTestimonials() {
                   <div className="absolute -bottom-[45px] right-4 w-20 h-20">
                     <Image src={doublequotes} alt="quotes" width={70} height={70} />
                   </div>
-                  <div className="absolute invisible md:visible -top-9 left-7 w-20 h-20">
+                  <div className="absolute invisible w-20 h-20 md:visible -top-9 left-7">
                     <Image src={flip} alt="quotes" width={70} height={70} />
                   </div>
                 </motion.div>

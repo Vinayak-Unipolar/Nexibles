@@ -37,7 +37,7 @@ const ProductSections = () => {
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} className="w-full">
       <div className="md:flex md:flex-row justify-center md:h-full">
         {/* Stock Products Section */}
         <Link href="/all-category" className="relative overflow-hidden group">

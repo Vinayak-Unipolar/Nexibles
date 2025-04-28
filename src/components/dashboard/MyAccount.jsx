@@ -27,7 +27,6 @@ export default function MyAccount() {
     { name: "My details", link: "/my-details", icon: <FiUser /> },
     { name: "Address book", link: "/manageaddress", icon: <FiMapPin /> },
     { name: "Gift cards & vouchers", link: "/gift-cards", icon: <FiGift /> },
-    { name: "Need help?", link: "/need-help", icon: <FiHelpCircle /> },
     { name: "Where's my order?", link: "/wheres-my-order", icon: <FiHelpCircle /> },
   ];
 

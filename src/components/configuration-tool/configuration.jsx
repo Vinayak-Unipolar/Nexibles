@@ -12,15 +12,6 @@ const Configuration = () => {
   const router = useRouter();
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  // Check authentication status and redirect if not logged in
-  useEffect(() => {
-    if (user === null) {
-      router.push('/login');
-    } else {
-      setIsAuthLoading(false);
-    }
-  }, [user, router]);
-
   // State management
   const [product, setProduct] = useState(null);
   const [jobName, setJobName] = useState('');
@@ -36,12 +27,15 @@ const Configuration = () => {
   const [zipperOptions, setZipperOptions] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [designNames, setDesignNames] = useState(['']);
-  const [selectedQuantities, setSelectedQuantities] = useState([100]);
+  const [selectedQuantities, setSelectedQuantities] = useState([500]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [costData, setCostData] = useState(null);
   const [isQuotationLoading, setIsQuotationLoading] = useState(false);
   const [token, setToken] = useState(null);
+  // New states for categories
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   // Framer Motion variants
   const containerVariants = {
@@ -87,129 +81,207 @@ const Configuration = () => {
           setError('Failed to authenticate after multiple attempts.');
           return null;
         }
-        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt)); // Exponential backoff
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
       }
     }
-  }, []);
+  }, [setError]);
+
+  // Fetch category data with retry
+  const fetchCategoryData = useCallback(async (retries = 3) => {
+    const APIURL = process.env.NEXT_PUBLIC_API_URL;
+    const token = process.env.NEXT_PUBLIC_API_KEY;
+
+    if (!APIURL || !token) {
+      setError('API URL or API Key is missing.');
+      return false;
+    }
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const response = await fetch(`${APIURL}/api/category_master`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'API-Key': token,
+          },
+        });
+
+        const data = await response.json();
+        if (data.status === 'success' && data.data) {
+          const filterCategory = data.data
+            .filter((category) => category.origin?.toLowerCase() === 'nexibles')
+            .map((category) => ({
+              id: category.id,
+              name: category.name,
+              cat_url: category.cat_url || '',
+            }));
+          setCategories(filterCategory);
+          return true;
+        } else {
+          throw new Error(data.error || 'Failed to fetch category data');
+        }
+      } catch (err) {
+        if (attempt === retries) {
+          setError(err.message || 'Error fetching category data');
+          return false;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      }
+    }
+  }, [setError]);
 
   // Fetch product data with retry
-  const fetchProductData = useCallback(
-    async (authToken, retries = 3) => {
-      for (let attempt = 1; attempt <= retries; attempt++) {
-        try {
-          const response = await fetch(
-            'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-                Environment: 'frontdesk',
-              },
-            }
-          );
-
-          const data = await response.json();
-          if (data.status && data.data) {
-            const targetProduct = data.data.find((p) => p.id === '122');
-            if (!targetProduct) throw new Error('Product ID 122 not found');
-
-            setProduct(targetProduct);
-
-            // Generate size options
-            const { minimum_width, maximum_width, minimum_length, maximum_length } = targetProduct;
-            const widthStep = (parseInt(maximum_width) - parseInt(minimum_width)) / 9;
-            const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
-            const widths = Array.from({ length: 10 }, (_, i) => {
-              const width = Math.round(parseInt(minimum_width) + i * widthStep);
-              return { value: width, label: `${width} mm` };
-            });
-            const lengths = Array.from({ length: 10 }, (_, i) => {
-              const length = Math.round(parseInt(minimum_length) + i * lengthStep);
-              return { value: length, label: `${length} mm` };
-            });
-            setSizeOptions({ widths, lengths });
-            setSelectedWidth(widths[0] || null);
-            setSelectedLength(lengths[0] || null);
-
-            // Set material options
-            const materials = targetProduct.pouch_media.map((m) => ({
-              value: m.id,
-              label: m.media_title,
-              widths: m.media_widths ? m.media_widths.split(',') : [],
-            }));
-            setMaterialOptions(materials);
-            setSelectedMaterial(materials[0] || null);
-
-            // Set mandatory processes
-            const mandatory = targetProduct.pouch_postpress
-              .filter((p) => p.mandatory_any_one)
-              .map((p) => ({
-                value: p.id,
-                label: p.process_name,
-              }));
-            setMandatoryProcesses(mandatory);
-            setSelectedMandatoryProcess(mandatory[0] || null);
-
-            // Set optional processes
-            const optional = targetProduct.pouch_postpress
-              .filter((p) => p.optional && !p.mandatory_any_one)
-              .map((p) => ({
-                id: p.id,
-                name: p.process_name,
-              }));
-            setOptionalProcesses(optional);
-
-            // Set zipper options
-            const zippers = targetProduct.pouch_postpress
-              .filter((p) => p.mandatory_any_one)
-              .map((p) => ({
-                value: p.id,
-                label: p.process_name,
-              }));
-            setZipperOptions(zippers);
-
-            return true;
-          } else {
-            throw new Error(data.message || 'Failed to fetch product data');
+  const fetchProductData = useCallback(async (authToken, retries = 3) => {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const response = await fetch(
+          'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              Environment: 'frontdesk',
+            },
           }
-        } catch (err) {
-          if (attempt === retries) {
-            setError(err.message);
-            return false;
+        );
+
+        const data = await response.json();
+        if (data.status && data.data) {
+          const targetProduct = data.data.find((p) => p.id === '122');
+          if (!targetProduct) throw new Error('Product ID 122 not found');
+
+          setProduct(targetProduct);
+
+          // Generate size options
+          const { minimum_width, maximum_width, minimum_length, maximum_length } = targetProduct;
+
+          // Validate size parameters
+          if (
+            !minimum_width ||
+            !maximum_width ||
+            !minimum_length ||
+            !maximum_length ||
+            isNaN(parseInt(minimum_width)) ||
+            isNaN(parseInt(maximum_width)) ||
+            isNaN(parseInt(minimum_length)) ||
+            isNaN(parseInt(maximum_length))
+          ) {
+            throw new Error('Invalid size parameters in product data');
           }
-          await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+
+          const widthStep = (parseInt(maximum_width) - parseInt(minimum_width)) / 9;
+          const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
+          const widths = Array.from({ length: 10 }, (_, i) => {
+            const width = Math.round(parseInt(minimum_width) + i * widthStep);
+            return { value: width, label: `${width} mm` };
+          });
+          const lengths = Array.from({ length: 10 }, (_, i) => {
+            const length = Math.round(parseInt(minimum_length) + i * lengthStep);
+            return { value: length, label: `${length} mm` };
+          });
+          setSizeOptions({ widths, lengths });
+          setSelectedWidth(widths[0] || null);
+          setSelectedLength(lengths[0] || null);
+
+          // Set material options
+          const materials = Array.isArray(targetProduct.pouch_media)
+            ? targetProduct.pouch_media.map((m) => ({
+                value: m.id,
+                label: m.media_title,
+                widths: m.media_widths ? m.media_widths.split(',') : [],
+              }))
+            : [];
+          setMaterialOptions(materials);
+          setSelectedMaterial(materials[0] || null);
+
+          // Set mandatory processes
+          const mandatory = Array.isArray(targetProduct.pouch_postpress)
+            ? targetProduct.pouch_postpress
+                .filter((p) => p.mandatory_any_one)
+                .map((p) => ({
+                  value: p.id,
+                  label: p.process_name,
+                }))
+            : [];
+          setMandatoryProcesses(mandatory);
+          setSelectedMandatoryProcess(mandatory[0] || null);
+
+          // Set optional processes
+          const optional = Array.isArray(targetProduct.pouch_postpress)
+            ? targetProduct.pouch_postpress
+                .filter((p) => p.optional && !p.mandatory_any_one)
+                .map((p) => ({
+                  id: p.id,
+                  name: p.process_name,
+                }))
+            : [];
+          setOptionalProcesses(optional);
+
+          // Set zipper options
+          const zippers = Array.isArray(targetProduct.pouch_postpress)
+            ? targetProduct.pouch_postpress
+                .filter((p) => p.mandatory_any_one)
+                .map((p) => ({
+                  value: p.id,
+                  label: p.process_name,
+                }))
+            : [];
+          setZipperOptions(zippers);
+
+          return true;
+        } else {
+          throw new Error(data.message || 'Failed to fetch product data');
         }
+      } catch (err) {
+        if (attempt === retries) {
+          setError(err.message);
+          return false;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
       }
-    },
-    []
-  );
+    }
+  }, [
+    setProduct,
+    setSizeOptions,
+    setSelectedWidth,
+    setSelectedLength,
+    setMaterialOptions,
+    setSelectedMaterial,
+    setMandatoryProcesses,
+    setSelectedMandatoryProcess,
+    setOptionalProcesses,
+    setZipperOptions,
+    setError,
+  ]);
 
-  // Initialize authentication and data fetching
+  // Initialize authentication, product, and category data fetching
   useEffect(() => {
     const initialize = async () => {
       setLoading(true);
       setError(null);
 
-      let authToken = localStorage.getItem('token2');
-      if (!authToken) {
-        authToken = await loginForThirdParty();
-      } else {
-        setToken(authToken);
-      }
-
-      if (authToken) {
-        const success = await fetchProductData(authToken);
-        if (!success) {
-          setError('Failed to load product data after multiple attempts.');
+      if (user) {
+        setIsAuthLoading(false);
+        const authToken = await loginForThirdParty();
+        if (authToken) {
+          const [productSuccess, categorySuccess] = await Promise.all([
+            fetchProductData(authToken),
+            fetchCategoryData(),
+          ]);
+          if (!productSuccess || !categorySuccess) {
+            setError('Failed to load product or category data after multiple attempts.');
+          }
+        } else {
+          setError('Authentication failed.');
         }
       } else {
-        setError('Authentication failed.');
+        router.push('/login');
       }
 
       setLoading(false);
     };
 
     initialize();
-  }, [loginForThirdParty, fetchProductData]);
+  }, [user, router, loginForThirdParty, fetchProductData, fetchCategoryData]);
 
   // Handle optional process checkbox changes
   const handleOptionalProcessChange = (processId) => {
@@ -222,6 +294,7 @@ const Configuration = () => {
 
   // Handle SKU quantity changes
   const handleQuantityChange = (index, value) => {
+    if (index >= quantity) return; // Prevent out-of-bounds updates
     const updated = [...selectedQuantities];
     updated[index] = parseInt(value);
     setSelectedQuantities(updated);
@@ -290,7 +363,6 @@ const Configuration = () => {
       const result = await response.json();
       if (result.status && result.data?.costing_data?.length > 0) {
         setCostData(result.data.costing_data[0]);
-        alert('Quotation generated successfully!');
       } else {
         throw new Error(result.message || 'Failed to generate quotation: Invalid response data');
       }
@@ -339,7 +411,7 @@ const Configuration = () => {
   );
 
   // Render auth loading state
-  if (isAuthLoading || user === null) {
+  if (isAuthLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-gray-600">Loading...</div>
@@ -422,6 +494,29 @@ const Configuration = () => {
                 </h2>
                 <div className="bg-gray-50 p-6 rounded-xl">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Category */}
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-2">Category</label>
+                      <select
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        disabled={categories.length === 0}
+                      >
+                        <option value="" disabled>
+                          Select category
+                        </option>
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
+                      {categories.length === 0 && (
+                        <p className="text-sm text-gray-500 mt-1">Loading categories...</p>
+                      )}
+                    </div>
+
                     {/* Width */}
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Width</label>
@@ -433,7 +528,9 @@ const Configuration = () => {
                           setSelectedWidth(selected);
                         }}
                       >
-                        <option value="" disabled>Select width</option>
+                        <option value="" disabled>
+                          Select width
+                        </option>
                         {sizeOptions.widths?.map((width, idx) => (
                           <option key={idx} value={width.value}>
                             {width.label}
@@ -453,7 +550,9 @@ const Configuration = () => {
                           setSelectedLength(selected);
                         }}
                       >
-                        <option value="" disabled>Select length</option>
+                        <option value="" disabled>
+                          Select length
+                        </option>
                         {sizeOptions.lengths?.map((length, idx) => (
                           <option key={idx} value={length.value}>
                             {length.label}
@@ -473,7 +572,9 @@ const Configuration = () => {
                           setSelectedMaterial(selected);
                         }}
                       >
-                        <option value="" disabled>Select material</option>
+                        <option value="" disabled>
+                          Select material
+                        </option>
                         {materialOptions.map((material, idx) => (
                           <option key={idx} value={material.value}>
                             {material.label}
@@ -498,7 +599,9 @@ const Configuration = () => {
                           setSelectedMandatoryProcess(selected);
                         }}
                       >
-                        <option value="" disabled>Select mandatory process</option>
+                        <option value="" disabled>
+                          Select mandatory process
+                        </option>
                         {mandatoryProcesses.map((process, idx) => (
                           <option key={idx} value={process.value}>
                             {process.label}
@@ -526,10 +629,10 @@ const Configuration = () => {
                         const q = parseInt(e.target.value);
                         setQuantity(q);
                         setDesignNames(Array(q).fill(''));
-                        setSelectedQuantities(Array(q).fill(100));
+                        setSelectedQuantities(Array(q).fill(500));
                       }}
                     >
-                      {[1, 2, 3, 4, 5].map((sku) => (
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((sku) => (
                         <option key={sku} value={sku}>
                           {sku}
                         </option>
@@ -565,11 +668,11 @@ const Configuration = () => {
                             value={selectedQuantities[index]}
                             onChange={(e) => handleQuantityChange(index, e.target.value)}
                           >
-                            <option value={100}>100 Pcs</option>
-                            <option value={200}>200 Pcs</option>
-                            <option value={300}>300 Pcs</option>
                             <option value={500}>500 Pcs</option>
                             <option value={1000}>1000 Pcs</option>
+                            <option value={2000}>2000 Pcs</option>
+                            <option value={3000}>3000 Pcs</option>
+                            <option value={5000}>5000 Pcs</option>
                           </select>
                         </div>
                       ))}
@@ -632,7 +735,10 @@ const Configuration = () => {
                     ? `${selectedWidth.label} x ${selectedLength.label}`
                     : 'Not selected'}
                 </p>
-                <p>{selectedMaterial?.label || 'Not selected'} • {selectedMandatoryProcess?.label || 'Not selected'}</p>
+                <p>
+                  {selectedMaterial?.label || 'Not selected'} • {selectedMandatoryProcess?.label || 'Not selected'}
+                </p>
+                <p>Category: {categories.find((cat) => cat.id === selectedCategory)?.name || 'Not selected'}</p>
               </div>
             </div>
 
@@ -663,9 +769,7 @@ const Configuration = () => {
               <div className="mt-8 space-y-4">
                 <motion.button
                   className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
-                    isQuotationLoading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-black text-white hover:bg-gray-800'
+                    isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
                   }`}
                   whileHover={{ scale: isQuotationLoading ? 1 : 1.02 }}
                   whileTap={{ scale: isQuotationLoading ? 1 : 0.98 }}
@@ -673,13 +777,6 @@ const Configuration = () => {
                   disabled={isQuotationLoading}
                 >
                   {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
-                </motion.button>
-                <motion.button
-                  className="w-full py-3 px-4 bg-[#103b60] text-black font-medium rounded-lg border border-gray-300 transition-all duration-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Save Configuration
                 </motion.button>
               </div>
             </motion.div>
@@ -691,3 +788,19 @@ const Configuration = () => {
 };
 
 export default Configuration;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

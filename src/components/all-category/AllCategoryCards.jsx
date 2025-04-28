@@ -19,10 +19,10 @@ const AllCategoryCards = ({ categoryData }) => {
   // Helper function to determine image URL with format fallback
   const getImageUrl = (imageName) => {
     if (!imageName || !NEXI_CDN_URL) return "/placeholder.png";
-    
+
     // Remove any existing extension if present
     const baseImageName = imageName.replace(/\.(webp|png)$/i, "");
-    
+
     // Try .webp first, then .png
     const extension = ".webp"; // Default to .webp
     return `${NEXI_CDN_URL}/features/${baseImageName}${extension}`;
@@ -51,14 +51,6 @@ const AllCategoryCards = ({ categoryData }) => {
                   className="object-contain transition-transform duration-300 hover:scale-105"
                   layout="fill"
                   objectFit="contain"
-                  onError={(e) => {
-                    console.error(`Failed to load image: ${getImageUrl(category.bg_Img)}`);
-                    if (e.target.src.includes(".webp")) {
-                      e.target.src = getImageUrl(category.bg_Img).replace(".webp", ".png");
-                    } else {
-                      e.target.src = "/placeholder.png";
-                    }
-                  }}
                 />
               </Link>
             </div>

@@ -16,7 +16,7 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/pop_up.png";
+import Pop_up_image from "../../public/home/Tea.jpg";
 
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
@@ -52,11 +52,11 @@ const Modal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl max-w-md w-full mx-4 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="relative w-full max-w-md mx-4 overflow-hidden bg-white rounded-2xl">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-black hover:text-gray-700 z-10 bg-white rounded-full p-1"
+          className="absolute z-10 p-1 text-black bg-white rounded-full top-2 right-2 hover:text-gray-700"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -64,15 +64,22 @@ const Modal = ({ isOpen, onClose }) => {
         </button>
 
         <div className="relative w-full h-52">
-          <img src={Pop_up_image.src} alt="Nexibles Product" className="w-full h-full object-cover" />
+          <img
+            src={Pop_up_image.src}
+            alt="Nexibles Product"
+            className="object-fill w-full h-full"
+          />
         </div>
 
-        <div className="p-6 flex flex-col items-center">
-          <p className="text-gray-500 uppercase text-xs tracking-wide mb-1">
+        {/* Bottom Half: Content */}
+        <div className="flex flex-col items-center p-6">
+          <p className="mb-1 text-xs tracking-wide text-gray-500 uppercase">
             SUBSCRIBE TO OUR NEWSLETTER!
           </p>
-          <h2 className="text-xl font-bold mb-6 text-center">
-            Receive Offers Your Next Order,<br /> Exclusive Offers & More!
+
+          <h2 className="mb-6 text-xl font-bold text-center">
+            Receive Offers Your Next Order,<br />
+            Exclusive Offers & More!
           </h2>
 
           <input
@@ -88,9 +95,9 @@ const Modal = ({ isOpen, onClose }) => {
           >
             Subscribe
           </button>
-          
+
           {/* Social Media Icons */}
-          {/* <div className="flex space-x-4 justify-center">
+          {/* <div className="flex justify-center space-x-4">
             <a href="#" className="text-black hover:text-gray-600">
               <FaFacebookF size={18} />
             </a>

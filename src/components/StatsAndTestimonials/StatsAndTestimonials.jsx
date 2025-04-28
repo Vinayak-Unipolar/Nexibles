@@ -1,19 +1,22 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import client1 from '../../../public/client/client1.png';
 import client2 from '../../../public/client/client2.png';
 import client3 from '../../../public/client/client3.png';
 import client4 from '../../../public/client/client4.png';
 import client5 from '../../../public/client/client5.png';
- 
+import client6 from '../../../public/client/client6.png';
+import client7 from '../../../public/client/client7.png';
 import doublequotes from '../../../public/home/doublequotes.svg';
 import flip from '../../../public/home/flip.svg';
- 
+
 export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
- 
+
   const statsData = [
     {
       id: 'customers',
@@ -44,7 +47,7 @@ export default function StatsAndTestimonials() {
       subLabel: 'JAN 19 - DEC 22',
     },
   ];
- 
+
   const testimonials = [
     {
       id: 1,
@@ -80,56 +83,47 @@ export default function StatsAndTestimonials() {
       designationcompany: "Founder - Nutkhut Delight",
       content: "Nexi Standard Sizes by Nexibles has been a game-changer for us! Their low MOQ made it easy to launch new products quickly, which is invaluable for an emerging brand like ours. Fast production and excellent customer service are just the cherry on top!",
       image: client5,
+    },
+    {
+      id: 6,
+      name: "Mr. Rajiv Raj Jain",
+      designationcompany: "Founder, Svasthyaa",
+      content: "I met Amol at AAHAR and was really impressed with the standard products he had – they were just right for us to launch our products. As a startup, his innovative approach helped us reduce our launch costs by 50%. His team has always been responsive, supportive, and great to work with. Thanks to them, we were able to scale smoothly.",
+      image: client6,
+    }, 
+    {
+      id: 7,
+      name: "Mr. Hisham Sunesra",
+      designationcompany: "Founder, Cookie Cartel",
+      content: "We’ve been working with Nexibles for over 1.5 years now, and they’ve been an incredible partner in our growth journey. From our very first order of just 1,000 standard stand-up pouches to now producing 10,000 fully customized and perfectly sized printed pouches, they’ve been with us every step of the way. The team — including the founders — has been consistently supportive, responsive, and proactive. Their pricing is highly competitive compared to other players in the market. If you’re looking for a reliable partner to scale with, we highly recommend Nexibles.",
+      image: client7,
     }
   ];
- 
-   {/* Function to adjust testimonials mobile and desktop view */}
-  function useWindowWidth() {
-    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
- 
-    useEffect(() => {
-      const handleResize = () => setWidth(window.innerWidth);
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
- 
-    return width;
+
+  const sliderSettings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    arrows: true,
+    drag: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
- 
-  const width = useWindowWidth();
-  const isMobile = width < 768;
-  const visibleTestimonials = testimonials.slice(
-    activeTestimonial,
-    activeTestimonial + (isMobile ? 1 : 2)
-  );
- 
-  // Function to go to the next testimonial
-  const nextTestimonial = () => {
-    setActiveTestimonial((prev) =>
-      prev + 1 >= testimonials.length - 2 ? 0 : prev + 1
-    );
-  };
- 
-  // Function to go to the previous testimonial
-  const prevTestimonial = () => {
-    setActiveTestimonial((prev) =>
-      prev - 1 < 0 ? testimonials.length - 3 : prev - 1
-    );
-  };
- 
-  // Auto-scroll effect for the carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextTestimonial();
-    }, 5000); // Change slide every 5 seconds
- 
-    return () => clearInterval(interval);
-  }, []);
- 
+
   const setActiveCard = (cardId) => {
     setActiveStatCard(cardId);
   };
- 
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -137,7 +131,7 @@ export default function StatsAndTestimonials() {
       transition: { staggerChildren: 0.2 },
     },
   };
- 
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -146,7 +140,7 @@ export default function StatsAndTestimonials() {
       transition: { type: 'spring', stiffness: 100 },
     },
   };
- 
+
   const statCounterVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
@@ -155,7 +149,7 @@ export default function StatsAndTestimonials() {
       transition: { type: 'spring', stiffness: 80, delay: 0.3 },
     },
   };
- 
+
   const testimonialCardVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: (i) => ({
@@ -168,12 +162,12 @@ export default function StatsAndTestimonials() {
       },
     }),
   };
- 
+
   return (
     <div className="flex flex-col w-full">
       {/* ===================== STATS SECTION ===================== */}
       <motion.div
-        className="mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 py-12 px-4 md:px-8"
+        className="grid grid-cols-1 gap-6 px-4 py-12 mx-auto md:grid-cols-4 md:gap-8 md:px-8"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
@@ -189,8 +183,8 @@ export default function StatsAndTestimonials() {
                 flex flex-col justify-between
                 cursor-pointer overflow-hidden
                 ${isActive
-                  ? 'bg-gradient-to-br from-[#36296C] to-[#5A45AB] text-white'
-                  : 'bg-white text-[#5A45AB]'}
+                  ? 'bg-[#103b60] text-white'
+                  : 'bg-white text-[#103b60'}
               `}
               style={{ zIndex: 0 }}
               variants={itemVariants}
@@ -202,7 +196,7 @@ export default function StatsAndTestimonials() {
                 <motion.h2
                   className={`
                     text-5xl font-bold leading-none
-                    ${isActive ? 'text-white' : 'text-[#5A45AB]'}
+                    ${isActive ? 'text-white' : 'text-[#103b60]'}
                   `}
                   variants={statCounterVariants}
                   initial="hidden"
@@ -211,16 +205,16 @@ export default function StatsAndTestimonials() {
                 >
                   {stat.bigNumber}
                 </motion.h2>
-                <p className={`mt-1 text-xl ${isActive ? 'text-white' : 'text-[#5A45AB]'}`}>
+                <p className={`mt-1 text-xl ${isActive ? 'text-white' : 'text-[#103b60]'}`}>
                   {stat.label}
                 </p>
               </div>
- 
+
               <div className="mt-4">
-                <p className={`text-lg font-semibold ${isActive ? 'text-teal-300' : 'text-[#5A45AB]'}`}>
+                <p className={`text-lg font-semibold ${isActive ? 'text-teal-300' : 'text-[#103b60]'}`}>
                   {stat.year}
                 </p>
-                <p className={`text-sm ${isActive ? 'text-white' : 'text-[#5A45AB]'}`}>
+                <p className={`text-sm ${isActive ? 'text-white' : 'text-[#103b60]'}`}>
                   {stat.subLabel}
                 </p>
               </div>
@@ -228,107 +222,71 @@ export default function StatsAndTestimonials() {
           );
         })}
       </motion.div>
- 
+
       {/* ===================== TESTIMONIALS SECTION WITH CAROUSEL ===================== */}
       <motion.div
-        className="w-full bg-[#ffd13e] md:py-12  px-4 md:px-8"
+        className="w-full bg-[#ffd13e] md:py-12 px-4 md:px-8"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         <motion.h2
-          className="text-2xl md:text-3xl font-bold text-center text-black mb-12 mt-6 md:mt-0"
+          className="mt-6 mb-12 text-2xl font-bold text-center text-black md:text-3xl md:mt-0"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           What People Are Saying
         </motion.h2>
- 
-        {/* Testimonial Carousel */}
-        <div className="relative max-w-7xl mx-auto px-4 md:px-0 mb-16">
-          {/* Carousel Navigation */}
-          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 w-full flex justify-between">
-            <button
-              onClick={prevTestimonial}
-              className="bg-white bg-opacity-80 rounded-full p-2 md:p-3 hover:bg-opacity-100 shadow-md transition-all -ml-4 md:-ml-8"
-              aria-label="Previous testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={nextTestimonial}
-              className="bg-white bg-opacity-80 rounded-full p-2 md:p-3 hover:bg-opacity-100 shadow-md transition-all -mr-4 md:-mr-8"
-              aria-label="Next testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
- 
-          {/* Carousel Content - Now using the flex directly without overflow container */}
-          <div className="flex flex-col mx-10 md:flex-row gap-6 md:gap-6 justify-center">
-            {visibleTestimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.id}
-                className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-20 md:mt-0 pt-16 pb-6 px-6 shadow-lg "
-                variants={testimonialCardVariants}
-                initial="hidden"
-                animate="visible"
-                custom={index}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                {/* Top centered client image */}
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="p-3 bg-white rounded-full">
-                    <Image
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      width={120}
-                      height={120}
-                      className="rounded-full bg-orange-100 shadow-md"
-                    />
+
+        {/* Testimonial Carousel with react-slick */}
+        <div className="relative px-4 mx-auto mb-16 max-w-7xl md:px-0">
+          <Slider {...sliderSettings}>
+            {testimonials.map((testimonial, index) => (
+              <div key={testimonial.id} className="px-3">
+                <motion.div
+                  className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-24 md:mt-18 mb-10 pt-16 pb-6 px-6 shadow-lg"
+                  variants={testimonialCardVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={index}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                  }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                >
+                  {/* Top centered client image */}
+                  <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
+                    <div className="p-3 bg-white rounded-full">
+                      <Image
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        width={120}
+                        height={120}
+                        className="bg-orange-100 rounded-full shadow-md"
+                      />
+                    </div>
                   </div>
-                </div>
-               
-                {/* Testimonial content */}
-                <div className="flex flex-col text-center text-gray-700">
-                  <p className="mt-4 mb-4 line-clamp-5 text-left">{testimonial.content}</p>
-                  <p className="text-lg text-left font-semibold text-gray-800">{testimonial.name}</p>
-                  <p className="text-sm text-left  text-gray-600">{testimonial.designationcompany}</p>
-                </div>
- 
-                {/* Quote icon in bottom right */}
-                <div className="absolute -bottom-[45px] right-4 w-20 h-20">
-                  <Image src={doublequotes} alt="quotes" width={70} height={70} />
-                </div>
-                <div className="absolute  invisible md:visible -top-9 left-7  w-20 h-20">
-                  <Image src={flip} alt="quotes" width={70} height={70} />
-                </div>
-              </motion.div>
+
+                  {/* Testimonial content */}
+                  <div className="flex flex-col text-center text-gray-700">
+                    <p className="mt-4 mb-4 text-left line-clamp-5">{testimonial.content}</p>
+                    <p className="text-lg font-semibold text-left text-gray-800">{testimonial.name}</p>
+                    <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
+                  </div>
+
+                  {/* Quote icon in bottom right */}
+                  <div className="absolute -bottom-[45px] right-4 w-20 h-20">
+                    <Image src={doublequotes} alt="quotes" width={70} height={70} />
+                  </div>
+                  <div className="absolute invisible w-20 h-20 md:visible -top-9 left-7">
+                    <Image src={flip} alt="quotes" width={70} height={70} />
+                  </div>
+                </motion.div>
+              </div>
             ))}
-          </div>
-        </div>
- 
-        {/* Carousel Indicators */}
-        <div className="flex justify-center space-x-2 mt-2 mb-4">
-          {testimonials.slice(0, testimonials.length - 2).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveTestimonial(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === activeTestimonial ? 'w-8 bg-white' : 'w-2 bg-white bg-opacity-50'
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
+          </Slider>
         </div>
       </motion.div>
     </div>

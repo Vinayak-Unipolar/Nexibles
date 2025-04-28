@@ -57,7 +57,7 @@ export default function NexiblesProducts() {
   return (
     <div className="bg-white py-4 md:py-8">
       {/* Outer container to center content on desktop */}
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2">
         <motion.h2
           className="text-4xl font-bold text-center text-[#333] mb-8"
           initial={{ y: -20, opacity: 0 }}
@@ -72,7 +72,7 @@ export default function NexiblesProducts() {
           - On phone (below md): 2 columns per row
           - On md and above: 4 fixed columns (220px each)
         */}
-        <div className="grid grid-cols-2 md:grid-cols-[repeat(4,220px)] gap-6 justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-[repeat(4,220px)] gap-2 justify-center">
           {!loading ? (
             <AnimatePresence>
               {products.map((product, index) => (

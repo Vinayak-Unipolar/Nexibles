@@ -58,10 +58,10 @@ export default function PopularProducts() {
   };
 
   return (
-    <div ref={sectionRef} className="py-4 bg-white md:py-2">
+    <div ref={sectionRef} className="py-8 bg-white md:py-12 lg:py-16">
       <div className="container px-4 mx-auto">
         <motion.h2
-          className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8 mt-2"
+          className="text-3xl font-bold text-center text-[#333] mb-8 md:mb-12 md:text-4xl"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}
@@ -69,20 +69,24 @@ export default function PopularProducts() {
           Explore Pouch Types
         </motion.h2>
 
-        <div className="grid grid-cols-2 gap-4 px-4 md:grid-cols-5 md:px-20">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-6 md:gap-8 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           {!loading ? (
             <AnimatePresence>
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className="relative w-32 h-32 overflow-hidden transition-all duration-300 rounded-lg hover:shadow-lg hover:-translate-y-1 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-72"
+                  className="flex flex-col items-center"
                   custom={index}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                   variants={cardVariants}
                 >
-                  <Link href={`/category/${category.cat_url}`} passHref>
-                    <div className="object-contain transition-transform duration-300 hover:scale-105">
+                  <Link 
+                    href={`/category/${category.cat_url}`} 
+                    passHref
+                    className="flex flex-col items-center w-full transition-all duration-300 hover:shadow-lg rounded-lg p-2 hover:-translate-y-1"
+                  >
+                    <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
                       <Image
                         src={
                           category.bg_Img
@@ -91,12 +95,12 @@ export default function PopularProducts() {
                         }
                         alt={category.name}
                         width={200}
-                        height={192}
-                        className="object-contain max-h-56"
+                        height={200}
+                        className="object-contain transition-transform duration-300 hover:scale-105 max-h-full max-w-full"
                       />
                     </div>
-                    <div className="mt-4 text-center min-h-[40px]">
-                      <p className="text-xs font-bold tracking-wider text-black uppercase">
+                    <div className="mt-3 text-center w-full">
+                      <p className="text-xs sm:text-sm font-bold tracking-wider text-black uppercase">
                         {category.name}
                       </p>
                     </div>
@@ -110,13 +114,13 @@ export default function PopularProducts() {
               .map((_, index) => (
                 <div
                   key={index}
-                  className="flex flex-col p-4 border border-gray-200 rounded-xl"
+                  className="flex flex-col items-center p-3 border border-gray-200 rounded-lg"
                 >
-                  <div className="flex items-center justify-center flex-grow h-56">
-                    <div className="h-40 bg-gray-200 rounded w-36 animate-pulse"></div>
+                  <div className="relative w-full aspect-square flex items-center justify-center">
+                    <div className="w-3/4 h-3/4 bg-gray-200 rounded animate-pulse"></div>
                   </div>
-                  <div className="mt-4 text-center min-h-[40px]">
-                    <div className="w-32 h-4 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                  <div className="mt-3 text-center w-full">
+                    <div className="w-3/4 h-4 mx-auto bg-gray-200 rounded animate-pulse"></div>
                   </div>
                 </div>
               ))

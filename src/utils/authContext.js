@@ -39,6 +39,9 @@ export const AuthProvider = ({ children }) => {
     const login = (userData) => {
         setUser(userData);
     };
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
 
     const logout = () => {
         setUser(null);

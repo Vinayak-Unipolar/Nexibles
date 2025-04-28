@@ -61,9 +61,9 @@ function Page() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="relative overflow-hidden h-[200px] sm:h-[300px] md:h-[350px] lg:h-full rounded-lg">
+            <div className="relative overflow-hidden h-[200px] sm:h-[300px] md:h-auto rounded-lg">
               <video
-                className="object-cover w-full h-full"
+                className="object-cover"
                 src={`${CDN_URL}/Industries%20Banner.mp4`}
                 autoPlay
                 loop

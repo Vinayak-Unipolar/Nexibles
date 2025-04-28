@@ -160,9 +160,9 @@ const Footer = () => {
                 <motion.li custom={1} variants={itemVariants}>
                   <Link href="/about"><span className="text-white mb-2">About</span></Link>
                 </motion.li>
-                <motion.li custom={2} variants={itemVariants}>
+                {/* <motion.li custom={2} variants={itemVariants}>
                   <Link href="/infrastructure"><span className="text-white mb-2">Infrastructure</span></Link>
-                </motion.li>
+                </motion.li> */}
                 <motion.li custom={3} variants={itemVariants}>
                   <Link href="/businesses"><span className="text-white mb-2">Industries</span></Link>
                 </motion.li>

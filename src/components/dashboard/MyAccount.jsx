@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { FiUser, FiShoppingBag, FiLock, FiMapPin, FiCreditCard, FiMessageSquare, FiShare2, FiGift, FiHelpCircle } from "react-icons/fi";
 import { useAuth } from '@/utils/authContext';
+
 export default function MyAccount() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -13,16 +14,15 @@ export default function MyAccount() {
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
   };
-
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
+
   const firstName = user?.result?.firstName || user?.firstName || "User";
   const lastName = user?.result?.lastName || user?.lastName || "";
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
-  // Menu items array to map through, including icons and links
   const menuItems = [
-    { name: "Account overview", link: "/my-dashboard", icon: <FiUser /> },
+    { name: "Account dashboard", link: "/my-dashboard", icon: <FiUser /> },
     { name: "My orders", link: "/my-orderhistory", icon: <FiShoppingBag /> },
     { name: "My details", link: "/my-details", icon: <FiUser /> },
     { name: "Address book", link: "/manageaddress", icon: <FiMapPin /> },

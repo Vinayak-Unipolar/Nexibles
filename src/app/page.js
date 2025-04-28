@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP,  } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 import WhatWeDo from "@/components/home/WhatWeDo";
@@ -174,19 +174,14 @@ const Home = () => {
       <AdvantageItem />
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
-      <Footer />
+      <div id="footer">
+  <Footer />
+</div>
 
-      {/* Floating WhatsApp Button */}
-      <a
-         href="https://wa.me/919821045101" // Replace with your number
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300"
-      >
-        <FaWhatsapp size={28} />
-      </a>
+      
     </div>
   );
+  
 };
 
 export default Home;

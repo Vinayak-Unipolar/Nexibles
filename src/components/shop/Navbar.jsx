@@ -18,6 +18,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [showPersonDropdown, setShowPersonDropdown] = useState(false);
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false); // Added dropdown state
   const { user, logout } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
@@ -56,12 +57,18 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Pouches", path: "/all-category" },
     { name: "Industries", path: "/businesses" },
-    { name: "Shop", path: "/shop" },
+    {
+      name: "Shop",
+      path: "#", // Using '#' since Shop is a dropdown
+      dropdown: [
+        { name: "Standard Pouch", path: "/shop" },
+        { name: "Custom Size Pouch", path: "/configuration-tool" },
+      ],
+    },
     { name: "Request Quote", path: "/request-quote" },
     { name: "Configuration Tool", path: "/configuration-tool" },
     { name: "About Nexibles", path: "/about" },
     { name: "Contact Us", path: "/contact" },
-    
   ];
 
   // Animation variants
@@ -152,13 +159,40 @@ const Navbar = () => {
                 animate={isNavbarInView ? "visible" : "hidden"}
                 variants={navLinkVariants}
               >
-                <Link
-                  href={item.path}
-                  className="text-black text-xs sm:text-md hover:underline"
-                >
-                  {item.name}
-                </Link>
-                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full mt-1"></span>
+                {item.dropdown ? (
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)} // Toggle dropdown
+                      className="text-black text-xs sm:text-md flex items-center space-x-1"
+                    >
+                      {item.name} <RiArrowDropDownLine size={16} />
+                    </button>
+                    {isShopDropdownOpen && (
+                      <motion.div
+                        className="absolute left-0 top-full mt-2 bg-white text-gray-900 p-4 shadow-md rounded-md"
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={dropdownVariants}
+                      >
+                        {item.dropdown.map((dropdownItem) => (
+                          <Link
+                            key={dropdownItem.name}
+                            href={dropdownItem.path}
+                            className="block px-4 py-2 text-gray-900 text-sm font-medium whitespace-nowrap"
+                            onClick={() => setIsShopDropdownOpen(false)} // Close dropdown on item click
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </div>
+                ) : (
+                  <Link href={item.path} className="text-black text-xs sm:text-md hover:underline">
+                    {item.name}
+                  </Link>
+                )}
               </motion.div>
             ))}
           </div>
@@ -228,44 +262,6 @@ const Navbar = () => {
               </AnimatePresence>
             </motion.div>
 
-            <motion.div
-              custom={2}
-              initial="hidden"
-              animate={isNavbarInView ? "visible" : "hidden"}
-              variants={iconVariants}
-              className="relative"
-            >
-              {/* <button
-                className="flex items-center text-gray-900 text-sm sm:text-md"
-                onClick={toggleDropdown}
-              >
-                ENGLISH <RiArrowDropDownLine size={24} />
-              </button> */}
-              <AnimatePresence>
-                {isDropdownOpen && (
-                  <motion.div
-                    className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md"
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={dropdownVariants}
-                  >
-                    {["FRENCH", "SPANISH"].map((lang) => (
-                      <div key={lang}>
-                        <Link
-                          href="#"
-                          className="block px-4 py-2 text-gray-900"
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
-                          {lang}
-                        </Link>
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-
             <motion.button
               className="md:hidden text-gray-900 z-50"
               onClick={toggleMenu}
@@ -315,84 +311,28 @@ const Navbar = () => {
                     <IoCartOutline size={24} />
                   </Link>
                 </motion.div>
-                <motion.div
-                  custom={1}
-                  initial="hidden"
-                  animate="visible"
-                  variants={iconVariants}
-                >
-                  <IoPersonOutline size={24} />
-                </motion.div>
-                <motion.div
-                  custom={2}
-                  initial="hidden"
-                  animate="visible"
-                  variants={iconVariants}
-                  className="flex items-center"
-                >
-                  ENGLISH <RiArrowDropDownLine size={24} />
-                </motion.div>
-                <motion.button
-                  onClick={toggleMenu}
-                  whileTap={{ scale: 0.95 }}
-                  custom={3}
-                  initial="hidden"
-                  animate="visible"
-                  variants={iconVariants}
-                >
-                  <motion.div
-                    initial={{ rotate: 0 }}
-                    animate={{ rotate: 90 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <IoCloseOutline size={24} />
-                  </motion.div>
-                </motion.button>
               </div>
             </div>
 
-            <div className="flex-1 flex flex-col px-6 py-4">
-              <ul className="text-black space-y-5">
-                {navItems.map((item, index) => (
-                  <motion.li
-                    key={item.name}
-                    custom={index}
-                    initial="hidden"
-                    animate="visible"
-                    variants={mobileLinkVariants}
+            <div className="px-6">
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item.name}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  variants={mobileLinkVariants}
+                >
+                  <Link
+                    href={item.path}
+                    className="block py-4 text-sm font-medium text-gray-800"
+                    onClick={toggleMenu}
                   >
-                    <Link
-                      href={item.path}
-                      onClick={toggleMenu}
-                      className="block py-2 text-lg font-medium"
-                    >
-                      {item.name}
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
+                    {item.name}
+                  </Link>
+                </motion.div>
+              ))}
             </div>
-
-            <motion.div
-              ref={contactRef}
-              className="bg-[#30384E] text-white p-6"
-              initial="hidden"
-              animate="visible"
-              variants={contactVariants}
-            >
-              <motion.div className="space-y-1 mb-6" variants={contactVariants}>
-                <h3 className="font-bold text-lg mb-3">Meet With US</h3>
-                <p className="leading-tight">Art NEXT Pvt Ltd,</p>
-                <p className="leading-tight">Unit A6C, Lodha Industrial & Logistics Park - II,</p>
-                <p className="leading-tight">Taloja Bypass Road, Usatane Village,</p>
-                <p className="leading-tight">Thane Maharashtra</p>
-                <p className="leading-tight">PIN code 421306, MH, India</p>
-              </motion.div>
-              <motion.div className="space-y-1" variants={contactVariants}>
-                <h3 className="font-bold text-lg mb-3">Call US</h3>
-                <p className="leading-tight">+91 9821045101</p>
-              </motion.div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

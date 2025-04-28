@@ -64,7 +64,7 @@ export default function NexiblesProducts() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          All Products
+          Nexi Classic - Our Standard Sizes
         </motion.h2>
 
         {/*

@@ -78,8 +78,7 @@ const AllCategoryCards = ({ categoryData }) => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center w-full p-4 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-lg"
-                style={{ aspectRatio: "1 / 1" }}
+                className="flex flex-col items-center w-full p-4 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-lg md:aspect-square"
               >
                 <div className="relative w-24 h-24 mb-3 md:w-52 md:h-52">
                   <Image

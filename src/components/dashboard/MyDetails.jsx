@@ -1,14 +1,16 @@
 'use client';
 import React from 'react';
 import { useAuth } from '../../utils/authContext';
+import { useRouter } from 'next/navigation';
 
 function MyDetails() {
   const { user } = useAuth();
+  const router = useRouter();
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-lg font-medium text-gray-600">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="text-base font-medium text-gray-600">
           Please log in to view your details.
         </div>
       </div>
@@ -30,49 +32,74 @@ function MyDetails() {
     company,
   } = user.result || {};
 
+  const handleEdit = () => {
+    router.push('/edit-details');
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Main Content */}
-      <main className="flex-1 p-6">
-        <div className="max-w-md p-6 mx-auto bg-white rounded-lg shadow-md">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900">My Details</h2>
-          <div className="space-y-4 text-gray-700">
-            <p>
-              <strong className="font-medium">Name:</strong> {firstName} {lastName}
+    <div className="flex mt-6">
+      <div className="w-full p-4 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-900">My Details</h2>
+          <button
+            onClick={handleEdit}
+            className="px-3 py-1 text-sm text-white transition duration-200 bg-[#103b60] rounded-md hover:bg-blue-700"
+          >
+            Edit
+          </button>
+        </div>
+        <div className="grid grid-cols-1 gap-4 text-sm text-gray-700 sm:grid-cols-2">
+          <div className="space-y-2">
+            <p className="flex flex-col">
+              <span className="font-medium">Name:</span>
+              <span>{firstName} {lastName}</span>
             </p>
-            <p>
-              <strong className="font-medium">Email:</strong> {emailAddress || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Email:</span>
+              <span>{emailAddress || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Mobile:</strong> {mobile || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Mobile:</span>
+              <span>{mobile || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Address:</strong> {address || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Address:</span>
+              <span>{address || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">City:</strong> {city || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Gender:</span>
+              <span>{gender || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Country:</strong> {country || 'Not provided'}
+          </div>
+          <div className="space-y-2">
+            <p className="flex flex-col">
+              <span className="font-medium">City:</span>
+              <span>{city || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">ZIP Code:</strong> {zip || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Country:</span>
+              <span>{country || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Date of Birth:</strong> {dateOfBirth || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">ZIP Code:</span>
+              <span>{zip || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Gender:</strong> {gender || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Date of Birth:</span>
+              <span>{dateOfBirth || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Occupation:</strong> {occupation || 'Not provided'}
+
+            <p className="flex flex-col">
+              <span className="font-medium">Occupation:</span>
+              <span>{occupation || 'Not provided'}</span>
             </p>
-            <p>
-              <strong className="font-medium">Company:</strong> {company || 'Not provided'}
+            <p className="flex flex-col">
+              <span className="font-medium">Company:</span>
+              <span>{company || 'Not provided'}</span>
             </p>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

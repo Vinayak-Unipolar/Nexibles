@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6";
 import { FiMail } from "react-icons/fi";
 import { BsSendFill } from "react-icons/bs";
 import { IoCallOutline } from "react-icons/io5";
@@ -129,7 +129,7 @@ const Footer = () => {
                     custom={0}
                     variants={iconVariants}
                   >
-                    <FaWhatsapp size={25} />
+                    <FaInstagram size={25} />
                   </motion.a>
                   <motion.a
                     href="tel:+919821045101"

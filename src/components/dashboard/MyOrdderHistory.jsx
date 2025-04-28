@@ -16,7 +16,7 @@ const MyOrderHistory = () => {
     const [uploadedFiles, setUploadedFiles] = useState({});
     const [orderFiles, setOrderFiles] = useState({});
     const [skuNames, setSkuNames] = useState({});
-    const [skuUploads, setSkuUploads] = useState({}); 
+    const [skuUploads, setSkuUploads] = useState({});
 
     const hasOrderFiles = (orderNo) => {
         return orderFiles[orderNo]?.length > 0;
@@ -285,7 +285,7 @@ const MyOrderHistory = () => {
                                                     <img
                                                         src={`${CDN_URL}/product/${order.image}`}
                                                         alt={order.product_name}
-                                                        className="object-contain w-full h-64 rounded-md lg:h-80"
+                                                        className="object-contain w-full h-64 rounded-md lg:h-48"
                                                     />
                                                 </div>
 

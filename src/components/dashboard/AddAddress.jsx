@@ -192,20 +192,19 @@ const AddAddress = (props) => {
                     <div className="flex space-x-4">
                         <input
                             type="text"
-                            name="gstin"
-                            value={formData.gstin}
-                            onChange={handleChange}
-                            className="flex-1 px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
-                            placeholder="GSTIN"
-                        />
-                        {/* Placeholder for the second input - you can pair it with another field or leave it empty */}
-                        <input
-                            type="text"
                             name="company"
                             value={formData.company}
                             onChange={handleChange}
                             className="flex-1 px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                             placeholder="Company"
+                        />
+                         <input
+                            type="text"
+                            name="gstin"
+                            value={formData.gstin}
+                            onChange={handleChange}
+                            className="flex-1 px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
+                            placeholder="GSTIN"
                         />
                     </div>
                 </div>

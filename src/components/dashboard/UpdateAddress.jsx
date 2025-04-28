@@ -204,16 +204,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                         </select>
                     </div>
                     <div className="flex space-x-4">
-                        <input
-                            type="text"
-                            name="gstin"
-                            value={formData.gstin}
-                            onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                            placeholder="GSTIN"
-                        />
-                        {/* Placeholder for the second input - you can pair it with another field or leave it empty */}
-                        <input
+                    <input
                             type="text"
                             name="company"
                             value={formData.company || ''}
@@ -221,6 +212,14 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
                             placeholder="Company"
                         />
+                        <input
+                            type="text"
+                            name="gstin"
+                            value={formData.gstin}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="GSTIN"
+                        />                     
                     </div>
                 </div>
                 <div className="mt-4">

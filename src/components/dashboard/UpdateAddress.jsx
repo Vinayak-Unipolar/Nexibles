@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { RxCross2 } from 'react-icons/rx';
+
 const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
     const token = process.env.NEXT_PUBLIC_API_KEY;
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
@@ -82,7 +83,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
     }, [addressId]);
 
     return (
-        <div className="bg-white py-10 relative">  {/* Added relative positioning */}
+        <div className="bg-white py-10 relative">
             <button
                 onClick={() => setShowUpdateAddress(false)}
                 className="absolute top-0 right-0 text-black"
@@ -94,114 +95,112 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
             </div>
             <form onSubmit={handleSubmit} className="py-4 px-8">
                 <div className="flex flex-col space-y-4">
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="Company Name"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="floor"
-                        value={formData.floor}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="Floor"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="Address 1"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="address2"
-                        value={formData.address2}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="Address 2"
-                    />
-                    <input
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="City/Town"
-                        required
-                    />
-                    <select
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                    >
-                        <option value="Maharashtra">Maharashtra</option>
-                        <option value="Delhi">Delhi</option>
-                    </select>
-                    <input
-                        type="text"
-                        name="zip"
-                        value={formData.zip}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="ZIP"
-                        required
-                    />
-                    <select
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                    >
-                        <option value="India">India</option>
-                        <option value="Germany">Germany</option>
-                    </select>
-                    <input
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                        placeholder="Phone"
-                        required
-                    />
-                    <select
-                        name="addressType"
-                        value={formData.addressType}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setFormData((prevState) => ({
-                                ...prevState,
-                                addressType: value === 'Others' ? '' : value,
-                            }));
-                        }}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
-                    >
-                        <option value="">Select Address Type</option>
-                        <option value="Home">Home</option>
-                        <option value="Office">Office</option>
-                        {/* <option value="Others">Others</option> */}
-                    </select>
-                    {/* {formData.addressType === '' && (
+                    <div className="flex space-x-4">
                         <input
                             type="text"
-                            name="addressType"
-                            value={formData.addressType}
+                            name="title"
+                            value={formData.title}
                             onChange={handleChange}
-                            className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none mt-2"
-                            placeholder="Please specify"
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="Company Name"
                             required
                         />
-                    )} */}
+                        <input
+                            type="text"
+                            name="floor"
+                            value={formData.floor}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="Floor"
+                            required
+                        />
+                    </div>
+                    <div className="flex space-x-4">
+                        <input
+                            type="text"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="Address 1"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="address2"
+                            value={formData.address2}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="Address 2"
+                        />
+                    </div>
+                    <div className="flex space-x-4">
+                        <input
+                            type="text"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="City/Town"
+                            required
+                        />
+                        <select
+                            name="state"
+                            value={formData.state}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        >
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Delhi">Delhi</option>
+                        </select>
+                    </div>
+                    <div className="flex space-x-4">
+                        <input
+                            type="text"
+                            name="zip"
+                            value={formData.zip}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="ZIP"
+                            required
+                        />
+                        <select
+                            name="country"
+                            value={formData.country}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        >
+                            <option value="India">India</option>
+                            <option value="Germany">Germany</option>
+                        </select>
+                    </div>
+                    <div className="flex space-x-4">
+                        <input
+                            type="text"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="Phone"
+                            required
+                        />
+                        <select
+                            name="addressType"
+                            value={formData.addressType}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setFormData((prevState) => ({
+                                    ...prevState,
+                                    addressType: value === 'Others' ? '' : value,
+                                }));
+                            }}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        >
+                            <option value="">Select Address Type</option>
+                            <option value="Home">Home</option>
+                            <option value="Office">Office</option>
+                        </select>
+                    </div>
                 </div>
                 <div className="mt-4">
                     <button type="submit" className="bg-[#103b60] rounded-md text-white px-8 py-2">

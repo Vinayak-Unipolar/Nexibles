@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { FaInstagram } from "react-icons/fa6";
-import { FiMail } from "react-icons/fi";
+import { ImFacebook2 } from "react-icons/im";
 import { BsSendFill } from "react-icons/bs";
-import { IoCallOutline } from "react-icons/io5";
+import { FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { motion, useInView } from "framer-motion";
+import { FiYoutube } from "react-icons/fi";
  
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -137,7 +138,7 @@ const Footer = () => {
                     custom={1}
                     variants={iconVariants}
                   >
-                    <IoCallOutline size={25} />
+                    <ImFacebook2 size={25} />
                   </motion.a>
                   <motion.a
                     href="mailto:sales@artnext.in"
@@ -145,7 +146,7 @@ const Footer = () => {
                     custom={2}
                     variants={iconVariants}
                   >
-                    <FiMail size={25} />
+                    <FiYoutube size={25} />
                   </motion.a>
                 </motion.div>
               </motion.div>

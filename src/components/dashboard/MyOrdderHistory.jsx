@@ -15,8 +15,8 @@ const MyOrderHistory = () => {
     const customerId = user?.result?.customerId;
     const [uploadedFiles, setUploadedFiles] = useState({});
     const [orderFiles, setOrderFiles] = useState({});
-    const [skuNames, setSkuNames] = useState({}); // State for SKU names
-    const [skuUploads, setSkuUploads] = useState({}); // Track uploaded SKUs per order
+    const [skuNames, setSkuNames] = useState({});
+    const [skuUploads, setSkuUploads] = useState({}); 
 
     const hasOrderFiles = (orderNo) => {
         return orderFiles[orderNo]?.length > 0;
@@ -264,9 +264,8 @@ const MyOrderHistory = () => {
 
     return (
         <div className="min-h-screen">
-
-            <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-12">
-                <div className="space-y-6 md:mt-16">
+            <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-4 sm:py-2">
+                <div className="space-y-6 md:mt-2">
                     {orders.length === 0 ? (
                         <p className="text-gray-900">No orders found.</p>
                     ) : (

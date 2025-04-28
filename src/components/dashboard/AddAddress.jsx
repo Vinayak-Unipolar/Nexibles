@@ -5,7 +5,7 @@ import { RxCross2 } from 'react-icons/rx';
 
 const AddAddress = (props) => {
     const token = process.env.NEXT_PUBLIC_API_KEY;
-    const APIURL = process.env.NEXT_PUBLIC_API_URL;  
+    const APIURL = process.env.NEXT_PUBLIC_API_URL;
     const { user } = useAuth();
     const [formData, setFormData] = useState({
         customerId: '',
@@ -68,7 +68,7 @@ const AddAddress = (props) => {
     };
 
     return (
-        <div className="bg-white py-10 relative">
+        <div className="relative py-10 bg-white">
             <button
                 onClick={() => props.setShowAddAddress(false)}
                 className="absolute top-0 right-0 text-black"
@@ -76,9 +76,9 @@ const AddAddress = (props) => {
                 <RxCross2 className="cursor-pointer" size={34} />
             </button>
             <div className="">
-                <h2 className="text-gray-900 font-bold text-3xl px-8">Enter Your New Address</h2>
+                <h2 className="px-8 text-3xl font-bold text-gray-900">Enter Your New Address</h2>
             </div>
-            <form onSubmit={handleSubmit} className="py-4 px-8">
+            <form onSubmit={handleSubmit} className="px-8 py-4">
                 <div className="flex flex-col space-y-4">
                     {/* Previous inputs remain the same */}
                     <input
@@ -86,7 +86,7 @@ const AddAddress = (props) => {
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="Title (required for business addresses)"
                         required
                     />
@@ -95,7 +95,7 @@ const AddAddress = (props) => {
                         name="floor"
                         value={formData.floor}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="Floor"
                         required
                     />
@@ -104,7 +104,7 @@ const AddAddress = (props) => {
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="Address 1"
                         required
                     />
@@ -113,7 +113,7 @@ const AddAddress = (props) => {
                         name="address2"
                         value={formData.address2}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="Address 2"
                     />
                     <input
@@ -121,7 +121,7 @@ const AddAddress = (props) => {
                         name="city"
                         value={formData.city}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="City/Town"
                         required
                     />
@@ -131,7 +131,7 @@ const AddAddress = (props) => {
                         name="state"
                         value={formData.state}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         required
                     >
                         <option value="">Select State</option>
@@ -144,7 +144,7 @@ const AddAddress = (props) => {
                         name="zip"
                         value={formData.zip}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="ZIP"
                         required
                         maxLength={6}
@@ -154,7 +154,7 @@ const AddAddress = (props) => {
                         name="country"
                         value={formData.country}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         required
                     >
                         <option value="">Select Country</option>
@@ -167,7 +167,7 @@ const AddAddress = (props) => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                        className="px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                         placeholder="Phone"
                         required
                         maxLength={10}
@@ -178,7 +178,7 @@ const AddAddress = (props) => {
                             name="addressType"
                             value={formData.addressType}
                             onChange={handleChange}
-                            className="border-2 rounded-full w-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
                             required
                         >
                             <option value="">Select Address Type</option>

@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { FiUser, FiShoppingBag, FiLock, FiMapPin, FiCreditCard, FiMessageSquare, FiShare2, FiGift, FiHelpCircle } from "react-icons/fi";
+import { useAuth } from '@/utils/authContext';
 export default function MyAccount() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
-
+  const pathname = usePathname();
+  const { user } = useAuth();
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
   };
@@ -14,114 +17,59 @@ export default function MyAccount() {
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
+  const firstName = user?.result?.firstName || user?.firstName || "User";
+  const lastName = user?.result?.lastName || user?.lastName || "";
+  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  // Menu items array to map through, including icons and links
+  const menuItems = [
+    { name: "Account overview", link: "/my-dashboard", icon: <FiUser /> },
+    { name: "My orders", link: "/my-orderhistory", icon: <FiShoppingBag /> },
+    { name: "My details", link: "/my-details", icon: <FiUser /> },
+    { name: "Address book", link: "/manageaddress", icon: <FiMapPin /> },
+    { name: "Gift cards & vouchers", link: "/gift-cards", icon: <FiGift /> },
+    { name: "Need help?", link: "/need-help", icon: <FiHelpCircle /> },
+    { name: "Where's my order?", link: "/wheres-my-order", icon: <FiHelpCircle /> },
+  ];
 
-  const handleSelectItem = (index) => {
-    if (selectedIndex === index) {
-      setSelectedIndex(null); // Deselect if clicked again
-    } else {
-      setSelectedIndex(index);
+  // Update selectedIndex based on the current route
+  useEffect(() => {
+    if (pathname) {
+      const index = menuItems.findIndex((item) => item.link === pathname);
+      setSelectedIndex(index !== -1 ? index : null);
     }
-    setHoveredIndex(null); // Reset hoveredIndex when item is clicked
-  };
+  }, [pathname, menuItems]);
 
   return (
-    <div className="bg-white mt-9">
-      <div className="px-10 py-20">
-        <h3 className="text-gray-900 font-bold text-xl">My Account</h3>
-        <div className="">
-          <ul className="text-gray-900 font-bold mt-4 border-r-8 border-gray-900">
-            <Link href="/my-dashboard">
-              <li
-                className={`cursor-pointer p-3 ${
-                  hoveredIndex === 0 ? "hover:bg-gray-200" : ""
-                }`}
-                onMouseEnter={() => handleMouseEnter(0)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <span className="flex items-center">
-                  {hoveredIndex === 0 && <FaChevronRight className="mr-2" />}
-                  Dashboard
-                </span>
-              </li>
-            </Link>
-            {/*<Link href="/my-dashboard">
-                            <li
-                                className={`cursor-pointer p-3 ${
-                                    selectedIndex === 0 ? "bg-gray-200" : ""
-                                }`}
-                                onMouseEnter={() => handleMouseEnter(0)}
-                                onMouseLeave={handleMouseLeave}
-                                onClick={() => handleSelectItem(0)}
-                            >
-                                <span className="flex items-center">
-                                    {(hoveredIndex === 0 || selectedIndex === 0) && <FaChevronRight className="mr-2" />}
-                                    Dashboard
-                                </span>
-                            </li>
-                        </Link>*/}
-            {/* Other list items */}
-            {/* <Link href="/my-projects">
-                            <li
-                                className={`cursor-pointer p-3 ${hoveredIndex === 1 ? "hover:bg-gray-200" : ""
-                                    }`}
-                                onMouseEnter={() => handleMouseEnter(1)}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                <span className="flex items-center">
-                                    {hoveredIndex === 1 && <FaChevronRight className="mr-2" />}
-                                    My Projects
-                                </span>
-                            </li>
-                        </Link> */}
-            <Link href="/my-orderhistory">
-              <li
-                className={`cursor-pointer p-3 ${
-                  hoveredIndex === 2 ? "hover:bg-gray-200" : ""
-                }`}
-                onMouseEnter={() => handleMouseEnter(2)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <span className="flex items-center">
-                  {hoveredIndex === 2 && <FaChevronRight className="mr-2" />}
-                  Order History & Reorders
-                </span>
-              </li>
-            </Link>
-            <Link href="/manageaddress">
-              <li
-                className={`cursor-pointer p-3 ${
-                  hoveredIndex === 3 ? "hover:bg-gray-200" : ""
-                }`}
-                onMouseEnter={() => handleMouseEnter(3)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <span className="flex items-center">
-                  {hoveredIndex === 3 && <FaChevronRight className="mr-2" />}
-                  Address
-                </span>
-              </li>
-            </Link>
-            {/* <Link href="/my-uploads">
-                            <li
-                                className={`cursor-pointer p-3 ${hoveredIndex === 4 ? "hover:bg-gray-200" : ""
-                                    }`}
-                                onMouseEnter={() => handleMouseEnter(4)}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                <span className="flex items-center">
-                                    {hoveredIndex === 4 && <FaChevronRight className="mr-2" />}
-                                    My Uploads
-                                </span>
-                            </li>
-                        </Link>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">My Design Services</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">Account Settings</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">My Subsciption</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">Favorite Templates</li> */}
-            {/* <li className="hover:bg-gray-200 cursor-pointer p-3">Design Services</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">Brand Kit</li> */}
-          </ul>
+    <div className="w-64 h-screen bg-white shadow-md">
+      <div className="px-6 py-8">
+        <div className="flex items-center mb-8">
+          <div className="flex items-center justify-center w-10 h-10 mr-3 font-bold text-white bg-gray-800 rounded-full">
+            {initials}
+          </div>
+          <div>
+            <div className="text-sm text-gray-500">Hi,</div>
+            <div className="font-semibold">{firstName} {lastName}</div>
+          </div>
         </div>
+        <ul className="text-gray-700">
+          {menuItems.map((item, index) => (
+            <Link href={item.link} key={index}>
+              <li
+                className={`cursor-pointer py-2 px-3 rounded-md flex items-center mt-2 ${selectedIndex === index
+                    ? "border-l-4 border-[#103b60] bg-blue-50 text-[#103b60] font-semibold"
+                    : hoveredIndex === index
+                      ? "bg-gray-100"
+                      : ""
+                  }`}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <span className="mr-3">{item.icon}</span>
+                <span className="text-sm">{item.name}</span>
+              </li>
+            </Link>
+          ))}
+        </ul>
       </div>
     </div>
   );

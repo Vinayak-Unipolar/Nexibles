@@ -27,7 +27,8 @@ const AddAddress = (props) => {
         addedon: '',
         latlong: '',
         street_no: '',
-        addressTypeOther: ''
+        addressTypeOther: '',
+        gstin: '' // Added GSTIN field
     });
 
     const handleChange = (e) => {
@@ -119,6 +120,7 @@ const AddAddress = (props) => {
                             placeholder="Address 2"
                         />
                     </div>
+
                     <div className="flex space-x-4">
                         <input
                             type="text"
@@ -186,6 +188,25 @@ const AddAddress = (props) => {
                             <option value="Home">Home</option>
                             <option value="Office">Office</option>
                         </select>
+                    </div>
+                    <div className="flex space-x-4">
+                        <input
+                            type="text"
+                            name="gstin"
+                            value={formData.gstin}
+                            onChange={handleChange}
+                            className="flex-1 px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
+                            placeholder="GSTIN"
+                        />
+                        {/* Placeholder for the second input - you can pair it with another field or leave it empty */}
+                        <input
+                            type="text"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
+                            className="flex-1 px-4 py-1 text-gray-900 border-2 rounded-full outline-none"
+                            placeholder="Company"
+                        />
                     </div>
                 </div>
 

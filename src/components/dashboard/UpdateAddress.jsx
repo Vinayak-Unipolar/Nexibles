@@ -16,6 +16,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
         country: 'India',
         phone: '',
         addressType: '',
+        gstin: '' // Added GSTIN field
     });
 
     const handleChange = (e) => {
@@ -69,6 +70,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             country: addressData.country,
                             phone: addressData.phone,
                             addressType: addressData.addressType,
+                            gstin: addressData.gstin || '' // Initialize GSTIN from fetched data
                         });
                     } else {
                         console.error('No data found for addressId:', addressId);
@@ -200,6 +202,25 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             <option value="Home">Home</option>
                             <option value="Office">Office</option>
                         </select>
+                    </div>
+                    <div className="flex space-x-4">
+                        <input
+                            type="text"
+                            name="gstin"
+                            value={formData.gstin}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="GSTIN"
+                        />
+                        {/* Placeholder for the second input - you can pair it with another field or leave it empty */}
+                        <input
+                            type="text"
+                            name="company"
+                            value={formData.company || ''}
+                            onChange={handleChange}
+                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            placeholder="Company"
+                        />
                     </div>
                 </div>
                 <div className="mt-4">

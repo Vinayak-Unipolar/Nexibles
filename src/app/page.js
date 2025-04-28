@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP,  } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
 import WhatWeDo from "@/components/home/WhatWeDo";
@@ -58,22 +58,11 @@ const Modal = ({ isOpen, onClose }) => {
           onClick={onClose}
           className="absolute z-10 p-1 text-black bg-white rounded-full top-2 right-2 hover:text-gray-700"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Top Half: Product Image */}
         <div className="relative w-full h-52">
           <img
             src={Pop_up_image.src}
@@ -100,7 +89,6 @@ const Modal = ({ isOpen, onClose }) => {
             placeholder="Enter your e-mail"
             className="w-[80%] p-3 mb-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-gray-400"
           />
-
           <button
             onClick={handleSubscribe}
             className="w-[80%] bg-black text-white py-3 rounded-xl border-2 border-transparent hover:bg-white hover:text-black hover:border-black font-medium transition-all duration-300 uppercase mb-6"
@@ -136,17 +124,15 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Modal logic
     const lastShown = localStorage.getItem("modalLastShown");
     const now = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const oneDay = 24 * 60 * 60 * 1000;
 
     if (!lastShown || now - parseInt(lastShown) > oneDay) {
       setShowModal(true);
       localStorage.setItem("modalLastShown", now.toString());
     }
 
-    // Category fetch logic
     const fetchData = async () => {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
@@ -188,9 +174,14 @@ const Home = () => {
       <AdvantageItem />
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
-      <Footer />
+      <div id="footer">
+  <Footer />
+</div>
+
+      
     </div>
   );
+  
 };
 
 export default Home;

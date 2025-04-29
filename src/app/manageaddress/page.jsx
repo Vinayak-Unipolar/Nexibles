@@ -12,39 +12,39 @@ const Page = () => {
     const [savedAddresses, setSavedAddresses] = useState([]);
     const {user} = useAuth();
     const token = process.env.NEXT_PUBLIC_API_KEY;
-    const APIURL = process.env.NEXT_PUBLIC_API_URL;  
+    const APIURL = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (!user) return; 
+                if (!user) return;
                 let customerId = user?.result?.customerId || user?.customerId;
                 const response = await fetch(`${APIURL}/api/customerAddress/getData`,{
-                    method: 'POST', 
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ customerId :customerId }) 
+                    body: JSON.stringify({ customerId :customerId })
                 });
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
                 const data = await response.json();
-                setSavedAddresses(data); 
+                setSavedAddresses(data);
             } catch (error) {
                 console.error("Error fetching Data",error);
             }
         }
         fetchData();
     }, [user]);
-    
+
     return (
         <div>
             <Navbar />
-            <div className="md:flex bg-white">
-                <div className="containers md:w-1/3 w-full">
+            <div className="bg-white md:flex ">
+                <div className="w-full containers md:w-1/3 md:mt-16 mt-12">
                     <MyAccount />
                 </div>
-                <div className="md:w-full w-full">
+                <div className="w-full md:w-full">
                 <PaymentDelivery savedAddresses={savedAddresses} />
                 </div>
             </div>

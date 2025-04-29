@@ -61,7 +61,7 @@ const Navbar = () => {
       name: "Shop",
       path: "#", // Using '#' since Shop is a dropdown
       dropdown: [
-        { name: "Standard Pouch", path: "/shop" },
+        { name: "Nexi Classic", path: "/shop" },
         { name: "Custom Size Pouch", path: "/configuration-tool" },
       ],
     },
@@ -69,6 +69,7 @@ const Navbar = () => {
     { name: "Configuration Tool", path: "/configuration-tool" },
     { name: "About Nexibles", path: "/about" },
     { name: "Contact Us", path: "/contact" },
+    {name:"Customize Pouch", path:"/configuration-tool"},
   ];
 
   // Animation variants
@@ -139,7 +140,7 @@ const Navbar = () => {
           >
             <Link href="/" className="flex-shrink-0">
               <Image
-                src="/home/nexible.gif"
+                src="/home/Nexibles_Logo.gif"
                 alt="Nexibles"
                 width={100}
                 height={30}

@@ -1,6 +1,5 @@
 'use client'
 import { createContext, useContext, useState, useEffect } from "react";
-import jwt from 'jsonwebtoken';
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 
@@ -12,11 +11,13 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const navigation = useRouter();
+    const router = useRouter();
 
     const authenticatedUser = (token) => {
         try {
-            const decodedToken = jwt.decode(token);
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const decodedToken = JSON.parse(window.atob(base64));
             if (decodedToken.exp * 1000 > Date.now()) {
                 setUser(decodedToken);
             } else {
@@ -30,9 +31,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        if (storedToken) {
-            authenticatedUser(storedToken);
+        try {
+            const storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                authenticatedUser(storedToken);
+            }
+        } catch (error) {
+            console.error('Error accessing localStorage', error);
         }
     }, []);
 
@@ -42,9 +47,12 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem('token'); // Only remove the token, preserve Redux state
-        navigation.push('/login');
-        // Removed window.location.reload() to avoid unnecessary rehydration
+        try {
+            localStorage.removeItem('token');
+        } catch (error) {
+            console.error('Error removing from localStorage', error);
+        }
+        router.push('/login');
     };
 
     const contextValue = {

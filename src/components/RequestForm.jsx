@@ -225,7 +225,7 @@ function RequestForm() {
   ];
 
   // Options for Language Preference
-  const languages = ["English", "French", "German", "Polish", "Indonesian"];
+  const languages = ["Hindi","English","Marathi"];
 
   // Options for Industry
   const industries = [

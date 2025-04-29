@@ -194,7 +194,7 @@ function Login() {
                         >
                             <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
-                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/Create%20an%20account.webp`}
+                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/create-an-account-with-nexibles.webp`}
                                     alt="Auth illustration"
                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                 />
@@ -380,11 +380,11 @@ function Login() {
                             <div className="mt-6 text-xs text-center text-gray-500">
                                 <p>
                                     By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
-                                    <Link href="#" className="text-[#103b60] hover:underline">
+                                    <Link href="/terms-conditions" className="text-[#103b60] hover:underline">
                                         Terms of Service
                                     </Link>{" "}
                                     and{" "}
-                                    <Link href="#" className="text-[#103b60] hover:underline">
+                                    <Link href="/privacy-policy" className="text-[#103b60] hover:underline">
                                         Privacy Policy
                                     </Link>
                                 </p>

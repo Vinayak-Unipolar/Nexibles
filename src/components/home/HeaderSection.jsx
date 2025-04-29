@@ -177,7 +177,7 @@ const HeaderSection = () => {
                 }}
                 className="absolute inset-0 w-full h-full"
               >
-                <Link href={slide.link}>
+                <div>
                   <div className="relative md:mt-[6vh] mt-[6vh] h-[30vh] md:w-full md:h-full">
                     <MediaComponent
                       media={slide.bgMedia}
@@ -239,7 +239,7 @@ const HeaderSection = () => {
                       </motion.div>
                     )}
                   </div>
-                </Link>
+                </div>
               </motion.div>
             )
         )}

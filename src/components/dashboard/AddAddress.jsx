@@ -69,27 +69,27 @@ const AddAddress = (props) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="relative bg-white rounded-lg w-full max-w-md sm:max-w-lg h-[85vh] sm:h-auto sm:max-h-[90vh] overflow-y-auto">
         <button
           onClick={() => props.setShowAddAddress(false)}
-          className="absolute top-2 right-2 text-black"
+          className="absolute text-black top-2 right-2"
         >
           <RxCross2 className="cursor-pointer" size={24} />
         </button>
-        <div className="px-4 sm:px-8 py-4">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center sm:text-left">
+        <div className="px-4 py-4 sm:px-8">
+          <h2 className="text-2xl font-bold text-center text-gray-900 sm:text-3xl sm:text-left">
             Enter Your New Address
           </h2>
         </div>
-        <form onSubmit={handleSubmit} className="px-4 sm:px-8 pb-4 space-y-2 sm:space-y-4">
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+        <form onSubmit={handleSubmit} className="px-4 pb-4 space-y-2 sm:px-8 sm:space-y-4">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="Title (required for business addresses)"
               required
             />
@@ -98,19 +98,19 @@ const AddAddress = (props) => {
               name="floor"
               value={formData.floor}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="Floor"
               required
             />
           </div>
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
               type="text"
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
-              placeholder="Address 1"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
+              placeholder="Address Line 1"
               required
             />
             <input
@@ -118,17 +118,17 @@ const AddAddress = (props) => {
               name="address2"
               value={formData.address2}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
-              placeholder="Address 2"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
+              placeholder="Address Line 2"
             />
           </div>
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
               type="text"
               name="city"
               value={formData.city}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="City/Town"
               required
             />
@@ -136,7 +136,7 @@ const AddAddress = (props) => {
               name="state"
               value={formData.state}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               required
             >
               <option value="">Select State</option>
@@ -144,13 +144,13 @@ const AddAddress = (props) => {
               <option value="Delhi">Delhi</option>
             </select>
           </div>
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
               type="text"
               name="zip"
               value={formData.zip}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="ZIP"
               required
               maxLength={6}
@@ -159,7 +159,7 @@ const AddAddress = (props) => {
               name="country"
               value={formData.country}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               required
             >
               <option value="">Select Country</option>
@@ -167,13 +167,13 @@ const AddAddress = (props) => {
               <option value="Germany">Germany</option>
             </select>
           </div>
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
               type="text"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="Phone"
               required
               maxLength={10}
@@ -182,7 +182,7 @@ const AddAddress = (props) => {
               name="addressType"
               value={formData.addressType}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               required
             >
               <option value="">Select Address Type</option>
@@ -190,13 +190,13 @@ const AddAddress = (props) => {
               <option value="Office">Office</option>
             </select>
           </div>
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
               type="text"
               name="company"
               value={formData.company}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="Company"
             />
             <input
@@ -204,7 +204,7 @@ const AddAddress = (props) => {
               name="gstin"
               value={formData.gstin}
               onChange={handleChange}
-              className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
+              className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="GSTIN"
             />
           </div>

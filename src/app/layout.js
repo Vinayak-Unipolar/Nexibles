@@ -18,15 +18,11 @@ export default function RootLayout({ children }) {
         <PersistGate loading={null} persistor={persistor}>
           <AuthProvider>
             <TextInputProvider>
-              
               <div className="relative">
                 {children}
-                {/* Toast messages */}
                 <ToastContainer />
-                {/* WhatsApp floating button */}
                 <Whatsapp />
               </div>
-
             </TextInputProvider>
           </AuthProvider>
         </PersistGate>

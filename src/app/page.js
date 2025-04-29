@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP,  } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP, } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WhatWeDo from "@/components/home/WhatWeDo";
@@ -127,12 +127,14 @@ const Home = () => {
     const lastShown = localStorage.getItem("modalLastShown");
     const now = new Date().getTime();
     const oneDay = 24 * 60 * 60 * 1000;
-
-    if (!lastShown || now - parseInt(lastShown) > oneDay) {
-      setShowModal(true);
-      localStorage.setItem("modalLastShown", now.toString());
-    }
-
+  
+    const timer = setTimeout(() => {
+      if (!lastShown || now - parseInt(lastShown) > oneDay) {
+        setShowModal(true);
+        localStorage.setItem("modalLastShown", now.toString());
+      }
+    }, 10000);
+  
     const fetchData = async () => {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
@@ -156,6 +158,7 @@ const Home = () => {
       }
     };
     fetchData();
+    return () => clearTimeout(timer);
   }, []);
 
   const closeModal = () => {
@@ -176,13 +179,11 @@ const Home = () => {
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
       <div id="footer">
-  <Footer />
-</div>
-
-      
+        <Footer />
+      </div>
     </div>
   );
-  
+
 };
 
 export default Home;

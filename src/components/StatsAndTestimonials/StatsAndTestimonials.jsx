@@ -18,7 +18,6 @@ export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
   const [testimonials, setTestimonials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const fallbackImages = [client1, client2, client3, client4, client5, client6, client7];
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -47,7 +46,7 @@ export default function StatsAndTestimonials() {
             content: item.description,
             image: item.image || "",
           }));
-          setTestimonials( formattedTestimonials);
+          setTestimonials(formattedTestimonials);
         }
       } catch (error) {
         console.error('Error fetching testimonials:', error);
@@ -90,6 +89,56 @@ export default function StatsAndTestimonials() {
     },
   ];
 
+  // Custom Arrow Components
+  const PrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block', left: '10px', zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* You can customize the arrow icon or style here */}
+        <svg
+          className="w-8 h-8 text-black"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+    );
+  };
+
+  const NextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block', right: '10px', zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* You can customize the arrow icon or style here */}
+        <svg
+          className="w-8 h-8 text-black"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+    );
+  };
 
   const sliderSettings = {
     infinite: true,
@@ -168,7 +217,7 @@ export default function StatsAndTestimonials() {
                     <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
                       <div className="p-3 bg-white rounded-full">
                         <Image
-                          src={testimonial.image}
+                          src={testimonial.image || client1} // Fallback to client1 if image is empty
                           alt={testimonial.name}
                           width={120}
                           height={120}

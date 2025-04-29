@@ -1,29 +1,26 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/shop/Navbar'
 import Footer from '@/components/shop/Footer'
 import MyAccount from '@/components/dashboard/MyAccount'
 import { PaymentDelivery } from '@/components/dashboard/PaymentDelivery'
 import RelatedCategory from '@/components/shop/unused/Relatedcategory'
-import { useEffect } from 'react'
 import { useAuth } from '@/utils/authContext'
 
 const Page = () => {
     const { user } = useAuth();
     const router = useRouter();
+    const [savedAddresses, setSavedAddresses] = useState([]);
+    const token = process.env.NEXT_PUBLIC_API_KEY;
+    const APIURL = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         if (!user) {
             router.push('/login');
         }
     }, [user, router]);
-    if (!user) {
-        return null;
-    }
-    const [savedAddresses, setSavedAddresses] = useState([]);
-    const token = process.env.NEXT_PUBLIC_API_KEY;
-    const APIURL = process.env.NEXT_PUBLIC_API_URL;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,7 +43,12 @@ const Page = () => {
             }
         }
         fetchData();
-    }, [user]);
+    }, [user, APIURL]); // Added APIURL to the dependency array
+
+    // Add early return after all hooks are declared
+    if (!user) {
+        return null;
+    }
 
     return (
         <div>
@@ -64,4 +66,5 @@ const Page = () => {
         </div>
     )
 }
+
 export default Page

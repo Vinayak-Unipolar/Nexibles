@@ -7,7 +7,7 @@ import MyDetails from '@/components/dashboard/MyDetails'
 import { useAuth } from '@/utils/authContext'
 import { useRouter } from 'next/navigation'
 
-function page() {
+function Page() {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -16,9 +16,12 @@ function page() {
       router.push('/login');
     }
   }, [user, router]);
+
+  // Move conditional return after all hooks are called
   if (!user) {
     return null;
   }
+
   return (
     <div>
       <Navbar />
@@ -35,4 +38,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

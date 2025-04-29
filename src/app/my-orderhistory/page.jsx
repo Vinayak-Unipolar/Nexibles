@@ -8,7 +8,12 @@ import RelatedCategory from '@/components/shop/unused/Relatedcategory'
 import MyOrderHistory from '@/components/dashboard/MyOrdderHistory'
 import MyAccount from '@/components/dashboard/MyAccount'
 import { useAuth } from '@/utils/authContext'
+
 const Page = () => {
+  const token = process.env.NEXT_PUBLIC_API_KEY;
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const cartItems = useSelector((state) => state.cart.items);
   const { user } = useAuth();
   const router = useRouter();
 
@@ -17,17 +22,12 @@ const Page = () => {
       router.push('/login');
     }
   }, [user, router]);
-  if (!user) {
-    return null;
-  }
-  const token = process.env.NEXT_PUBLIC_API_KEY;
-  const APIURL = process.env.NEXT_PUBLIC_API_URL;
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
+        if (!user) return; // Early return inside the effect
+
         const productIds = cartItems.map(item => item.id) || [];
 
         const response = await fetch(`${APIURL}/api/related-products`, {
@@ -53,7 +53,12 @@ const Page = () => {
     };
 
     fetchRelatedProducts();
-  }, [cartItems]); // Added cartItems as dependency
+  }, [cartItems, user, APIURL]); // Added user and APIURL as dependencies
+
+  // Conditional return after all hooks are defined
+  if (!user) {
+    return null;
+  }
 
   return (
     <div>

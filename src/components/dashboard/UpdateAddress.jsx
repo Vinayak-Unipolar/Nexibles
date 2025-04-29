@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -8,6 +8,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
 
     const [formData, setFormData] = useState({
         title: '',
+        floor: '',
         address: '',
         address2: '',
         city: '',
@@ -16,7 +17,8 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
         country: 'India',
         phone: '',
         addressType: '',
-        gstin: '' // Added GSTIN field
+        company: '',
+        gstin: ''
     });
 
     const handleChange = (e) => {
@@ -29,7 +31,6 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const response = await fetch(`${APIURL}/api/customerAddress/${addressId}`, {
                 method: 'PATCH',
@@ -60,17 +61,18 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                     if (responseData.success === 1 && responseData.data && responseData.data.length > 0) {
                         const addressData = responseData.data[0];
                         setFormData({
-                            title: addressData.title,
-                            floor: addressData.floor,
-                            address: addressData.address,
-                            address2: addressData.address2,
-                            city: addressData.city,
-                            state: addressData.state,
-                            zip: addressData.zip,
-                            country: addressData.country,
-                            phone: addressData.phone,
-                            addressType: addressData.addressType,
-                            gstin: addressData.gstin || '' // Initialize GSTIN from fetched data
+                            title: addressData.title || '',
+                            floor: addressData.floor || '',
+                            address: addressData.address || '',
+                            address2: addressData.address2 || '',
+                            city: addressData.city || '',
+                            state: addressData.state || 'Maharashtra',
+                            zip: addressData.zip || '',
+                            country: addressData.country || 'India',
+                            phone: addressData.phone || '',
+                            addressType: addressData.addressType || '',
+                            company: addressData.company || '',
+                            gstin: addressData.gstin || ''
                         });
                     } else {
                         console.error('No data found for addressId:', addressId);
@@ -80,30 +82,31 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                 console.error('Failed to fetch address:', error);
             }
         };
-
         fetchAddress();
     }, [addressId]);
 
     return (
-        <div className="bg-white py-10 relative">
-            <button
-                onClick={() => setShowUpdateAddress(false)}
-                className="absolute top-0 right-0 text-black"
-            >
-                <RxCross2 className="cursor-pointer" size={34} />
-            </button>
-            <div>
-                <h2 className="text-gray-900 font-bold text-3xl px-8">Update Your Address</h2>
-            </div>
-            <form onSubmit={handleSubmit} className="py-4 px-8">
-                <div className="flex flex-col space-y-4">
-                    <div className="flex space-x-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="relative bg-white rounded-lg w-full max-w-md sm:max-w-lg h-[85vh] sm:h-auto sm:max-h-[90vh] overflow-y-auto">
+                <button
+                    onClick={() => setShowUpdateAddress(false)}
+                    className="absolute top-2 right-2 text-black"
+                >
+                    <RxCross2 className="cursor-pointer" size={24} />
+                </button>
+                <div className="px-4 sm:px-8 py-4">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center sm:text-left">
+                        Update Your Address
+                    </h2>
+                </div>
+                <form onSubmit={handleSubmit} className="px-4 sm:px-8 pb-4 space-y-2 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                         <input
                             type="text"
                             name="title"
                             value={formData.title}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="Company Name"
                             required
                         />
@@ -112,18 +115,18 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             name="floor"
                             value={formData.floor}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="Floor"
                             required
                         />
                     </div>
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                         <input
                             type="text"
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="Address 1"
                             required
                         />
@@ -132,17 +135,17 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             name="address2"
                             value={formData.address2}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="Address 2"
                         />
                     </div>
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                         <input
                             type="text"
                             name="city"
                             value={formData.city}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="City/Town"
                             required
                         />
@@ -150,19 +153,19 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             name="state"
                             value={formData.state}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                         >
                             <option value="Maharashtra">Maharashtra</option>
                             <option value="Delhi">Delhi</option>
                         </select>
                     </div>
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                         <input
                             type="text"
                             name="zip"
                             value={formData.zip}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="ZIP"
                             required
                         />
@@ -170,19 +173,19 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             name="country"
                             value={formData.country}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                         >
                             <option value="India">India</option>
                             <option value="Germany">Germany</option>
                         </select>
                     </div>
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                         <input
                             type="text"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="Phone"
                             required
                         />
@@ -196,20 +199,20 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                                     addressType: value === 'Others' ? '' : value,
                                 }));
                             }}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                         >
                             <option value="">Select Address Type</option>
                             <option value="Home">Home</option>
                             <option value="Office">Office</option>
                         </select>
                     </div>
-                    <div className="flex space-x-4">
-                    <input
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input
                             type="text"
                             name="company"
-                            value={formData.company || ''}
+                            value={formData.company}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="Company"
                         />
                         <input
@@ -217,17 +220,20 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             name="gstin"
                             value={formData.gstin}
                             onChange={handleChange}
-                            className="flex-1 border-2 rounded-full text-gray-900 px-4 py-1 outline-none"
+                            className="w-full px-3 py-1 sm:px-4 sm:py-1 text-gray-900 border-2 rounded-full outline-none text-sm sm:text-base"
                             placeholder="GSTIN"
-                        />                     
+                        />
                     </div>
-                </div>
-                <div className="mt-4">
-                    <button type="submit" className="bg-[#103b60] rounded-md text-white px-8 py-2">
-                        Use this address
-                    </button>
-                </div>
-            </form>
+                    <div className="mt-2 sm:mt-4">
+                        <button
+                            type="submit"
+                            className="w-full sm:w-auto bg-[#103b60] rounded-md text-white px-6 py-2 sm:px-8 sm:py-2 text-sm sm:text-base"
+                        >
+                            Use this address
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

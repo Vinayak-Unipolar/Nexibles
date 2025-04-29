@@ -249,7 +249,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute left-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Previous slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
@@ -271,7 +271,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute right-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Next slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}

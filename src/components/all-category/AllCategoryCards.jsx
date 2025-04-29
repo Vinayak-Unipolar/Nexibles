@@ -61,13 +61,13 @@ const AllCategoryCards = ({ categoryData }) => {
         ))}
       </div>
 
-      {/* Key Product Features Section */}
+      {/* Key Product Features Section - Modified to show 2 in a row */}
       <div className="px-4 py-10 mt-10 md:px-16">
         <h2 className="mb-8 text-2xl font-semibold text-center md:text-3xl">
           Key Product Features
         </h2>
         <div className="flex justify-center">
-          <div className="grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid w-full max-w-4xl grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
             {[
               { title: "Top-Quality Lamination", image: topqualitylamination },
               { title: "Easy Customization", image: easycustomization },
@@ -78,9 +78,9 @@ const AllCategoryCards = ({ categoryData }) => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center w-full p-4 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-lg md:aspect-square"
+                className="flex flex-col items-center w-full p-4 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-lg"
               >
-                <div className="relative w-24 h-24 mb-3 md:w-52 md:h-52">
+                <div className="relative w-24 h-24 mb-3 md:w-40 md:h-40 lg:w-44 lg:h-44">
                   <Image
                     src={feature.image}
                     alt={feature.title}
@@ -99,5 +99,6 @@ const AllCategoryCards = ({ categoryData }) => {
     </div>
   );
 };
+
 
 export default AllCategoryCards;

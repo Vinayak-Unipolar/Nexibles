@@ -1,14 +1,16 @@
-"use client";
+"use client"
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import React from 'react'
+import { FaEnvelope, FaLock } from "react-icons/fa"
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
 import Loader from '../comman/Loader';
 import { toast } from 'react-toastify';
 import ForgotPassword from './ForgotPassword';
-import ReCAPTCHA from "react-google-recaptcha";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
+import image from "../../../public/Pictures/Factory Facade.png";
 
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -19,17 +21,12 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [password, setPassword] = useState("");
-    const [recaptchaToken, setRecaptchaToken] = useState(null);
     const router = useRouter();
     const { login } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (!recaptchaToken) {
-            toast.error("Please complete the reCAPTCHA");
-            return;
-        }
         setLoading(true);
         try {
             const response = await fetch(`${APIURL}/api/login`, {
@@ -40,27 +37,26 @@ function Login() {
                 body: JSON.stringify({
                     emailAddress: email,
                     password: password,
-                    recaptchaToken: recaptchaToken,
                 }),
             });
             const data = await response.json();
             if (data.status === 'success') {
                 const token = data.token;
                 login(data.data);
-                toast.success("Login Successful");
+                toast.success("Login Successfull");
                 router.push('/');
                 localStorage.setItem('token', token);
-            } else {
+            }
+            else {
                 toast.error("Invalid Email or Password");
             }
         } catch (error) {
             console.log('Invalid Request', error);
-            toast.error("Login failed. Please try again.");
-        } finally {
-            setLoading(false);
-            setRecaptchaToken(null); // Reset reCAPTCHA after submission
         }
-    };
+        finally {
+            setLoading(false);
+        }
+    }
 
     const [userDetails, setUserDetails] = useState({
         customerId: "",
@@ -107,26 +103,19 @@ function Login() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        if (!recaptchaToken) {
-            toast.error("Please complete the reCAPTCHA");
-            return;
-        }
         try {
             const response = await fetch(`${APIURL}/api/login/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...userDetails,
-                    recaptchaToken: recaptchaToken,
-                }),
+                body: JSON.stringify(userDetails)
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             } else {
                 const data = await response.json();
-                toast.success("Registered Successfully! Please Login");
+                toast.success("Registered Successfully!. Please Login");
                 setUserDetails({
                     customerId: "",
                     firstName: "",
@@ -168,14 +157,12 @@ function Login() {
                     active: "",
                     password: "",
                     profImage: "",
-                });
+                })
                 setIsLogin(true);
             }
         } catch (error) {
             console.error('Error:', error.message);
             toast.error(error.message);
-        } finally {
-            setRecaptchaToken(null); // Reset reCAPTCHA after submission
         }
     };
 
@@ -187,11 +174,6 @@ function Login() {
 
     const toggleForm = () => {
         setIsLogin(!isLogin);
-        setRecaptchaToken(null); // Reset reCAPTCHA when toggling forms
-    };
-
-    const handleRecaptchaChange = (token) => {
-        setRecaptchaToken(token);
     };
 
     useEffect(() => {
@@ -200,8 +182,8 @@ function Login() {
     return (
         <>
             {loading && <Loader btnLoad={false} />}
-            <div className="flex items-center justify-center p-4 bg-white md:mt-24 my-12">
-                <div className="w-full max-w-4xl overflow-hidden">
+            <div className="flex items-center justify-center  p-4 bg-white md:mt-24 my-12">
+                <div className="w-full max-w-4xl overflow-hidden ">
                     <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
                         {/* Image Section - Hidden on mobile */}
                         <motion.div
@@ -210,7 +192,7 @@ function Login() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <div className="flex items-center justify-center h-full p-6">
+                            <div className="flex items-center justify-center h-full p-6 ">
                                 <img
                                     src={`${process.env.NEXT_PUBLIC_CDN_URL}/create-an-account-with-nexibles.webp`}
                                     alt="Auth illustration"
@@ -260,13 +242,6 @@ function Login() {
                                             >
                                                 {showPassword ? <FaEye /> : <FaEyeSlash />}
                                             </span>
-                                        </div>
-
-                                        <div className="flex justify-center">
-                                            <ReCAPTCHA
-                                                sitekey="6LcoUSgrAAAAAJ4Xs1fKL_0WmhXxkZxAQ1vrsT8D"
-                                                onChange={handleRecaptchaChange}
-                                            />
                                         </div>
 
                                         <div className="flex items-center justify-end">
@@ -366,13 +341,6 @@ function Login() {
                                                     {showPasswordRegister ? <FaEye /> : <FaEyeSlash />}
                                                 </span>
                                             </div>
-                                        </div>
-
-                                        <div className="flex justify-center">
-                                            <ReCAPTCHA
-                                                sitekey="6LcoUSgrAAAAAJ4Xs1fKL_0WmhXxkZxAQ1vrsT8D"
-                                                onChange={handleRecaptchaChange}
-                                            />
                                         </div>
 
                                         <div className="flex items-center">

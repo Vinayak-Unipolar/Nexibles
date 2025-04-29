@@ -178,9 +178,7 @@ const Home = () => {
       <AdvantageItem />
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
-      <div id="footer">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 

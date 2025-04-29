@@ -1,128 +1,154 @@
 "use client";
 import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { FiUser, FiShoppingBag, FiMapPin, FiGift, FiHelpCircle, FiMenu } from "react-icons/fi";
+import { useAuth } from '@/utils/authContext';
 
 export default function MyAccount() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
+  const { user } = useAuth();
+
+  // Check screen size on mount and resize
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 992); // Adjust this breakpoint as needed
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
   };
-
+  
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
 
-  const handleSelectItem = (index) => {
-    if (selectedIndex === index) {
-      setSelectedIndex(null); // Deselect if clicked again
-    } else {
-      setSelectedIndex(index);
-    }
-    setHoveredIndex(null); // Reset hoveredIndex when item is clicked
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
   };
 
+  const firstName = user?.result?.firstName || user?.firstName || "User";
+  const lastName = user?.result?.lastName || user?.lastName || "";
+  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  
+  const menuItems = [
+    { name: "Account dashboard", link: "/my-dashboard", icon: <FiUser /> },
+    { name: "My orders", link: "/my-orderhistory", icon: <FiShoppingBag /> },
+    { name: "My details", link: "/my-details", icon: <FiUser /> },
+    { name: "Address book", link: "/manageaddress", icon: <FiMapPin /> },
+    { name: "Gift cards & vouchers", link: "/gift-cards", icon: <FiGift /> },
+    { name: "Where's my order?", link: "/wheres-my-order", icon: <FiHelpCircle /> },
+  ];
+
+  // Update selectedIndex based on the current route
+  useEffect(() => {
+    if (pathname) {
+      const index = menuItems.findIndex((item) => item.link === pathname);
+      setSelectedIndex(index !== -1 ? index : null);
+    }
+  }, [pathname, menuItems]);
+
   return (
-    <div className="bg-white mt-9">
-      <div className="px-10 py-20">
-        <h3 className="text-gray-900 font-bold text-xl">My Account</h3>
-        <div className="">
-          <ul className="text-gray-900 font-bold mt-4 border-r-8 border-gray-900">
-            <Link href="/my-dashboard">
-              <li
-                className={`cursor-pointer p-3 ${
-                  hoveredIndex === 0 ? "hover:bg-gray-200" : ""
-                }`}
-                onMouseEnter={() => handleMouseEnter(0)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <span className="flex items-center">
-                  {hoveredIndex === 0 && <FaChevronRight className="mr-2" />}
-                  Dashboard
-                </span>
-              </li>
-            </Link>
-            {/*<Link href="/my-dashboard">
-                            <li
-                                className={`cursor-pointer p-3 ${
-                                    selectedIndex === 0 ? "bg-gray-200" : ""
-                                }`}
-                                onMouseEnter={() => handleMouseEnter(0)}
-                                onMouseLeave={handleMouseLeave}
-                                onClick={() => handleSelectItem(0)}
-                            >
-                                <span className="flex items-center">
-                                    {(hoveredIndex === 0 || selectedIndex === 0) && <FaChevronRight className="mr-2" />}
-                                    Dashboard
-                                </span>
-                            </li>
-                        </Link>*/}
-            {/* Other list items */}
-            {/* <Link href="/my-projects">
-                            <li
-                                className={`cursor-pointer p-3 ${hoveredIndex === 1 ? "hover:bg-gray-200" : ""
-                                    }`}
-                                onMouseEnter={() => handleMouseEnter(1)}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                <span className="flex items-center">
-                                    {hoveredIndex === 1 && <FaChevronRight className="mr-2" />}
-                                    My Projects
-                                </span>
-                            </li>
-                        </Link> */}
-            <Link href="/my-orderhistory">
-              <li
-                className={`cursor-pointer p-3 ${
-                  hoveredIndex === 2 ? "hover:bg-gray-200" : ""
-                }`}
-                onMouseEnter={() => handleMouseEnter(2)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <span className="flex items-center">
-                  {hoveredIndex === 2 && <FaChevronRight className="mr-2" />}
-                  Order History & Reorders
-                </span>
-              </li>
-            </Link>
-            <Link href="/manageaddress">
-              <li
-                className={`cursor-pointer p-3 ${
-                  hoveredIndex === 3 ? "hover:bg-gray-200" : ""
-                }`}
-                onMouseEnter={() => handleMouseEnter(3)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <span className="flex items-center">
-                  {hoveredIndex === 3 && <FaChevronRight className="mr-2" />}
-                  Address
-                </span>
-              </li>
-            </Link>
-            {/* <Link href="/my-uploads">
-                            <li
-                                className={`cursor-pointer p-3 ${hoveredIndex === 4 ? "hover:bg-gray-200" : ""
-                                    }`}
-                                onMouseEnter={() => handleMouseEnter(4)}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                <span className="flex items-center">
-                                    {hoveredIndex === 4 && <FaChevronRight className="mr-2" />}
-                                    My Uploads
-                                </span>
-                            </li>
-                        </Link>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">My Design Services</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">Account Settings</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">My Subsciption</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">Favorite Templates</li> */}
-            {/* <li className="hover:bg-gray-200 cursor-pointer p-3">Design Services</li>
-                        <li className="hover:bg-gray-200 cursor-pointer p-3">Brand Kit</li> */}
-          </ul>
+    <>
+      {/* Desktop sidebar menu - only shown on larger screens */}
+      {!isMobile && (
+        <div className="w-64 h-screen bg-white shadow-md">
+          <div className="px-6 py-8">
+            <div className="flex items-center mb-8">
+              <div className="flex items-center justify-center w-10 h-10 mr-3 font-bold text-white bg-gray-800 rounded-full">
+                {initials}
+              </div>
+              <div>
+                <div className="text-sm text-gray-500">Hi,</div>
+                <div className="font-semibold">{firstName} {lastName}</div>
+              </div>
+            </div>
+            <ul className="text-gray-700">
+              {menuItems.map((item, index) => (
+                <Link href={item.link} key={index}>
+                  <li
+                    className={`cursor-pointer py-2 px-3 rounded-md flex items-center mt-2 ${
+                      selectedIndex === index
+                        ? "border-l-4 border-[#103b60] bg-blue-50 text-[#103b60] font-semibold"
+                        : hoveredIndex === index
+                          ? "bg-gray-100"
+                          : ""
+                    }`}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <span className="mr-3">{item.icon}</span>
+                    <span className="text-sm">{item.name}</span>
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+
+      {/* Mobile bottom menu - only shown on smaller screens */}
+      {isMobile && (
+        <div>
+          {/* Mobile menu toggle button */}
+          <button 
+            onClick={toggleMobileMenu}
+            className="fixed bottom-4 right-4 bg-[#103b60] text-white p-3 rounded-full shadow-lg z-50"
+          >
+            <FiMenu size={24} />
+          </button>
+
+          {/* Bottom drawer menu */}
+          <div className={`fixed bottom-0 left-0 right-0 bg-white shadow-lg rounded-t-xl transition-transform duration-300 ease-in-out z-40 ${
+            showMobileMenu ? 'translate-y-0' : 'translate-y-full'
+          }`}>
+            <div className="w-16 h-1 bg-gray-300 rounded-full mx-auto my-3"></div>
+            
+            <div className="p-4">
+              <div className="flex items-center mb-6">
+                <div className="flex items-center justify-center w-10 h-10 mr-3 font-bold text-white bg-gray-800 rounded-full">
+                  {initials}
+                </div>
+                <div>
+                  <div className="text-sm text-gray-500">Hi,</div>
+                  <div className="font-semibold">{firstName} {lastName}</div>
+                </div>
+              </div>
+              
+              <ul className="grid grid-cols-3 gap-4 pb-8">
+                {menuItems.map((item, index) => (
+                  <Link href={item.link} key={index} onClick={() => setShowMobileMenu(false)}>
+                    <li className={`flex flex-col items-center justify-center p-3 rounded-lg ${
+                      selectedIndex === index ? "bg-blue-50 text-[#103b60]" : ""
+                    }`}>
+                      <span className="text-2xl mb-1">{item.icon}</span>
+                      <span className="text-xs text-center">{item.name}</span>
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          {/* Overlay when menu is open */}
+          {showMobileMenu && (
+            <div 
+              className="fixed inset-0 bg-black bg-opacity-50 z-30"
+              onClick={() => setShowMobileMenu(false)}
+            ></div>
+          )}
+        </div>
+      )}
+    </>
   );
 }

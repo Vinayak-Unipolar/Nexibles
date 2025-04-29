@@ -2,10 +2,14 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+<<<<<<< HEAD
 import { Instagram } from "lucide-react";
 import insta01 from "../../../public/insta/insta01.png";
 import insta02 from "../../../public/insta/insta02.png";
 import insta03 from "../../../public/insta/insta03.png";
+=======
+import { Instagram } from "lucide-react"; 
+>>>>>>> 09aec7117a3f7939c51b9dd8b8a123e745a10ee8
 
 export default function NexiblesInstagramSection() {
   const [instaFeed] = useState([
@@ -52,8 +56,8 @@ export default function NexiblesInstagramSection() {
         <p className="text-gray-600 mb-8">#Nexibles</p>
       </div>
 
-      {/* Instagram Feed */}
-      <div className="max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-0.5 mb-12">
+      {/* Instagram Feed - Changed to grid-cols-3 for all screen sizes */}
+      <div className="max-w-3xl mx-auto grid grid-cols-3 gap-0.5 mb-12">
         {instaFeed.map((post, idx) => (
           <a
             key={idx}
@@ -66,11 +70,11 @@ export default function NexiblesInstagramSection() {
               src={post.image} // Use the imported image object
               alt="Instagram Post"
               fill
-              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 25vw"
+              sizes="(max-width: 768px) 33vw, 33vw"
               className="object-cover"
             />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Instagram size={48} className="w-12 h-12 text-white" />
+              <Instagram size={24} className="w-6 h-6 sm:w-12 sm:h-12 text-white" />
             </div>
           </a>
         ))}
@@ -91,7 +95,7 @@ export default function NexiblesInstagramSection() {
           {[...brandLogos, ...brandLogos].map((brand, idx) => (
             <div
               key={`${brand.id}-${idx}`}
-              className="w-24 h-24 flex-shrink-0 flex items-center justify-center"
+              className="w-16 h-16 sm:w-24 sm:h-24 flex-shrink-0 flex items-center justify-center"
             >
               <Image
                 src={
@@ -100,8 +104,8 @@ export default function NexiblesInstagramSection() {
                     : "/placeholder.png"
                 }
                 alt={`Brand ${brand.id}`}
-                width={80}
-                height={80}
+                width={60}
+                height={60}
                 className="object-contain"
                 onError={(e) => {
                   console.error(
@@ -116,6 +120,7 @@ export default function NexiblesInstagramSection() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
 
 
@@ -558,3 +563,6 @@ export default function NexiblesInstagramSection() {
 //     </div>
 //   );
 // }
+=======
+}
+>>>>>>> 09aec7117a3f7939c51b9dd8b8a123e745a10ee8

@@ -69,6 +69,7 @@ const Navbar = () => {
     { name: "Configuration Tool", path: "/configuration-tool" },
     { name: "About Nexibles", path: "/about" },
     { name: "Contact Us", path: "/contact" },
+    {name:"Customize Pouch", path:"/configuration-tool"},
   ];
 
   // Animation variants

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import Navbar from '@/components/shop/Navbar'
 import Footer from '@/components/shop/Footer'
 import RelatedCategory from '@/components/shop/unused/Relatedcategory'
-import MyOrderHistory from '@/components/dashboard/MyOrdderHistory' 
+import MyOrderHistory from '@/components/dashboard/MyOrdderHistory'
 import MyAccount from '@/components/dashboard/MyAccount'
 
 const Page = () => {
@@ -17,7 +17,7 @@ const Page = () => {
     const fetchRelatedProducts = async () => {
       try {
         const productIds = cartItems.map(item => item.id) || [];
-        
+
         const response = await fetch(`${APIURL}/api/related-products`, {
           method: 'POST',
           headers: {
@@ -31,7 +31,7 @@ const Page = () => {
         }
 
         const data = await response.json();
-        const filterCategory = data?.data?.filter(category => 
+        const filterCategory = data?.data?.filter(category =>
           category.origin?.toLowerCase() === "nexibles") || [];
         setRelatedProducts(filterCategory);
       } catch (error) {
@@ -46,9 +46,9 @@ const Page = () => {
   return (
     <div>
       <Navbar />
-      <div className='containers'>
+      <div className='containers md:mt-16 mt-12'>
         <div className="md:flex">
-          <div className="md:w-1/3 w-full bg-white">
+          <div className="w-full bg-white md:w-1/3">
             <MyAccount />
           </div>
           <div className="w-full md:w-full">

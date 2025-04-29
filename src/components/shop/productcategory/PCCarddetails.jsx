@@ -224,7 +224,7 @@ export default function PCCardDetails({ productDetails }) {
       <div className="px-4 mx-auto md:px-6 lg:px-8 containers max-w-7xl">
         <div className="flex flex-col pt-6 md:flex-row md:gap-12 md:pt-10">
           {/* Product Images Section */}
-          <div className="w-full h-[45vh] md:w-1/2 md:h-[60vh] mb-8 md:mb-0 sticky top-[15%]">
+          <div className="w-full h-[45vh] md:w-1/2 md:h-[60vh] mb-8 md:mb-0 md:sticky top-[15%]">
             <ProductImages
               productImages={productImages}
               defaultImage={

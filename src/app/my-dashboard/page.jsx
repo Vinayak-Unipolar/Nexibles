@@ -7,15 +7,14 @@ import Navbar from '@/components/shop/Navbar'
 import Footer from '@/components/shop/Footer'
 
 const Mydashboard = () => {
-
     return (
         <div>
             <Navbar />
-            <div className="md:flex bg-white containers">
-                {/* <div className="md:w-1/3 w-full">
+            <div className="bg-white md:mt-16 mt-12 md:flex containers ">
+                <div className="w-full md:w-1/3">
                     <MyAccount />
-                </div> */}
-                <div className="md:w-full w-full">
+                </div>
+                <div className="w-full md:w-full">
                     <MyDashboard />
                 </div>
             </div>

@@ -17,7 +17,7 @@ import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
 import Pop_up_image from "../../public/home/Tea.jpg";
-
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -164,6 +164,7 @@ const Home = () => {
 
   return (
     <div>
+      <GoogleAnalytics />
       <ToastContainer position="top-right" autoClose={3000} />
       <Modal isOpen={showModal} onClose={closeModal} />
       <Navbar />

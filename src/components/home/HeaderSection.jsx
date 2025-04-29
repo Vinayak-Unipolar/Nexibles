@@ -177,7 +177,7 @@ const HeaderSection = () => {
                 }}
                 className="absolute inset-0 w-full h-full"
               >
-                <Link href="/all-category">
+                <Link href={slide.link}>
                   <div className="relative md:mt-[6vh] mt-[6vh] h-[30vh] md:w-full md:h-full">
                     <MediaComponent
                       media={slide.bgMedia}
@@ -185,8 +185,6 @@ const HeaderSection = () => {
                       isActive={true}
                       onVideoEnd={handleVideoEnd}
                     />
-
-                    {/* Text Overlay - Only shown on the first slide */}
                     {index === 0 && (
                       <motion.div
                         className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]"
@@ -199,7 +197,7 @@ const HeaderSection = () => {
                           style={outlineTextStyle}
                           variants={textVariants}
                         >
-                          ENDLESS POUCHES
+                          DIGITALLY PRINTED
                         </motion.h2>
                         <motion.h1
                           className="text-[7vw] md:text-[7.6vw] tracking-wider text-center font-[1000] italic"

@@ -194,7 +194,7 @@ function Login() {
                         >
                             <div className="flex items-center justify-center h-full p-6 bg-gray-100">
                                 <img
-                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/Create%20an%20account.webp`}
+                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/create-an-account-with-nexibles.webp`}
                                     alt="Auth illustration"
                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                 />

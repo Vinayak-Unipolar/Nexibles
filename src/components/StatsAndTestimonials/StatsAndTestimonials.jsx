@@ -166,7 +166,7 @@ export default function StatsAndTestimonials() {
   return (
     <div className="flex flex-col w-full">
       {/* ===================== STATS SECTION ===================== */}
-      <motion.div
+      {/* <motion.div
         className="grid grid-cols-1 gap-6 px-4 py-12 mx-auto md:grid-cols-4 md:gap-8 md:px-8"
         initial="hidden"
         whileInView="visible"
@@ -221,7 +221,7 @@ export default function StatsAndTestimonials() {
             </motion.div>
           );
         })}
-      </motion.div>
+      </motion.div> */}
 
       {/* ===================== TESTIMONIALS SECTION WITH CAROUSEL ===================== */}
       <motion.div

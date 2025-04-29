@@ -15,7 +15,7 @@ const Footer = () => {
   const footerRef = useRef(null);
   const isInView = useInView(footerRef, {
     once: true,
-    amount: 0.5,
+    amount: 0.1,
     margin: "0px 0px -100px 0px",
   });
 
@@ -32,7 +32,7 @@ const Footer = () => {
           "Content-type": "application/json",
           "API-Key": token,
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email ,origin: "nexibles" }),
       });
       if (response.ok) {
         setMessage("Successfully subscribed!");
@@ -125,7 +125,7 @@ const Footer = () => {
               </motion.h3>
               <motion.div className="flex space-x-6" custom={1} variants={itemVariants}>
                 <motion.a
-                  href="https://instagram.com/"
+                  href="https://www.instagram.com/nexibles"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-gray-300"
@@ -135,7 +135,7 @@ const Footer = () => {
                   <FaInstagram size={25} />
                 </motion.a>
                 <motion.a
-                  href="https://facebook.com/"
+                  href="https://www.facebook.com/nexiblesin/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-gray-300"
@@ -145,7 +145,7 @@ const Footer = () => {
                   <ImFacebook2 size={25} />
                 </motion.a>
                 <motion.a
-                  href="https://youtube.com/"
+                  href="https://youtube.com/@nexibles?si=uU5OBkb1TptuNoRD"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-gray-300"
@@ -165,7 +165,7 @@ const Footer = () => {
                 Company
               </motion.li>
               <motion.li custom={1} variants={itemVariants}><Link href="/about">About</Link></motion.li>
-              <motion.li custom={2} variants={itemVariants}><Link href="/infrastructure">Infrastructure</Link></motion.li>
+              {/* <motion.li custom={2} variants={itemVariants}><Link href="/infrastructure">Infrastructure</Link></motion.li> */}
               <motion.li custom={3} variants={itemVariants}><Link href="/businesses">Industries</Link></motion.li>
             </motion.ul>
           </div>

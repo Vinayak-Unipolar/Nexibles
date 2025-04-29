@@ -67,7 +67,7 @@ const AllCategoryCards = ({ categoryData }) => {
           Key Product Features
         </h2>
         <div className="flex justify-center">
-          <div className="grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid w-full max-w-4xl grid-cols-2 gap-4 md:grid-cols-3">
             {[
               { title: "Top-Quality Lamination", image: topqualitylamination },
               { title: "Easy Customization", image: easycustomization },

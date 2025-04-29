@@ -61,7 +61,7 @@ const Navbar = () => {
       name: "Shop",
       path: "#", // Using '#' since Shop is a dropdown
       dropdown: [
-        { name: "Standard Pouch", path: "/shop" },
+        { name: "Nexi Classic", path: "/shop" },
         { name: "Custom Size Pouch", path: "/configuration-tool" },
       ],
     },

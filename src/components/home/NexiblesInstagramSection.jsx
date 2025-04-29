@@ -2,14 +2,10 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-<<<<<<< HEAD
 import { Instagram } from "lucide-react";
 import insta01 from "../../../public/insta/insta01.png";
 import insta02 from "../../../public/insta/insta02.png";
 import insta03 from "../../../public/insta/insta03.png";
-=======
-import { Instagram } from "lucide-react"; 
->>>>>>> 09aec7117a3f7939c51b9dd8b8a123e745a10ee8
 
 export default function NexiblesInstagramSection() {
   const [instaFeed] = useState([
@@ -120,7 +116,6 @@ export default function NexiblesInstagramSection() {
       </div>
     </div>
   );
-<<<<<<< HEAD
 }
 
 
@@ -563,6 +558,3 @@ export default function NexiblesInstagramSection() {
 //     </div>
 //   );
 // }
-=======
-}
->>>>>>> 09aec7117a3f7939c51b9dd8b8a123e745a10ee8

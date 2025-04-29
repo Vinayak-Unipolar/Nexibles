@@ -82,7 +82,7 @@ const Footer = () => {
               </motion.h3>
               <motion.p className="text-sm mb-6" custom={1} variants={itemVariants}>
                 Do you want to get notified? <br />
-                Sign up for our newsletter and be the first <br />
+                Sign up for our newsletter and be the first
                 to find out about new features & offers.
               </motion.p>
               <motion.form

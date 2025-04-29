@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP,  } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP, } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
+import "react-toastify/dist/ReactToastify.css";
 import WhatWeDo from "@/components/home/WhatWeDo";
 import Footer from "@/components/shop/Footer";
 import GreenPart from "@/components/home/GreenPart";
@@ -16,7 +16,7 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/Tea.jpg";
+import Pop_up_image from "../../public/home/Tea.webp";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
@@ -127,12 +127,14 @@ const Home = () => {
     const lastShown = localStorage.getItem("modalLastShown");
     const now = new Date().getTime();
     const oneDay = 24 * 60 * 60 * 1000;
-
-    if (!lastShown || now - parseInt(lastShown) > oneDay) {
-      setShowModal(true);
-      localStorage.setItem("modalLastShown", now.toString());
-    }
-
+  
+    const timer = setTimeout(() => {
+      if (!lastShown || now - parseInt(lastShown) > oneDay) {
+        setShowModal(true);
+        localStorage.setItem("modalLastShown", now.toString());
+      }
+    }, 10000);
+  
     const fetchData = async () => {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
@@ -156,6 +158,7 @@ const Home = () => {
       }
     };
     fetchData();
+    return () => clearTimeout(timer);
   }, []);
 
   const closeModal = () => {
@@ -176,13 +179,11 @@ const Home = () => {
       <StatsAndTestimonials />
       <NexiblesInstagramSection />
       <div id="footer">
-  <Footer />
-</div>
-
-      
+        <Footer />
+      </div>
     </div>
   );
-  
+
 };
 
 export default Home;

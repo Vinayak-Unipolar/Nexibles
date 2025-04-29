@@ -135,7 +135,7 @@ function Page() {
                     <h3 className="mb-1 text-base font-semibold text-gray-900 sm:text-lg">
                       {industry.name}
                     </h3>
-                    <p className="mb-3 text-xs text-gray-700 sm:text-sm line-clamp-2">
+                    <p className="mb-3 text-xs text-gray-700 sm:text-sm line-clamp-2 italic">
                       {industry.description}
                     </p>
                     <span className="text-sm font-semibold text-[#103b60]">

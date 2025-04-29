@@ -225,7 +225,7 @@ function RequestForm() {
   ];
 
   // Options for Language Preference
-  const languages = ["English", "French", "German", "Polish", "Indonesian"];
+  const languages = ["Hindi","English","Marathi"];
 
   // Options for Industry
   const industries = [
@@ -617,7 +617,7 @@ function RequestForm() {
               </div>
 
               {/* Packaging Information Section */}
-              <h3 className="pb-2 mb-4 text-lg font-semibold text-black border-b-2 border-black sm:text-xl">
+              <h3 className="pb-2 mb-4 text-sm font-semibold text-black border-b-2 border-black sm:text-xl">
                 Packaging Information
               </h3>
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
@@ -699,49 +699,52 @@ function RequestForm() {
 
           {/* Right Side: Sample Text */}
           <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
-            <h2 className="pb-2 mb-4 text-xl font-semibold text-gray-800 border-b-2 border-orange-500">
-              Do More With Nexibles
-            </h2>
-
+            <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
+            {`Let's Build Your Packaging Breakthrough`}
+            </h3>
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  Industry Leading Turnaround Times
-                </h3>
+                <p className="text-sm font-medium text-gray-800">
+                  {`Industry Leading Turnaround Times`}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  We pride ourselves on turnaround times as fast as 15 days from
-                  artwork approval (as fast as 10 days for rollstock) with our
-                  Nexibles Record Flexible Packaging Solution.
+                {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
                 </p>
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  A Truly Global Print Network
-                </h3>
+                <p className="text-sm font-medium text-gray-800">
+                {`That's exactly what Nexibles was created for.`}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  Our print capabilities include 25 locations across the globe
-                  with a capacity of 8 million linear feet per day.
+                 {`When you request a free quote, you're not just asking for a price.`}
                 </p>
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  Transparent MOQs
-                </h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Our minimum order quantities are easy to understand with no
-                  hidden fees or gotchas.
+                <p className="text-sm font-medium text-gray-800">
+                  {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
                 </p>
+                <h3 className="pb-2 mb-4 text-xl mt-2 font-bold text-gray-800 border-b-2 border-orange-500">
+                 {`Here’s what happens next:`}
+                </h3>
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  Digital Capabilities At Flexo Prices
-                </h3>
+                <p className="text-sm font-medium text-gray-800">
+                  {`Our team of packaging experts will review your requirements.`}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  The flexibility that digital printing offers with prices
-                  competitive with flexographic printers.
+                  {`We’ll suggest the best options suited to your product, budget, and goals.`}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {`We’ll send you a detailed, transparent quote — no hidden costs, no surprises.`}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {`We’ll guide you through every step if you choose to move forward — from artwork to material selection to final production.`}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {`And it all starts right here — with a simple form.`}
                 </p>
               </div>
             </div>

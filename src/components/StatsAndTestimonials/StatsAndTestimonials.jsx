@@ -34,14 +34,14 @@ export default function StatsAndTestimonials() {
         }
         const data = await response.json();
         if (data.status === 'success' && Array.isArray(data.data)) {
-          const nexiblesTestimonials = data.data.filter(item => 
+          const nexiblesTestimonials = data.data.filter(item =>
             item.origin && (item.origin.toLowerCase() === 'nexibles')
           );
           const formattedTestimonials = nexiblesTestimonials.map((item, index) => ({
             id: item.id,
             name: item.name,
-            designationcompany: item.profession ? 
-              (item.company ? `${item.profession} - ${item.company}` : item.profession) : 
+            designationcompany: item.profession ?
+              (item.company ? `${item.profession} - ${item.company}` : item.profession) :
               (item.company || ""),
             content: item.description,
             image: item.image || "",
@@ -99,7 +99,7 @@ export default function StatsAndTestimonials() {
         onClick={onClick}
       >
         {/* You can customize the arrow icon or style here */}
-        <svg
+        {/* <svg
           className="w-8 h-8 text-black"
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -110,7 +110,7 @@ export default function StatsAndTestimonials() {
             d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
             clipRule="evenodd"
           />
-        </svg>
+        </svg> */}
       </div>
     );
   };
@@ -124,7 +124,7 @@ export default function StatsAndTestimonials() {
         onClick={onClick}
       >
         {/* You can customize the arrow icon or style here */}
-        <svg
+        {/* <svg
           className="w-8 h-8 text-black"
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -135,7 +135,7 @@ export default function StatsAndTestimonials() {
             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
             clipRule="evenodd"
           />
-        </svg>
+        </svg> */}
       </div>
     );
   };

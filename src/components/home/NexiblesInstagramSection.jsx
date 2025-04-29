@@ -2,26 +2,28 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Instagram } from "lucide-react"; 
-
+import { Instagram } from "lucide-react";
+import insta01 from "../../../public/insta/insta01.png";
+import insta02 from "../../../public/insta/insta02.png";
+import insta03 from "../../../public/insta/insta03.png";
 export default function NexiblesInstagramSection() {
   const [instaFeed] = useState([
     {
-      image: "/insta/insta01.png",
+      image: insta01, // Use imported image object
       link: "https://www.instagram.com/p/DIoW4DAhBKE/",
     },
     {
-      image: "/insta/insta02.png",
+      image: insta02, // Use imported image object
       link: "https://www.instagram.com/p/DIly2SjRiNh/",
     },
     {
-      image: "/insta/insta03.png",
+      image: insta03, // Use imported image object
       link: "https://www.instagram.com/p/DIjapyIIxLs/?img_index=1",
     },
   ]);
 
   const [brandLogos, setBrandLogos] = useState([]);
-  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDN_URL; // Fallback for safety
+  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
 
   useEffect(() => {
     async function fetchBrands() {
@@ -40,13 +42,13 @@ export default function NexiblesInstagramSection() {
   }, []);
 
   return (
-    <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="px-4 py-8 bg-white sm:px-6 lg:px-8">
       {/* Section Title */}
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-2">
+        <h2 className="mb-2 text-3xl font-bold sm:text-4xl">
           Nexibles On Instagram
         </h2>
-        <p className="text-gray-600 mb-8">#Nexibles</p>
+        <p className="mb-8 text-gray-600">#Nexibles</p>
       </div>
 
       {/* Instagram Feed - Changed to grid-cols-3 for all screen sizes */}
@@ -57,7 +59,7 @@ export default function NexiblesInstagramSection() {
             href={post.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative overflow-hidden group aspect-square block"
+            className="relative block overflow-hidden group aspect-square"
           >
             <Image
               src={post.image}
@@ -66,15 +68,15 @@ export default function NexiblesInstagramSection() {
               sizes="(max-width: 768px) 33vw, 33vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Instagram size={24} className="w-6 h-6 sm:w-12 sm:h-12 text-white" />
+            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 bg-black/50 group-hover:opacity-100">
+              <Instagram size={24} className="w-6 h-6 text-white sm:w-12 sm:h-12" />
             </div>
           </a>
         ))}
       </div>
 
       {/* Infinite Marquee */}
-      <div className="relative overflow-hidden w-full pt-8">
+      <div className="relative w-full pt-8 overflow-hidden">
         <motion.div
           className="flex space-x-8 w-max"
           animate={{ x: ["0%", "-15%"] }}
@@ -88,7 +90,7 @@ export default function NexiblesInstagramSection() {
           {[...brandLogos, ...brandLogos].map((brand, idx) => (
             <div
               key={`${brand.id}-${idx}`}
-              className="w-16 h-16 sm:w-24 sm:h-24 flex-shrink-0 flex items-center justify-center"
+              className="flex items-center justify-center flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24"
             >
               <Image
                 src={

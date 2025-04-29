@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP,  } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import toastify styles
+import "react-toastify/dist/ReactToastify.css";
 import WhatWeDo from "@/components/home/WhatWeDo";
 import Footer from "@/components/shop/Footer";
 import GreenPart from "@/components/home/GreenPart";
@@ -16,7 +16,7 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/Tea.jpg";
+import Pop_up_image from "../../public/home/Tea.webp";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");

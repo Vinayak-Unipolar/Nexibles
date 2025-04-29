@@ -187,14 +187,17 @@ const Navbar = () => {
                         ))}
                       </motion.div>
                     )}
+                    
                   </div>
                 ) : (
                   <Link href={item.path} className="text-black text-xs sm:text-md hover:underline">
                     {item.name}
                   </Link>
                 )}
+                
               </motion.div>
             ))}
+            
           </div>
 
           <div className="flex items-center space-x-4">

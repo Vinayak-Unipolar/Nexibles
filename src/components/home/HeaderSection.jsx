@@ -84,7 +84,7 @@ const HeaderSection = () => {
         const data = await response.json();
         const transformed = data.map((item) => ({
           bgMedia: `${BASE_IMAGE_URL}/${item.image}`,
-          link: item.link || "/shop",
+          link: item.link,
           title: item.title,
         }));
         setSlides(transformed);

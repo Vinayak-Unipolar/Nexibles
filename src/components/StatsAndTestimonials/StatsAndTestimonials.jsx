@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Slider from 'react-slick';
@@ -16,6 +16,48 @@ import flip from '../../../public/home/flip.svg';
 
 export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
+  const [testimonials, setTestimonials] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  // const fallbackImages = [client1, client2, client3, client4, client5, client6, client7];
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/testimonial`, {
+          headers: {
+            'Content-type': 'application/json',
+            'API-Key': process.env.NEXT_PUBLIC_API_KEY,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch testimonials');
+        }
+        const data = await response.json();
+        if (data.status === 'success' && Array.isArray(data.data)) {
+          const nexiblesTestimonials = data.data.filter(item => 
+            item.origin && (item.origin.toLowerCase() === 'nexibles')
+          );
+          const formattedTestimonials = nexiblesTestimonials.map((item, index) => ({
+            id: item.id,
+            name: item.name,
+            designationcompany: item.profession ? 
+              (item.company ? `${item.profession} - ${item.company}` : item.profession) : 
+              (item.company || ""),
+            content: item.description,
+            image: item.image || "",
+          }));
+          setTestimonials( formattedTestimonials);
+        }
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   const statsData = [
     {
@@ -48,57 +90,6 @@ export default function StatsAndTestimonials() {
     },
   ];
 
-  const testimonials = [
-    {
-      id: 1,
-      name: "Mr. Shivanand Jagtap",
-      designationcompany: "Director - Raidaar Masale",
-      content: "Fantastic shop! Great selection, fair prices, and friendly staff. Highly recommended. The quality of the products is exceptional, and the prices are very reasonable!",
-      image: client1,
-    },
-    {
-      id: 2,
-      name: "Ms. Preethi Dekhne",
-      designationcompany: "Tarvoti!",
-      content: "The first benefit was MOQ, cost effective & very convenient for start-ups, Quick turnaround time, very happy with quality, delivery was as per timeline shared. ",
-      image: client2,
-    },
-    {
-      id: 3,
-      name: "Mr. Arka Narayan De",
-      designationcompany: "Business Development Head - Aman Tea Group",
-      content: "Nexi Standard Sizes have been a game-changer for us at Aman Tea Group. The quality, consistency, and quick turnaround have streamlined our packaging process, helping us maintain efficiency in our tea product launches. Nexibles' reliability and service have made them our go-to packaging partner.",
-      image: client3,
-    },
-    {
-      id: 4,
-      name: "Mr. Dheeraj  Deotarse",
-      designationcompany: "",
-      content: "Nexi Classic sizes have transformed our tea and coffee packaging with cutting-edge digital printing, making it more striking and market-ready. Their precision, quality, and marketing support set them apart. Highly recommended for brands that demand excellence!",
-      image: client4,
-    },
-    {
-      id: 5,
-      name: "Mr. Tuhin Samanta",
-      designationcompany: "Founder - Nutkhut Delight",
-      content: "Nexi Standard Sizes by Nexibles has been a game-changer for us! Their low MOQ made it easy to launch new products quickly, which is invaluable for an emerging brand like ours. Fast production and excellent customer service are just the cherry on top!",
-      image: client5,
-    },
-    {
-      id: 6,
-      name: "Mr. Rajiv Raj Jain",
-      designationcompany: "Founder, Svasthyaa",
-      content: "I met Amol at AAHAR and was really impressed with the standard products he had – they were just right for us to launch our products. As a startup, his innovative approach helped us reduce our launch costs by 50%. His team has always been responsive, supportive, and great to work with. Thanks to them, we were able to scale smoothly.",
-      image: client6,
-    }, 
-    {
-      id: 7,
-      name: "Mr. Hisham Sunesra",
-      designationcompany: "Founder, Cookie Cartel",
-      content: "We’ve been working with Nexibles for over 1.5 years now, and they’ve been an incredible partner in our growth journey. From our very first order of just 1,000 standard stand-up pouches to now producing 10,000 fully customized and perfectly sized printed pouches, they’ve been with us every step of the way. The team — including the founders — has been consistently supportive, responsive, and proactive. Their pricing is highly competitive compared to other players in the market. If you’re looking for a reliable partner to scale with, we highly recommend Nexibles.",
-      image: client7,
-    }
-  ];
 
   const sliderSettings = {
     infinite: true,
@@ -241,52 +232,58 @@ export default function StatsAndTestimonials() {
 
         {/* Testimonial Carousel with react-slick */}
         <div className="relative px-4 mx-auto mb-16 max-w-7xl md:px-0">
-          <Slider {...sliderSettings}>
-            {testimonials.map((testimonial, index) => (
-              <div key={testimonial.id} className="px-3">
-                <motion.div
-                  className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-24 md:mt-18 mb-10 pt-16 pb-6 px-6 shadow-lg"
-                  variants={testimonialCardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  custom={index}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                  }}
-                  transition={{ type: 'spring', stiffness: 400 }}
-                >
-                  {/* Top centered client image */}
-                  <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
-                    <div className="p-3 bg-white rounded-full">
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        width={120}
-                        height={120}
-                        className="bg-orange-100 rounded-full shadow-md"
-                      />
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <p>Loading testimonials...</p>
+            </div>
+          ) : (
+            <Slider {...sliderSettings}>
+              {testimonials.map((testimonial, index) => (
+                <div key={testimonial.id} className="px-3">
+                  <motion.div
+                    className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-24 md:mt-18 mb-10 pt-16 pb-6 px-6 shadow-lg"
+                    variants={testimonialCardVariants}
+                    initial="hidden"
+                    animate="visible"
+                    custom={index}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                    }}
+                    transition={{ type: 'spring', stiffness: 400 }}
+                  >
+                    {/* Top centered client image */}
+                    <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
+                      <div className="p-3 bg-white rounded-full">
+                        <Image
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          width={120}
+                          height={120}
+                          className="bg-orange-100 rounded-full shadow-md"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Testimonial content */}
-                  <div className="flex flex-col text-center text-gray-700">
-                    <p className="mt-4 mb-4 text-left line-clamp-5">{testimonial.content}</p>
-                    <p className="text-lg font-semibold text-left text-gray-800">{testimonial.name}</p>
-                    <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
-                  </div>
+                    {/* Testimonial content */}
+                    <div className="flex flex-col text-center text-gray-700">
+                      <p className="mt-4 mb-4 text-left line-clamp-5">{testimonial.content}</p>
+                      <p className="text-lg font-semibold text-left text-gray-800">{testimonial.name}</p>
+                      <p className="text-sm text-left text-gray-600">{testimonial.designationcompany}</p>
+                    </div>
 
-                  {/* Quote icon in bottom right */}
-                  <div className="absolute -bottom-[45px] right-4 w-20 h-20">
-                    <Image src={doublequotes} alt="quotes" width={70} height={70} />
-                  </div>
-                  <div className="absolute invisible w-20 h-20 md:visible -top-9 left-7">
-                    <Image src={flip} alt="quotes" width={70} height={70} />
-                  </div>
-                </motion.div>
-              </div>
-            ))}
-          </Slider>
+                    {/* Quote icon in bottom right */}
+                    <div className="absolute -bottom-[45px] right-4 w-20 h-20">
+                      <Image src={doublequotes} alt="quotes" width={70} height={70} />
+                    </div>
+                    <div className="absolute invisible w-20 h-20 md:visible -top-9 left-7">
+                      <Image src={flip} alt="quotes" width={70} height={70} />
+                    </div>
+                  </motion.div>
+                </div>
+              ))}
+            </Slider>
+          )}
         </div>
       </motion.div>
     </div>

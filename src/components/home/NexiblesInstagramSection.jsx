@@ -2,26 +2,29 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Instagram } from "lucide-react"; // Import Instagram icon from lucide-react
+import { Instagram } from "lucide-react";
+import insta01 from "../../../public/insta/insta01.png";
+import insta02 from "../../../public/insta/insta02.png";
+import insta03 from "../../../public/insta/insta03.png";
 
 export default function NexiblesInstagramSection() {
   const [instaFeed] = useState([
     {
-      image: "/insta/insta01.png",
+      image: insta01, // Use imported image object
       link: "https://www.instagram.com/p/DIoW4DAhBKE/",
     },
     {
-      image: "/insta/insta02.png",
+      image: insta02, // Use imported image object
       link: "https://www.instagram.com/p/DIly2SjRiNh/",
     },
     {
-      image: "/insta/insta03.png",
+      image: insta03, // Use imported image object
       link: "https://www.instagram.com/p/DIjapyIIxLs/?img_index=1",
     },
   ]);
 
   const [brandLogos, setBrandLogos] = useState([]);
-  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDN_URL; // Fallback for safety
+  const NEXI_CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
 
   useEffect(() => {
     async function fetchBrands() {
@@ -60,7 +63,7 @@ export default function NexiblesInstagramSection() {
             className="relative overflow-hidden group aspect-square block"
           >
             <Image
-              src={post.image}
+              src={post.image} // Use the imported image object
               alt="Instagram Post"
               fill
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 25vw"
@@ -114,7 +117,6 @@ export default function NexiblesInstagramSection() {
     </div>
   );
 }
-
 
 
 

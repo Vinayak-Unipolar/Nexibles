@@ -3,8 +3,8 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import ProductStock from "../../../public/home/NexiClassic Banner.webp";
-import Customization from "../../../public/home/Customisation Banner.webp";
+import ProductStock from "../../../public/home/Reference NexiClassic Banner.webp";
+import Customization from "../../../public/home/Reference Customisation Banner.webp";
 
 const fadeSlide = {
   hidden: { opacity: 0, y: 30 },
@@ -55,17 +55,9 @@ const ProductSections = () => {
               quality={100}
             />
           </motion.div>
-          <motion.div
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            variants={fadeSlide}
-            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[52%] left-[49%] md:top-[55%] md:left-[50%] border-t-2 md:w-[10vw]"
-          >
-            <h2 className="pr-2 text-xl font-light md:text-4xl">EXPLORE</h2>
-            <h1 className="text-2xl md:text-5xl font-bold border-b-2 md:w-[300px]">NEXICLASSIC</h1>
-          </motion.div>
+      
           <motion.button 
-            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-0.5 px-3 md:py-1.5 md:px-6 rounded-full top-[55%] left-[72%] md:top-[85%] md:left-[50%]"
+            className="absolute z-50 bg-[#ffd13e] hover:bg-yellow-500 py-0.1 px-1 md:py-1.5 md:px-6 rounded-full top-[58%] left-[76%] md:top-[60%] md:left-[75%]"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             whileHover="hover"
@@ -91,19 +83,9 @@ const ProductSections = () => {
               quality={100}
             />
           </motion.div>
-          <motion.div
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            variants={fadeSlide}
-            className="absolute inset-0 flex flex-col text-white space-y-2 bg-black bg-opacity-0 top-[15%] left-[3%] right-[35%] md:top-[20%] md:left-[5%] md:right-[35%]"
-          >
-            <h2 className="text-xl md:text-4xl font-light pr-4 border-t-2 w-[80%] md:w-[350px]">
-              MAKE YOUR OWN
-            </h2>
-            <h1 className="text-2xl md:text-5xl font-bold border-b-2 w-[80%] md:w-[12vw]">POUCH</h1>
-          </motion.div>
+        
           <motion.button 
-            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-1.5 md:px-6 rounded-full top-[55%] left-[2%] md:top-[50%] md:left-[5%]"
+            className="absolute bg-[#ffd13e] hover:bg-yellow-500 py-1 px-3 md:py-1.5 md:px-6 rounded-full top-[55%] left-[1%] md:top-[50%] md:left-[5%]"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             whileHover="hover"

@@ -41,7 +41,7 @@ const Page = () => {
         <div>
             <Navbar />
             <div className="bg-white md:flex ">
-                <div className="w-full containers md:w-1/3 md:mt-16">
+                <div className="w-full containers md:w-1/3 md:mt-16 mt-12">
                     <MyAccount />
                 </div>
                 <div className="w-full md:w-full">

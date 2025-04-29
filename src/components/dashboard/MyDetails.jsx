@@ -37,7 +37,7 @@ function MyDetails() {
   };
 
   return (
-    <div className="flex mt-6">
+    <div className="flex md:mt-6 mt-16">
       <div className="w-full p-4 bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">My Details</h2>

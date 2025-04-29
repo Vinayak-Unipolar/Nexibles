@@ -1,5 +1,5 @@
-// app/layout.js
 "use client";
+
 import './globals.css';
 import { AuthProvider } from '@/utils/authContext';
 import { ToastContainer } from 'react-toastify';
@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '../redux/store/store';
 import ServerLayout from './server-layout';
+import Whatsapp from '@/components/Whatsapp';
 
 export default function RootLayout({ children }) {
   return (
@@ -17,11 +18,15 @@ export default function RootLayout({ children }) {
         <PersistGate loading={null} persistor={persistor}>
           <AuthProvider>
             <TextInputProvider>
-              <div>
               
+              <div className="relative">
                 {children}
+                {/* Toast messages */}
+                <ToastContainer />
+                {/* WhatsApp floating button */}
+                <Whatsapp />
               </div>
-              <ToastContainer />
+
             </TextInputProvider>
           </AuthProvider>
         </PersistGate>

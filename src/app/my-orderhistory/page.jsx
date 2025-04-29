@@ -46,7 +46,7 @@ const Page = () => {
   return (
     <div>
       <Navbar />
-      <div className='containers md:mt-16'>
+      <div className='containers md:mt-16 mt-12'>
         <div className="md:flex">
           <div className="w-full bg-white md:w-1/3">
             <MyAccount />

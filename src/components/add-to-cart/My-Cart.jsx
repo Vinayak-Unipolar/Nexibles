@@ -54,7 +54,7 @@ export default function MyCart() {
     },
     [cartItems]
   );
-  console.log(cartItems);
+  //console.log(cartItems);
   const removeCartItem = (index) => {
     dispatch(removeFromCart(index));
     if (appliedCoupon) {

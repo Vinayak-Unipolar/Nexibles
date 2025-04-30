@@ -16,7 +16,6 @@ export default function Shipping({ defaultAddress, addresses }) {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const dispatch = useDispatch();
   const { items: cartItems, appliedCoupon, gstAmount } = useSelector((state) => state.cart);
-  //console.log("Cart Items:", cartItems);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -392,7 +391,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         throw new Error("Invalid total price for payment");
       }
 
-      var baseUrl = `${APIURL}`;
+      var baseUrl = `https://nexibles.com`;
       if (typeof window !== "undefined") baseUrl = window.location.origin;
 
       const transactionId = "T" + Date.now();

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import { FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
 import { ImFacebook2 } from "react-icons/im";
 import { BsSendFill } from "react-icons/bs";
 import { FiMail } from "react-icons/fi";
@@ -32,7 +32,7 @@ const Footer = () => {
           "Content-type": "application/json",
           "API-Key": token,
         },
-        body: JSON.stringify({ email ,origin: "nexibles" }),
+        body: JSON.stringify({ email, origin: "nexibles" }),
       });
       if (response.ok) {
         setMessage("Successfully subscribed!");
@@ -71,23 +71,23 @@ const Footer = () => {
 
   return (
     <footer ref={footerRef} className="bg-[#103b60] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-14">
-        <div className="flex flex-col lg:flex-row justify-between gap-10 md:gap-52 ">
-          
+      <div className="px-6 mx-auto max-w-7xl py-14">
+        <div className="flex flex-col justify-between gap-10 lg:flex-row md:gap-52 ">
+
           {/* Subscribe Section */}
           <div className="flex-1">
             <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"}>
-              <motion.h3 className="font-bold text-lg mb-4 tracking-widest" custom={0} variants={titleVariants}>
+              <motion.h3 className="mb-4 text-lg font-bold tracking-widest" custom={0} variants={titleVariants}>
                 SUBSCRIBE
               </motion.h3>
-              <motion.p className="text-sm mb-6" custom={1} variants={itemVariants}>
+              <motion.p className="mb-6 text-sm" custom={1} variants={itemVariants}>
                 Do you want to get notified? <br />
                 Sign up for our newsletter and be the first
                 to find out about new features & offers.
               </motion.p>
               <motion.form
                 onSubmit={handleSubscribe}
-                className="flex items-center bg-white rounded-md overflow-hidden"
+                className="flex items-center overflow-hidden bg-white rounded-md"
                 custom={2}
                 variants={itemVariants}
               >
@@ -99,7 +99,7 @@ const Footer = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email"
-                  className="flex-grow px-2 py-2 text-black text-sm focus:outline-none"
+                  className="flex-grow px-2 py-2 text-sm text-black focus:outline-none"
                   required
                 />
                 <motion.button
@@ -112,7 +112,7 @@ const Footer = () => {
                 </motion.button>
               </motion.form>
               {message && (
-                <motion.p className="text-sm mt-2" custom={4} variants={itemVariants}>
+                <motion.p className="mt-2 text-sm" custom={4} variants={itemVariants}>
                   {message}
                 </motion.p>
               )}
@@ -120,7 +120,7 @@ const Footer = () => {
 
             {/* Follow Us */}
             <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} className="mt-8">
-              <motion.h3 className="font-bold mb-4 tracking-widest" custom={0} variants={titleVariants}>
+              <motion.h3 className="mb-4 font-bold tracking-widest" custom={0} variants={titleVariants}>
                 FOLLOW US
               </motion.h3>
               <motion.div className="flex space-x-6" custom={1} variants={itemVariants}>
@@ -144,6 +144,17 @@ const Footer = () => {
                 >
                   <ImFacebook2 size={25} />
                 </motion.a>
+
+                <motion.a
+                  href="https://www.linkedin.com/company/nexibles/posts/?feedView=all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-300"
+                  custom={2}
+                  variants={iconVariants}
+                >
+                  <FaLinkedin size={25} />
+                </motion.a>
                 <motion.a
                   href="https://youtube.com/@nexibles?si=uU5OBkb1TptuNoRD"
                   target="_blank"
@@ -161,7 +172,7 @@ const Footer = () => {
           {/* Company Links */}
           <div className="flex-1">
             <motion.ul initial="hidden" animate={isInView ? "visible" : "hidden"} className="space-y-3">
-              <motion.li className="font-bold uppercase mb-4" custom={0} variants={titleVariants}>
+              <motion.li className="mb-4 font-bold uppercase" custom={0} variants={titleVariants}>
                 Company
               </motion.li>
               <motion.li custom={1} variants={itemVariants}><Link href="/about">About</Link></motion.li>
@@ -173,7 +184,7 @@ const Footer = () => {
           {/* Customer Service Links */}
           <div className="flex-1">
             <motion.ul initial="hidden" animate={isInView ? "visible" : "hidden"} className="space-y-3">
-              <motion.li className="font-bold uppercase mb-4" custom={0} variants={titleVariants}>
+              <motion.li className="mb-4 font-bold uppercase" custom={0} variants={titleVariants}>
                 Customer Service
               </motion.li>
               <motion.li custom={1} variants={itemVariants}><Link href="/my-dashboard">My Account</Link></motion.li>

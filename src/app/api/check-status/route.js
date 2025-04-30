@@ -22,12 +22,12 @@ export async function GET(request) {
     console.log('Payment status response2:', response.data?.data);
     console.log('Payment status response3:', response.data?.data?.data);
     console.log('Payment status response4:', response.data?.data?.data?.state);
-    // if (response.data?.data?.data?.state === 'COMPLETED') {
-    //   return NextResponse.redirect(`${fullUrl}/order-placed?status=success`);
-    // } else {
-    //   const paymentState = response.data?.data?.data?.state || 'FAILED';
-    //   return NextResponse.redirect(`${fullUrl}/shipping?status=${paymentState.toLowerCase()}`);
-    // }
+    if (response.data?.data?.data?.state === 'COMPLETED') {
+      return NextResponse.redirect(`${fullUrl}/order-placed?status=success`);
+    } else {
+      const paymentState = response.data?.data?.data?.state || 'FAILED';
+      return NextResponse.redirect(`${fullUrl}/shipping?status=${paymentState.toLowerCase()}`);
+    }
   } catch (error) {
     console.error('Error fetching payment status:', error);
     return NextResponse.redirect(`${fullUrl}/shipping?status=error&message=${encodeURIComponent(error.message)}`);

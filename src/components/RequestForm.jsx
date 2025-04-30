@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState,useEffect } from "react";
+import { toast } from "react-toastify";
+import axios from "axios"; 
 function RequestForm() {
-  // State to manage form data
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -21,12 +21,14 @@ function RequestForm() {
     orderQuantity: "",
     packageBuyingHistory: "",
     projectDescription: "",
+    requestSampleKit: false,
   });
 
   // State to manage submission status and messages
   const [submitStatus, setSubmitStatus] = useState(null);
   const [emailError, setEmailError] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   // List of all countries
   const countries = [
     "India",
@@ -225,7 +227,7 @@ function RequestForm() {
   ];
 
   // Options for Language Preference
-  const languages = ["Hindi","English","Marathi"];
+  const languages = ["Hindi","English","Marathi","Gujarati","Kannada"];
 
   // Options for Industry
   const industries = [
@@ -275,10 +277,10 @@ function RequestForm() {
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
 
     if (name === "email") {
@@ -291,11 +293,191 @@ function RequestForm() {
     }
   };
 
+  useEffect(() => {
+    if (formData.requestSampleKit) {
+      setFormData(prev => ({
+        ...prev,
+        country: "India"
+      }));
+    }
+  }, [formData.requestSampleKit]);
+
+  // Calculate total amount if sample kit is requested
+  const calculateTotal = () => {
+    if (formData.requestSampleKit) {
+      const basePrice = 350;
+      const gst = basePrice * 0.18;
+      return { basePrice, gst, total: basePrice + gst };
+    }
+    return null;
+  };
+
+  const total = calculateTotal();
+
+  const createOrder = async () => {
+    if (isProcessingOrder) return false;
+    setIsProcessingOrder(true);
+
+    try {
+      const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const orderDate = new Date().toISOString();
+      const finalTotal = total ? total.total.toFixed(2) : "413.00";
+      
+      // Create order details for sample kit
+      const orderDetails = [{
+        productId: "SAMPLE-KIT-001",
+        productName: "Nexibles Sample Kit",
+        quantity: 1,
+        price: total ? total.basePrice.toString() : "350.00",
+        subTotal: total ? total.basePrice.toString() : "350.00"
+      }];
+
+      const requestBody = {
+        orderNo,
+        orderDate,
+        pmtMethod: "online",
+        customerID: `CUST-${Date.now()}`,
+        salutation: "",
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        mobile: formData.phone,
+        eMail: formData.email,
+        street: formData.streetAddress,
+        address: `${formData.streetAddress}, ${formData.addressLine2}`,
+        city: formData.city,
+        state: formData.state,
+        company: formData.companyName,
+        zipcode: formData.zipPostalCode,
+        country: formData.country,
+        remark: formData.projectDescription,
+        coupon: "",
+        currency: "INR",
+        invamt: finalTotal,
+        tax: total ? total.gst.toFixed(2) : "63.00",
+        ordstatus: "pending",
+        discount: "0",
+        disamt: "0",
+        promoDiscount: "0",
+        minDeliveryAmt: finalTotal,
+        orderCharge: "0.00",
+        ipAddress: "",
+        confirm_status: "0",
+        origin: "Nexibles Website",
+        orderDetails: orderDetails,
+        orderType: "Sample Kit",
+        languagePreference: formData.languagePreference,
+        industry: formData.industry,
+        packageBuyingHistory: formData.packageBuyingHistory
+      };
+
+      console.log("Creating order with:", requestBody);
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json", 
+          "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" 
+        },
+        body: JSON.stringify(requestBody),
+      });
+      
+      const responseData = await response.json();
+
+      if (responseData.success === true) {
+        if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
+        return { success: true, orderNo: responseData.orderNo };
+      } else {
+        throw new Error(responseData.message || "Failed to create order");
+      }
+    } catch (error) {
+      console.error("Error in createOrder:", error);
+      return { success: false, error };
+    } finally {
+      setIsProcessingOrder(false);
+    }
+  };
+
+  const makePayment = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // First create the lead
+      const leadData = {
+        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        company_name: formData.companyName,
+        language_preference: formData.languagePreference,
+        website_url: formData.companyWebsite,
+        industry_sector: formData.industry,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        street_address: formData.streetAddress,
+        address_line_2: formData.addressLine2,
+        zip_postal_code: formData.zipPostalCode,
+        products_interested_in: formData.projectDescription,
+        quote_quantity: formData.orderQuantity,
+        package_buying_history: formData.packageBuyingHistory,
+        enquiry_source: "Nexibles Website",
+        request_sample_kit: formData.requestSampleKit,
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(leadData),
+      });
+      
+      // Then create the order
+      const orderResult = await createOrder();
+      if (!orderResult.success) {
+        setLoading(false);
+        toast.error("Failed to create order. Please try again.");
+        return;
+      }
+
+      const amount = total ? total.total : 413;
+      if (isNaN(amount) || amount <= 0) {
+        throw new Error("Invalid total price for payment");
+      }
+
+      var baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
+      if (typeof window !== "undefined") baseUrl = window.location.origin;
+
+      const transactionId = "T" + Date.now();
+      const orderNo = orderResult.orderNo;
+
+      const data = {
+        orderNo,
+        name: formData.firstName,
+        number: formData.phone,
+        MUID: `CUST-${Date.now()}`,
+        amount: Math.round(amount * 100), 
+        transactionId,
+        redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
+      };
+
+      const paymentResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, data);
+      if (typeof window !== "undefined") window.location.href = paymentResponse.data.url;
+    } catch (error) {
+      setLoading(false);
+      console.error("Error processing payment:", error);
+      toast.error("Failed to process payment");
+      setSubmitStatus("Failed to process payment. Please try again.");
+    }
+  };
+  
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Transform formData to match the database schema
-    const leadData = {
+    if (formData.requestSampleKit) {
+      makePayment(e);
+    } else {
+      const leadData = {
       full_name: `${formData.firstName} ${formData.lastName}`.trim(),
       email: formData.email,
       phone: formData.phone,
@@ -313,6 +495,7 @@ function RequestForm() {
       quote_quantity: formData.orderQuantity,
       package_buying_history: formData.packageBuyingHistory,
       enquiry_source: "Nexibles Website",
+      request_sample_kit: formData.requestSampleKit,
     };
 
     // Send POST request to the backend
@@ -349,6 +532,7 @@ function RequestForm() {
           orderQuantity: "",
           packageBuyingHistory: "",
           projectDescription: "",
+          requestSampleKit: false,
         }); // Reset form
 
         // Scroll to the top of the page to show the success message
@@ -360,6 +544,7 @@ function RequestForm() {
       .catch((error) => {
         setSubmitStatus(`Failed to submit form: ${error.message}`);
       });
+    }
   };
 
   return (
@@ -617,7 +802,7 @@ function RequestForm() {
               </div>
 
               {/* Packaging Information Section */}
-              <h3 className="pb-2 mb-4 text-lg font-semibold text-black border-b-2 border-black sm:text-xl">
+              <h3 className="pb-2 mb-4 text-sm font-semibold text-black border-b-2 border-black sm:text-xl">
                 Packaging Information
               </h3>
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
@@ -687,61 +872,92 @@ function RequestForm() {
                 ></textarea>
               </div>
 
+              <div className="mb-4 flex items-center">
+                <input
+                  type="checkbox"
+                  id="requestSampleKit"
+                  name="requestSampleKit"
+                  checked={formData.requestSampleKit}
+                  onChange={handleChange}
+                  className="mr-2 h-4 w-4"
+                />
+                <label htmlFor="requestSampleKit" className="text-sm font-medium text-black">
+                  Request Sample Kit
+                </label>
+              </div>
+
+              {/* Display price information if sample kit is selected */}
+              {formData.requestSampleKit && total && (
+                <div className="mb-4 rounded-md">
+                  <p className="text-sm font-medium text-gray-800">Sample Kit Details:</p>
+                  <p className="text-sm text-gray-600">Base Price: ₹{total.basePrice}</p>
+                  <p className="text-sm text-gray-600">GST (18%): ₹{total.gst.toFixed(2)}</p>
+                  {/* <p className="text-sm font-medium text-gray-800">Total: ₹{total.total.toFixed(2)}</p> */}
+                  <p className="text-sm text-gray-600 mt-1">Shipping is included in the price.</p>
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none  text-sm sm:text-base"
+                disabled={loading}
+                className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
-                Submit
+                {loading ? "Processing..." : formData.requestSampleKit ? `Pay ₹${total ? total.total.toFixed(0) : 413}` : "Submit"}
               </button>
             </form>
           </div>
 
           {/* Right Side: Sample Text */}
           <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
-            <h2 className="pb-2 mb-4 text-xl font-semibold text-gray-800 border-b-2 border-orange-500">
-              Do More With Nexibles
-            </h2>
-
+            <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
+            {`Let's Build Your Packaging Breakthrough`}
+            </h3>
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  Industry Leading Turnaround Times
-                </h3>
+                <p className="text-sm font-medium text-gray-800">
+                  {`Industry Leading Turnaround Times`}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  We pride ourselves on turnaround times as fast as 15 days from
-                  artwork approval (as fast as 10 days for rollstock) with our
-                  Nexibles Record Flexible Packaging Solution.
+                {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
                 </p>
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  A Truly Global Print Network
-                </h3>
+                <p className="text-sm font-medium text-gray-800">
+                {`That's exactly what Nexibles was created for.`}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  Our print capabilities include 25 locations across the globe
-                  with a capacity of 8 million linear feet per day.
+                 {`When you request a free quote, you're not just asking for a price.`}
                 </p>
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  Transparent MOQs
-                </h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Our minimum order quantities are easy to understand with no
-                  hidden fees or gotchas.
+                <p className="text-sm font-medium text-gray-800">
+                  {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
                 </p>
+                <h3 className="pb-2 mb-4 text-xl mt-2 font-bold text-gray-800 border-b-2 border-orange-500">
+                 {`Here’s what happens next:`}
+                </h3>
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  Digital Capabilities At Flexo Prices
-                </h3>
+                <p className="text-sm font-medium text-gray-800">
+                  {`Our team of packaging experts will review your requirements.`}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  The flexibility that digital printing offers with prices
-                  competitive with flexographic printers.
+                  {`We’ll suggest the best options suited to your product, budget, and goals.`}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {`We’ll send you a detailed, transparent quote — no hidden costs, no surprises.`}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {`We’ll guide you through every step if you choose to move forward — from artwork to material selection to final production.`}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {`And it all starts right here — with a simple form.`}
                 </p>
               </div>
             </div>

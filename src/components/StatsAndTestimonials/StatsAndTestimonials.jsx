@@ -18,7 +18,6 @@ export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
   const [testimonials, setTestimonials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const fallbackImages = [client1, client2, client3, client4, client5, client6, client7];
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -35,19 +34,19 @@ export default function StatsAndTestimonials() {
         }
         const data = await response.json();
         if (data.status === 'success' && Array.isArray(data.data)) {
-          const nexiblesTestimonials = data.data.filter(item => 
+          const nexiblesTestimonials = data.data.filter(item =>
             item.origin && (item.origin.toLowerCase() === 'nexibles')
           );
           const formattedTestimonials = nexiblesTestimonials.map((item, index) => ({
             id: item.id,
             name: item.name,
-            designationcompany: item.profession ? 
-              (item.company ? `${item.profession} - ${item.company}` : item.profession) : 
+            designationcompany: item.profession ?
+              (item.company ? `${item.profession} - ${item.company}` : item.profession) :
               (item.company || ""),
             content: item.description,
             image: item.image || "",
           }));
-          setTestimonials( formattedTestimonials);
+          setTestimonials(formattedTestimonials);
         }
       } catch (error) {
         console.error('Error fetching testimonials:', error);
@@ -90,6 +89,56 @@ export default function StatsAndTestimonials() {
     },
   ];
 
+  // Custom Arrow Components
+  const PrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block', left: '10px', zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* You can customize the arrow icon or style here */}
+        {/* <svg
+          className="w-8 h-8 text-black"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+            clipRule="evenodd"
+          />
+        </svg> */}
+      </div>
+    );
+  };
+
+  const NextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block', right: '10px', zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* You can customize the arrow icon or style here */}
+        {/* <svg
+          className="w-8 h-8 text-black"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+            clipRule="evenodd"
+          />
+        </svg> */}
+      </div>
+    );
+  };
 
   const sliderSettings = {
     infinite: true,
@@ -99,7 +148,9 @@ export default function StatsAndTestimonials() {
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: true,
-    drag: true,
+    draggable: true,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
     responsive: [
       {
         breakpoint: 768,
@@ -111,43 +162,13 @@ export default function StatsAndTestimonials() {
     ],
   };
 
-  const setActiveCard = (cardId) => {
-    setActiveStatCard(cardId);
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring', stiffness: 100 },
-    },
-  };
-
-  const statCounterVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { type: 'spring', stiffness: 80, delay: 0.3 },
-    },
-  };
-
   const testimonialCardVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: (i) => ({
       opacity: 1,
       x: 0,
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 70,
         delay: i * 0.15,
       },
@@ -156,65 +177,6 @@ export default function StatsAndTestimonials() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* ===================== STATS SECTION ===================== */}
-      {/* <motion.div
-        className="grid grid-cols-1 gap-6 px-4 py-12 mx-auto md:grid-cols-4 md:gap-8 md:px-8"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={containerVariants}
-      >
-        {statsData.map((stat) => {
-          const isActive = activeStatCard === stat.id;
-          return (
-            <motion.div
-              key={stat.id}
-              className={`
-                h-64 w-full rounded-2xl p-6
-                flex flex-col justify-between
-                cursor-pointer overflow-hidden
-                ${isActive
-                  ? 'bg-[#103b60] text-white'
-                  : 'bg-white text-[#103b60'}
-              `}
-              style={{ zIndex: 0 }}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-              onClick={() => setActiveCard(stat.id)}
-            >
-              <div>
-                <motion.h2
-                  className={`
-                    text-5xl font-bold leading-none
-                    ${isActive ? 'text-white' : 'text-[#103b60]'}
-                  `}
-                  variants={statCounterVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  {stat.bigNumber}
-                </motion.h2>
-                <p className={`mt-1 text-xl ${isActive ? 'text-white' : 'text-[#103b60]'}`}>
-                  {stat.label}
-                </p>
-              </div>
-
-              <div className="mt-4">
-                <p className={`text-lg font-semibold ${isActive ? 'text-teal-300' : 'text-[#103b60]'}`}>
-                  {stat.year}
-                </p>
-                <p className={`text-sm ${isActive ? 'text-white' : 'text-[#103b60]'}`}>
-                  {stat.subLabel}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
-      </motion.div> */}
-
-      {/* ===================== TESTIMONIALS SECTION WITH CAROUSEL ===================== */}
       <motion.div
         className="w-full bg-[#ffd13e] md:py-12 px-4 md:px-8"
         initial={{ opacity: 0, y: 50 }}
@@ -230,7 +192,6 @@ export default function StatsAndTestimonials() {
           What People Are Saying
         </motion.h2>
 
-        {/* Testimonial Carousel with react-slick */}
         <div className="relative px-4 mx-auto mb-16 max-w-7xl md:px-0">
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
@@ -256,7 +217,7 @@ export default function StatsAndTestimonials() {
                     <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
                       <div className="p-3 bg-white rounded-full">
                         <Image
-                          src={testimonial.image}
+                          src={`${process.env.NEXT_PUBLIC_CDN_URL}/testimonials/${testimonial.image}`}// Fallback to client1 if image is empty
                           alt={testimonial.name}
                           width={120}
                           height={120}

@@ -20,9 +20,12 @@ const DownArrow = () => (
 const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const thumbnailContainerRef = useRef(null);
+  const [isPanning, setIsPanning] = useState(false);
 
   const handleImageClick = (index) => {
-    onImageClick(index);
+    if (!isPanning) {
+      onImageClick(index);
+    }
   };
 
   const scrollThumbnails = (direction) => {
@@ -119,7 +122,7 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
         </div>
 
         {/* Main Image with Zoom Component */}
-        <div className="relative flex items-center justify-center flex-1 p-4">
+        <div className="flex-1 p-4 flex flex-col items-center">
           <TransformWrapper
             initialScale={1}
             minScale={1}
@@ -128,60 +131,68 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
             wheel={{ disabled: true }}
             doubleClick={{ disabled: true }}
             panning={{ disabled: false }}
-            onPanning={() => {}}
-            onPinch={() => {}}
+            onPanningStart={() => setIsPanning(true)}
+            onPanningStop={() => {
+              setTimeout(() => setIsPanning(false), 200);
+            }}
           >
-            {({ zoomIn, zoomOut, resetTransform }) => (
+            {({ zoomIn, zoomOut, resetTransform, state }) => (
               <>
-                <div
-                  className="absolute inset-0 z-10 cursor-pointer"
-                  onClick={() => handleImageClick(currentImageIndex)}
-                ></div>
+                {state && state.scale === 1 && (
+                  <div
+                    className="absolute inset-0 z-10 cursor-pointer"
+                    onClick={() => handleImageClick(currentImageIndex)}
+                  ></div>
+                )}
 
                 <TransformComponent
                   wrapperClass="w-full h-full flex items-center justify-center"
-                  contentClass="max-w-full max-h-[52vh]"
+                  contentClass="max-w-full max-h-[52vh] cursor-move"
                 >
                   <img
                     src={productImages[currentImageIndex] || defaultImage}
                     alt="Product main image"
                     className="max-w-full max-h-[52vh] object-contain mx-auto"
+                    onClick={() => state && state.scale > 1 ? null : handleImageClick(currentImageIndex)}
                   />
                 </TransformComponent>
 
-                <div className="absolute z-20 flex gap-2 p-2 rounded-md bottom-4 right-4">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      zoomOut();
-                    }}
-                    className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
-                    aria-label="Zoom out"
-                  >
-                    -
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      resetTransform();
-                    }}
-                    className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
-                    aria-label="Reset zoom"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                      <path fillRule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.645-4.038.75.75 0 00-.53-.919z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      zoomIn();
-                    }}
-                    className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full hover:bg-gray-200"
-                    aria-label="Zoom in"
-                  >
-                    +
-                  </button>
+                {/* Zoom Controls Below Image */}
+                <div className="mt-4">
+                  <div className="flex items-center justify-center gap-2 bg-white bg-opacity-70 rounded-md p-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomOut();
+                      }}
+                      className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
+                      aria-label="Zoom out"
+                    >
+                      <span className="text-lg font-medium">−</span>
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        resetTransform();
+                      }}
+                      className="flex items-center justify-center w-16 h-10 text-sm font-medium text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
+                      aria-label="Reset zoom"
+                    >
+                      Reset
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomIn();
+                      }}
+                      className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
+                      aria-label="Zoom in"
+                    >
+                      <span className="text-lg font-medium">+</span>
+                    </button>
+                  </div>
                 </div>
               </>
             )}

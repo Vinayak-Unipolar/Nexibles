@@ -32,17 +32,16 @@ function MyDetails() {
     company,
   } = user.result || {};
 
-  const handleEdit = () => {
-    router.push('/edit-details');
-  };
+  // const handleEdit = () => {
+  //   router.push('/edit-details');
+  // };
 
   return (
-    <div className="flex md:mt-6 mt-16">
+    <div className="flex mt-16 md:mt-6">
       <div className="w-full p-4 bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">My Details</h2>
           <button
-            onClick={handleEdit}
             className="px-3 py-1 text-sm text-white transition duration-200 bg-[#103b60] rounded-md hover:bg-blue-700"
           >
             Edit

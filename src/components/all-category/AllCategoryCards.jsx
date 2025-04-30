@@ -33,7 +33,7 @@ const AllCategoryCards = ({ categoryData }) => {
       {/* All Categories title */}
       <div className="px-4 mb-10 md:px-64">
         <p className="text-center text-[30px] md:text-[40px] font-semibold">
-          All Categories
+          All Pouches
         </p>
       </div>
 
@@ -67,7 +67,7 @@ const AllCategoryCards = ({ categoryData }) => {
           Key Product Features
         </h2>
         <div className="flex justify-center">
-          <div className="grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid w-full max-w-4xl grid-cols-2 gap-4 md:grid-cols-3">
             {[
               { title: "Top-Quality Lamination", image: topqualitylamination },
               { title: "Easy Customization", image: easycustomization },

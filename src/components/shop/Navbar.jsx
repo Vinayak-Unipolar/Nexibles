@@ -132,7 +132,7 @@ const Navbar = () => {
           hasScrolled ? "bg-white shadow-xl" : "bg-white"
         }`}
       >
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container flex items-center justify-between h-16 px-4 mx-auto">
           <motion.div
             initial="hidden"
             animate={isNavbarInView ? "visible" : "hidden"}
@@ -150,7 +150,7 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="items-center hidden space-x-6 md:flex">
             {navItems.slice(1, 5).map((item, index) => (
               <motion.div
                 key={item.name}
@@ -163,14 +163,14 @@ const Navbar = () => {
                 {item.dropdown ? (
                   <div className="relative">
                     <button
-                      onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)} // Toggle dropdown
-                      className="text-black text-xs sm:text-md flex items-center space-x-1"
+                      onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)}
+                      className="flex items-center space-x-1 text-xs text-black sm:text-md"
                     >
                       {item.name} <RiArrowDropDownLine size={16} />
                     </button>
                     {isShopDropdownOpen && (
                       <motion.div
-                        className="absolute left-0 top-full mt-2 bg-white text-gray-900 p-4 shadow-md rounded-md"
+                        className="absolute left-0 mt-2 text-gray-900 bg-white rounded-md shadow-md top-full"
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
@@ -180,7 +180,7 @@ const Navbar = () => {
                           <Link
                             key={dropdownItem.name}
                             href={dropdownItem.path}
-                            className="block px-4 py-2 text-gray-900 text-sm font-medium whitespace-nowrap"
+                            className="block px-4 py-2 text-sm font-medium text-gray-900 whitespace-nowrap"
                             onClick={() => setIsShopDropdownOpen(false)} // Close dropdown on item click
                           >
                             {dropdownItem.name}
@@ -191,7 +191,7 @@ const Navbar = () => {
                     
                   </div>
                 ) : (
-                  <Link href={item.path} className="text-black text-xs sm:text-md hover:underline">
+                  <Link href={item.path} className="text-xs text-black sm:text-md hover:underline">
                     {item.name}
                   </Link>
                 )}
@@ -212,7 +212,7 @@ const Navbar = () => {
                 <div className="relative">
                   <IoCartOutline size={24} />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-blue-900 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-900 rounded-full -top-2 -right-2">
                       {cartItemCount}
                     </span>
                   )}
@@ -232,7 +232,7 @@ const Navbar = () => {
               <AnimatePresence>
                 {showPersonDropdown && (
                   <motion.div
-                    className="absolute top-full right-0 mt-2 bg-white text-gray-900 p-4 shadow-md flex flex-col items-center w-40 rounded-md"
+                    className="absolute right-0 flex flex-col items-center w-40 p-4 mt-2 text-gray-900 bg-white rounded-md shadow-md top-full"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -267,7 +267,7 @@ const Navbar = () => {
             </motion.div>
 
             <motion.button
-              className="md:hidden text-gray-900 z-50"
+              className="z-50 text-gray-900 md:hidden"
               onClick={toggleMenu}
               whileTap={{ scale: 0.95 }}
               custom={3}
@@ -294,14 +294,14 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 bg-white z-40 flex flex-col"
+            className="fixed inset-0 z-40 flex flex-col bg-white"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={mobileMenuVariants}
           >
-            <div className="flex justify-between items-center px-6 py-4 border-b shadow-sm">
-              <div className="text-black font-bold text-lg">
+            <div className="flex items-center justify-between px-6 py-4 border-b shadow-sm">
+              <div className="text-lg font-bold text-black">
                 NE<span className="text-red-600">•</span>IBLES
               </div>
               <div className="flex items-center space-x-4">

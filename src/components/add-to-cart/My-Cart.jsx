@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, setCoupon, removeCoupon, setGST, updateCartItems } from '../../redux/store/cartSlice';
+import CartItems from "../shipping/CartItems";
 
 export default function MyCart() {
   const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -243,14 +244,25 @@ export default function MyCart() {
                             Object.entries(item.selectedOptions).map(
                               ([key, option]) => (
                                 <li key={key} className="text-gray-700">
-                                  {key}: {option.optionName}
-                                  <h1 className="mt-1">Price: ₹{option.price}</h1>
+                                                                    {/* <h1 className="mt-1">Price: ₹{option.price}</h1> */}
+
                                 </li>
                               )
                             )}
-                          <li className="mt-1 font-semibold">
-                            Quantity: {item.quantity}
+                          <li className="mt-1 text-sm list-none">
+                            Material: {item.material}
+                            
+                          </li><li className="mt-1 font-semibold">
+                            <li className="mt-1 text-sm list-none">
+                              Price: ₹ {typeof item.price === 'number' ? item.price.toFixed(0) : item.price} / Sku: {item.skuCount}
+                            </li>
+                            <li className="mt-1 font-semibold list-none">
+                          Quantity: {item.quantity}
+                        </li>
                           </li>
+                          <div className="flex mt-6 justify-end"><li className="mt-1 font-semibold list-none">
+                          Total:{typeof item.totalPrice === 'number' ? item.totalPrice.toFixed(0) : item.totalPrice}
+                        </li></div>
 
                         </ul>
                       </div>

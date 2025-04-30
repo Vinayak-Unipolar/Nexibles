@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -6,14 +6,15 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
 import standuppouch from '@/../public/product/standuppouch.jpg';
-import { data } from 'autoprefixer';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../redux/store/cartSlice';
+import { toast } from 'react-toastify';
 
 const Configuration = () => {
   const { user } = useAuth();
   const router = useRouter();
+  const dispatch = useDispatch();
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-
-  // State management
   const [product, setProduct] = useState(null);
   const [jobName, setJobName] = useState('');
   const [sizeOptions, setSizeOptions] = useState({ widths: [], lengths: [] });
@@ -36,11 +37,11 @@ const Configuration = () => {
   const [error, setError] = useState(null);
   const [costData, setCostData] = useState(null);
   const [isQuotationLoading, setIsQuotationLoading] = useState(false);
+  const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
   const [token, setToken] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  // New state for dropdown toggles
   const [isWidthOpen, setIsWidthOpen] = useState(false);
   const [isLengthOpen, setIsLengthOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
@@ -53,7 +54,6 @@ const Configuration = () => {
 
   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
 
-  // Framer Motion variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -67,32 +67,35 @@ const Configuration = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
   };
 
-  // Login to get token with retry
+  // Login to get a fresh token on every page refresh
   const loginForThirdParty = useCallback(async (retries = 3) => {
+    setToken(null); // Clear existing token in state
+  
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
+        // Ideally, move this to a secure backend API
         const response = await fetch('https://nexiblesapp.barecms.com/proxy?r=user/authenticate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: 'sales@artnext.in',
-            password: 'Artnext@1',
+            email: process.env.NEXT_PUBLIC_API_EMAIL || 'sales@artnext.in',
+            password: process.env.NEXT_PUBLIC_API_PASSWORD || 'Artnext@1',
             subdomain: 'nexibles',
             otp: false,
-            ipaddress: '58.84.60.235',
+            ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
           }),
         });
-
+  
         const result = await response.json();
-        if (result.status) {
+        if (result.status && result.data?.token) {
           const newToken = result.data.token;
-          localStorage.setItem('token2', newToken);
           setToken(newToken);
           return newToken;
         } else {
           throw new Error(result.message || 'Login failed');
         }
       } catch (err) {
+        console.error(`Authentication attempt ${attempt} failed:`, err.message);
         if (attempt === retries) {
           setError('Failed to authenticate after multiple attempts.');
           return null;
@@ -100,9 +103,9 @@ const Configuration = () => {
         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
       }
     }
-  }, [setError]);
+  }, []);
 
-  // Fetch category data with retry
+  // Fetch category data
   const fetchCategoryData = useCallback(async (retries = 3) => {
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
     const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -123,7 +126,7 @@ const Configuration = () => {
         });
 
         const data = await response.json();
-        if (data.status === 'success' && data.data) {
+        if (data.status === 'success' && Array.isArray(data.data)) {
           const filterCategory = data.data
             .filter((category) => category.origin?.toLowerCase() === 'nexibles')
             .map((category) => ({
@@ -148,10 +151,15 @@ const Configuration = () => {
         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
       }
     }
-  }, [setError]);
+  }, []);
 
-  // Fetch product data with retry
+  // Fetch product data
   const fetchProductData = useCallback(async (authToken, retries = 3) => {
+    if (!authToken) {
+      setError('Authentication token is missing.');
+      return false;
+    }
+
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
         const response = await fetch(
@@ -163,16 +171,16 @@ const Configuration = () => {
             },
           }
         );
-  
+
         const data = await response.json();
-        if (data.status && data.data) {
+        if (data.status && Array.isArray(data.data)) {
           const targetProduct = data.data.find((p) => p.id === '122');
           if (!targetProduct) throw new Error('Product ID 122 not found');
-  
+
           setProduct(targetProduct);
-  
+
           const { minimum_width, maximum_width, minimum_length, maximum_length } = targetProduct;
-  
+
           if (
             !minimum_width ||
             !maximum_width ||
@@ -185,7 +193,7 @@ const Configuration = () => {
           ) {
             throw new Error('Invalid size parameters in product data');
           }
-  
+
           const widthStep = (parseInt(maximum_width) - parseInt(minimum_width)) / 9;
           const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
           const widths = Array.from({ length: 10 }, (_, i) => {
@@ -199,7 +207,7 @@ const Configuration = () => {
           setSizeOptions({ widths, lengths });
           setSelectedWidth(widths[0] || null);
           setSelectedLength(lengths[0] || null);
-  
+
           const materials = Array.isArray(targetProduct.pouch_media)
             ? targetProduct.pouch_media.map((m) => ({
                 value: m.id,
@@ -209,7 +217,7 @@ const Configuration = () => {
             : [];
           setMaterialOptions(materials);
           setSelectedMaterial(materials[0] || null);
-  
+
           const mandatory = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
                 .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
@@ -220,7 +228,7 @@ const Configuration = () => {
             : [];
           setMandatoryProcesses(mandatory);
           setSelectedMandatoryProcess(mandatory[0] || null);
-  
+
           const optional = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
                 .filter((p) => p.optional && !p.mandatory_any_one)
@@ -230,7 +238,7 @@ const Configuration = () => {
                 }))
             : [];
           setOptionalProcesses(optional);
-  
+
           const zippers = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
                 .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
@@ -240,7 +248,7 @@ const Configuration = () => {
                 }))
             : [];
           setZipperOptions(zippers);
-  
+
           return true;
         } else {
           throw new Error(data.message || 'Failed to fetch product data');
@@ -253,52 +261,79 @@ const Configuration = () => {
         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
       }
     }
-  }, [
-    setProduct,
-    setSizeOptions,
-    setSelectedWidth,
-    setSelectedLength,
-    setMaterialOptions,
-    setSelectedMaterial,
-    setMandatoryProcesses,
-    setSelectedMandatoryProcess,
-    setOptionalProcesses,
-    setZipperOptions,
-    setError,
-  ]);
+  }, []);
+
   useEffect(() => {
+    let isMounted = true;
+  
     const initialize = async () => {
       setLoading(true);
       setError(null);
-
-      if (user) {
-        setIsAuthLoading(false);
-        const authToken = await loginForThirdParty();
-        if (authToken) {
-          const [productSuccess, categorySuccess] = await Promise.all([
-            fetchProductData(authToken),
-            fetchCategoryData(),
-          ]);
-          if (!productSuccess || !categorySuccess) {
-            setError('Failed to load product or category data after multiple attempts.');
-          }
-        } else {
-          setError('Authentication failed.');
-        }
-      } else {
+      setIsAuthLoading(true);
+  
+      if (!user) {
         router.push('/login');
+        setIsAuthLoading(false);
+        setLoading(false);
+        return;
       }
-
-      setLoading(false);
+  
+      // Fetch a new token on every page refresh
+      const authToken = await loginForThirdParty();
+      if (!authToken && isMounted) {
+        setError('Authentication failed.');
+        setIsAuthLoading(false);
+        setLoading(false);
+        return;
+      }
+  
+      if (isMounted) {
+        const [productSuccess, categorySuccess] = await Promise.all([
+          fetchProductData(authToken),
+          fetchCategoryData(),
+        ]);
+        if (!productSuccess || !categorySuccess) {
+          setError('Failed to load product or category data.');
+        }
+      }
+  
+      if (isMounted) {
+        setIsAuthLoading(false);
+        setLoading(false);
+      }
     };
-
+  
     initialize();
+  
+    return () => {
+      isMounted = false;
+    };
   }, [user, router, loginForThirdParty, fetchProductData, fetchCategoryData]);
 
-  // Update SKU quantity dropdown states when quantity changes
   useEffect(() => {
     setIsSkuQuantityOpen(Array(quantity).fill(false));
   }, [quantity]);
+
+  useEffect(() => {
+    if (isQuotationGenerated) {
+      setIsQuotationGenerated(false);
+      setCostData(null);
+    }
+  }, [
+    jobName,
+    selectedCategory,
+    selectedWidth,
+    selectedLength,
+    selectedMaterial,
+    selectedMandatoryProcess,
+    selectedSeal,
+    selectedHangHole,
+    selectedPouchOpening,
+    selectedMultiProcesses,
+    quantity,
+    designNames,
+    selectedQuantities,
+  ]);
 
   const handleMultiProcessChange = (processId) => {
     setSelectedMultiProcesses((prev) =>
@@ -320,18 +355,17 @@ const Configuration = () => {
   const handleRequestQuotation = async () => {
     setIsQuotationLoading(true);
     setError(null);
+  
     try {
-      let authToken = token || localStorage.getItem('token2');
-      if (!authToken) {
-        authToken = await loginForThirdParty();
-        if (!authToken) throw new Error('No authentication token');
-      }
-
+      // Always fetch a fresh token for critical actions
+      const authToken = await loginForThirdParty();
+      if (!authToken) throw new Error('Authentication token is missing.');
+  
       if (!jobName) throw new Error('Project name is required');
       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
       if (!selectedMandatoryProcess) throw new Error('Mandatory process is required');
-
+  
       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
       const normalizedCategoryName = categoryName?.trim().toLowerCase();
       const optionalProcessIds = [
@@ -340,7 +374,7 @@ const Configuration = () => {
         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
         ...selectedMultiProcesses,
       ].filter(Boolean);
-
+  
       const payload = {
         formData: {
           job_name: jobName || 'Untitled Project',
@@ -367,7 +401,7 @@ const Configuration = () => {
         printingTypeId: '8',
         customerId: '26176',
       };
-
+  
       const response = await fetch(
         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
         {
@@ -380,49 +414,118 @@ const Configuration = () => {
           body: JSON.stringify(payload),
         }
       );
-
+  
       const result = await response.json();
       if (result.status && result.data?.costing_data?.length > 0) {
         setCostData(result.data.costing_data[0]);
+        setIsQuotationGenerated(true);
       } else {
-        throw new Error(result.message || 'Failed to generate quotation: Invalid response data');
+        throw new Error(result.message || 'Failed to generate quotation.');
       }
     } catch (err) {
       console.error('Quotation error:', err);
-      setError(err.message);
-      alert('Failed to generate quotation: ' + err.message);
+      const errorMessage = err.message.includes('token')
+        ? 'Authentication token is invalid or expired. Please try again.'
+        : err.message;
+      setError(errorMessage);
+      toast.error(`Failed to generate quotation: ${errorMessage}`);
     } finally {
       setIsQuotationLoading(false);
     }
   };
 
-  // Compute normalized category name using useMemo for immediate updates
+  const handleAddToCart = () => {
+    if (!costData || !product) {
+      toast.error('Cannot add to cart: Missing cost or product data');
+      return;
+    }
+
+    const totalCost = Number(costData.total_cost);
+    if (isNaN(totalCost)) {
+      toast.error('Invalid cost data');
+      return;
+    }
+
+    const unitPrice = totalCost / totalQuantity;
+    const totalPrice = totalCost;
+
+    const selectedOptions = {
+      width: { optionName: selectedWidth?.label || 'Not specified', price: 0 },
+      length: { optionName: selectedLength?.label || 'Not specified', price: 0 },
+      mandatoryProcess: { optionName: selectedMandatoryProcess?.label || 'Not specified', price: 0 },
+      seal: { optionName: sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'None', price: 0 },
+      hangHole: { optionName: hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'None', price: 0 },
+      pouchOpening: { optionName: pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'None', price: 0 },
+      additionalOptions: {
+        optionName: multiSelectOptions
+          .filter((opt) => selectedMultiProcesses.includes(opt.id))
+          .map((opt) => opt.name)
+          .join(', ') || 'None',
+        price: 0,
+      },
+    };
+
+    const productToAdd = {
+      id: product.id,
+      name: jobName || product.title || 'Custom Pouch',
+      category: categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouches',
+      image: `${NEXI_CDN_URL}/category/${categories.find((cat) => cat.id === selectedCategory)?.bg_Img || 'default-image.jpg'}`,
+      price: unitPrice,
+      quantity: totalQuantity,
+      totalPrice: totalPrice,
+      skuCount: quantity,
+      material: selectedMaterial?.label || 'Not specified',
+      selectedOptions,
+    };
+
+    dispatch(addToCart(productToAdd));
+    toast.success('Product added to cart successfully!');
+  };
+
   const normalizedCategoryName = useMemo(() => {
     const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name || '';
     return categoryName.trim().toLowerCase();
   }, [selectedCategory, categories]);
 
-  const sealOptions = optionalProcesses
-    .filter((p) => ['K-Seal', 'Radius Seal'].includes(p.name))
-    .map((p) => ({ value: p.id, label: p.name }));
-  const hangHoleOptions = optionalProcesses
-    .filter((p) => ['D-Cut Handle Punch', 'Euro Hang Hole', 'Round Hang Hole'].includes(p.name))
-    .map((p) => ({ value: p.id, label: p.name }));
-  const pouchOpeningOptions = normalizedCategoryName !== 'stand up pouch'
-    ? optionalProcesses
-      .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
-      .map((p) => ({ value: p.id, label: p.name }))
-    : [];
+  const sealOptions = useMemo(
+    () =>
+      optionalProcesses
+        .filter((p) => ['K-Seal', 'Radius Seal'].includes(p.name))
+        .map((p) => ({ value: p.id, label: p.name })),
+    [optionalProcesses]
+  );
+
+  const hangHoleOptions = useMemo(
+    () =>
+      optionalProcesses
+        .filter((p) => ['D-Cut Handle Punch', 'Euro Hang Hole', 'Round Hang Hole'].includes(p.name))
+        .map((p) => ({ value: p.id, label: p.name })),
+    [optionalProcesses]
+  );
+
+  const pouchOpeningOptions = useMemo(
+    () =>
+      normalizedCategoryName !== 'stand up pouch'
+        ? optionalProcesses
+            .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
+            .map((p) => ({ value: p.id, label: p.name }))
+        : [],
+    [normalizedCategoryName, optionalProcesses]
+  );
 
   const radiusSealId = sealOptions.find((s) => s.label === 'Radius Seal')?.value;
-  const multiSelectOptions = optionalProcesses
-    .filter((p) => {
-      if (p.name === 'Round Corner') {
-        return selectedSeal === radiusSealId;
-      }
-      return ['Tear Notch', 'Valve'].includes(p.name);
-    })
-    .map((p) => ({ id: p.id, name: p.name }));
+  const multiSelectOptions = useMemo(
+    () =>
+      optionalProcesses
+        .filter((p) => {
+          if (p.name === 'Round Corner') {
+            return selectedSeal === radiusSealId;
+          }
+          return ['Tear Notch', 'Valve'].includes(p.name);
+        })
+        .map((p) => ({ id: p.id, name: p.name })),
+    [optionalProcesses, selectedSeal, radiusSealId]
+  );
 
   if (process.env.NODE_ENV === 'development') {
     console.log('Selected Category ID:', selectedCategory);
@@ -483,7 +586,8 @@ const Configuration = () => {
   }
 
   if (loading) return <div className="min-h-screen bg-gray-50 py-12 px-6"><SkeletonLoader /></div>;
-  if (error && !product)
+
+  if (error && !product) {
     return (
       <div className="min-h-screen bg-gray-50 py-12 px-6">
         <div className="text-center p-4 text-red-500 bg-red-50 rounded-lg max-w-md mx-auto">
@@ -497,6 +601,7 @@ const Configuration = () => {
         </div>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-6">
@@ -928,7 +1033,7 @@ const Configuration = () => {
                     Optional Processes
                   </h2>
                   <div className="bg-gray-50 p-6 rounded-xl space-y-6">
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {sealOptions.length > 0 && (
                         <div>
                           <label className="block text-gray-700 font-medium mb-2">Seal Type</label>
@@ -1117,8 +1222,7 @@ const Configuration = () => {
                 <div className="relative h-40 w-48">
                   {selectedCategory && categories.length > 0 ? (
                     <Image
-                      src={`${NEXI_CDN_URL}/category/${categories.find((cat) => cat.id === selectedCategory)?.bg_Img || 'default-image.jpg'
-                        }`}
+                      src={`${NEXI_CDN_URL}/category/${categories.find((cat) => cat.id === selectedCategory)?.bg_Img || 'default-image.jpg'}`}
                       alt={
                         categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouch Image'
                       }
@@ -1126,7 +1230,7 @@ const Configuration = () => {
                       objectFit="contain"
                       className="rounded-lg"
                       onError={(e) => {
-                        e.target.src = `${NEXI_CDN_URL}/category/default-image.jpg`; // Fallback image
+                        e.target.src = `${NEXI_CDN_URL}/category/default-image.jpg`;
                       }}
                     />
                   ) : (
@@ -1177,16 +1281,28 @@ const Configuration = () => {
               </div>
 
               <div className="mt-8 space-y-4">
-                <motion.button
-                  className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
+                {isQuotationGenerated ? (
+                  <motion.button
+                    className="w-full py-3 px-4 font-medium rounded-lg bg-[#103b60] text-white hover:bg-[#0a2b47] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#103b60]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleAddToCart}
+                  >
+                    Add to Cart
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
+                      isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
                     }`}
-                  whileHover={{ scale: isQuotationLoading ? 1 : 1.02 }}
-                  whileTap={{ scale: isQuotationLoading ? 1 : 0.98 }}
-                  onClick={handleRequestQuotation}
-                  disabled={isQuotationLoading}
-                >
-                  {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
-                </motion.button>
+                    whileHover={{ scale: isQuotationLoading ? 1 : 1.02 }}
+                    whileTap={{ scale: isQuotationLoading ? 1 : 0.98 }}
+                    onClick={handleRequestQuotation}
+                    disabled={isQuotationLoading}
+                  >
+                    {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
+                  </motion.button>
+                )}
               </div>
             </motion.div>
           </div>

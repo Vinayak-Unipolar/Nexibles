@@ -33,7 +33,7 @@ const AllCategoryCards = ({ categoryData }) => {
       {/* All Categories title */}
       <div className="px-4 mb-10 md:px-64">
         <p className="text-center text-[30px] md:text-[40px] font-semibold">
-          All Categories
+          All Pouches
         </p>
       </div>
 

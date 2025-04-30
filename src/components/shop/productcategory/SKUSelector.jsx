@@ -55,7 +55,6 @@ export default function SKUSelector({
         try {
             if (navigator.share) {
                 await navigator.share(shareData);
-                console.log('Product shared successfully!');
             } else {
                 alert('Share functionality is not supported in your browser. Copy the URL manually: ' + window.location.href);
             }

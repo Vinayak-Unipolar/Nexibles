@@ -90,7 +90,7 @@ const AddAddress = (props) => {
               value={formData.title}
               onChange={handleChange}
               className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-              placeholder="Title (required for business addresses)"
+              placeholder="Name"
               required
             />
             <input

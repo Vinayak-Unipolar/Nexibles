@@ -18,7 +18,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [showPersonDropdown, setShowPersonDropdown] = useState(false);
-  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false); // Added dropdown state
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const { user, logout } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
@@ -59,17 +59,16 @@ const Navbar = () => {
     { name: "Industries", path: "/businesses" },
     {
       name: "Shop",
-      path: "#", // Using '#' since Shop is a dropdown
+      path: "#",
       dropdown: [
         { name: "Nexi Classic", path: "/shop" },
-        { name: "Custom Size Pouch", path: "/configuration-tool" },
+        { name: "Customize Pouch", path: "/configuration-tool" },
       ],
     },
     { name: "Request Quote", path: "/request-quote" },
     { name: "Configuration Tool", path: "/configuration-tool" },
     { name: "About Nexibles", path: "/about" },
     { name: "Contact Us", path: "/contact" },
-    {name:"Customize Pouch", path:"/configuration-tool"},
   ];
 
   // Animation variants
@@ -181,7 +180,7 @@ const Navbar = () => {
                             key={dropdownItem.name}
                             href={dropdownItem.path}
                             className="block px-4 py-2 text-sm font-medium text-gray-900 whitespace-nowrap"
-                            onClick={() => setIsShopDropdownOpen(false)} // Close dropdown on item click
+                            onClick={() => setIsShopDropdownOpen(false)}
                           >
                             {dropdownItem.name}
                           </Link>
@@ -312,11 +311,38 @@ const Navbar = () => {
                     <IoCartOutline size={24} />
                   </Link>
                 </motion.div>
+                <motion.div
+                  custom={1}
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                >
+                  <Link href="/login">
+                    <IoPersonOutline size={24} />
+                  </Link>
+                </motion.div>
+                <button className="text-black">
+                  <span className="text-sm">ENGLISH</span>
+                  <RiArrowDropDownLine size={20} className="inline" />
+                </button>
+                <motion.button onClick={toggleMenu}>
+                  <IoCloseOutline size={24} />
+                </motion.button>
               </div>
             </div>
 
-            <div className="px-6">
-              {navItems.map((item, index) => (
+            <div className="flex-1 px-6 py-4 overflow-y-auto">
+              {[
+                { name: "Home", path: "/" },
+                { name: "Pouches", path: "/all-category" },
+                { name: "Industries", path: "/businesses" },
+                { name: "Shop - Nexi Classic", path: "/shop" },
+                { name: "Customize Pouch", path: "/configuration-tool" },
+                { name: "Request Quote", path: "/request-quote" },
+                // { name: "Configuration Tool", path: "/configuration-tool" },
+                { name: "About Nexibles", path: "/about" },
+                { name: "Contact Us", path: "/contact" },
+              ].map((item, index) => (
                 <motion.div
                   key={item.name}
                   custom={index}
@@ -326,7 +352,9 @@ const Navbar = () => {
                 >
                   <Link
                     href={item.path}
-                    className="block py-4 text-sm font-medium text-gray-800"
+                    className={`block py-3 text-2xl font-medium text-gray-800 ${
+                      item.indent ? "pl-6" : ""
+                    }`}
                     onClick={toggleMenu}
                   >
                     {item.name}
@@ -334,6 +362,20 @@ const Navbar = () => {
                 </motion.div>
               ))}
             </div>
+
+            <motion.div
+              className="px-6 py-6 bg-[#30384E] text-white"
+              initial="hidden"
+              animate="visible"
+              variants={contactVariants}
+            >
+              <h3 className="text-xl font-semibold mb-4">MEET WITH US</h3>
+              <p className="text-lg leading-relaxed mb-4">
+              Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
+              </p>
+              <h3 className="text-lg font-semibold mb-2">CALL US</h3>
+              <p className="text-sm">+91 9821045101</p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

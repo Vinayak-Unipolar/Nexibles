@@ -52,7 +52,8 @@ export default function NexiblesInstagramSection() {
       </div>
 
       {/* Instagram Feed - Changed to grid-cols-3 for all screen sizes */}
-      <div className="max-w-3xl mx-auto grid grid-cols-3 mb-12">
+      <div className="max-w-3xl mx-auto grid grid-cols-3 mb-12 gap-[0.2px]">
+
         {instaFeed.map((post, idx) => (
           <a
             key={idx}

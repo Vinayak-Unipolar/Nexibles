@@ -4,13 +4,6 @@ import Image from 'next/image';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import client1 from '../../../public/client/client1.png';
-import client2 from '../../../public/client/client2.png';
-import client3 from '../../../public/client/client3.png';
-import client4 from '../../../public/client/client4.png';
-import client5 from '../../../public/client/client5.png';
-import client6 from '../../../public/client/client6.png';
-import client7 from '../../../public/client/client7.png';
 import doublequotes from '../../../public/home/doublequotes.svg';
 import flip from '../../../public/home/flip.svg';
 

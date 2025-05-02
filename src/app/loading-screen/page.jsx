@@ -1,18 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 
-// Explicitly using named export to match your original code
 export const LoadingScreen = ({ onComplete }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const letters = ["N", "E", "X", "I", "B", "L", "E", "S"];
   
   useEffect(() => {
-    // Change active letter every 0.25 seconds
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % letters.length);
     }, 250);
     
-    // Call onComplete after 2 seconds (matching your original timing)
     const timer = setTimeout(() => {
       if (onComplete) onComplete();
     }, 2000);
@@ -26,7 +23,6 @@ export const LoadingScreen = ({ onComplete }) => {
   return (
     <div className="fixed inset-0 z-[9999] bg-white text-black flex items-center justify-center">
       <div className="flex flex-col items-center space-y-6">
-        {/* Sequential Animated Brand Row */}
         <div className="flex items-center justify-center space-x-0 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-normal">
           {letters.map((letter, index) => (
             letter === "X" ? (

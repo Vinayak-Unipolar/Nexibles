@@ -149,7 +149,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                   </p>
                   {productDetails[0]?.orderCharge && parseFloat(productDetails[0].orderCharge) > 0 ? (
                     <p className="text-gray-900 text-sm font-bold">
-                      RS. {parseFloat(productDetails[0].orderCharge).toFixed(2)}
+                      + RS. {parseFloat(productDetails[0].orderCharge).toFixed(2)}
                     </p>
                   ) : (
                     <p className="text-green-500 text-sm font-bold uppercase">
@@ -162,7 +162,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     GST (18%)
                   </p>
                   <p className="text-gray-900 text-sm font-bold uppercase">
-                    RS. {productDetails[0]?.tax || "0.00"}
+                     + RS. {productDetails[0]?.tax || "0.00"}
                   </p>
                 </div>
                 <hr />
@@ -171,7 +171,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     Discount {productDetails[0]?.promoDiscount && `(${productDetails[0].promoDiscount}%)`}
                   </p>
                   <p className="text-red-500 uppercase text-sm font-bold">
-                    RS. {productDetails[0]?.disamt || calculateDiscountAmount()}
+                    - RS. {productDetails[0]?.disamt || calculateDiscountAmount()}
                   </p>
                 </div>
                 <hr />

@@ -284,7 +284,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         return {
             id: product.id,
             name: product.name,
-            price: parseFloat(product.totalPrice || 0).toFixed(2),
+            price: parseFloat(product.price || 0).toFixed(2),
             quantity: product.quantity || product.totalQuantity || 1,
             payment_status: "pending",
             discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),

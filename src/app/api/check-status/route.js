@@ -18,14 +18,10 @@ export async function GET(request) {
   try {
     const statusUrl = `${APIURL}/api/status/${transactionId}/${MERCHANT_ID}`;
     const response = await axios.get(statusUrl);
-    console.log('Payment status response1:', response.data);
-    console.log('Payment status response2:', response.data?.data);
-    console.log('Payment status response3:', response.data?.data?.data);
-    console.log('Payment status response4:', response.data?.data?.data?.state);
-    if (response.data?.data?.state === 'COMPLETED') {
+    if (response.data?.data?.data?.state === 'COMPLETED') {
       return NextResponse.redirect(`${fullUrl}/order-placed?status=success`);
     } else {
-      const paymentState = response.data?.data?.state || 'FAILED';
+      const paymentState = response.data?.data?.data?.state || 'FAILED';
       return NextResponse.redirect(`${fullUrl}/shipping?status=${paymentState.toLowerCase()}`);
     }
   } catch (error) {

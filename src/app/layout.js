@@ -1,6 +1,7 @@
 "use client";
 
 import './globals.css';
+import { useEffect, useState } from 'react';
 import { AuthProvider } from '@/utils/authContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +13,16 @@ import ServerLayout from './server-layout';
 import Whatsapp from '@/components/Whatsapp';
 
 export default function RootLayout({ children }) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <ServerLayout>
       <Provider store={store}>

@@ -42,6 +42,8 @@ module.exports = {
         'line-animation-3': 'lineAnim 0.6s linear infinite',
         'line-animation-4': 'lineAnim 1.4s linear infinite',
         'line-animation-5': 'lineAnim 1s linear infinite',
+        'bounce': 'bounce 0.6s ease-in-out infinite',
+        'loading-bar': 'loading-bar 1.5s ease-in-out infinite',
       },
       keyframes: {
         fly: {
@@ -75,6 +77,15 @@ module.exports = {
         lineAnim: {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(100vh)' },
+        },
+        bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'loading-bar': {
+          '0%': { transform: 'translateX(-100%)' },
+          '50%': { transform: 'translateX(250%)' },
+          '100%': { transform: 'translateX(-100%)' },
         },
       },
       spacing: {

@@ -178,6 +178,9 @@ const Footer = () => {
               <motion.li custom={1} variants={itemVariants}><Link href="/about">About</Link></motion.li>
               {/* <motion.li custom={2} variants={itemVariants}><Link href="/infrastructure">Infrastructure</Link></motion.li> */}
               <motion.li custom={3} variants={itemVariants}><Link href="/businesses">Industries</Link></motion.li>
+              <motion.li custom={3} variants={itemVariants}><Link href="/shop">Nexi Classic</Link></motion.li>
+              <motion.li custom={3} variants={itemVariants}><Link href="/configuration-tool">Custom Size Pouch</Link></motion.li>
+              <motion.li custom={3} variants={itemVariants}><Link href="/request-quote">Request Quote</Link></motion.li>
             </motion.ul>
           </div>
 

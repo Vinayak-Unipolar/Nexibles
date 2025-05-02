@@ -217,7 +217,7 @@ export default function StatsAndTestimonials() {
                     <div className="absolute top-0 transform -translate-x-1/2 -translate-y-1/2 left-1/2">
                       <div className="p-3 bg-white rounded-full">
                         <Image
-                          src={`${process.env.NEXT_PUBLIC_CDN_URL}/testimonials/${testimonial.image}`}// Fallback to client1 if image is empty
+                          src={`${process.env.NEXT_PUBLIC_CDN_URL}/testimonials/${testimonial.image}`}
                           alt={testimonial.name}
                           width={120}
                           height={120}

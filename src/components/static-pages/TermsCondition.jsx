@@ -1,179 +1,148 @@
+import React from 'react';
+
 const TermsCondition = () => {
     return (
         <div className="bg-white h-auto p-16">
-            <h2 className="text-gray-900 text-3xl font-bold text-center mb-8">Terms &amp; Conditions</h2>
+            <h2 className="text-gray-900 text-3xl font-bold text-center mb-8">Terms & Conditions</h2>
             <div className="text-gray-900">
-                <h4 className="font-semibold py-2">Introduction</h4>
+                
+                <h4 className="font-semibold py-2">General Terms</h4>
                 <p>
-                    Welcome to <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com!</a> By using our website and/or utilizing the services provided, you acknowledge that you have read, understood, and agree to be bound by our Terms and Conditions.
-                    These Terms and Conditions unconditionally extend and apply to all related applications, internet services, or website extensions.
-                    If you do not agree with all of these Terms and Conditions, you are prohibited from using this website, and you should discontinue use immediately.<a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> recommends that you save or print a copy of these Terms and Conditions for future reference.
-
-                </p>
-                <h4 className="font-semibold py-2">Agreement to Terms and Conditions</h4>
-                <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> Terms And Conditions (these &quot;Terms&quot; or these &quot;Terms and Conditions&quot;) contained in this Agreement shall govern your use of this Website and all its content (collectively referred to herein as this &quot;Website&quot;).
-                    These Terms outline the rules and regulations guiding the use of<a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> located at <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> All materials/information/documents/services or all other entities (collectively referred to as content) that appear on the <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> shall be administered subject to these Terms and Conditions. These Terms and Conditions apply in full force and effect to your use of this Website, and the use of this Website constitutes an express agreement with all the terms and conditions contained herein in full.
-                    Do not continue to use this Website if you have any objection to any of the Terms and Conditions stated on this page.
-                </p>
-                <h4 className="font-semibold py-2">Definitions/Terminology</h4>
-                <p>
-                    The following definitions apply to these Terms and Conditions, Privacy Statement, Disclaimer Notice, and all Agreements: &quot;User,&quot; &quot;Visitor,&quot; &quot;Client,&quot; &quot;Customer,&quot; &quot;You,&quot; and &quot;Your&quot; refers to you, the person(s) that use this Website.
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> &quot;We,&quot; &quot;Our,&quot; and &quot;Us&quot; refers to our Website/Company. &quot;Party,&quot; &quot;Parties,&quot; or &quot;Us&quot; refers to both you and us. All terms refer to all considerations of  <a className="text-red-500" href="https://www.nexibles.com/">www.nexibles.com</a> necessary to undertake support to you for the express purpose of meeting your User needs in respect of our services, under and subject to the prevailing law of the state or country in which  <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> operates (Chhattisgarh, India).
-                    Any use of these definitions or other glossary terms in the singular, plural, capitalization, and/or pronoun are interchangeable but refer to the same.
-                </p>
-                <h4 className="font-semibold py-2">Intellectual Property Rights</h4>
-                <p>
-                    Other than the content you own and opted to include on this Website, under these Terms, <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> and/or its licensors own and reserve all intellectual property rights of this Website.
-                    You are granted a limited license, subject to the restrictions entailed in these Terms and Conditions, for purposes of viewing this Website&apos;s content.
-                </p>
-                <h4 className="font-semibold py-2">Services</h4>
-                <p>
-                    The content of this Website is not intended for use or distribution to any person or entity in any jurisdiction, geographical location,
-                    or country/state where such use or distribution will be contrary to the laws and regulations or subject<a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> to any form of registration, claims, demands, costs, liabilities, damages, or expenses. The Website is intended for users who are at least 18 years of age. If you are under the age of 18, you cannot use or register to use this Website or its services without parental permission or consent.
-                    By agreeing to these Terms and Conditions, you have the necessary legal capacity to comply and be bound by these Terms and Conditions.
-                </p>
-                <h4 className="font-semibold py-2">Acceptable Use</h4>
-                <p>
-                    You may use this Website as permitted by these Terms and Conditions and may not use this Website for any purpose other than for which <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> makes the Website and its services available.
-                </p>
-                <h4>Cookies</h4>
-                <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> employs the use of cookies. By accessing Our Website, You agree to use cookies in Agreement with our Cookie Policy. Our interactive Website&apos;s optimal functionality uses cookies to retrieve the User&apos;s information for each visit. Some of our affiliate partners may also use cookies.
+                    By accessing and placing an order with Nexibles, you confirm that you are in agreement with and bound by the terms of service contained in the Terms & Conditions outlined below. These terms apply to the entire website and any email or other type of communication between you and Nexibles. Under no circumstances shall Nexibles team be liable for any direct, indirect, special, incidental, or consequential damages, including, but not limited to, loss of data or profit, arising out of the use, or the inability to use, the materials on this site, even if Nexibles team or an authorized representative has been advised of the possibility of such damages. If your use of materials from this site results in the need for servicing, repair, or correction of equipment or data, you assume any costs thereof. Nexibles will not be responsible for any outcome that may occur during the course of usage of our resources. We reserve the right to change prices and revise the resources usage policy at any moment without any prior intimation / notice.
                 </p>
                 <h4 className="font-semibold py-2">License</h4>
                 <p>
-                    Unless otherwise stated, <a href="https://www.nexibles.com/" > www.nexibles.com</a> and/or its licensors own the intellectual property rights for all content on <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>. All intellectual property rights are reserved. You may access any Website content from <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> for your personal use subject to restrictions set in these terms and conditions.
+                    Nexibles grants you a revocable, non-exclusive, non-transferable, limited license to download, install and use the website strictly in accordance with the terms of this Agreement. These Terms & Conditions are a contract between you and Nexibles (referred to in these Terms & Conditions as "Nexibles", "us", "we" or "our"), the provider of the Nexibles website and the services accessible from the Nexibles website (which are collectively referred to in these Terms & Conditions as the "Nexibles Service"). You are agreeing to be bound by these Terms & Conditions. If you do not agree to these Terms & Conditions, please do not use the Nexibles Service. In these Terms & Conditions, "you" refers both to you as an individual and to the entity you represent. If you violate any of these Terms & Conditions, we reserve the right to cancel your account or block access to your account without notice.
                 </p>
-                <h4><a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> hereby restricts you from all of the following:</h4>
+                <h4 className="font-semibold py-2">Definitions and key terms</h4>
+                <p>
+                    To help explain things as clearly as possible in this Terms & Conditions, every time any of these terms are referenced, are strictly defined as:
+                </p>
                 <ul>
-                    <li>Republishing any <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> content in any media;</li>
-                    <li>Reproducing, duplicating, or copying any <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> content;</li>
-                    <li>Selling, renting, sublicensing, and/or otherwise commercializing any <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> content;</li>
-                    <li>Publicly performing and/or displaying any <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> content;</li>
-                    <li>Using this Website in a manner that is, or maybe, damaging and/or impacts user access to this Website, or any person or business entity;</li>
-                    <li>Conducting data mining or any other similar activity concerning this Website, or while using this Website; and</li>
-                    <li>Using this Website to engage in any form of business advertising or marketing.</li>
+                    <li>Cookie: small amount of data generated by a website and saved by your web browser. It is used to identify your browser, provide analytics, remember information about you such as your language preference or login information.</li>
+                    <li>Company: when these terms mention “Company,” “we,” “us,” or “our,” it refers to Nexibles (Trade name and include Art NEXTnext Private Limited, all its subsidiaries & associated entities) that is responsible for your information under this Terms & Conditions.</li>
+                    <li>Country: where Nexibles or the owners/founders of Nexibles are based, in this case is India.</li>
+                    <li>Device: any internet-connected device such as a phone, tablet, computer, or any other device that can be used to visit Nexibles and use the services.</li>
+                    <li>Service: refers to the service provided by Nexibles as described in the relative terms (if available) and on this platform.</li>
+                    <li>Third-party service: refers to advertisers, contest sponsors, promotional and marketing partners, and others who provide our content or whose products or services we think may interest you.</li>
+                    <li>Website: Nexibles’s site, which can be accessed via: <a className="text-red-500" href="https://nexibles.com/">https://nexibles.com/</a></li>
+                    <li>You: a person or entity that is registered with Nexibles to use the Services.</li>
                 </ul>
+                <h4 className="font-semibold py-2">Restrictions</h4>
                 <p>
-                    Specific areas of this Website may be restricted from user access, and <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> may further extend such restriction to the entire Website, at any time, and in its sole discretion.
-                    Any user identification, security key, or password you may have on this Website are confidential, and you are responsible for maintaining such information confidentiality.
+                    You agree not to, and you will not permit others to:
                 </p>
-                <h4 className="font-semibold py-2">Linking and Hyperlinking Rights</h4>
-                <p>
-                    We reserve the right to file requests that you remove all links or any particular link created by you that redirect to our Website, and you approve to immediately remove such links to our Website upon request. We may amend the terms and conditions of these linking rights at any time. By continuously linking to our Website, you agree to be bound to and follow the terms of this linking policy. Feel free to contact us if you find any link on our Website that is offensive,
-                    and we may consider requests to remove such links. Still, we are not obligated to do so or respond to you directly or immediately.
-                </p>
-                <h4 className="font-semibold py-2">Hyperlinking to our Content</h4>
-                <p>
-                    Organizations such as search engines, government agencies, news organizations, and online directories may link to our Website without prior written approval. We may review other link requests from popular consumer and/or information specialists, charity organizations, internet portals, educational institutions,
-                    trade associations, and dot.com community sites. Any interested organization must inform and contact us for further information regarding our linking policy. However, such linking does not imply endorsement, sponsorship, partnership, or approval by us of any kind.
-                </p>
-                <p>
-                    No use of our logo or other design intellectual property will be allowed for linking, except a trademark license agreement.
-                </p>
-                <h4 className="font-semibold py-2">Link to third-party content</h4>
-                <p>
-                    This Website may contain links to websites or applications operated by third parties. Please know that we do not control any such third-party websites or applications or the third party operator.
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> is not responsible for and does not endorse any third-party websites or applications or their availability or content.
-                </p>
-                <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> accepts no responsibility for adverts contained within the Website. You agree that you do so at your own risk when you purchase any goods and/or services from any such third party. The advertiser, and not us, remains responsible for such goods and/or services,
-                    and if you have any questions or complaints about them, you should contact the advertiser
-                </p>
-                <h4 className="font-semibold py-2">User Content</h4>
-                <p>
-                    In these Website Standard Terms and Conditions, &quot;User Content&quot; shall mean any audio, video, text, images, or other material or content you choose to display on this Website.
-                    Concerning user content, by displaying it, you grant <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> a non-exclusive, worldwide, irrevocable, royalty-free, sub-licensable license to use, reproduce, adapt, publish, translate and distribute it on any media.
-                </p>
-                <p>
-                    User Content must be your own and must not be infringing on any third party&apos;s rights. <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>
-                    reserves the right to remove any of your content from this Website at any time, without notice.
-                </p>
-                <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> is permitted to monitor your activities on the Website and remove any user content considered inappropriate, offensive, contrary to applicable laws and regulations, or causes a breach of these Terms and Conditions.
-                </p>
-                <h4 className="font-semibold py-2">You warrant and represent that:</h4>
                 <ul>
-                    <li>You are entitled to upload/input/publicize content on our Website and have the necessary legal capacity, license or consent to do so;</li>
-                    <li>Your content does not infringe any intellectual property right, including without limitation to copyright, patent, or trademark of any third party;</li>
-                    <li>Your content is true, accurate, current, complete, and relate to you and not a third party;</li>
-                    <li>Your content does not contain any libelous, defamatory, offensive, immoral, or otherwise illegal material which is an invasion of privacy; and</li>
-                    <li>The content will not be used to solicit or promote business or custom or present commercial activities or unlawful activity. You now grant <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> a non-exclusive license to use, reproduce, edit and authorize others approved by us to use,
-                        reproduce and edit any of your content in any form, format, or media.
-                    </li>
+                    <li>a) License, sell, rent, lease, assign, distribute, transmit, host, outsource, disclose or otherwise commercially exploit the website or make the platform available to any third party.</li>
+                    <li>b) Modify, make derivative works of, disassemble, decrypt, reverse compile or reverse engineer any part of the website.</li>
+                    <li>c) Remove, alter or obscure any proprietary notice (including any notice of copyright or trademark) of Nexibles or its affiliates, partners, suppliers or the licensors of the website.</li>
                 </ul>
-                <h4 className="font-semibold py-2">Privacy Policy</h4>
-                <p>By using this Website and its services, you may provide us with certain personal information. By using <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> or its services, you authorize us to use your information in any country or state that we operate in.
-                    We reserve the right to use such information to improve your user experience and facilitate mailing and traffic, and market analytics.
-                </p>
+                <h4 className="font-semibold py-2">Payment</h4>
                 <p>
-                    By accessing this Website, specific information about the User, such as Internet protocol (IP) addresses, site navigation, user software, and the surfing time, along with other similar information, will be stored on <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> servers. Information about their identities, such as name, address, contact details, billing information,
-                    and other information stored on this Website, will strictly be used only for statistical purposes and will not be published for general access. <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>, however, assumes no responsibility for the security of this information.
+                    If you pay for any of our one-time payment plans, you agree to pay all fees or charges to your account for the Service in accordance with the fees, charges, and billing terms in effect at the time that each fee or charge is due and payable. Your Payment Provider agreement governs your use of the designated credit card account, and you must refer to that agreement and not these Terms to determine your rights and liabilities with respect to your Payment Provider. By providing Nexibles with your credit card number and associated payment information, you agree that Nexibles is authorized to verify information immediately, and subsequently invoice your account for all fees and charges due and payable to Nexibles hereunder and that no additional notice or consent is-required. You agree to immediately notify Nexibles of any change in your billing address or the credit card or payment mode used for payment hereunder. Nexibles reserves the right at any time to change its prices and billing methods, either immediately upon posting on our Site or by e-mail delivery to your organization’s administrator(s). Any attorney fees, court costs, or other costs incurred in the collection of delinquent undisputed amounts shall be the responsibility of and paid for by you. No contract will exist between you and Nexibles for the Service until Nexibles accepts your order by a confirmatory e-mail, SMS/MMS message, or other appropriate means of communication. You are responsible for any third-party fees that you may incur when using the Service.
                 </p>
-                <h4 className="font-semibold py-2">Disclaimers/Warranties/Limitation of Liabilities</h4>
+                <h4 className="font-semibold py-2">Your Suggestions</h4>
                 <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> Website is provided &quot;as is,&quot; with all liabilities, and <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> makes no express or implied undertakings, representations, or warranties, of any kind related to this Website or the content contained on this Website.
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> does not make any endorsements, warranties, or representations about the accuracy, reliability, expertise, or completeness of any such content. You agree that reliance on any such content shall be at the User&apos;s risk. The <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> periodically changes, adds, modifies, improves, or updates this Website&apos;s consent with or without prior notice. Under no circumstance shall <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> be liable for any loss, damage, injury, liability, or expense incurred or suffered from the use of this Website, including, without limitation, any fault, error, omission, commission, delay, failure, interruption, deletion, alteration, disruption, cessation or incursion concerning such use by us, our affiliates or any third party.
+                    Any feedback, comments, ideas, improvements or suggestions (collectively, "Suggestions") provided by you to Nexibles with respect to the website, products, services and general recommendations shall remain the sole and exclusive property of Nexibles. Nexibles shall be free to use, copy, modify, publish, or redistribute the Suggestions for any purpose and in any way without any credit or any compensation to you.
                 </p>
+                <h4 className="font-semibold py-2">Your Consent</h4>
                 <p>
-                    Under no circumstance shall <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> or any of its partners and affiliates be liable for any direct, indirect, consequential, accidental, or special damages, even if <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> has been advised against the risk or possibility of such damages. The User agrees that <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> will not be liable for any conduct or behaviour of the User arising from the use of this Website. As a result, the use of this Website and all or any of its content is at the User&apos;s sole risk.
+                    We've updated our Terms & Conditions to provide you with complete transparency into what is being set when you visit our site and how it's being used. By using our website, registering an account, or making a purchase, you hereby consent to our Terms & Conditions.
                 </p>
+                <h4 className="font-semibold py-2">Links to Other Websites</h4>
                 <p>
-                    In no event shall <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>, nor any of its officers, directors, employees, and affiliates, be liable for any loss, injury, or damage arising out of your use of this Website, whether, under contract, tort, or otherwise, and <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>, including its officers, directors, employees, and affiliates shall not be liable for any indirect, consequential or special liability arising out of your use of this Website.
+                    These Terms & Conditions apply only to the Services provided on our Website. The Services may contain links to other websites not operated or controlled by Nexibles. We are not responsible for the content, accuracy, or opinions expressed in such websites, and such websites are not investigated, monitored, or checked for accuracy or completeness by us. Please remember that when you use a link to go from the Services to another website, our Terms & Conditions are no longer in effect. Your browsing and interaction on any other website, including those that have a link on our platform, is subject to that website’s own rules and policies. Such third parties may use their own cookies or other methods to collect information about you.
+                </p>
+                <h4 className="font-semibold py-2">Cookies</h4>
+                <p>
+                    Nexibles uses "Cookies" to identify the areas of our website that you have visited. A cookie is a small piece of data stored on your computer or mobile device by your web browser. We use cookies to enhance the performance and functionality of our website but are non-essential to their use. However, without these cookies, certain functionality like videos may become unavailable or you would be required to enter your login details every time you visit the website as we would not be able to remember that you had logged in previously. Most web browsers can be set to disable the use of Cookies. However, if you disable Cookies, you may not be able to access functionality on our website correctly or at all. We never place Personally Identifiable Information in Cookies.
+                </p>
+                <h4 className="font-semibold py-2">Modifications to Our website</h4>
+                <p>
+                    Nexibles solely reserves the right to modify, suspend or discontinue, temporarily or permanently, the website or any service to which it connects, with or without notice and without liability to you.
+                </p>
+                <h4 className="font-semibold py-2">Updates to Our website</h4>
+                <p>
+                    Nexibles may from time to time provide enhancements or improvements to the features/ functionality of the Website, which may include patches, bug fixes, updates, upgrades and other modifications ("Updates"). Updates may modify or delete certain features and/or functionalities of the website. You agree that Nexibles has no obligation to (i) provide any Updates, or (ii) continue to provide or enable any particular features and/or functionalities of the website to you. You further agree that all Updates will be (i) deemed to constitute an integral part of the website, and (ii) subject to the terms and conditions of this Agreement.
+                </p>
+                <h4 className="font-semibold py-2">Third-Party Services</h4>
+                <p>
+                    We may display, include or make available third-party content (including data, information, applications, and other products services) or provide links to third-party websites or services ("Third-Party Services"). You acknowledge and agree that Nexibles shall not be responsible for any Third-Party Services, including their accuracy, completeness, timeliness, validity, copyright compliance, legality, decency, quality, or any other aspect thereof. Nexibles does not assume and shall not have any liability or responsibility to you or any other person or entity for any Third-Party Services. Third-Party Services and links thereto are provided solely as a convenience to you and you access and use them entirely at your own risk and subject to such third parties terms and conditions.
+                </p>
+                <h4 className="font-semibold py-2">Term and Termination</h4>
+                <p>
+                    This Agreement shall remain in effect until terminated by you or Nexibles. Nexibles may, in its sole discretion, at any time and for any or no reason, suspend or terminate this Agreement with or without prior notice. This Agreement will terminate immediately, without prior notice from Nexibles, in the event that you fail to comply with any provision of this Agreement. You may also terminate this Agreement by deleting the website and all copies thereof from your computer. Upon termination of this Agreement, you shall cease all use of the Website and delete all copies of the website from your computer. Termination of this Agreement will not limit any of Nexibles's rights or remedies at law or in equity in case of breach by you (during the term of this Agreement) of any of your obligations under the present Agreement.
+                </p>
+                <h4 className="font-semibold py-2">Copyright Infringement Notice</h4>
+                <p>
+                    If you are a copyright owner or such owner’s agent and believe any material on our Website constitutes an infringement on your copyright, please contact us setting forth the following information: (a) a physical or electronic signature of the copyright owner or a person authorized to act on his behalf; (b) identification of the material that is claimed to be infringing; (c) your contact information, including your address, telephone number, and an email; (d) a statement by you that you have a good faith belief that use of the material is not authorized by the copyright owners; and (e) the statement that the information in the notification is accurate, and, under penalty of perjury you are authorized to act on behalf of the owner.
                 </p>
                 <h4 className="font-semibold py-2">Indemnification</h4>
                 <p>
-                    As a condition for the use of this Website, the User agrees to indemnify <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> and its affiliates to the fullest extent, from and against all actions, claims, liabilities, losses, damages, costs, demands, and expenses (including reasonable attorney&apos;s fees) arising out of the User&apos;s use of this Website, including without limitation, any claim related to the breach of any of the provisions of these Terms and Conditions. If dissatisfied with any or all of the content on this Website or any or all of its Terms and Conditions, the User may discontinue using this Website.
+                    You agree to indemnify and hold Nexibles and its parents, subsidiaries, affiliates, officers, employees, agents, partners, and licensors (if any) harmless from any claim or demand, including reasonable attorneys' fees, due to or arising out of your: (a) use of the website; (b) violation of this Agreement or any law or regulation; (c) violation of any right of a third party; or (d) use of our products and services.
                 </p>
-                <h4 className="font-semibold py-2">Termination</h4>
+                <h4 className="font-semibold py-2">No Warranties</h4>
                 <p>
-                    The provisions of these Terms and Conditions shall remain in full force and effect while you use the <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> or its services. Users may terminate their use by following the instructions for terminating user accounts in your account settings or by contacting us at <a className="text-red-500" href="mailto:support@nexibles.com">support@nexibles.com</a>
+                    The Website is provided to you "AS IS" and "AS AVAILABLE" and without warranty of any kind. To the maximum extent permitted under applicable law, Nexibles, on its own behalf and on behalf of its affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory, or otherwise, with respect to the Website, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of a course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, Nexibles provides no warranty or undertaking, and makes no representation of any kind that the website will meet your requirements, achieve any intended results, be compatible or work with any other software, websites, systems or services, operate without interruption, meet any performance or reliability standards or be error-free or that any errors or defects can or will be corrected. Without limiting the foregoing, neither Nexibles nor any Nexibles's service provider makes any representation or warranty of any kind, express or implied: (i) as to the operation or availability of the Website, or the information, content, and materials or products included thereon; (ii) that the Website will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through the Website; or (iv) that the Website, its servers, the content, or e-mails sent from or on behalf of Nexibles are free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components.
                 </p>
+                <h4 className="font-semibold py-2">Limitation of Liability</h4>
                 <p>
-                    We reserve the right and sole discretion to, and without notice or liability, deny access to and use of the Website (including blocking specific IP addresses) to any user for any reason including but not limited to breach of any representation, warranty, or Agreement in these Terms or any applicable law or regulation.
-                </p>
-                <p>
-                    We also reserve the right, if, in our sole discretion, we determine that your use of the Website or its services is in breach of these Terms and Conditions or of any applicable law or regulation, to terminate your use of the Website and its services or delete your account and any or all of your content, without warning or prior notice. Suppose we terminate or suspend your account for any reason set out under this section. In that case, you are prohibited from registering and creating a new account under your name, or a false identity, or the expression of a third party. In addition to terminating or suspending your account, <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> reserves the right to take appropriate legal action(s), including without limitation pursuing civil, criminal, and injunctive redress.
-                </p>
-                <h4 className="font-semibold py-2">General Provisions</h4>
-                <h4 className="font-semibold py-2">Language</h4>
-                <p>All correspondence made under this Agreement shall be in English.</p>
-                <h4 className="font-semibold py-2">Governing Law &amp; Jurisdiction</h4>
-                <p>
-                    The Terms and Conditions of this Website will be governed by and construed under the laws of the country or state in which <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> operates. You hereby unconditionally submit to the non-exclusive jurisdiction of the courts located in Dwarka, New Delhi, India for the resolution of any disputes.
+                    Notwithstanding any damages that you might incur, the entire liability of Nexibles and any of its suppliers under any provision of this Agreement and your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by you on the Website. To the maximum extent permitted by applicable law, in no event shall Nexibles or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, for loss of data or other information, for business interruption, for personal injury, for loss of privacy arising out of or in any way related to the use of or inability to use the Website, third-party software and/or third-party hardware used with the Website, or otherwise in connection with any provision of this Agreement), even if Nexibles or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.
                 </p>
                 <h4 className="font-semibold py-2">Severability</h4>
                 <p>
-                    Suppose any of Term or Condition is proven to be unenforceable or void under any applicable law. In that case, such shall not render the entirety of these Terms and Conditions unenforceable or invalid. As a result, any such provision shall be deleted without affecting the remaining provisions herein. The provisions of these Terms and Conditions that are unlawful, void, or unenforceable are deemed severable from these Terms and Conditions and do not affect any remaining provisions&apos; validity and enforceability.
-                </p>
-                <h4 className="font-semibold py-2">Variation of Terms</h4>
-                <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> reserves the right to revise these Terms at any time as it sees fit. By using <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>, you are expected to review such Terms regularly to ensure you comprehend all the Terms and Conditions regarding the use of this Website.
-                </p>
-                <h4 className="font-semibold py-2">Assignment</h4>
-                <p>
-                    <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a> reserves the right to assign, transfer, and subcontract its rights and/or obligations under this Agreement without any prior notification or consent required. Users shall not be permitted to assign, transfer, or subcontract any of your rights and/or obligations under these Terms. Furthermore, a person who is not a party to these Terms and Conditions shall have no right to enforce any provision contained therein.
-                </p>
-                <h4 className="font-semibold py-2">Preservation of Immunities</h4>
-                <p>
-                    Nothing herein shall constitute a limitation upon the privileges and immunities of <a className="text-red-500" href="https://www.nexibles.com/"> www.nexibles.com</a>, which are specifically reserved.
+                    If any provision of this Agreement is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect. This Agreement, together with the Privacy Policy and any other policies published by Nexibles on the services, shall constitute the entire agreement between you and Nexibles concerning the services. If any provision of this Agreement is deemed invalid by a court of competent jurisdiction, the invalidity of such provision shall not affect the validity of the remaining provisions of this Agreement, which shall remain in full force and effect. No waiver of any term of this Agreement shall be deemed a further or continuing waiver of such term or any other term, and Nexibles’s failure to assert any right or provision under this Agreement shall not constitute a waiver of such right or provision. YOU AND Nexibles AGREE THAT ANY CAUSE OF ACTION ARISING OUT OF OR RELATED TO THE SERVICES MUST COMMENCE WITHIN ONE (1) YEAR AFTER THE CAUSE OF ACTION ACCRUES. OTHERWISE, SUCH CAUSE OF ACTION IS PERMANENTLY BARRED.
                 </p>
                 <h4 className="font-semibold py-2">Waiver</h4>
                 <p>
-                    Our failure to exercise any or all of these Terms and Conditions&apos; provisions at any point in time shall not operate as a waiver of such right or provision.
+                    Except as provided herein, the failure to exercise a right or to require performance of an obligation under this Agreement shall not affect a party's ability to exercise such right or require such performance at any time thereafter nor shall be the waiver of a breach constitute waiver of any subsequent breach. No failure to exercise and no delay in exercising, on the part of either party, any right or any power under this Agreement shall operate as a waiver of that right or power. Nor shall any single or partial exercise of any right or power under this Agreement preclude further exercise of that or any other right granted herein. In the event of a conflict between this Agreement and any applicable purchase or other terms, the terms of this Agreement shall govern and supersede any such terms.
+                </p>
+                <h4 className="font-semibold py-2">Amendments to this Agreement</h4>
+                <p>
+                    Nexibles reserves the right, at its sole discretion, to modify or replace this Agreement at any time without any prior notice / intimation. Hence we request you to check this Agreement from time to time By continuing to access or use our website after any revisions become effective, it shall be deemed that you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use Nexibles.
                 </p>
                 <h4 className="font-semibold py-2">Entire Agreement</h4>
                 <p>
-                    These Terms and Conditions, including any legal notices and disclaimers on this Website, constitute the entire Agreement between <a className="text-red-500" href="https://www.nexibles.com"> www.nexibles.com</a> and you concerning your use of this Website. Ultimately, this Agreement supersedes all prior agreements and understandings concerning the same.
+                    The Agreement constitutes the entire agreement between you and Nexibles regarding your use of the Website and supersedes all prior and contemporaneous written or oral agreements between you and Nexibles. You may be subject to additional terms and conditions that apply when you use or purchase other Nexibles's services, which Nexibles will provide to you at the time of such use or purchase.
                 </p>
-                <h4 className="font-semibold py-2">Contact us</h4>
+                <h4 className="font-semibold py-2">Intellectual Property</h4>
                 <p>
-                    To resolve any complaint or clarification regarding the use of this Website or its services or receive information concerning that, please contact us at <a className="text-red-500" href="mailto:support@nexibles.com">support@nexibles.com</a>
+                    The Website and its entire contents, features, and functionality (including but not limited to all information, software, text, displays, images, video and audio, and the design, selection, and arrangement thereof), are owned by Nexibles, its licensors or other providers of such material and are protected by India and international copyright, trademark, patent, trade secret and other intellectual property or proprietary rights laws. The material may not be copied, modified, reproduced, downloaded or distributed in any way, in whole or in part, without the express prior written permission of Nexibles, unless and except as is expressly provided in these Terms &平原Conditions. Any unauthorized use of the material is prohibited.
+                </p>
+                <p>
+                    Nexibles reserves the right to showcase the produced materials by it to potential clients, social media, marketing campaigns, trade shows & any other public media. You hereby provide the consent to Nexibles in the event of your supplied artwork, trademark and other intellectual property is visible in any of the materials produced by Nexibles used marketing, trade promotion or any other form of physical or digital media
+                </p>
+                <h4 className="font-semibold py-2">Choice of Law and Venue</h4>
+                <p>
+                    The Terms of Use and policies shall be expounded and construed with and by the laws of the India, regardless of its conflict to laws and rules in India. Disputes of any sort will be subject to the exclusive jurisdiction of the courts situated within Mumbai and the user hereby will have to comply with the jurisdiction of the courts of Mumbai.
+                </p>
+                <h4 className="font-semibold py-2">Submissions and Privacy</h4>
+                <p>
+                    In the event that you submit or post any ideas, creative suggestions, designs, photographs, information, advertisements, data, or proposals, including ideas for new or improved products, services, features, technologies, or promotions, you expressly agree that such submissions will automatically be treated as non-confidential and non-proprietary and will become the sole property of Nexibles without any compensation or credit to you whatsoever. Nexibles and its affiliates shall have no obligations with respect to such submissions or posts and may use the ideas contained in such submissions or posts for any purposes in any medium in perpetuity, including, but not limited to, developing manufacturing, and marketing products and services using such ideas.
+                </p>
+                <h4 className="font-semibold py-2">Promotions</h4>
+                <p>
+                    Nexibles may, from time to time, include contests, promotions, sweepstakes, or other activities (“Promotions”) that require you to submit material or information concerning yourself. Please note that all Promotions may be governed by separate rules that may contain certain eligibility requirements, such as restrictions as to age and geographic location. You are responsible to read all Promotions rules to determine whether or not you are eligible to participate. If you enter any Promotion, you agree to abide by and to comply with all Promotions Rules. Additional terms and conditions may apply to purchases of goods or services on or through the Services, which terms and conditions are made a part of this Agreement by this reference.
+                </p>
+                <h4 className="font-semibold py-2">Typographical Errors</h4>
+                <p>
+                    In the event a product and/or service is listed at an incorrect price or with incorrect information due to typographical error, we shall have the right to refuse or cancel any orders placed for the product and/or service listed at the incorrect price. We shall have the right to refuse or cancel any such order whether or not the order has been confirmed and your credit card charged. If your credit card has already been charged for the purchase and your order is cancelled, we shall immediately issue a credit to your credit card account or other payment accounts in the amount of the charge.
+                </p>
+                <h4 className="font-semibold py-2">Miscellaneous</h4>
+                <p>
+                    Any waiver of any provision of these Terms & Conditions will be effective only if in writing and signed by an authorized representative of Nexibles. Nexibles will be entitled to injunctive or other equitable relief (without the obligations of posting any bond or surety) in the event of any breach or anticipatory breach by you. Nexibles operates and controls the Nexibles Service from its offices in India. The Service is not intended for distribution to or use by any person or entity in any jurisdiction or country where such distribution or use would be contrary to law or regulation. Accordingly, those persons who choose to access the Nexibles Service from other locations do so on their own initiative and are solely responsible for compliance with local laws, if and to the extent local laws are applicable. These Terms & Conditions (which include and incorporate the Nexibles Privacy Policy) contains the entire understanding, and supersedes all prior understandings, between you and Nexibles concerning its subject matter, and cannot be changed or modified by you. The section headings used in this Agreement are for convenience only and will not be given any legal import.
+                </p>
+                <h4 className="font-semibold py-2">Disclaimer</h4>
+                <p>
+                    Nexibles is not responsible for any content, code or any other imprecision. Nexibles does not provide warranties or guarantees. In no event shall Nexibles be liable for any special, direct, indirect, consequential, or incidental damages or any damages whatsoever, whether in an action of contract, negligence or other torts, arising out of or in connection with the use of the Service or the contents of the Service. The Company reserves the right to make additions, deletions, or modifications to the contents of the Service at any time without prior notice. The Nexibles Service and its contents are provided "as is" and "as available" without any warranty or representations of any kind, whether express or implied. Nexibles is a distributor and not a publisher of the content supplied by third parties; as such, Nexibles exercises no editorial control over such content and makes no warranty or representation as to the accuracy, reliability, or currency of any information, content, service or merchandise provided through or accessible via the Nexibles Service. Without limiting the foregoing, Nexibles specifically disclaims all warranties and representations in any content transmitted on or in connection with the Nexibles Service or on sites that may appear as links on the Nexibles Service, or in the products provided as a part of, or otherwise in connection with, the Nexibles Service, including without limitation any warranties of merchantability, fitness for a particular purpose or non-infringement of third party rights. No oral advice or written information was given by Nexibles or any of its affiliates, employees, officers, directors, agents, or the like will create a warranty. Price and availability information is subject to change without notice. Without limiting the foregoing, Nexibles does not warrant that the Nexibles Service will be uninterrupted, uncorrupted, timely, or error-free.
+                </p>
+                <h4 className="font-semibold py-2">Contact Us</h4>
+                <p>
+                    Don't hesitate to contact us if you have any questions. Via Email <a className="text-red-500" href="mailto:customercare@artnext.in">customercare@artnext.in</a>
                 </p>
             </div>
         </div>
     )
 }
 
-export default TermsCondition
+export default TermsCondition;

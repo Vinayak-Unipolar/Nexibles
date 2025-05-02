@@ -3,21 +3,18 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Instagram } from "lucide-react";
-import insta01 from "../../../public/insta/insta01.png";
-import insta02 from "../../../public/insta/insta02.png";
-import insta03 from "../../../public/insta/insta03.png";
 export default function NexiblesInstagramSection() {
   const [instaFeed] = useState([
     {
-      image: insta01, // Use imported image object
+      image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta01.png`,
       link: "https://www.instagram.com/p/DIoW4DAhBKE/",
     },
     {
-      image: insta02, // Use imported image object
+      image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta02.png`, 
       link: "https://www.instagram.com/p/DIly2SjRiNh/",
     },
     {
-      image: insta03, // Use imported image object
+      image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta03.png`, 
       link: "https://www.instagram.com/p/DIjapyIIxLs/?img_index=1",
     },
   ]);

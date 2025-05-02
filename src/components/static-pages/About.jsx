@@ -1,8 +1,5 @@
 import React from 'react'
-import Factory from '../../../public/Pictures/Factory.webp'
-import FactoryImage from '../../../public/Pictures/Factory Facade.webp'
-import Image3 from '../../../public/Pictures/Customer Centric .webp'
-import Image from 'next/image';
+
 const About = () => {
   return (
     <div className="p-4 sm:p-6 md:p-10 mt-12 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-[#fafafa]">
@@ -16,9 +13,9 @@ const About = () => {
         {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br />
         {`high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
       <div className="grid grid-cols-3 gap-2 mt-2">
-        <img src={Factory.src} alt="factory" className="w-full max-h-72 object-contain" />
-        <img src={FactoryImage.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
-        <img src={Image3.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Factory.webp`} alt="Factory" className="w-full max-h-72 object-contain" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Factory Facade.webp`} alt="Factory Facade" className="w-full h-auto max-h-72 object-contain" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Customer Centric .webp`} alt="Customer Centric" className="w-full h-auto max-h-72 object-contain" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6 sm:mt-8 md:mt-10 w-full max-w-5xl">
         <div className="flex flex-col items-center">

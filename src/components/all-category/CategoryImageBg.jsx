@@ -1,12 +1,11 @@
 import React from 'react';
-import categoryimg from '../../../public/home/Types_of_pouch.webp';
 import Link from 'next/link'; // Use Next.js Link instead of react-router-dom
 
 function CategoryImageBg() {
   return (
     <Link href="/all-category" className="relative w-full">
       <div className="h-[20vh] md:h-[400px] w-full mt-[4rem]">
-        <img src={categoryimg.src} alt="Category Background" className="object-cover w-full h-full" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Types_of_pouch.webp`} alt="Category Background" className="object-cover w-full h-full" />
         <div className="absolute bottom-[10%] left-[1%] md:bottom-[10%] md:left-[2%] z-10">
           <div className="px-4 py-2 border-t border-b border-gray-800">
             <h1 className="text-xs md:text-5xl font-medium text-[#231f20]">

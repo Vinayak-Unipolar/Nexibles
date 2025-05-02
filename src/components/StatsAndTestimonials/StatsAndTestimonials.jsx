@@ -4,8 +4,6 @@ import Image from 'next/image';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import doublequotes from '../../../public/home/doublequotes.svg';
-import flip from '../../../public/home/flip.svg';
 
 export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
@@ -228,10 +226,10 @@ export default function StatsAndTestimonials() {
 
                     {/* Quote icon in bottom right */}
                     <div className="absolute -bottom-[45px] right-4 w-20 h-20">
-                      <Image src={doublequotes} alt="quotes" width={70} height={70} />
+                      <Image src={`${process.env.NEXT_PUBLIC_CDN_URL}/doublequotes.svg`} alt="quotes" width={70} height={70} />
                     </div>
                     <div className="absolute invisible w-20 h-20 md:visible -top-9 left-7">
-                      <Image src={flip} alt="quotes" width={70} height={70} />
+                      <Image src={`${process.env.NEXT_PUBLIC_CDN_URL}/flip.svg`} alt="quotes" width={70} height={70} />
                     </div>
                   </motion.div>
                 </div>

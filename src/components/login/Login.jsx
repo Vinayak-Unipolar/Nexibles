@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import ForgotPassword from './ForgotPassword';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
-import image from "../../../public/Pictures/Factory Facade.png";
 
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;

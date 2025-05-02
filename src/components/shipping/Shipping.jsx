@@ -353,7 +353,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         origin: "Nexibles",
         orderDetails: await getOrderDetailsFromRedux(),
       };
-      //console.log(requestBody);
+      console.log(requestBody);
       const response = await fetch(`${APIURL}/api/createorder`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" },

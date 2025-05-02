@@ -1,4 +1,5 @@
 "use client";
+
 import './globals.css';
 import { useEffect, useState } from 'react';
 import { AuthProvider } from '@/utils/authContext';
@@ -9,8 +10,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '../redux/store/store';
 import ServerLayout from './server-layout';
-import Loader from '@/components/comman/Loader';
-import RouteChangeLoader from '@/components/comman/RouteChangeLoader';
+import Whatsapp from '@/components/Whatsapp';
 
 export default function RootLayout({ children }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,26 +24,20 @@ export default function RootLayout({ children }) {
   }, []);
 
   return (
-    <html lang="en">
-      <body>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <ServerLayout>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <AuthProvider>
-                  <TextInputProvider>
-                    <RouteChangeLoader />
-                    {children}
-                    <ToastContainer />
-                  </TextInputProvider>
-                </AuthProvider>
-              </PersistGate>
-            </Provider>
-          </ServerLayout>
-        )}
-      </body>
-    </html>
+    <ServerLayout>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AuthProvider>
+            <TextInputProvider>
+              <div className="relative">
+                {children}
+                <ToastContainer />
+                <Whatsapp />
+              </div>
+            </TextInputProvider>
+          </AuthProvider>
+        </PersistGate>
+      </Provider>
+    </ServerLayout>
   );
 }

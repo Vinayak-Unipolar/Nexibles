@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { FaWhatsapp } from "react-icons/fa";
-import { FiMail } from "react-icons/fi";
+import { useState, useRef } from "react";
+import { FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
+import { ImFacebook2 } from "react-icons/im";
 import { BsSendFill } from "react-icons/bs";
-import { IoCallOutline } from "react-icons/io5";
+import { FiMail } from "react-icons/fi";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { motion, useInView } from "framer-motion";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ const Footer = () => {
   const footerRef = useRef(null);
   const isInView = useInView(footerRef, {
     once: true,
-    amount: 0.5,
+    amount: 0.1,
     margin: "0px 0px -100px 0px",
   });
 
@@ -32,7 +32,7 @@ const Footer = () => {
           "Content-type": "application/json",
           "API-Key": token,
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, origin: "nexibles" }),
       });
       if (response.ok) {
         setMessage("Successfully subscribed!");
@@ -70,129 +70,131 @@ const Footer = () => {
   };
 
   return (
-    <footer ref={footerRef}>
-      <div className="h-auto bg-[#103b60]">
-        <div className="px-6 py-14 md:px-6">
-          <div className="flex flex-col md:flex-row md:justify-center md:gap-28 gap-14"> 
-            {/* Subscribe Section - Now first column */}
-            <div>
-              <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"}>
-                <motion.h3 className="font-bold text-white mb-4 tracking-widest" custom={0} variants={titleVariants}>
-                  SUBSCRIBE
-                </motion.h3>
-                <motion.p className="text-white mb-4 tracking-wider" custom={1} variants={itemVariants}>
-                  Do you want to get notified?<br />
-                  Sign up for our newsletter<br />
-                  and be the first to find out about<br />
-                  new features & offers.
-                </motion.p>
-                <motion.form
-                  className="flex items-center justify-between bg-white rounded-md overflow-hidden"
-                  onSubmit={handleSubscribe}
-                  custom={2}
+    <footer ref={footerRef} className="bg-[#103b60] text-white">
+      <div className="px-6 mx-auto max-w-7xl py-14">
+        <div className="flex flex-col justify-between gap-10 lg:flex-row md:gap-52 ">
+
+          {/* Subscribe Section */}
+          <div className="flex-1">
+            <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"}>
+              <motion.h3 className="mb-4 text-lg font-bold tracking-widest" custom={0} variants={titleVariants}>
+                SUBSCRIBE
+              </motion.h3>
+              <motion.p className="mb-6 text-sm" custom={1} variants={itemVariants}>
+                Do you want to get notified? <br />
+                Sign up for our newsletter and be the first
+                to find out about new features & offers.
+              </motion.p>
+              <motion.form
+                onSubmit={handleSubscribe}
+                className="flex items-center overflow-hidden bg-white rounded-md"
+                custom={2}
+                variants={itemVariants}
+              >
+                <span className="px-4 py-2 text-[#103b60]">
+                  <FiMail size={20} />
+                </span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email"
+                  className="flex-grow px-2 py-2 text-sm text-black focus:outline-none"
+                  required
+                />
+                <motion.button
+                  type="submit"
+                  className="bg-[#ffd13e] px-4 py-2 hover:bg-[#fffc39] transition"
+                  custom={3}
                   variants={itemVariants}
                 >
-                  <span className="text-blue-3 px-4 py-2">
-                    <FiMail size={20} />
-                  </span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email"
-                    className="px-2 py-2 border-0 focus:outline-none text-black text-sm flex-grow"
-                    required
-                  />
-                  <motion.button
-                    className="bg-[#ffd13e] text-white mr-1 rounded-md px-4 py-2 hover:bg-[#fffc39]"
-                    custom={3}
-                    variants={itemVariants}
-                  >
-                    <BsSendFill style={{ color: "black" }} />
-                  </motion.button>
-                </motion.form>
-                {message && (
-                  <motion.p className="text-white mt-2" custom={4} variants={itemVariants}>
-                    {message}
-                  </motion.p>
-                )}
-              </motion.div>
-              {/* Follow Us */}
-              <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} className="text-white mt-6">
-                <motion.h3 className="font-bold py-4 tracking-widest" custom={0} variants={titleVariants}>
-                  FOLLOW US
-                </motion.h3>
-                <motion.div className="flex gap-x-7" custom={1} variants={itemVariants}>
-                  <motion.a
-                    href="https://wa.me/919821045101"
-                    className="hover:text-gray-300"
-                    custom={0}
-                    variants={iconVariants}
-                  >
-                    <FaWhatsapp size={25} />
-                  </motion.a>
-                  <motion.a
-                    href="tel:+919821045101"
-                    className="hover:text-gray-300"
-                    custom={1}
-                    variants={iconVariants}
-                  >
-                    <IoCallOutline size={25} />
-                  </motion.a>
-                  <motion.a
-                    href="mailto:sales@artnext.in"
-                    className="hover:text-gray-300"
-                    custom={2}
-                    variants={iconVariants}
-                  >
-                    <FiMail size={25} />
-                  </motion.a>
-                </motion.div>
-              </motion.div>
-            </div>
+                  <BsSendFill style={{ color: "black" }} />
+                </motion.button>
+              </motion.form>
+              {message && (
+                <motion.p className="mt-2 text-sm" custom={4} variants={itemVariants}>
+                  {message}
+                </motion.p>
+              )}
+            </motion.div>
 
-            {/* Company Section */}
-            <div>
-              <motion.ul className="text-white tracking-widest" initial="hidden" animate={isInView ? "visible" : "hidden"}>
-                <motion.li className="font-bold mb-4 text-white uppercase" custom={0} variants={titleVariants}>
-                  Company
-                </motion.li>
-                <motion.li custom={1} variants={itemVariants}>
-                  <Link href="/about"><span className="text-white mb-2">About</span></Link>
-                </motion.li>
-                <motion.li custom={2} variants={itemVariants}>
-                  <Link href="/infrastructure"><span className="text-white mb-2">Infrastructure</span></Link>
-                </motion.li>
-                <motion.li custom={3} variants={itemVariants}>
-                  <Link href="/businesses"><span className="text-white mb-2">Industries</span></Link>
-                </motion.li>
-              </motion.ul>
-            </div>
+            {/* Follow Us */}
+            <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} className="mt-8">
+              <motion.h3 className="mb-4 font-bold tracking-widest" custom={0} variants={titleVariants}>
+                FOLLOW US
+              </motion.h3>
+              <motion.div className="flex space-x-6" custom={1} variants={itemVariants}>
+                <motion.a
+                  href="https://www.instagram.com/nexibles"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-300"
+                  custom={0}
+                  variants={iconVariants}
+                >
+                  <FaInstagram size={25} />
+                </motion.a>
+                <motion.a
+                  href="https://www.facebook.com/nexiblesin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-300"
+                  custom={1}
+                  variants={iconVariants}
+                >
+                  <ImFacebook2 size={25} />
+                </motion.a>
 
-            {/* Customer Service Section */}
-            <div>
-              <motion.ul className="text-white tracking-widest" initial="hidden" animate={isInView ? "visible" : "hidden"}>
-                <motion.li className="font-bold mb-4 text-white uppercase" custom={0} variants={titleVariants}>
-                  Customer service
-                </motion.li>
-                <motion.li custom={1} variants={itemVariants}>
-                  <Link href="/my-dashboard"><span className="text-white mb-2">My Account</span></Link>
-                </motion.li>
-                <motion.li custom={2} variants={itemVariants}>
-                  <Link href="/privacy-policy"><span className="text-white mb-2">Privacy Policy</span></Link>
-                </motion.li>
-                <motion.li custom={3} variants={itemVariants}>
-                  <Link href="/shipping-policy"><span className="text-white mb-2">Shipping Policy</span></Link>
-                </motion.li>
-                <motion.li custom={4} variants={itemVariants}>
-                  <Link href="/return-and-refund-policy"><span className="text-white mb-2">Returns & Refund</span></Link>
-                </motion.li>
-                <motion.li custom={5} variants={itemVariants}>
-                  <Link href="/terms-conditions"><span className="text-white mb-2">Terms & Conditions</span></Link>
-                </motion.li>
-              </motion.ul>
-            </div>
+                <motion.a
+                  href="https://www.linkedin.com/company/nexibles/posts/?feedView=all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-300"
+                  custom={2}
+                  variants={iconVariants}
+                >
+                  <FaLinkedin size={25} />
+                </motion.a>
+                <motion.a
+                  href="https://youtube.com/@nexibles?si=uU5OBkb1TptuNoRD"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-300"
+                  custom={2}
+                  variants={iconVariants}
+                >
+                  <FaYoutube size={25} />
+                </motion.a>
+              </motion.div>
+            </motion.div>
           </div>
+
+          {/* Company Links */}
+          <div className="flex-1">
+            <motion.ul initial="hidden" animate={isInView ? "visible" : "hidden"} className="space-y-3">
+              <motion.li className="mb-4 font-bold uppercase" custom={0} variants={titleVariants}>
+                Company
+              </motion.li>
+              <motion.li custom={1} variants={itemVariants}><Link href="/about">About</Link></motion.li>
+              {/* <motion.li custom={2} variants={itemVariants}><Link href="/infrastructure">Infrastructure</Link></motion.li> */}
+              <motion.li custom={3} variants={itemVariants}><Link href="/businesses">Industries</Link></motion.li>
+            </motion.ul>
+          </div>
+
+          {/* Customer Service Links */}
+          <div className="flex-1">
+            <motion.ul initial="hidden" animate={isInView ? "visible" : "hidden"} className="space-y-3">
+              <motion.li className="mb-4 font-bold uppercase" custom={0} variants={titleVariants}>
+                Customer Service
+              </motion.li>
+              <motion.li custom={1} variants={itemVariants}><Link href="/my-dashboard">My Account</Link></motion.li>
+              <motion.li custom={2} variants={itemVariants}><Link href="/privacy-policy">Privacy Policy</Link></motion.li>
+              <motion.li custom={3} variants={itemVariants}><Link href="/shipping-policy">Shipping Policy</Link></motion.li>
+              <motion.li custom={4} variants={itemVariants}><Link href="/return-and-refund-policy">Returns & Refund</Link></motion.li>
+              <motion.li custom={5} variants={itemVariants}><Link href="/terms-conditions">Terms & Conditions</Link></motion.li>
+            </motion.ul>
+          </div>
+
         </div>
       </div>
     </footer>

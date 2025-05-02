@@ -58,10 +58,10 @@ export default function PopularProducts() {
   };
 
   return (
-    <div ref={sectionRef} className="bg-white py-4 md:py-8">
-      <div className="container mx-auto px-4">
+    <div ref={sectionRef} className="py-8 bg-white md:py-12 lg:py-16">
+      <div className="container px-4 mx-auto">
         <motion.h2
-          className="md:text-4xl text-3xl font-bold text-center text-[#333] mb-8"
+          className="text-3xl font-bold text-center text-[#333] mb-8 md:mb-12 md:text-4xl"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}
@@ -69,34 +69,38 @@ export default function PopularProducts() {
           Explore Pouch Types
         </motion.h2>
 
-        <div className="grid gap-6 justify-center grid-cols-2 md:grid-cols-[repeat(5,220px)]">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-6 md:gap-8 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           {!loading ? (
             <AnimatePresence>
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className=" rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
+                  className="flex flex-col items-center"
                   custom={index}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                   variants={cardVariants}
                 >
-                  <Link href={`/category/${category.cat_url}`} passHref>
-                    <div className="flex-grow flex items-center justify-center h-56">
+                  <Link 
+                    href={`/category/${category.cat_url}`} 
+                    passHref
+                    className="flex flex-col items-center w-full transition-all duration-300 hover:shadow-lg rounded-lg p-2 hover:-translate-y-1"
+                  >
+                    <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
                       <Image
                         src={
                           category.bg_Img
-                            ? `${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`
+                            ? `${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`
                             : "/placeholder.png"
                         }
                         alt={category.name}
                         width={200}
-                        height={192}
-                        className="max-w-full max-h-48 object-contain"
+                        height={200}
+                        className="object-contain transition-transform duration-300 hover:scale-105 max-h-full max-w-full"
                       />
                     </div>
-                    <div className="mt-4 text-center min-h-[40px]">
-                      <p className="text-black font-bold text-xs uppercase tracking-wider">
+                    <div className="mt-3 text-center w-full">
+                      <p className="text-xs sm:text-sm font-bold tracking-wider text-black uppercase">
                         {category.name}
                       </p>
                     </div>
@@ -110,13 +114,13 @@ export default function PopularProducts() {
               .map((_, index) => (
                 <div
                   key={index}
-                  className="border border-gray-200 rounded-xl p-4 flex flex-col"
+                  className="flex flex-col items-center p-3 border border-gray-200 rounded-lg"
                 >
-                  <div className="flex-grow flex items-center justify-center h-56">
-                    <div className="bg-gray-200 w-36 h-40 rounded animate-pulse"></div>
+                  <div className="relative w-full aspect-square flex items-center justify-center">
+                    <div className="w-3/4 h-3/4 bg-gray-200 rounded animate-pulse"></div>
                   </div>
-                  <div className="mt-4 text-center min-h-[40px]">
-                    <div className="bg-gray-200 h-4 w-32 mx-auto rounded animate-pulse"></div>
+                  <div className="mt-3 text-center w-full">
+                    <div className="w-3/4 h-4 mx-auto bg-gray-200 rounded animate-pulse"></div>
                   </div>
                 </div>
               ))

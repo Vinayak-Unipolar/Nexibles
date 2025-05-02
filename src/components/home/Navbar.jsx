@@ -52,34 +52,29 @@ const Navbar = () => {
     <nav
       className={`sticky top-0 z-20  bg-white ${hasScrolled ? "shadow-xl" : ""}`}
     >
-      <div className="h-20 flex justify-between items-center px-8">
-        {/* Company Logo */}
+      <div className="flex items-center justify-between h-20 px-8">
         <Link href="/" className="">
           <img src="https://unicdn.barecms.com/neximedia/nexible.gif" alt="Logo" className="h-6" />
         </Link>
-
-        {/* Mobile Menu Button (Hamburger Icon) */}
         <div className="md:hidden">
           <button
-            className="text-black font-semibold text-xl"
+            className="text-xl font-semibold text-black"
             onClick={toggleMobileMenu}
           >
             {showMobileMenu ? <FaBars size={24} /> : <FaBars size={24} />}
           </button>
         </div>
-
-        {/* Desktop Navigation */}
-        <div className="md:flex space-x-6 hidden mr-40">
+        <div className="hidden mr-40 space-x-6 md:flex">
           <Link
             href="/all-category"
-            className="text-gray-900 font-semibold text-lg"
+            className="text-lg font-semibold text-gray-900"
           >
             Product Catalogue
           </Link>
         </div>
 
         {/* Desktop Menu Items */}
-        <div className="md:flex items-center gap-6 text-blue-1 hidden">
+        <div className="items-center hidden gap-6 md:flex text-blue-1">
           <Link href="/help-center" className="flex ">
             <IoIosHelpCircleOutline className="cursor-pointer" size={28} />
             <span className="ml-2">Help</span>
@@ -96,8 +91,8 @@ const Navbar = () => {
               <IoPersonOutline className="cursor-pointer" size={24} />
               <span className="ml-2 cursor-pointer">Sign In</span>
               {showPersonDropdown && (
-                <div className="absolute mt-0 top-8 right-0 bg-white text-gray-900 p-4 shadow-md flex flex-col items-center w-40 rounded-md">
-                  <p className="text-sm mb-2 text-center cursor-pointer">
+                <div className="absolute right-0 flex flex-col items-center w-40 p-4 mt-0 text-gray-900 bg-white rounded-md shadow-md top-8">
+                  <p className="mb-2 text-sm text-center cursor-pointer">
                     Welcome Guest!
                   </p>
                   <Link
@@ -121,16 +116,16 @@ const Navbar = () => {
                   Hello, {user?.result?.firstName || user?.firstName}
                 </span>
                 {showPersonDropdown && (
-                  <div className="absolute mt-6 top-8 right-8 bg-white text-gray-900 p-4 shadow-md flex flex-col items-center w-40 rounded-md">
+                  <div className="absolute flex flex-col items-center w-40 p-4 mt-6 text-gray-900 bg-white rounded-md shadow-md top-8 right-8">
                     <Link
                       href="/my-dashboard"
-                      className="text-white text-center px-4 py-2 w-full bg-black transition duration-300 ease-in-out rounded-full"
+                      className="w-full px-4 py-2 text-center text-white transition duration-300 ease-in-out bg-black rounded-full"
                     >
                       Profile
                     </Link>
                     <button
                       onClick={logout}
-                      className="text-white text-center px-4 py-2 mt-2 w-full bg-black transition duration-300 ease-in-out rounded-full"
+                      className="w-full px-4 py-2 mt-2 text-center text-white transition duration-300 ease-in-out bg-black rounded-full"
                     >
                       Log out
                     </button>
@@ -144,12 +139,12 @@ const Navbar = () => {
       {/* Mobile Menu (Off-Canvas) */}
       {showMobileMenu && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-60 z-20"
+          className="fixed inset-0 z-20 bg-black bg-opacity-60"
           onClick={closeMobileMenu}
         >
-          <div className="absolute top-0 left-0 w-80 h-full bg-white">
+          <div className="absolute top-0 left-0 h-full bg-white w-80">
             <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between py-4 px-4">
+              <div className="flex items-center justify-between px-4 py-4">
                 {/* Login */}
                 {!user ? (
                   <div className="flex items-center text-gray-900">
@@ -171,7 +166,7 @@ const Navbar = () => {
                         Logout
                       </h3>
                     </div>
-                    <div className="flex justify-center items-center mt-4">
+                    <div className="flex items-center justify-center mt-4">
                       <div>
                         <img
                           src="/login/profile-user.png"
@@ -180,7 +175,7 @@ const Navbar = () => {
                         />
                       </div>
                       <div>
-                        <h2 className="font-semibold ml-2 text-lg">
+                        <h2 className="ml-2 text-lg font-semibold">
                           Hello, {user?.result?.firstName || user?.firstName}
                         </h2>
                       </div>
@@ -188,9 +183,9 @@ const Navbar = () => {
                   </div>
                 )}
                 {/* Close Icon */}
-                <div className="flex justify-center items-center">
+                <div className="flex items-center justify-center">
                   <button
-                    className="text-black font-semibold text-xl"
+                    className="text-xl font-semibold text-black"
                     onClick={closeMobileMenu}
                   >
                     <IoMdClose size={32} />
@@ -200,19 +195,19 @@ const Navbar = () => {
               <hr />
               <div>
                 <ul className="px-4">
-                  <li className="text-gray-900 text-xl py-2">
+                  <li className="py-2 text-xl text-gray-900">
                     <Link href="/my-dashboard">
                       <p>Dashboard</p>
                     </Link>
                   </li>
                   <hr />
-                  <li className="text-gray-900 text-xl py-2">
+                  <li className="py-2 text-xl text-gray-900">
                     <Link href="/">
                       <p>Home</p>
                     </Link>
                   </li>
                   <hr />
-                  <li className="text-gray-900 text-xl py-2">
+                  <li className="py-2 text-xl text-gray-900">
                     <Link href="/all-category">
                       <div className="flex items-center justify-between">
                         <p className="mr-1">Product & Pricing</p>
@@ -221,19 +216,19 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <hr />
-                  <li className="text-gray-900 text-xl py-2">
+                  <li className="py-2 text-xl text-gray-900">
                     <Link href="/my-orderhistory">
                       <p>Orders & History</p>
                     </Link>
                   </li>
                   <hr />
-                  <li className="text-gray-900 text-xl py-2">
+                  <li className="py-2 text-xl text-gray-900">
                     <Link href="/shipping">
                       <p>Shipping</p>
                     </Link>
                   </li>
                   <hr />
-                  <li className="text-gray-900 text-xl py-2">
+                  <li className="py-2 text-xl text-gray-900">
                     <Link href="/faqs">
                       <p>FAQ</p>
                     </Link>

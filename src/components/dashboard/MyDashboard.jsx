@@ -7,12 +7,12 @@ const MyDashboard = () => {
 
   return (
     <div>
-        <div className="min-h-screen bg-white py-20 mt-4 px-10">
-            <h2 className="mb-6 font-bold text-2xl text-gray-900">My Dashboard</h2>
-            <p className="text-gray-900 text-2xl font-semibold">Hello, {user?.result?.firstName || user?.firstName} !</p>
+        <div className="min-h-screen px-10 py-10 bg-white">
+            <h2 className="mb-6 text-2xl font-bold text-gray-900">My Dashboard</h2>
+            <p className="text-2xl font-semibold text-gray-900">Hello, {user?.result?.firstName || user?.firstName} !</p>
             <p className="text-gray-900">Your Account Activity</p>
             {/*<div className="py-6">
-              <button className="bg-black text-white rounded-full px-6 py-2 w-60 uppercase">account settings</button>
+              <button className="px-6 py-2 text-white uppercase bg-black rounded-full w-60">account settings</button>
             </div>*/}
         </div>
     </div>

@@ -58,19 +58,19 @@ const HomeContactForm = () => {
   };
 
   return (
-    <section className="bg-[#BD98E1] py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-        <h2 className="text-4xl font-bold text-white mb-6">Get in touch</h2>
-        <p className="text-white mb-6">Make your journey of packaging easy with us.</p>
+    <section className="py-24 bg-gray-50">
+      <div className="container max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
+        <h2 className="mb-6 text-4xl font-bold text-[#103b60]">Get in touch</h2>
+        <p className="mb-6 text-[[#103b60]">Make your journey of packaging easy with us.</p>
 
         <div className="flex flex-wrap -mx-4">
-          <div className="w-full lg:w-2/3 px-4">
-            <form className="space-y-4 max-w-2xl" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="w-full px-4 lg:w-2/3">
+            <form className="max-w-2xl space-y-4" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-white" htmlFor="full_name">Full name</label>
+                  <label className="block text-[#103b60]" htmlFor="full_name">Full name</label>
                   <input
-                    className="w-full px-3 py-2 border border-white rounded-md bg-transparent text-white placeholder-gray-200"
+                    className="w-full px-3 py-2 text-[#103b60] placeholder-black bg-transparent border border-black rounded-md"
                     id="full_name"
                     type="text"
                     value={formData.full_name}
@@ -79,9 +79,9 @@ const HomeContactForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-white" htmlFor="email">Email</label>
+                  <label className="block text-[#103b60]" htmlFor="email">Email</label>
                   <input
-                    className="w-full px-3 py-2 border border-white rounded-md bg-transparent text-white placeholder-gray-200"
+                    className="w-full px-3 py-2 text-[#103b60] placeholder-black bg-transparent border border-black rounded-md"
                     id="email"
                     type="email"
                     value={formData.email}
@@ -90,11 +90,11 @@ const HomeContactForm = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-white" htmlFor="contact_no">Phone number</label>
+                  <label className="block text-[#103b60]" htmlFor="contact_no">Phone number</label>
                   <input
-                    className="w-full px-3 py-2 border border-white rounded-md bg-transparent text-white placeholder-gray-200"
+                    className="w-full px-3 py-2 text-[#103b60] placeholder-black bg-transparent border border-black rounded-md"
                     id="contact_no"
                     type="text"
                     value={formData.contact_no}
@@ -104,9 +104,9 @@ const HomeContactForm = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-white" htmlFor="subject">Subject</label>
+                  <label className="block text-[#103b60]" htmlFor="subject">Subject</label>
                   <input
-                    className="w-full px-3 py-2 border border-white rounded-md bg-transparent text-white placeholder-gray-200"
+                    className="w-full px-3 py-2 text-[#103b60] placeholder-black bg-transparent border border-black rounded-md"
                     id="subject"
                     type="text"
                     value={formData.subject}
@@ -116,9 +116,9 @@ const HomeContactForm = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-white" htmlFor="message">Message</label>
+                <label className="block text-[#103b60]" htmlFor="message">Message</label>
                 <textarea
-                  className="w-full px-3 py-2 border border-white rounded-md bg-transparent text-white placeholder-gray-200"
+                  className="w-full px-3 py-2 text-[#103b60] placeholder-black bg-transparent border border-black rounded-md"
                   id="message"
                   rows="4"
                   value={formData.message}
@@ -128,7 +128,7 @@ const HomeContactForm = () => {
               </div>
               <div>
                 <button
-                  className="px-6 py-2 bg-[#30384E] rounded-md text-white border-[3px] border-white-2"
+                  className="px-6 py-2 bg-[#103b60] rounded-md text-white border-[3px] border-black-2"
                   type="submit"
                   disabled={isSubmitting}
                 >
@@ -138,15 +138,15 @@ const HomeContactForm = () => {
             </form>
             {responseMessage && <p className="mt-4 text-white">{responseMessage}</p>}
           </div>
-          <div className="w-full lg:w-1/3 px-4 mt-8 lg:mt-0">
-            <h3 className="text-xl font-bold text-white mb-4">Meet With Us</h3>
-            <address className="text-white not-italic">
-              {`Art NEXT Pvt Ltd,\n
-              A/463, Ground Floor, TTC Industrial Area,\n
-              Mahape, MIDC, Navi Mumbai, Thane - 400710, MH, India\n
-              Call Us\n
-              +91 9821045101`}
+          <div className="w-full px-4 mt-8 lg:w-1/3 lg:mt-0">
+            <h3 className="mb-4 text-xl font-bold text-[#103b60]">Meet With Us</h3>
+            <address className="not-italic text-[#103b60]">
+              {`Art NEXT Pvt Ltd | Nexibles®,\n
+      Unit A6C, Lodha Industrial & Logistics Park - II, Usatane\n
+      Village, Navi Mumbai, Taloja Bypass Road, Palava,\n
+      Maharashtra - 421306 `}
             </address>
+            <p className='not-italic text-[#103b60] mt-4'> +91 9821045101</p>
           </div>
         </div>
       </div>

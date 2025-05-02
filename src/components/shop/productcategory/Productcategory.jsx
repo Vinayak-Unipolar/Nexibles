@@ -29,7 +29,7 @@ const Productcategory = ({ categoryData }) => {
 
   // Calculate how wide the container would be at 100% zoom
   const viewportWidth = cardWidth * 4 + gap * 3;
-  
+
   // Calculate total width for one copy of the items
   const n = categoryData.length;
   const copyWidth = n * cardWidth + (n - 1) * gap;
@@ -42,7 +42,7 @@ const Productcategory = ({ categoryData }) => {
   const marqueeItems = [...categoryData, ...categoryData];
 
   return (
-    <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="px-4 py-8 bg-white sm:px-6 lg:px-8">
       {/*
         Container:
         - Uses a fixed width (viewportWidth) at 100% zoom,
@@ -50,7 +50,7 @@ const Productcategory = ({ categoryData }) => {
         - overflow-hidden hides any horizontal scrolling.
       */}
       <div
-        className="mx-auto text-center mt-4 font-bold text-4xl text-gray-800 relative overflow-hidden"
+        className="relative mx-auto mt-4 overflow-hidden text-4xl font-bold text-center text-gray-800"
         style={{
           width: `${viewportWidth}px`,
           maxWidth: "100%",
@@ -92,38 +92,18 @@ const Productcategory = ({ categoryData }) => {
                 <div>
                   <div className="relative h-48 md:h-[400px] lg:h-[400px] w-full flex items-center justify-center">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/${category.bg_Img}`}
+                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`}
                       width={400}
                       height={400}
                       alt={`Image for ${category.name}`}
                       quality={100}
-                      className="w-full h-full object-contain rounded-t-lg"
+                      className="object-contain w-full h-full rounded-t-lg"
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
                   </div>
-                  <div className="flex flex-col items-center justify-center text-center mt-2">
+                  <div className="flex flex-col items-center justify-center mt-2 text-center">
                     <div
-                      className="
-                        w-full
-                        px-2
-                        py-1
-                        sm:px-3
-                        sm:py-2
-                        border
-                        border-gray-200
-                        bg-white
-                        rounded-lg
-                        text-gray-900
-                        font-semibold
-                        text-xs
-                        sm:text-sm
-                        text-center
-                        truncate
-                        hover:bg-black
-                        hover:text-white
-                        transition-all
-                        duration-300
-                      "
+                      className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 bg-white border border-gray-200 rounded-lg  sm:px-3 sm:py-2 sm:text-sm hover:bg-black hover:text-white"
                     >
                       {category.name}
                     </div>

@@ -1,5 +1,8 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css"; // Fixed the import path
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
@@ -9,19 +12,18 @@ const Industries = () => {
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
   const [industries, setIndustries] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sliderRef, setSliderRef] = useState(null);
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, {
     once: true,
     amount: 0.5,
-    margin: "0px 0px -100px 0px", // Delay until section is closer to viewport center
+    margin: "0px 0px -100px 0px",
   });
 
-  // Fetch industries data
   useEffect(() => {
     const fetchIndustries = async () => {
       try {
@@ -57,40 +59,94 @@ const Industries = () => {
 
   const cardWidth = isMobile ? mobileCardWidth : desktopCardWidth;
   const gap = isMobile ? mobileGap : desktopGap;
-  const visibleCount = 4;
-  const viewportWidth = cardWidth * visibleCount + gap * (visibleCount - 1);
-
-  // Auto-slide every 3 seconds, but only when in view
-  useEffect(() => {
-    if (industries.length === 0 || !isInView || loading) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % Math.max(industries.length, visibleCount));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [industries, isInView, loading]);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? Math.max(industries.length, visibleCount) - 1 : prev - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.max(industries.length, visibleCount));
-  };
+  const visibleCount = isMobile ? 2 : 4;
 
   // Create a circular array for continuous scrolling
-  const getCircularArray = () => {
-    if (industries.length === 0) return Array(visibleCount).fill({ name: "Loading...", image: "/placeholder.png" });
+  const circularItems = useMemo(() => {
+    if (industries.length === 0)
+      return Array(visibleCount).fill({ name: "Loading...", image: "/placeholder.png" });
     const displayItems = [...industries];
     const minItems = Math.max(industries.length, visibleCount + 1);
     for (let i = 0; i < minItems; i++) {
       displayItems.push(industries[i % industries.length]);
     }
     return displayItems;
-  };
+  }, [industries, visibleCount]);
 
-  const circularItems = getCircularArray();
+  // Custom arrow components
+  const NextArrow = ({ onClick }) => (
+    <motion.button
+      onClick={onClick}
+      className="absolute right-0 z-10 p-2 -mr-3 transition-all transform -translate-y-1/2 bg-white rounded-full shadow-md top-1/2 bg-opacity-80 hover:bg-opacity-100"
+      aria-label="Next"
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={buttonVariants}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-5 h-5"
+      >
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    </motion.button>
+  );
+
+  const PrevArrow = ({ onClick }) => (
+    <motion.button
+      onClick={onClick}
+      className="absolute left-0 z-10 p-2 -ml-3 transition-all transform -translate-y-1/2 bg-white rounded-full shadow-md top-1/2 bg-opacity-80 hover:bg-opacity-100"
+      aria-label="Previous"
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={buttonVariants}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-5 h-5"
+      >
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </motion.button>
+  );
+
+  // Slider settings
+  const sliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 700,
+    slidesToShow: visibleCount,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    draggable: true,
+    swipeToSlide: true,
+    cssEase: "ease-in-out",
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          centerMode: false,
+        },
+      },
+    ],
+  };
 
   // Framer Motion variants for animations
   const titleVariants = {
@@ -113,33 +169,25 @@ const Industries = () => {
   };
 
   return (
-    <div ref={sectionRef} className="bg-white py-8 px-4 sm:px-6 lg:px-8 mt-[-16vh] md:mt-0">
-      {loading && <div className="text-center py-4">Loading industries...</div>}
-      {error && <div className="text-center text-red-500 py-4">{error}</div>}
+    <div ref={sectionRef} className="bg-white py-8 px-4 max-w-[1400px] mx-auto sm:px-6 lg:px-8 mt-[-16vh] md:mt-0">
+      {loading && <div className="py-4 text-center">Loading industries...</div>}
+      {error && <div className="py-4 text-center text-red-500">{error}</div>}
       {!loading && !error && (
         <>
           <motion.div
-            className="mx-auto text-center mt-4 pb font-bold text-3xl md:text-4xl text-gray-800"
+            className="mx-auto mt-4 text-3xl font-bold text-center text-gray-800 pb md:text-4xl"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={titleVariants}
           >
             Explore Industries
           </motion.div>
-          <div
-            className="relative overflow-hidden mt-6 md:mt-12 mx-auto"
-            style={{ width: `${viewportWidth}px`, maxWidth: "100%" }}
-          >
-            <motion.div
-              className="flex"
-              style={{ gap: `${gap}px` }}
-              animate={isInView ? { x: -(cardWidth + gap) * currentIndex } : { x: 0 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-            >
+          <div className="relative mx-auto mt-6 md:mt-6" style={{ maxWidth: "100%" }}>
+            <Slider ref={setSliderRef} {...sliderSettings}>
               {circularItems.map((category, index) => (
                 <motion.div
                   key={`${category.name}-${index}`}
-                  style={{ flex: "0 0 auto", width: `${cardWidth}px` }}
+                  style={{ width: `${cardWidth}px`, padding: `0 ${gap / 2}px` }}
                   custom={index}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -149,77 +197,28 @@ const Industries = () => {
                     href={`/industries/${category.name
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}
-                    className="bg-white p-2 pb-4 border border-gray-200 rounded-xl overflow-hidden"
+                    className="p-1 pb-1 rounded-xl"
                   >
                     <div className="relative h-48 md:h-[400px] w-full flex items-center justify-center">
                       <Image
-                        src={`${CDN_URL || ""}/${category.image}` || "/placeholder.png"}
+                        src={`${CDN_URL}/industries/${category.image}`}
                         width={400}
                         height={400}
                         alt={`Image for ${category.name}`}
                         quality={100}
-                        className="w-full h-full object-contain pt-2"
+                        className="object-contain w-full h-full pt-2"
                         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        onError={(e) => {
-                          e.target.src = "/placeholder.png";
-                        }}
                       />
                     </div>
-                    <div className="flex flex-col items-center justify-center text-center mt-2">
-                      <div
-                        className="w-full px-2 py-1 sm:px-3 sm:py-2 bg-white rounded-lg text-gray-900 font-semibold text-xs md:text-lg text-center truncate hover:bg-black hover:text-white transition-all duration-300"
-                      >
+                    <div className="flex flex-col items-center justify-center mt-2 mx-[22px] text-center">
+                      <div className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 hover:bg-[#ffd13e] rounded-lg sm:px-3 sm:py-2 md:text-lg ">
                         {category.name}
                       </div>
                     </div>
                   </Link>
                 </motion.div>
               ))}
-            </motion.div>
-            {/* Prev Button */}
-            <motion.button
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-md transition-all -ml-3"
-              aria-label="Previous"
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              variants={buttonVariants}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-5 h-5"
-              >
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </motion.button>
-            {/* Next Button */}
-            <motion.button
-              onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 shadow-md transition-all -mr-3"
-              aria-label="Next"
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              variants={buttonVariants}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-5 h-5"
-              >
-                <polyline points="9 18 15 12 9 6" />
-              </svg>
-            </motion.button>
+            </Slider>
           </div>
         </>
       )}

@@ -84,7 +84,7 @@ const HeaderSection = () => {
         const data = await response.json();
         const transformed = data.map((item) => ({
           bgMedia: `${BASE_IMAGE_URL}/${item.image}`,
-          link: item.link || "/shop",
+          link: item.link,
           title: item.title,
         }));
         setSlides(transformed);
@@ -177,16 +177,14 @@ const HeaderSection = () => {
                 }}
                 className="absolute inset-0 w-full h-full"
               >
-                <Link href="/all-category">
-                  <div className="relative md:mt-[8vh] mt-[6vh] h-[30vh] md:w-full md:h-full">
+                <div>
+                  <div className="relative md:mt-[6vh] mt-[6vh] h-[30vh] md:w-full md:h-full">
                     <MediaComponent
                       media={slide.bgMedia}
                       alt={slide.title}
                       isActive={true}
                       onVideoEnd={handleVideoEnd}
                     />
-
-                    {/* Text Overlay - Only shown on the first slide */}
                     {index === 0 && (
                       <motion.div
                         className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]"
@@ -199,10 +197,10 @@ const HeaderSection = () => {
                           style={outlineTextStyle}
                           variants={textVariants}
                         >
-                          ENDLESS POUCHES
+                          DIGITALLY PRINTED
                         </motion.h2>
                         <motion.h1
-                          className="text-[7vw] md:text-[7.6vw] font-extrabold tracking-wider text-center font-[1000] italic"
+                          className="text-[7vw] md:text-[7.6vw] tracking-wider text-center font-[1000] italic"
                           variants={textVariants}
                         >
                           ENDLESS POSSIBILITIES
@@ -213,7 +211,7 @@ const HeaderSection = () => {
                         >
                           <a
                             href="/shop"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
                           >
                             Explore Pouches
                           </a>
@@ -232,8 +230,8 @@ const HeaderSection = () => {
                           variants={buttonVariants}
                         >
                           <a
-                            href="/all-category"
-                            className="bg-[#ffd13e] hover:bg-yellow-500 text-white font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
+                            href="/businesses"
+                            className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
                           >
                             Explore Industries
                           </a>
@@ -241,7 +239,7 @@ const HeaderSection = () => {
                       </motion.div>
                     )}
                   </div>
-                </Link>
+                </div>
               </motion.div>
             )
         )}
@@ -249,7 +247,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute left-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Previous slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
@@ -271,7 +269,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute right-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Next slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}

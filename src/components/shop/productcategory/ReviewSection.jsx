@@ -104,22 +104,22 @@ const ReviewSection = ({ productDetails }) => {
   const displayedReviews = showAllReviews ? reviews : reviews.slice(-4);
 
   return (
-    <div className="mt-6 mb-8 px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h2 className="text-gray-900 font-bold text-md sm:text-2xl mb-2 sm:mb-0">Customer Review</h2>
+    <div className="px-4 mt-6 mb-8 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-start justify-between mb-6 sm:flex-row sm:items-center">
+        <h2 className="mb-2 font-bold text-gray-900 text-md sm:text-2xl sm:mb-0">Customer Review</h2>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 mb-8">
+      <div className="flex flex-col gap-6 mb-8 md:flex-row">
         <div className="w-full md:w-1/3">
           <div className="flex flex-col items-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold">
+            <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl">
               {averageRating.toFixed(1)}
             </h1>
-            <div className="flex text-yellow-400 text-lg sm:text-xl my-2">
+            <div className="flex my-2 text-lg text-yellow-400 sm:text-xl">
               {"★".repeat(Math.round(averageRating))}
               {"☆".repeat(5 - Math.round(averageRating))}
             </div>
-            <p className="text-gray-600 text-sm sm:text-base">
+            <p className="text-sm text-gray-600 sm:text-base">
               ({reviews.length} Ratings)
             </p>
           </div>
@@ -129,13 +129,13 @@ const ReviewSection = ({ productDetails }) => {
           {[5, 4, 3, 2, 1].map(star => (
             <div key={star} className="flex items-center mb-2 text-sm sm:text-base">
               <span className=" sm:w-8">{star} ★</span>
-              <div className="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+              <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
                 <div
-                  className="bg-gray-600 h-2 rounded-full"
+                  className="h-2 bg-gray-600 rounded-full"
                   style={{ width: getRatingPercentage(star) }}
                 />
               </div>
-              <span className="w-10 sm:w-12 text-right flex-shrink-0">
+              <span className="flex-shrink-0 w-10 text-right sm:w-12">
                 {getRatingPercentage(star)}
               </span>
             </div>
@@ -143,15 +143,15 @@ const ReviewSection = ({ productDetails }) => {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col gap-6 lg:flex-row">
         <div className="w-full lg:w-1/2">
-          <h3 className="text-xl sm:text-2xl font-bold mb-4">Leave A Comment</h3>
+          <h3 className="mb-4 text-xl font-bold sm:text-2xl">Leave A Comment</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row">
               <input
                 type="text"
                 placeholder="Your Name*"
-                className="w-full sm:w-1/2 p-3 border border-gray-300 rounded text-sm sm:text-base"
+                className="w-full p-3 text-sm border border-gray-300 rounded sm:w-1/2 sm:text-base"
                 value={name}
                 onChange={handleNameChange}
                 required
@@ -159,14 +159,14 @@ const ReviewSection = ({ productDetails }) => {
               <input
                 type="email"
                 placeholder="Your Email*"
-                className="w-full p-3 border border-gray-300 rounded text-sm sm:text-base"
+                className="w-full p-3 text-sm border border-gray-300 rounded sm:text-base"
                 value={email}
                 onChange={handleEmailChange}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Rating:</label>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Rating:</label>
               <div className="flex space-x-1 sm:space-x-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
@@ -188,12 +188,12 @@ const ReviewSection = ({ productDetails }) => {
             />
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 sm:px-4 py-2 sm:py-3 bg-white border border-gray-800 text-gray-800 font-medium rounded hover:bg-gray-100 text-sm sm:text-md"
+              className="w-full md:w-auto bg-[#103b60] rounded-md px-4 py-2 text-white font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
             >
-              SUBMIT REVIEWS
+              Submit Review
             </button>
             {error && (
-              <p className="text-red-500 text-sm">
+              <p className="text-sm text-red-500">
                 {error}
               </p>
             )}
@@ -205,24 +205,24 @@ const ReviewSection = ({ productDetails }) => {
             {displayedReviews.map((review, index) => (
               <div
                 key={index}
-                className="border-b border-gray-200 py-3"
+                className="py-3 border-b border-gray-200"
               >
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                  <span className="text-gray-800 font-bold">{review.user}</span>
-                    <div className="text-yellow-400 text-lg">
+                  <span className="font-bold text-gray-800">{review.user}</span>
+                    <div className="text-lg text-yellow-400">
                       {renderStars(review.rating)}
                     </div>
                   </div>
                   <span className="text-sm text-gray-500">{new Date(review.time).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}</span>
                 </div>
-                <p className="mt-2 text-gray-800 text-base">{review.comment}</p>
+                <p className="mt-2 text-base text-gray-800">{review.comment}</p>
               </div>
             ))}
             {reviews.length > 4 && (
               <button
                 onClick={() => setShowAllReviews(!showAllReviews)}
-                className="mt-4 text-black hover:underline text-sm sm:text-base"
+                className="mt-4 text-sm text-black hover:underline sm:text-base"
               >
                 {showAllReviews ? 'See less' : `See all (${reviews.length} reviews)`}
               </button>

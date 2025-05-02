@@ -80,11 +80,11 @@ export const PaymentDelivery = ({ savedAddresses }) => {
 
     return (
         <div className="min-h-screen py-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="md:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 className="md:mt-14 text-3xl font-bold text-gray-900 mb-8">Saved Addresses</h1>
                 <button
                     onClick={handleAddAddressClick}
-                    className="bg-[#30384E] text-white px-6 py-3 rounded-md hover:bg-[#242936] transition duration-300 flex items-center mb-8"
+                    className="bg-[#103b60] text-white px-6 py-3 rounded-md hover:bg-[#242936] transition duration-300 flex items-center mb-8"
                 >
                     <FiPlus className="mr-2" />
                     Add a new address

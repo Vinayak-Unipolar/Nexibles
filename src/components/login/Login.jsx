@@ -9,10 +9,12 @@ import Loader from '../comman/Loader';
 import { toast } from 'react-toastify';
 import ForgotPassword from './ForgotPassword';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { motion } from "framer-motion";
+import image from "../../../public/Pictures/Factory Facade.png";
 
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;
-    const APIURL = process.env.NEXT_PUBLIC_API_URL;  
+    const APIURL = process.env.NEXT_PUBLIC_API_URL;
     const [showPasswordRegister, setShowPasswordRegister] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
@@ -21,6 +23,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const router = useRouter();
     const { login } = useAuth();
+    const [isLogin, setIsLogin] = useState(true);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -45,7 +48,6 @@ function Login() {
                 localStorage.setItem('token', token);
             }
             else {
-                // toast.error(data.status)
                 toast.error("Invalid Email or Password");
             }
         } catch (error) {
@@ -54,7 +56,6 @@ function Login() {
         finally {
             setLoading(false);
         }
-
     }
 
     const [userDetails, setUserDetails] = useState({
@@ -157,6 +158,7 @@ function Login() {
                     password: "",
                     profImage: "",
                 })
+                setIsLogin(true);
             }
         } catch (error) {
             console.error('Error:', error.message);
@@ -167,162 +169,233 @@ function Login() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    const togglePasswordVisibilityRegister = () => setShowPasswordRegister(!showPasswordRegister); // Toggle for registration password
+
+    const togglePasswordVisibilityRegister = () => setShowPasswordRegister(!showPasswordRegister);
+
+    const toggleForm = () => {
+        setIsLogin(!isLogin);
+    };
+
     useEffect(() => {
     }, [userDetails]);
-
 
     return (
         <>
             {loading && <Loader btnLoad={false} />}
-            <div className="bg-white mt-20">
-                <div className="md:flex">
-                    <div className="md:w-1/2 w-full bg-white md:px-8 px-4 border-t py-4">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Log-in</h2>
-                        <hr />
-                        <p className="text-xl font-bold text-gray-900 py-2">Please login to access your account and explore amazing features.</p>
-                        <form onSubmit={handleLogin} action="" className="flex flex-col space-y-4 py-4">
-                            <div className="relative">
-                                <FaEnvelope className="absolute top-1/2 transform -translate-y-1/2 left-4 text-gray-900" />
-                                <input
-                                    type="email"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    value={email}
-                                    placeholder="Enter Your Email"
-                                    required
-                                    className="text-sm pl-12 w-full rounded-md border-2 border-gray-900 py-3 px-8 font-bold text-gray-900"
+            <div className="flex items-center justify-center  p-4 bg-white md:mt-24 my-12">
+                <div className="w-full max-w-4xl overflow-hidden ">
+                    <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
+                        {/* Image Section - Hidden on mobile */}
+                        <motion.div
+                            className="hidden md:block md:w-1/2"
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <div className="flex items-center justify-center h-full p-6 ">
+                                <img
+                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/create-an-account-with-nexibles.webp`}
+                                    alt="Auth illustration"
+                                    className="object-cover w-full h-full rounded-lg"
                                 />
                             </div>
-                            <div className="relative">
-                                <div>
-                                    <FaLock className="absolute top-1/2 transform -translate-y-1/2 left-4 text-gray-900" />
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        value={password}
-                                        placeholder="Enter Your Password"
-                                        required
-                                        className="text-sm pl-12 w-full rounded-md border-2 border-gray-900 py-3 px-8 font-bold text-gray-900"
-                                    />
-                                    <span
-                                        onClick={togglePasswordVisibility}
-                                        className="absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-gray-900"
-                                    >
-                                        {showPassword ? <FaEye /> : <FaEyeSlash />}
-                                    </span>
-                                </div>
-                            </div>
+                        </motion.div>
 
-                            <p onClick={() => setShowModal(true)} className="underline text-gray-600 cursor-pointer ml-2">Forgot Password</p>
-                            <p className="text-gray-900 text-sm mt-10">By signing in, you have read and agree to our General Terms and Conditions. For more details on how we use the information we collect about you, please read our Privacy and Cookie Policy.</p>
-                            <div className="mt-4">
-                                <button className="bg-[#30384E] rounded-md text-white px-8 py-2 " type="submit" >LOG-IN</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div className="md:w-1/2 w-full bg-gray-300 p-8">
-                        <div className="bg-white h-full w-full">
-                            {/*<div className="flex flex-col justify-center items-center">*/}
-                            <img
-                                src="/login/signup-placeholder-nexibles.jpg"
-                                alt="Login-placeholder"
-                                className="w-full h-full" />
-                            {/* <h2 className="text-gray-900 font-bold text-xl">Dont have an account sign-up...</h2>
-                                <div className="mt-6">
-                                  
-                                    <div className="space-y-4">
-                                        <div className="">
-                                            <button className="text-sm tracking-wider text-start md:w-[400px] w-full rounded-md  text-white bg-black px-8 py-3 flex items-center justify-between">
-                                                Continue with Google
-                                                <FaGoogle className="ml-2" size={20} />
-                                            </button>
+                        {/* Form Section */}
+                        <motion.div
+                            className="w-full p-6 overflow-y-auto bg-white md:p-8 md:w-1/2"
+                            initial={{ opacity: 0, x: 50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            {isLogin ? (
+                                <>
+                                    <h2 className="mb-4 mt-8 text-2xl font-bold text-center text-gray-900 md:text-3xl">Welcome back!</h2>
+                                    <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Enter to get unlimited access to data & information.</p>
+
+                                    <form onSubmit={handleLogin} className="flex flex-col space-y-4">
+                                        <div className="relative">
+                                            <FaEnvelope className="absolute text-gray-500 transform -translate-y-1/2 top-1/2 left-4" />
+                                            <input
+                                                type="email"
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                value={email}
+                                                placeholder="Enter your email address"
+                                                required
+                                                className="w-full rounded-lg border border-gray-300 py-2.5 pl-12 pr-4 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                            />
                                         </div>
-                                        <div className="">
-                                            <button className="text-sm tracking-wider text-start md:w-[400px] w-full rounded-md  text-white bg-black px-8 py-3 flex items-center justify-between">
-                                                Continue with Facebook
-                                                <FaFacebook className="ml-2" size={20} />
-                                            </button>
+
+                                        <div className="relative">
+                                            <FaLock className="absolute text-gray-500 transform -translate-y-1/2 top-1/2 left-4" />
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                value={password}
+                                                placeholder="Enter your password"
+                                                required
+                                                className="w-full rounded-lg border border-gray-300 py-2.5 pl-12 pr-10 text-gray-700 focus:border-[#103b60] focus:outline-none"
+                                            />
+                                            <span
+                                                onClick={togglePasswordVisibility}
+                                                className="absolute text-gray-500 transform -translate-y-1/2 cursor-pointer top-1/2 right-4"
+                                            >
+                                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                                            </span>
                                         </div>
-                                        <div className="">
-                                            <button className="text-sm tracking-wider text-start md:w-[400px] w-full rounded-md  text-white bg-black px-8 py-3 flex items-center justify-between">
-                                                Continue with Apple
-                                                <FaApple className="ml-2" size={20} />
-                                            </button>
+
+                                        <div className="flex items-center justify-end">
+                                            <div
+                                                onClick={() => setShowModal(true)}
+                                                className="text-sm font-medium text-[#103b60] hover:text-[#103b60] cursor-pointer"
+                                            >
+                                                Forgot password?
+                                            </div>
                                         </div>
-                                    </div>
-                                </div> */}
-                            {/*</div>*/}
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white border-t">
-                    <div className="px-8 py-4">
-                        <h2 className="text-gray-900 font-bold py-2 text-xl">Create an account with email.</h2>
-                        <div className="py-2">
-                            <form action="" onSubmit={handleRegister}>
-                                <div className="flex flex-wrap gap-10">
-                                    <div className="flex flex-col w-full md:w-1/5">
-                                        <label htmlFor="" className="text-gray-900 font-bold">First Name</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            className="border-b border-gray-900 text-gray-900 w-full outline-none"
-                                            value={userDetails.firstName}
-                                            onChange={(e) => { setUserDetails({ ...userDetails, firstName: e.target.value }) }}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col w-full md:w-1/5">
-                                        <label htmlFor="" className="text-gray-900 font-bold">Last Name</label>
-                                        <input
-                                            className="border-b border-gray-900 text-gray-900 w-full outline-none"
-                                            type="text"
-                                            required
-                                            value={userDetails.lastName}
-                                            onChange={(e) => { setUserDetails({ ...userDetails, lastName: e.target.value }) }}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col w-full md:w-1/5">
-                                        <label htmlFor="" className="text-gray-900 font-bold">Email</label>
-                                        <input
-                                            className="border-b border-gray-900 text-gray-900 w-full outline-none"
-                                            type="email"
-                                            required
-                                            value={userDetails.emailAddress}
-                                            onChange={(e) => { setUserDetails({ ...userDetails, emailAddress: e.target.value }) }}
-                                        />
-                                    </div>
-                                    <div className="flex flex-col w-full md:w-1/5 relative">
-                                        <label className="text-gray-900 font-bold">Password</label>
-                                        <input
-                                            className="border-b border-gray-900 text-gray-900 w-full outline-none"
-                                            type={showPasswordRegister ? "text" : "password"} // Toggle here for register password
-                                            required
-                                            value={userDetails.password}
-                                            onChange={(e) => setUserDetails({ ...userDetails, password: e.target.value })}
-                                        />
-                                        <span
-                                            onClick={togglePasswordVisibilityRegister}
-                                            className="absolute top-1/2 bottom-5 right-4 transform -translate-y-1/2 cursor-pointer text-gray-900"
+
+                                        <button
+                                            type="submit"
+                                            className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50"
                                         >
-                                            {showPasswordRegister ? <FaEye /> : <FaEyeSlash />}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="mt-4">
-                                    <button className="px-8 py-2 bg-[#111B36] text-white rounded-md  uppercase mt-6">create an account</button>
-                                </div>
-                            </form>
-                        </div>
+                                            Log in
+                                        </button>
 
-                        <div className="py-4">
-                            <p className="text-gray-900 text-sm">By registering with your email address or logging in using Google or Facebook or Apple, you consent to receive transactional, promotional and/or commercial messages from us We may use several modes of communication concerning your website usage. Registration also enables us to manage your stored designs: By clicking on the Create an Account bution, you agree to our General Terms and Conditions. View our Privacy and Cookie Policy. You also authorize us (Nexibles Pvt. Ltd.) ) and its representatives to contact you through Call, Email SMS or WhatsApp. This consent evemdes your registration under DNC/NDNC (this would mean we would contact you even if you are registered on any Do Not Disturb list prior to this account creation)</p>
-                        </div>
+                                        <div className="mt-4 text-center">
+                                            <p className="text-sm text-gray-600">
+                                                {`Don't have an account?`}{" "}
+                                                <span
+                                                    onClick={toggleForm}
+                                                    className="text-[#4F1E9B] cursor-pointer font-medium hover:underline"
+                                                >
+                                                    Register here
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </>
+                            ) : (
+                                <>
+                                    <h2 className="mb-4 text-2xl font-bold text-center text-gray-900 md:text-3xl">Create an account</h2>
+                                    <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Join us today and get access to all features</p>
+
+                                    <form onSubmit={handleRegister} className="space-y-4">
+                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                            <div className="flex flex-col">
+                                                <label htmlFor="firstName" className="mb-1 text-sm font-medium text-gray-700">
+                                                    First Name*
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="firstName"
+                                                    required
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none"
+                                                    value={userDetails.firstName}
+                                                    onChange={(e) => setUserDetails({ ...userDetails, firstName: e.target.value })}
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col">
+                                                <label htmlFor="lastName" className="mb-1 text-sm font-medium text-gray-700">
+                                                    Last Name*
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="lastName"
+                                                    required
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none"
+                                                    value={userDetails.lastName}
+                                                    onChange={(e) => setUserDetails({ ...userDetails, lastName: e.target.value })}
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col md:col-span-2">
+                                                <label htmlFor="email" className="mb-1 text-sm font-medium text-gray-700">
+                                                    Email Address*
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    required
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none"
+                                                    value={userDetails.emailAddress}
+                                                    onChange={(e) => setUserDetails({ ...userDetails, emailAddress: e.target.value })}
+                                                />
+                                            </div>
+
+                                            <div className="relative flex flex-col md:col-span-2">
+                                                <label htmlFor="password" className="mb-1 text-sm font-medium text-gray-700">
+                                                    Password*
+                                                </label>
+                                                <input
+                                                    type={showPasswordRegister ? "text" : "password"}
+                                                    id="password"
+                                                    required
+                                                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none pr-10"
+                                                    value={userDetails.password}
+                                                    onChange={(e) => setUserDetails({ ...userDetails, password: e.target.value })}
+                                                />
+                                                <span
+                                                    onClick={togglePasswordVisibilityRegister}
+                                                    className="absolute right-3 bottom-2.5 cursor-pointer text-gray-500"
+                                                >
+                                                    {showPasswordRegister ? <FaEye /> : <FaEyeSlash />}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="terms"
+                                                required
+                                                className="w-4 h-4 text-[#103b60] focus:ring-[#103b60] border-gray-300 rounded"
+                                            />
+                                            <label htmlFor="terms" className="block ml-2 text-xs text-gray-700 md:text-sm">
+                                                I agree to the Terms of Service and Privacy Policy
+                                            </label>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50"
+                                        >
+                                            Create account
+                                        </button>
+
+                                        <div className="text-center">
+                                            <p className="text-sm text-gray-600">
+                                                Already have an account?{" "}
+                                                <span
+                                                    onClick={toggleForm}
+                                                    className="text-[#4F1E9B] cursor-pointer font-medium hover:underline"
+                                                >
+                                                    Log in
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </>
+                            )}
+
+                            <div className="mt-6 text-xs text-center text-gray-500">
+                                <p>
+                                    By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
+                                    <Link href="#" className="text-[#4F1E9B] hover:underline">
+                                        Terms of Service
+                                    </Link>{" "}
+                                    and{" "}
+                                    <Link href="#" className="text-[#4F1E9B] hover:underline">
+                                        Privacy Policy
+                                    </Link>
+                                </p>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
                 {showModal && <ForgotPassword onClose={() => setShowModal(false)} />}
             </div>
         </>
-    )
+    );
 }
 
-export default Login
+export default Login;

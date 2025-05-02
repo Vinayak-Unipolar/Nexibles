@@ -15,20 +15,20 @@ export default function Card({ product, isLoading }) {
   };
 
   return (
-    <section className="bg-white w-full">
-      <div className="py-2 md:py-4 mb-6">
+    <section className="w-full bg-white">
+      <div className="py-2 mb-6 md:py-4">
         {product && product.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 px-4 md:px-6">
+          <div className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6 md:px-6">
             {product.map(data => (
               <div key={data.id} className="flex justify-center">
-                <Link 
+                <Link
                   href={createProductUrl(data.category, data.name, data.id)}
                   className="w-full max-w-xs transition-transform duration-300 hover:scale-105"
                 >
-                  <div className="h-full bg-gray-100 shadow-md rounded-lg overflow-hidden flex flex-col">
-                    <div className="relative h-44 sm:h-64 md:h-72 w-full">
+                  <div className="flex flex-col h-full overflow-hidden rounded-lg shadow-md">
+                    <div className="relative w-full h-44 sm:h-64 md:h-72">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_CDN_URL}/${data.image}`}
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${data.image}`}
                         alt={data.name}
                         layout="fill"
                         objectFit="contain"
@@ -37,8 +37,8 @@ export default function Card({ product, isLoading }) {
                         className="rounded-t-lg"
                       />
                     </div>
-                    <div className="py-3 px-4 flex-grow">
-                      <h3 className="text-gray-900 font-semibold text-sm md:text-base truncate">
+                    <div className="flex-grow px-4 py-3">
+                      <h3 className="text-sm font-semibold text-gray-900 truncate md:text-base">
                         {data.name}
                       </h3>
                     </div>
@@ -48,17 +48,17 @@ export default function Card({ product, isLoading }) {
             ))}
           </div>
         ) : (
-          <div className="flex justify-center items-center w-full py-16 md:py-24">
+          <div className="flex items-center justify-center w-full py-16 md:py-24">
             <div className="relative w-full max-w-xs md:max-w-sm">
-              <Image 
-                src={noproduct} 
-                alt="No Products Found" 
-                width={400} 
-                height={400} 
-                layout="responsive" 
+              <Image
+                src={noproduct}
+                alt="No Products Found"
+                width={400}
+                height={400}
+                layout="responsive"
                 placeholder="blur"
               />
-              <p className="text-center text-gray-500 mt-4">No products found</p>
+              <p className="mt-4 text-center text-gray-500">No products found</p>
             </div>
           </div>
         )}

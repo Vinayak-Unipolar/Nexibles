@@ -6,7 +6,7 @@ import faqsData from './faqsData'; // Assuming faqsData is exported from faqsDat
 
 const FAQs = () => {
     const [openState, setOpenState] = useState(null);
-
+ 
     const handleDropDown = (index) => {
         setOpenState(openState === index ? null : index);
     }

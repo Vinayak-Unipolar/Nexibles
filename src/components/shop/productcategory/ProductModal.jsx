@@ -121,9 +121,9 @@ const ProductModal = ({ isOpen, onClose, productDetails, productImages }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-4 md:px-20 md:rounded-lg shadow-lg w-full md:w-[90%] h-full md:h-[80vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl text-[#30384E]">{productDetails.product.name}</h2>
           <button onClick={onClose} className="text-3xl font-semibold text-[#30384E] hover:text-[#ff6b6b] transition duration-200 ease-in-out">
             &times;
@@ -144,7 +144,7 @@ const ProductModal = ({ isOpen, onClose, productDetails, productImages }) => {
                 >
                   {productImages.map((image, index) => (
                     <SwiperSlide key={index}>
-                      <div className="w-full h-full relative overflow-hidden">
+                      <div className="relative w-full h-full overflow-hidden">
                         <img
                           key={`${index}-${isZoomed}`}
                           onClick={handleImageClick}
@@ -152,8 +152,7 @@ const ProductModal = ({ isOpen, onClose, productDetails, productImages }) => {
                           onTouchStart={handleTouchStart}
                           onTouchMove={handleTouchMove}
                           onTouchEnd={handleTouchEnd}
-                          // src={image || `${process.env.NEXT_PUBLIC_CDN_URL}/product/${productDetails.product.image}`}
-                          src={image || `${process.env.NEXT_PUBLIC_CDN_URL}/${productDetails.product.image}`}
+                          src={image || `${process.env.NEXT_PUBLIC_CDN_URL}/product/${productDetails.product.image}`}
                           alt="Product"
                           className={`w-full h-full object-contain transition-transform duration-300 ${
                             isZoomed ? 'scale-[200%] cursor-zoom-out' : 'scale-100 cursor-zoom-in'
@@ -193,8 +192,8 @@ const ProductModal = ({ isOpen, onClose, productDetails, productImages }) => {
             </div>
           </div>
           <div className="w-full md:w-[30%] mt-6 md:mt-0">
-            <p className="hidden md:block text-gray-700 mt-6 text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: productDetails.product.description }} />
-            <div className="flex mt-4 overflow-x-auto fixed bottom-0 left-0 right-0 bg-white z-10 p-2 md:static md:bg-transparent">
+            <p className="hidden mt-6 text-lg leading-relaxed text-gray-700 md:block" dangerouslySetInnerHTML={{ __html: productDetails.product.description }} />
+            <div className="fixed bottom-0 left-0 right-0 z-10 flex p-2 mt-4 overflow-x-auto bg-white md:static md:bg-transparent">
               {productImages.map((image, index) => (
                 <div
                   key={index}
@@ -206,7 +205,7 @@ const ProductModal = ({ isOpen, onClose, productDetails, productImages }) => {
                   <img
                     src={image}
                     alt={`Product view ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                   />
                 </div>
               ))}

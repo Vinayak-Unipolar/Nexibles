@@ -53,7 +53,7 @@ export default function TrendingProducts() {
   };
 
   return (
-    <div className="bg-white p-4 md:mt-8">
+    <div className="p-4 bg-white md:mt-8">
       {/* Tabs with sliding indicator */}
       <div className="flex justify-center mb-12">
         <div className="relative inline-flex bg-gray-100 rounded-xl p-1.5">
@@ -63,7 +63,7 @@ export default function TrendingProducts() {
               <div key={tab} className="relative">
                 <button
                   onClick={() => fetchTabProducts(tab)}
-                  className="relative z-10 px-4 py-2 text-sm font-semibold rounded-xl text-gray-700"
+                  className="relative z-10 px-4 py-2 text-sm font-semibold text-gray-700 rounded-xl"
                 >
                   {tab}
                 </button>
@@ -100,15 +100,15 @@ export default function TrendingProducts() {
                 <Link
                   href={`/product/${encodeURIComponent(product.category.toLowerCase()).replace(/%20/g, '-')}/${encodeURIComponent(product.name.toLowerCase()).replace(/%20/g, '-')}/${product.id}`}
                 >
-                  <div className="flex-grow flex items-center justify-center h-56">
+                  <div className="flex items-center justify-center flex-grow h-56">
                     <img
-                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/${product.image}`}
+                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
                       alt={product.alt || product.name}
-                      className="max-w-full max-h-48 object-contain"
+                      className="object-contain max-w-full max-h-48"
                     />
                   </div>
                   <div className="mt-4 text-center">
-                    <p className="text-black font-bold text-xs uppercase tracking-wider">
+                    <p className="text-xs font-bold tracking-wider text-black uppercase">
                       {product.name || "STAND UP POUCH"}
                     </p>
                   </div>
@@ -120,13 +120,13 @@ export default function TrendingProducts() {
           Array(8).fill(null).map((_, index) => (
             <div
               key={index}
-              className="border border-gray-200 rounded-lg p-4 flex flex-col shadow-md"
+              className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md"
             >
-              <div className="flex-grow flex items-center justify-center h-56">
-                <div className="bg-gray-200 w-36 h-40 rounded animate-pulse"></div>
+              <div className="flex items-center justify-center flex-grow h-56">
+                <div className="h-40 bg-gray-200 rounded w-36 animate-pulse"></div>
               </div>
               <div className="mt-4 text-center">
-                <div className="bg-gray-200 h-4 w-32 mx-auto rounded animate-pulse"></div>
+                <div className="w-32 h-4 mx-auto bg-gray-200 rounded animate-pulse"></div>
               </div>
             </div>
           ))

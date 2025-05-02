@@ -7,17 +7,17 @@ const QuantityDropdown = ({ quantityOptions, selectedQuantity, isDropdownOpen, s
   return (
     <div className="relative">
       <div
-        className="border border-gray-300 rounded-lg px-4 py-2 flex justify-between items-center cursor-pointer"
+        className="flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg cursor-pointer"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         <span>Quantity</span>
-        <div className='flex justify-between items-center cursor-pointer gap-2'>
+        <div className='flex items-center justify-between gap-2 cursor-pointer'>
           <span>{selectedQuantity} (₹{selectedOption?.price.toFixed(2)}/unit)</span>
           <span><IoIosArrowDown /></span>
         </div>
       </div>
       {isDropdownOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 w-full mt-1 overflow-auto bg-white border border-gray-300 rounded-lg shadow-lg max-h-60">
           {quantityOptions.map((option, index) => (
             <div
               key={index}
@@ -27,7 +27,7 @@ const QuantityDropdown = ({ quantityOptions, selectedQuantity, isDropdownOpen, s
                 setIsDropdownOpen(false);
               }}
             >
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span>{option.quantity} (₹{option.price.toFixed(2)}/unit)</span>
               </div>
             </div>

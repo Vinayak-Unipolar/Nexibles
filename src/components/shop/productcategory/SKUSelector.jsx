@@ -18,15 +18,15 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.3 }
   }
 };
 
 const buttonVariants = {
-  hover: { 
+  hover: {
     scale: 1.05,
     boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)"
   },
@@ -55,7 +55,6 @@ export default function SKUSelector({
         try {
             if (navigator.share) {
                 await navigator.share(shareData);
-                console.log('Product shared successfully!');
             } else {
                 alert('Share functionality is not supported in your browser. Copy the URL manually: ' + window.location.href);
             }
@@ -65,29 +64,29 @@ export default function SKUSelector({
     };
 
     return (
-        <motion.div 
+        <motion.div
             className="mt-3"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
         >
-            <motion.label 
-                htmlFor="skuSelect" 
-                className="block text-sm font-medium text-black mb-1"
+            <motion.label
+                htmlFor="skuSelect"
+                className="block mb-1 text-sm font-medium text-black"
                 variants={itemVariants}
             >
                 SKUs:
             </motion.label>
-            <div className="md:flex w-full items-center">
-                <motion.div 
-                    className="md:w-1/6 md:pr-1 md:pb-0 pb-2"
+            <div className="items-center w-full md:flex">
+                <motion.div
+                    className="pb-2 md:w-1/6 md:pr-1 md:pb-0"
                     variants={itemVariants}
                 >
                     <select
                         id="skuSelect"
                         value={selectedSKU}
                         onChange={handleSKUChange}
-                        className="w-full p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-sm bg-gray-100 h-10"
+                        className="w-full h-10 p-2 text-sm bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                         disabled={numberOfSKUs < 1}
                     >
                         {Array.from({ length: numberOfSKUs }, (_, index) => (
@@ -97,14 +96,14 @@ export default function SKUSelector({
                         ))}
                     </select>
                 </motion.div>
-                <motion.div 
+                <motion.div
                     className="md:w-1/2 md:pl-1"
                     variants={itemVariants}
                 >
                     {(parseInt(selectedQuantity, 10) || 0) >= minimumQuantity ? (
                         <motion.button
                             onClick={handleAddToCart}
-                            className="w-full md:w-auto text-xs bg-white rounded-md border border-black px-20 py-2 text-black font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
+                            className="flex items-center justify-center w-full h-10 gap-2 px-20 py-2 text-xs font-medium text-white transition-all duration-200 bg-[#103b60] rounded-md shadow-sm md:w-auto"
                             variants={buttonVariants}
                             whileHover="hover"
                             whileTap="tap"
@@ -130,7 +129,7 @@ export default function SKUSelector({
                     ) : (
                         <motion.button
                             onClick={handleAddToCart}
-                            className="w-full md:w-auto bg-[#30384E] rounded-md px-4 py-2 text-white font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
+                            className="w-full md:w-auto bg-[#103b60] rounded-md px-4 py-2 text-white font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
                             variants={buttonVariants}
                             whileHover="hover"
                             whileTap="tap"
@@ -156,7 +155,7 @@ export default function SKUSelector({
                     )}
                 </motion.div>
             </div>
-            <motion.div 
+            <motion.div
                 className="mt-2 text-center md:text-left"
                 variants={itemVariants}
             >
@@ -170,9 +169,9 @@ export default function SKUSelector({
                         whileHover={{ rotate: 20 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <IoShareSocial size={35} className='border border-gray-300 rounded-lg p-2' />
+                        <IoShareSocial size={35} className='p-2 border border-gray-300 rounded-lg' />
                     </motion.div>
-                    Share Products
+                    Share Product
                 </motion.button>
             </motion.div>
         </motion.div>

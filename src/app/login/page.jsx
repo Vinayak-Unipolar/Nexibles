@@ -8,7 +8,7 @@ function Page() {
     return (
         <div>
             <Navbar />
-            <div className='containers'>
+            <div className=''>
             <Login />
             </div>
             <Footer />

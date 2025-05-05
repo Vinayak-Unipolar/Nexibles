@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 'use client';
+=======
+'use client'
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -41,6 +45,7 @@ const Configuration = () => {
   const [token, setToken] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+<<<<<<< HEAD
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isWidthOpen, setIsWidthOpen] = useState(false);
   const [isLengthOpen, setIsLengthOpen] = useState(false);
@@ -53,6 +58,9 @@ const Configuration = () => {
   const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState(Array(quantity).fill(false));
 
   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
+=======
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false); // Fixed: Changed useRef to useState
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -220,32 +228,48 @@ const Configuration = () => {
 
           const mandatory = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
+<<<<<<< HEAD
                 .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
                 .map((p) => ({
                   value: p.id,
                   label: p.process_name,
                 }))
+=======
+              .filter((p) => p.mandatory_any_one)
+              .map((p) => ({
+                value: p.id,
+                label: p.process_name,
+              }))
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
             : [];
           setMandatoryProcesses(mandatory);
           setSelectedMandatoryProcess(mandatory[0] || null);
 
           const optional = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
-                .filter((p) => p.optional && !p.mandatory_any_one)
-                .map((p) => ({
-                  id: p.id,
-                  name: p.process_name,
-                }))
+              .filter((p) => p.optional && !p.mandatory_any_one)
+              .map((p) => ({
+                id: p.id,
+                name: p.process_name,
+              }))
             : [];
           setOptionalProcesses(optional);
 
           const zippers = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
+<<<<<<< HEAD
                 .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
                 .map((p) => ({
                   value: p.id,
                   label: p.process_name,
                 }))
+=======
+              .filter((p) => p.mandatory_any_one)
+              .map((p) => ({
+                value: p.id,
+                label: p.process_name,
+              }))
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
             : [];
           setZipperOptions(zippers);
 
@@ -311,6 +335,7 @@ const Configuration = () => {
     };
   }, [user, router, loginForThirdParty, fetchProductData, fetchCategoryData]);
 
+<<<<<<< HEAD
   useEffect(() => {
     setIsSkuQuantityOpen(Array(quantity).fill(false));
   }, [quantity]);
@@ -336,6 +361,8 @@ const Configuration = () => {
     selectedQuantities,
   ]);
 
+=======
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
   const handleMultiProcessChange = (processId) => {
     setSelectedMultiProcesses((prev) =>
       prev.includes(processId)
@@ -358,15 +385,28 @@ const Configuration = () => {
     setError(null);
   
     try {
+<<<<<<< HEAD
       // Always fetch a fresh token for critical actions
       const authToken = await loginForThirdParty();
       if (!authToken) throw new Error('Authentication token is missing.');
   
+=======
+      let authToken = token || localStorage.getItem('token2');
+      if (!authToken) {
+        authToken = await loginForThirdParty();
+        if (!authToken) throw new Error('No authentication token');
+      }
+
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
       if (!jobName) throw new Error('Project name is required');
       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
       if (!selectedMandatoryProcess) throw new Error('Mandatory process is required');
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
       const normalizedCategoryName = categoryName?.trim().toLowerCase();
       const optionalProcessIds = [
@@ -375,7 +415,11 @@ const Configuration = () => {
         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
         ...selectedMultiProcesses,
       ].filter(Boolean);
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
       const payload = {
         formData: {
           job_name: jobName || 'Untitled Project',
@@ -435,6 +479,7 @@ const Configuration = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleAddToCart = () => {
     if (!costData || !product) {
       toast.error('Cannot add to cart: Missing cost or product data');
@@ -483,11 +528,15 @@ const Configuration = () => {
     toast.success('Product added to cart successfully!');
   };
 
+=======
+  // Compute normalized category name using useMemo for immediate updates
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
   const normalizedCategoryName = useMemo(() => {
     const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name || '';
     return categoryName.trim().toLowerCase();
   }, [selectedCategory, categories]);
 
+<<<<<<< HEAD
   const sealOptions = useMemo(
     () =>
       optionalProcesses
@@ -527,6 +576,29 @@ const Configuration = () => {
         .map((p) => ({ id: p.id, name: p.name })),
     [optionalProcesses, selectedSeal, radiusSealId]
   );
+=======
+  const sealOptions = optionalProcesses
+    .filter((p) => ['K-Seal', 'Radius Seal'].includes(p.name))
+    .map((p) => ({ value: p.id, label: p.name }));
+  const hangHoleOptions = optionalProcesses
+    .filter((p) => ['D-Cut Handle Punch', 'Euro Hang Hole', 'Round Hang Hole'].includes(p.name))
+    .map((p) => ({ value: p.id, label: p.name }));
+  const pouchOpeningOptions = normalizedCategoryName !== 'stand up pouch'
+    ? optionalProcesses
+      .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
+      .map((p) => ({ value: p.id, label: p.name }))
+    : [];
+
+  const radiusSealId = sealOptions.find((s) => s.label === 'Radius Seal')?.value;
+  const multiSelectOptions = optionalProcesses
+    .filter((p) => {
+      if (p.name === 'Round Corner') {
+        return selectedSeal === radiusSealId;
+      }
+      return ['Tear Notch', 'Valve'].includes(p.name);
+    })
+    .map((p) => ({ id: p.id, name: p.name }));
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
 
   if (process.env.NODE_ENV === 'development') {
     console.log('Selected Category ID:', selectedCategory);
@@ -717,6 +789,7 @@ const Configuration = () => {
 
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Width</label>
+<<<<<<< HEAD
                       <div className="relative">
                         <button
                           type="button"
@@ -760,10 +833,30 @@ const Configuration = () => {
                           </div>
                         )}
                       </div>
+=======
+                      <select
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                        value={selectedWidth?.value || ''}
+                        onChange={(e) => {
+                          const selected = sizeOptions.widths.find((w) => w.value === parseInt(e.target.value));
+                          setSelectedWidth(selected);
+                        }}
+                      >
+                        <option value="">
+                          Select width
+                        </option>
+                        {sizeOptions.widths?.map((width, idx) => (
+                          <option key={idx} value={width.value}>
+                            {width.label}
+                          </option>
+                        ))}
+                      </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                     </div>
 
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Length</label>
+<<<<<<< HEAD
                       <div className="relative">
                         <button
                           type="button"
@@ -807,10 +900,30 @@ const Configuration = () => {
                           </div>
                         )}
                       </div>
+=======
+                      <select
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                        value={selectedLength?.value || ''}
+                        onChange={(e) => {
+                          const selected = sizeOptions.lengths.find((l) => l.value === parseInt(e.target.value));
+                          setSelectedLength(selected);
+                        }}
+                      >
+                        <option value="">
+                          Select length
+                        </option>
+                        {sizeOptions.lengths?.map((length, idx) => (
+                          <option key={idx} value={length.value}>
+                            {length.label}
+                          </option>
+                        ))}
+                      </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                     </div>
 
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Material</label>
+<<<<<<< HEAD
                       <div className="relative">
                         <button
                           type="button"
@@ -854,6 +967,25 @@ const Configuration = () => {
                           </div>
                         )}
                       </div>
+=======
+                      <select
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                        value={selectedMaterial?.value || ''}
+                        onChange={(e) => {
+                          const selected = materialOptions.find((m) => m.value === e.target.value);
+                          setSelectedMaterial(selected);
+                        }}
+                      >
+                        <option value="">
+                          Select material
+                        </option>
+                        {materialOptions.map((material, idx) => (
+                          <option key={idx} value={material.value}>
+                            {material.label}
+                          </option>
+                        ))}
+                      </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                       {selectedMaterial && (
                         <p className="text-sm text-gray-500 mt-1">
                           Available widths: {selectedMaterial.widths.join(', ')} mm
@@ -863,6 +995,7 @@ const Configuration = () => {
 
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Mandatory Process</label>
+<<<<<<< HEAD
                       <div className="relative">
                         <button
                           type="button"
@@ -908,6 +1041,27 @@ const Configuration = () => {
                           </div>
                         )}
                       </div>
+=======
+                      <select
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                        value={selectedMandatoryProcess?.value || ''}
+                        onChange={(e) => {
+                          const selected = mandatoryProcesses.find((p) => p.value === e.target.value);
+                          setSelectedMandatoryProcess(selected);
+                        }}
+                      >
+                        <option value="">
+                          Select mandatory process
+                        </option>
+                        {mandatoryProcesses
+                          .filter((process) => process.label !== 'Aplix Zipper')
+                          .map((process, idx) => (
+                            <option key={idx} value={process.value}>
+                              {process.label}
+                            </option>
+                          ))}
+                      </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                     </div>
                   </div>
                 </div>
@@ -1034,6 +1188,7 @@ const Configuration = () => {
                     Optional Processes
                   </h2>
                   <div className="bg-gray-50 p-6 rounded-xl space-y-6">
+<<<<<<< HEAD
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {sealOptions.length > 0 && (
                         <div>
@@ -1081,12 +1236,31 @@ const Configuration = () => {
                               </div>
                             )}
                           </div>
+=======
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                      {sealOptions.length > 0 && (
+                        <div>
+                          <label className="block text-gray-700 font-medium mb-2">Seal Type</label>
+                          <select
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                            value={selectedSeal}
+                            onChange={(e) => setSelectedSeal(e.target.value)}
+                          >
+                            <option value="">Select seal type</option>
+                            {sealOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                         </div>
                       )}
 
                       {hangHoleOptions.length > 0 && (
                         <div>
                           <label className="block text-gray-700 font-medium mb-2">Hang Hole</label>
+<<<<<<< HEAD
                           <div className="relative">
                             <button
                               type="button"
@@ -1130,12 +1304,27 @@ const Configuration = () => {
                               </div>
                             )}
                           </div>
+=======
+                          <select
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                            value={selectedHangHole}
+                            onChange={(e) => setSelectedHangHole(e.target.value)}
+                          >
+                            <option value="">Select hang hole</option>
+                            {hangHoleOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                         </div>
                       )}
 
                       {pouchOpeningOptions.length > 0 && selectedCategory && (
                         <div className={normalizedCategoryName === 'stand up pouch' ? 'hidden' : ''}>
                           <label className="block text-gray-700 font-medium mb-2">Pouch Opening</label>
+<<<<<<< HEAD
                           <div className="relative">
                             <button
                               type="button"
@@ -1179,6 +1368,20 @@ const Configuration = () => {
                               </div>
                             )}
                           </div>
+=======
+                          <select
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white"
+                            value={selectedPouchOpening}
+                            onChange={(e) => setSelectedPouchOpening(e.target.value)}
+                          >
+                            <option value="">Select pouch opening</option>
+                            {pouchOpeningOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
                         </div>
                       )}
                     </div>
@@ -1282,6 +1485,7 @@ const Configuration = () => {
               </div>
 
               <div className="mt-8 space-y-4">
+<<<<<<< HEAD
                 {isQuotationGenerated ? (
                   <motion.button
                     className="w-full py-3 px-4 font-medium rounded-lg bg-[#103b60] text-white hover:bg-[#0a2b47] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#103b60]"
@@ -1304,6 +1508,18 @@ const Configuration = () => {
                     {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
                   </motion.button>
                 )}
+=======
+                <motion.button
+                  className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
+                    }`}
+                  whileHover={{ scale: isQuotationLoading ? 1 : 1.02 }}
+                  whileTap={{ scale: isQuotationLoading ? 1 : 0.98 }}
+                  onClick={handleRequestQuotation}
+                  disabled={isQuotationLoading}
+                >
+                  {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
+                </motion.button>
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070
               </div>
             </motion.div>
           </div>
@@ -1313,6 +1529,7 @@ const Configuration = () => {
   );
 };
 
+<<<<<<< HEAD
 export default Configuration;
 
 
@@ -5162,3 +5379,6 @@ export default Configuration;
 // };
 
 // export default Configuration;
+=======
+export default Configuration;
+>>>>>>> 52746f7f722546f47ec1526a71357ea4e62d5070

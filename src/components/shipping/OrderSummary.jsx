@@ -13,7 +13,6 @@ export default function OrderSummary({
   const { items: cartItems, appliedCoupon } = useSelector((state) => state.cart);
   const GST_RATE = 0.18;
 
-  // If props are not passed, calculate locally as a fallback
   const calculatedSubTotal = cartItems.reduce(
     (total, item) => total + parseFloat(item.totalPrice || 0),
     0

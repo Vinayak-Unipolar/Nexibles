@@ -12,13 +12,12 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useAuth } from "@/utils/authContext";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [showPersonDropdown, setShowPersonDropdown] = useState(false);
-  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false); // Added dropdown state
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const { user, logout } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
@@ -59,17 +58,16 @@ const Navbar = () => {
     { name: "Industries", path: "/businesses" },
     {
       name: "Shop",
-      path: "#", // Using '#' since Shop is a dropdown
+      path: "#",
       dropdown: [
-        { name: "Standard Pouch", path: "/shop" },
-        { name: "Custom Size Pouch", path: "/configuration-tool" },
+        { name: "Nexi Classic", path: "/shop" },
+        { name: "Customize Pouch", path: "/configuration-tool" },
       ],
     },
     { name: "Request Quote", path: "/request-quote" },
     { name: "Configuration Tool", path: "/configuration-tool" },
     { name: "About Nexibles", path: "/about" },
     { name: "Contact Us", path: "/contact" },
-    {name:"Customize Pouch", path:"/configuration-tool"},
   ];
 
   // Animation variants
@@ -132,7 +130,7 @@ const Navbar = () => {
           hasScrolled ? "bg-white shadow-xl" : "bg-white"
         }`}
       >
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container flex items-center justify-between h-16 px-4 mx-auto">
           <motion.div
             initial="hidden"
             animate={isNavbarInView ? "visible" : "hidden"}
@@ -140,7 +138,7 @@ const Navbar = () => {
           >
             <Link href="/" className="flex-shrink-0">
               <Image
-                src="/home/nexible.gif"
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/Nexibles_Logo.gif`}
                 alt="Nexibles"
                 width={100}
                 height={30}
@@ -150,7 +148,7 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="items-center hidden space-x-6 md:flex">
             {navItems.slice(1, 5).map((item, index) => (
               <motion.div
                 key={item.name}
@@ -163,14 +161,14 @@ const Navbar = () => {
                 {item.dropdown ? (
                   <div className="relative">
                     <button
-                      onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)} // Toggle dropdown
-                      className="text-black text-xs sm:text-md flex items-center space-x-1"
+                      onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)}
+                      className="flex items-center space-x-1 text-xs text-black sm:text-md"
                     >
                       {item.name} <RiArrowDropDownLine size={16} />
                     </button>
                     {isShopDropdownOpen && (
                       <motion.div
-                        className="absolute left-0 top-full mt-2 bg-white text-gray-900 p-4 shadow-md rounded-md"
+                        className="absolute left-0 mt-2 text-gray-900 bg-white rounded-md shadow-md top-full"
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
@@ -180,22 +178,25 @@ const Navbar = () => {
                           <Link
                             key={dropdownItem.name}
                             href={dropdownItem.path}
-                            className="block px-4 py-2 text-gray-900 text-sm font-medium whitespace-nowrap"
-                            onClick={() => setIsShopDropdownOpen(false)} // Close dropdown on item click
+                            className="block px-4 py-2 text-sm font-medium text-gray-900 whitespace-nowrap"
+                            onClick={() => setIsShopDropdownOpen(false)}
                           >
                             {dropdownItem.name}
                           </Link>
                         ))}
                       </motion.div>
                     )}
+                    
                   </div>
                 ) : (
-                  <Link href={item.path} className="text-black text-xs sm:text-md hover:underline">
+                  <Link href={item.path} className="text-xs text-black sm:text-md hover:underline">
                     {item.name}
                   </Link>
                 )}
+                
               </motion.div>
             ))}
+            
           </div>
 
           <div className="flex items-center space-x-4">
@@ -209,7 +210,7 @@ const Navbar = () => {
                 <div className="relative">
                   <IoCartOutline size={24} />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-blue-900 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-900 rounded-full -top-2 -right-2">
                       {cartItemCount}
                     </span>
                   )}
@@ -229,7 +230,7 @@ const Navbar = () => {
               <AnimatePresence>
                 {showPersonDropdown && (
                   <motion.div
-                    className="absolute top-full right-0 mt-2 bg-white text-gray-900 p-4 shadow-md flex flex-col items-center w-40 rounded-md"
+                    className="absolute right-0 flex flex-col items-center w-40 p-4 mt-2 text-gray-900 bg-white rounded-md shadow-md top-full"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -264,7 +265,7 @@ const Navbar = () => {
             </motion.div>
 
             <motion.button
-              className="md:hidden text-gray-900 z-50"
+              className="z-50 text-gray-900 md:hidden"
               onClick={toggleMenu}
               whileTap={{ scale: 0.95 }}
               custom={3}
@@ -291,14 +292,14 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 bg-white z-40 flex flex-col"
+            className="fixed inset-0 z-40 flex flex-col bg-white"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={mobileMenuVariants}
           >
-            <div className="flex justify-between items-center px-6 py-4 border-b shadow-sm">
-              <div className="text-black font-bold text-lg">
+            <div className="flex items-center justify-between px-6 py-4 border-b shadow-sm">
+              <div className="text-lg font-bold text-black">
                 NE<span className="text-red-600">•</span>IBLES
               </div>
               <div className="flex items-center space-x-4">
@@ -312,11 +313,38 @@ const Navbar = () => {
                     <IoCartOutline size={24} />
                   </Link>
                 </motion.div>
+                <motion.div
+                  custom={1}
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                >
+                  <Link href="/login">
+                    <IoPersonOutline size={24} />
+                  </Link>
+                </motion.div>
+                <button className="text-black">
+                  <span className="text-sm">ENGLISH</span>
+                  <RiArrowDropDownLine size={20} className="inline" />
+                </button>
+                <motion.button onClick={toggleMenu}>
+                  <IoCloseOutline size={24} />
+                </motion.button>
               </div>
             </div>
 
-            <div className="px-6">
-              {navItems.map((item, index) => (
+            <div className="flex-1 px-6 py-4 overflow-y-auto">
+              {[
+                { name: "Home", path: "/" },
+                { name: "Pouches", path: "/all-category" },
+                { name: "Industries", path: "/businesses" },
+                { name: "Shop - Nexi Classic", path: "/shop" },
+                { name: "Customize Pouch", path: "/configuration-tool" },
+                { name: "Request Quote", path: "/request-quote" },
+                // { name: "Configuration Tool", path: "/configuration-tool" },
+                { name: "About Nexibles", path: "/about" },
+                { name: "Contact Us", path: "/contact" },
+              ].map((item, index) => (
                 <motion.div
                   key={item.name}
                   custom={index}
@@ -326,7 +354,9 @@ const Navbar = () => {
                 >
                   <Link
                     href={item.path}
-                    className="block py-4 text-sm font-medium text-gray-800"
+                    className={`block py-3 text-2xl font-medium text-gray-800 ${
+                      item.indent ? "pl-6" : ""
+                    }`}
                     onClick={toggleMenu}
                   >
                     {item.name}
@@ -334,6 +364,20 @@ const Navbar = () => {
                 </motion.div>
               ))}
             </div>
+
+            <motion.div
+              className="px-6 py-6 bg-[#30384E] text-white"
+              initial="hidden"
+              animate="visible"
+              variants={contactVariants}
+            >
+              <h3 className="text-xl font-semibold mb-4">MEET WITH US</h3>
+              <p className="text-lg leading-relaxed mb-4">
+              Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
+              </p>
+              <h3 className="text-lg font-semibold mb-2">CALL US</h3>
+              <p className="text-sm">+91 9821045101</p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

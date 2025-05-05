@@ -84,7 +84,7 @@ const HeaderSection = () => {
         const data = await response.json();
         const transformed = data.map((item) => ({
           bgMedia: `${BASE_IMAGE_URL}/${item.image}`,
-          link: item.link || "/shop",
+          link: item.link,
           title: item.title,
         }));
         setSlides(transformed);
@@ -177,7 +177,7 @@ const HeaderSection = () => {
                 }}
                 className="absolute inset-0 w-full h-full"
               >
-                <Link href="/all-category">
+                <div>
                   <div className="relative md:mt-[6vh] mt-[6vh] h-[30vh] md:w-full md:h-full">
                     <MediaComponent
                       media={slide.bgMedia}
@@ -185,8 +185,6 @@ const HeaderSection = () => {
                       isActive={true}
                       onVideoEnd={handleVideoEnd}
                     />
-
-                    {/* Text Overlay - Only shown on the first slide */}
                     {index === 0 && (
                       <motion.div
                         className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]"
@@ -199,7 +197,7 @@ const HeaderSection = () => {
                           style={outlineTextStyle}
                           variants={textVariants}
                         >
-                          ENDLESS POUCHES
+                          DIGITALLY PRINTED
                         </motion.h2>
                         <motion.h1
                           className="text-[7vw] md:text-[7.6vw] tracking-wider text-center font-[1000] italic"
@@ -241,7 +239,7 @@ const HeaderSection = () => {
                       </motion.div>
                     )}
                   </div>
-                </Link>
+                </div>
               </motion.div>
             )
         )}
@@ -249,7 +247,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute left-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Previous slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
@@ -271,7 +269,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute right-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
         aria-label="Next slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}

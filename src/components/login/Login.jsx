@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import ForgotPassword from './ForgotPassword';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
-import image from "../../../public/Pictures/Factory Facade.png";
 
 function Login() {
     const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -182,9 +181,9 @@ function Login() {
     return (
         <>
             {loading && <Loader btnLoad={false} />}
-            <div className="flex items-center justify-center min-h-screen p-4 bg-white sm:mt-14">
-                <div className="w-full max-w-4xl overflow-hidden border shadow-xl rounded-xl">
-                    <div className="flex flex-col md:flex-row h-auto md:h-[550px]">
+            <div className="flex items-center justify-center  p-4 bg-white md:mt-24 my-12">
+                <div className="w-full max-w-4xl overflow-hidden ">
+                    <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
                         {/* Image Section - Hidden on mobile */}
                         <motion.div
                             className="hidden md:block md:w-1/2"
@@ -192,11 +191,11 @@ function Login() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <div className="flex items-center justify-center h-full p-6 bg-gray-100">
+                            <div className="flex items-center justify-center h-full p-6 ">
                                 <img
-                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/Create%20an%20account.webp`}
+                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/create-an-account-with-nexibles.webp`}
                                     alt="Auth illustration"
-                                    className="object-cover w-full h-full rounded-lg shadow-lg"
+                                    className="object-cover w-full h-full rounded-lg"
                                 />
                             </div>
                         </motion.div>
@@ -210,7 +209,7 @@ function Login() {
                         >
                             {isLogin ? (
                                 <>
-                                    <h2 className="mb-4 text-2xl font-bold text-center text-gray-900 md:text-3xl">Welcome back!</h2>
+                                    <h2 className="mb-4 mt-8 text-2xl font-bold text-center text-gray-900 md:text-3xl">Welcome back!</h2>
                                     <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Enter to get unlimited access to data & information.</p>
 
                                     <form onSubmit={handleLogin} className="flex flex-col space-y-4">
@@ -265,7 +264,7 @@ function Login() {
                                                 {`Don't have an account?`}{" "}
                                                 <span
                                                     onClick={toggleForm}
-                                                    className="text-[#103b60] cursor-pointer font-medium hover:underline"
+                                                    className="text-[#4F1E9B] cursor-pointer font-medium hover:underline"
                                                 >
                                                     Register here
                                                 </span>
@@ -367,7 +366,7 @@ function Login() {
                                                 Already have an account?{" "}
                                                 <span
                                                     onClick={toggleForm}
-                                                    className="text-[#103b60] cursor-pointer font-medium hover:underline"
+                                                    className="text-[#4F1E9B] cursor-pointer font-medium hover:underline"
                                                 >
                                                     Log in
                                                 </span>
@@ -380,11 +379,11 @@ function Login() {
                             <div className="mt-6 text-xs text-center text-gray-500">
                                 <p>
                                     By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
-                                    <Link href="#" className="text-[#103b60] hover:underline">
+                                    <Link href="#" className="text-[#4F1E9B] hover:underline">
                                         Terms of Service
                                     </Link>{" "}
                                     and{" "}
-                                    <Link href="#" className="text-[#103b60] hover:underline">
+                                    <Link href="#" className="text-[#4F1E9B] hover:underline">
                                         Privacy Policy
                                     </Link>
                                 </p>

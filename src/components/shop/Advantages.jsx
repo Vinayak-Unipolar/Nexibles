@@ -1,4 +1,3 @@
-import aboutimage from '../../../public/home/aboutimage.jpg'
 export default function Advantages() {
   return (
     <div className="mb-4 h-auto">
@@ -34,7 +33,7 @@ export default function Advantages() {
         <div className="md:w-1/2 w-full mt-8">
           <img
             // src={`${process.env.PUBLIC_CDN_URL}/aboutimage.jpg`}
-            src={aboutimage.src}
+            src={`${process.env.NEXT_PUBLIC_CDN_URL}/aboutimage.jpg`}
             alt="banner_img"
             className="w-full h-auto object-cover"
           />

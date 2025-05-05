@@ -1,14 +1,13 @@
 'use client';
 import React, { useEffect, useState, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCartItems, removeCoupon } from '../../redux/store/cartSlice'; // Adjust path as needed
+import { updateCartItems, removeCoupon } from '../../redux/store/cartSlice'; 
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
 import OrderPlaced from '@/components/shipping/OrderPlaced';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
-import SearchParamsHandler from '../../components/Search'; // Adjust path if needed
-
+import SearchParamsHandler from '../../components/Search'; 
 const Orderplaced = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [defaultAddress, setDefaultAddress] = useState();
@@ -24,12 +23,12 @@ const Orderplaced = () => {
 
       const customerId = user?.result?.customerId || user?.customerId;
       const authToken = typeof window !== "undefined" ? localStorage.getItem('token') : null;
-      const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
+       const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
 
-      if (!orderNo) {
-        router.push('/');
-        return;
-      }
+       if (!orderNo) {
+         router.push('/');
+         return;
+       }
 
       const response = await fetch(`${APIURL}/api/getorderdetails/${customerId}`, {
         method: 'GET',
@@ -45,12 +44,9 @@ const Orderplaced = () => {
 
         if (relevantOrder.length > 0) {
           setOrderDetails(relevantOrder);
-          // Clear cart and coupon from Redux instead of localStorage
-          dispatch(updateCartItems([])); // Clear cart items
-          dispatch(removeCoupon());     // Clear applied coupon
-        } else {
-          router.push('/');
-        }
+          dispatch(updateCartItems([])); 
+          dispatch(removeCoupon());
+        } 
       } else {
         console.error("Failed to fetch order details:", data.message);
         router.push('/');

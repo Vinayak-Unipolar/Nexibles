@@ -103,7 +103,7 @@ export default function MyAccount() {
           {/* Mobile menu toggle button */}
           <button 
             onClick={toggleMobileMenu}
-            className="fixed bottom-4 right-4 bg-[#103b60] text-white p-3 rounded-full shadow-lg z-50"
+            className="fixed bottom-4 left-4 bg-[#103b60] text-white p-4 rounded-full shadow-lg z-50"
           >
             <FiMenu size={24} />
           </button>

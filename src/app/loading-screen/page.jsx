@@ -1,10 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-
-export const LoadingScreen = ({ onComplete }) => {
+ const LoadingScreen = ({ onComplete }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const letters = ["N", "E", "X", "I", "B", "L", "E", "S"];
-  
+  const letters = ["N", "E", "X", "I", "B", "L", "E", "S"];  
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % letters.length);
@@ -55,3 +53,5 @@ export const LoadingScreen = ({ onComplete }) => {
     </div>
   );
 };
+
+export default LoadingScreen;

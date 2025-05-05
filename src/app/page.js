@@ -7,7 +7,7 @@ import {
   FaPinterestP,
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import { LoadingScreen } from "./loading-screen/page";
+import  LoadingScreen  from "./loading-screen/page";
 import "react-toastify/dist/ReactToastify.css";
 import WhatWeDo from "@/components/home/WhatWeDo";
 import Footer from "@/components/shop/Footer";

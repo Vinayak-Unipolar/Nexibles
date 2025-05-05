@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, setCoupon, removeCoupon, setGST, updateCartItems } from '../../redux/store/cartSlice';
-import CartItems from "../shipping/CartItems";
+// import CartItems from "../shipping/CartItems";
 
 export default function MyCart() {
   const token = process.env.NEXT_PUBLIC_API_KEY;

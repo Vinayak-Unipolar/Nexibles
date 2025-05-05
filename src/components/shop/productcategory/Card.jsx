@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from "next/link";
 import Image from "next/image"; // Using Next.js Image for better performance
-import noproduct from '../../../../public/cards/product-not-found.jpg';
+
 import Loading from '../../comman/Loader';
 
 export default function Card({ product, isLoading }) {
@@ -51,12 +51,11 @@ export default function Card({ product, isLoading }) {
           <div className="flex items-center justify-center w-full py-16 md:py-24">
             <div className="relative w-full max-w-xs md:max-w-sm">
               <Image
-                src={noproduct}
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/product-not-found.jpg`}
                 alt="No Products Found"
                 width={400}
                 height={400}
                 layout="responsive"
-                placeholder="blur"
               />
               <p className="mt-4 text-center text-gray-500">No products found</p>
             </div>

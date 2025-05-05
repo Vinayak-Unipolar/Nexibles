@@ -16,7 +16,6 @@ export default function Shipping({ defaultAddress, addresses }) {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const dispatch = useDispatch();
   const { items: cartItems, appliedCoupon, gstAmount } = useSelector((state) => state.cart);
-  console.log("Cart Items:", cartItems);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -104,7 +103,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         return sum + (weightInKg * itemQuantity);
       }, 0);
       const weightToUse = totalWeight > 0 ? totalWeight : 0.001;
-  
+
       const response = await fetch(`${APIURL}/api/shipping/check`, {
         method: 'POST',
         headers: {
@@ -115,22 +114,22 @@ export default function Shipping({ defaultAddress, addresses }) {
           weight: weightToUse,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to fetch shipping cost: ${response.statusText}`);
       }
-  
+
       const data = await response.json();
       const totalAfterDiscount = parseFloat(subTotal) - parseFloat(discountAmount);
       const calculatedGst = totalAfterDiscount * GST_RATE;
-  
+
       if (data.status && data.rateOfFirstIndex) {
         setIsDeliveryAvailable(true);
         const shippingFee = parseFloat(data.rateOfFirstIndex);
         setShippingCost(shippingFee);
-        const productionTime = 21; 
+        const productionTime = 21;
         const shippingDays = parseInt(data.estimated_delivery_daysOfFirstIndex, 10) || 0;
-  
+
         const currentDate = new Date();
         const deliveryDate = new Date(currentDate);
         deliveryDate.setDate(currentDate.getDate() + productionTime + shippingDays);
@@ -141,10 +140,10 @@ export default function Shipping({ defaultAddress, addresses }) {
         });
 
         setDeliveryEstimate({
-          days: shippingDays, 
-          date: formattedDeliveryDate 
+          days: shippingDays,
+          date: formattedDeliveryDate
         });
-  
+
         const newTotal = (totalAfterDiscount + shippingFee + calculatedGst).toFixed(2);
         setTotalPrice(newTotal);
       } else {
@@ -270,8 +269,6 @@ export default function Shipping({ defaultAddress, addresses }) {
 
   const getOrderDetailsFromRedux = async () => {
     const correctedItems = await validateAndCorrectWeights(cartItems);
-    // Ensure correctedItems includes material
-    console.log("Corrected Items:", correctedItems); // Debug
 
     return correctedItems.map((product) => {
         const selectedOptions = product.selectedOptions || {};
@@ -287,7 +284,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         return {
             id: product.id,
             name: product.name,
-            price: parseFloat(product.totalPrice || 0).toFixed(2),
+            price: parseFloat(product.price || 0).toFixed(2),
             quantity: product.quantity || product.totalQuantity || 1,
             payment_status: "pending",
             discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
@@ -301,7 +298,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         };
     });
 };
-  
+
   const createOrder = async () => {
     if (isProcessingOrder) return false;
     setIsProcessingOrder(true);
@@ -363,9 +360,9 @@ export default function Shipping({ defaultAddress, addresses }) {
         body: JSON.stringify(requestBody),
       });
       const responseData = await response.json();
-
       if (responseData.success === true) {
-        if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
+        if (typeof window !== "undefined")
+          localStorage.setItem("orderNo", responseData.orderNo);
         return true;
       } else {
         throw new Error(responseData.message || "Failed to create order");
@@ -394,7 +391,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         throw new Error("Invalid total price for payment");
       }
 
-      var baseUrl = `${APIURL}`;
+      var baseUrl = `https://nexibles.com`;
       if (typeof window !== "undefined") baseUrl = window.location.origin;
 
       const transactionId = "T" + Date.now();
@@ -405,7 +402,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         name: user?.result?.firstName ?? user?.firstName,
         number: user?.result?.mobile ?? user?.mobile,
         MUID: user?.result?.customerId ?? user?.customerId,
-        amount: Math.round(amount * 100), 
+        amount: Math.round(amount * 100),
         transactionId,
         redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
       };
@@ -420,8 +417,8 @@ export default function Shipping({ defaultAddress, addresses }) {
   };
 
   return (
-    <div className="bg-white h-auto mt-20">
-      <div className="md:flex border rounded-md">
+    <div className="h-auto mt-20 bg-white">
+      <div className="border rounded-md md:flex">
         <ShippingAddress
           defaultAddress={defaultAddress}
           addresses={addresses}
@@ -444,7 +441,7 @@ export default function Shipping({ defaultAddress, addresses }) {
           deliveryEstimate={deliveryEstimate}
         />
       </div>
-      <div className="bg-white md:flex h-auto p-10">
+      <div className="h-auto p-10 bg-white md:flex">
         <PaymentMethod
           defaultAddress={defaultAddress}
           addresses={addresses}

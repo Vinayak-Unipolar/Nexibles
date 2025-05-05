@@ -15,11 +15,11 @@ const Page = () => {
     const token = process.env.NEXT_PUBLIC_API_KEY;
     const APIURL = process.env.NEXT_PUBLIC_API_URL;
 
-    useEffect(() => {
-        if (!user) {
-            router.push('/login');
-        }
-    }, [user, router]);
+    // useEffect(() => {
+    //     if (!user) {
+    //         router.push('/login');
+    //     }
+    // }, [user, router]);
 
     useEffect(() => {
         const fetchData = async () => {

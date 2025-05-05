@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import machine1 from '../../../public/home/machine1.png';
-import machine2 from '../../../public/home/machine2.png';
-import machine3 from '../../../public/home/machine3.png';
 import Link from 'next/link';
 
 const GreenPart = () => {
@@ -11,7 +8,7 @@ const GreenPart = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [showFullText, setShowFullText] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
-  const images = [machine1, machine2, machine3];
+  const images = [`${process.env.NEXT_PUBLIC_CDN_URL}/machine1.png`, `${process.env.NEXT_PUBLIC_CDN_URL}/machine2.png`, `${process.env.NEXT_PUBLIC_CDN_URL}/machine3.png`];
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>

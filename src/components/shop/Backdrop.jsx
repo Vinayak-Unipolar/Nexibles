@@ -7,8 +7,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import categoryimg from "../../../public/home/Types_of_pouch.webp";
-
 export default function Backdrop() {
   return (
     <div className="h-[20vh] md:h-[400px] mt-[4rem] overflow-hidden relative">
@@ -25,7 +23,7 @@ export default function Backdrop() {
         <SwiperSlide>
           <div className="relative h-full">
             <Image
-              src={categoryimg}
+              src={`${process.env.NEXT_PUBLIC_CDN_URL}/Types_of_pouch.webp`}
               alt="Backdrop"
               fill
               className="object-cover"

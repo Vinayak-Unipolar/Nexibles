@@ -12,7 +12,6 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useAuth } from "@/utils/authContext";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -139,7 +138,7 @@ const Navbar = () => {
           >
             <Link href="/" className="flex-shrink-0">
               <Image
-                src="/home/nexible.gif"
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/Nexibles_Logo.gif`}
                 alt="Nexibles"
                 width={100}
                 height={30}
@@ -187,14 +186,17 @@ const Navbar = () => {
                         ))}
                       </motion.div>
                     )}
+                    
                   </div>
                 ) : (
                   <Link href={item.path} className="text-xs text-black sm:text-md hover:underline">
                     {item.name}
                   </Link>
                 )}
+                
               </motion.div>
             ))}
+            
           </div>
 
           <div className="flex items-center space-x-4">

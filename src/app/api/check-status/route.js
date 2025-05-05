@@ -15,7 +15,6 @@ export async function GET(request) {
       { status: 400 }
     );
   }
-
   try {
     const statusUrl = `${APIURL}/api/status/${transactionId}/${MERCHANT_ID}`;
     const response = await axios.get(statusUrl);

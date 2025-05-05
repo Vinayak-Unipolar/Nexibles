@@ -5,7 +5,7 @@ const ShippingPolicy = () => {
         <div className="h-auto bg-white p-16">
             <h2 className="text-gray-900 font-bold text-3xl text-center mb-8">Shipping & Delivery Policy</h2>
             <div className="text-gray-900">
-                <h2 className="font-semibold text-xl mb-4">Last updated: 28-02-2024 12:30:59</h2>
+                
                 <div className="">
                     <p>
                         For our international customers, we dispatch orders using registered international courier companies and/or international speed post exclusively. Domestic orders are shipped through registered domestic courier companies and/or speed post. Our goal is to send out orders within 3-5 business days or according to the agreed-upon delivery date confirmed during the order process. The actual delivery time is contingent on the norms of the courier company or post office.

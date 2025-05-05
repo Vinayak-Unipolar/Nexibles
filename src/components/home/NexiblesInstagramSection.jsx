@@ -3,21 +3,18 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Instagram } from "lucide-react";
-import insta01 from "../../../public/insta/insta01.png";
-import insta02 from "../../../public/insta/insta02.png";
-import insta03 from "../../../public/insta/insta03.png";
 export default function NexiblesInstagramSection() {
   const [instaFeed] = useState([
     {
-      image: insta01, // Use imported image object
+      image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta01.png`,
       link: "https://www.instagram.com/p/DIoW4DAhBKE/",
     },
     {
-      image: insta02, // Use imported image object
+      image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta02.png`, 
       link: "https://www.instagram.com/p/DIly2SjRiNh/",
     },
     {
-      image: insta03, // Use imported image object
+      image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta03.png`, 
       link: "https://www.instagram.com/p/DIjapyIIxLs/?img_index=1",
     },
   ]);
@@ -52,7 +49,8 @@ export default function NexiblesInstagramSection() {
       </div>
 
       {/* Instagram Feed - Changed to grid-cols-3 for all screen sizes */}
-      <div className="max-w-3xl mx-auto grid grid-cols-3 gap-0.5 mb-12">
+      <div className="max-w-3xl mx-auto grid grid-cols-3 mb-12 gap-[0.2px]">
+
         {instaFeed.map((post, idx) => (
           <a
             key={idx}
@@ -87,6 +85,8 @@ export default function NexiblesInstagramSection() {
             ease: "linear",
           }}
         >
+
+          
           {[...brandLogos, ...brandLogos].map((brand, idx) => (
             <div
               key={`${brand.id}-${idx}`}

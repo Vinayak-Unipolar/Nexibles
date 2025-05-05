@@ -1,7 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP, } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaTwitter,
+  FaPinterestP,
+} from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
+import { LoadingScreen } from "./loading-screen/page";
 import "react-toastify/dist/ReactToastify.css";
 import WhatWeDo from "@/components/home/WhatWeDo";
 import Footer from "@/components/shop/Footer";
@@ -16,8 +22,9 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/Tea.webp";
+
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -65,13 +72,12 @@ const Modal = ({ isOpen, onClose }) => {
 
         <div className="relative w-full h-52">
           <img
-            src={Pop_up_image.src}
+            src={`${process.env.NEXT_PUBLIC_CDN_URL}/Tea.webp`}
             alt="Nexibles Product"
             className="object-fill w-full h-full"
           />
         </div>
 
-        {/* Bottom Half: Content */}
         <div className="flex flex-col items-center p-6">
           <p className="mb-1 text-xs tracking-wide text-gray-500 uppercase">
             SUBSCRIBE TO OUR NEWSLETTER!
@@ -95,7 +101,6 @@ const Modal = ({ isOpen, onClose }) => {
           >
             Subscribe
           </button>
-
           {/* Social Media Icons */}
           {/* <div className="flex justify-center space-x-4">
             <a href="#" className="text-black hover:text-gray-600">
@@ -118,6 +123,7 @@ const Modal = ({ isOpen, onClose }) => {
 };
 
 const Home = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [categoryData, setData] = useState([]);
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
@@ -127,14 +133,14 @@ const Home = () => {
     const lastShown = localStorage.getItem("modalLastShown");
     const now = new Date().getTime();
     const oneDay = 24 * 60 * 60 * 1000;
-  
+
     const timer = setTimeout(() => {
       if (!lastShown || now - parseInt(lastShown) > oneDay) {
         setShowModal(true);
         localStorage.setItem("modalLastShown", now.toString());
       }
     }, 10000);
-  
+
     const fetchData = async () => {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
@@ -166,22 +172,28 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <GoogleAnalytics />
-      <ToastContainer position="top-right" autoClose={3000} />
-      <Modal isOpen={showModal} onClose={closeModal} />
-      <Navbar />
-      <HeaderSection />
-      <Industries />
-      <Popularproducts />
-      <ProductSections />
-      <AdvantageItem />
-      <StatsAndTestimonials />
-      <NexiblesInstagramSection />
-      <Footer />
-    </div>
+    <>
+      {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}
+      <div
+        className={`min-h-screen transition-opacity duration-700 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <GoogleAnalytics />
+        <ToastContainer position="top-right" autoClose={3000} />
+        <Modal isOpen={showModal} onClose={closeModal} />
+        <Navbar />
+        <HeaderSection />
+        <Industries />
+        <Popularproducts />
+        <ProductSections />
+        <AdvantageItem />
+        <StatsAndTestimonials />
+        <NexiblesInstagramSection />
+        <Footer />
+      </div>
+    </>
   );
-
 };
 
 export default Home;

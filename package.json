@@ -28,6 +28,7 @@
     "react-select": "^5.10.1",
     "react-shapes": "^0.1.0",
     "react-slick": "^0.29.0",
+    "react-spring": "^9.7.5",
     "react-toastify": "^10.0.3",
     "react-zoom-pan-pinch": "^3.7.0",
     "redux": "^5.0.1",

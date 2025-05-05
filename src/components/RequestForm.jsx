@@ -325,7 +325,7 @@ function RequestForm() {
       
       // Create order details for sample kit
       const orderDetails = [{
-        productId: "SAMPLE-KIT-001",
+        productId: "SAMPLE-KIT",
         productName: "Nexibles Sample Kit",
         quantity: 1,
         price: total ? total.basePrice.toString() : "350.00",
@@ -335,7 +335,7 @@ function RequestForm() {
       const requestBody = {
         orderNo,
         orderDate,
-        pmtMethod: "online",
+        pmtMethod: "PhonePe",
         customerID: `CUST-${Date.now()}`,
         salutation: "",
         firstName: formData.firstName,
@@ -370,7 +370,7 @@ function RequestForm() {
         packageBuyingHistory: formData.packageBuyingHistory
       };
 
-      console.log("Creating order with:", requestBody);
+      //console.log("Creating order with:", requestBody);
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
         method: "POST",
@@ -533,12 +533,11 @@ function RequestForm() {
           packageBuyingHistory: "",
           projectDescription: "",
           requestSampleKit: false,
-        }); // Reset form
+        }); 
 
-        // Scroll to the top of the page to show the success message
         window.scrollTo({
           top: 0,
-          behavior: "smooth", // Smooth scrolling for better UX
+          behavior: "smooth", 
         });
       })
       .catch((error) => {

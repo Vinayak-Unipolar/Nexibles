@@ -1,4 +1,3 @@
-
 "use client";
 import Link from "next/link";
 import React from "react";
@@ -35,69 +34,6 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
       return total + discount;
     }, 0).toFixed(2);
   };
-
-  // const handleKeylineDownload = async (productId) => {
-  //   try {
-  //     const response = await fetch(
-  //       "${process.env.NEXT_PUBLIC_API_URL}/api/keylineimage",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           product_id: productId,
-  //           customer_id: user?.result?.customerId || user?.customerId,
-  //           order_id: orderNo,
-  //         }),
-  //       }
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error(`Failed to get keyline PDF URL: ${response.statusText}`);
-  //     }
-  //     const data = await response.json();
-  //     const pdfUrl = data;
-  //     const downloadLink = document.createElement("a");
-  //     downloadLink.href = pdfUrl;
-  //     downloadLink.download = "keyline.pdf";
-  //     downloadLink.click();
-  //   } catch (error) {
-  //     console.error("Error downloading keyline PDF:", error);
-  //     toast.error("Failed to download keyline PDF. Please try again later.");
-  //   }
-  // };
-
-  // const handleUpload = async (event, order_id, product_id) => {
-  //   const file = event.target.files[0];
-  //   const customer_id = user?.result?.customerId || user?.customerId;
-
-  //   try {
-  //     if (!file) {
-  //       throw new Error("No file selected");
-  //     }
-  //     const formData = new FormData();
-  //     formData.append("order_id", order_id);
-  //     formData.append("customer_id", customer_id);
-  //     formData.append("product_id", product_id);
-  //     formData.append("file", file);
-
-  //     const response = await fetch(
-  //       "${process.env.NEXT_PUBLIC_API_URL}/api/order_file",
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error(`Failed to upload file: ${response.statusText}`);
-  //     }
-  //     toast.success("File uploaded Successfully");
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //     toast.error("Failed to upload file. Please try again.");
-  //   }
-  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -173,6 +109,12 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                 <h4 className="font-bold">Order #:</h4>
                 <p>{productDetails[0]?.orderNo || orderNo}</p>
               </div>
+              {productDetails[0]?.coupon && (
+                <div className="text-gray-900">
+                  <h4 className="font-bold">Coupon Applied:</h4>
+                  <p>{productDetails[0]?.coupon}</p>
+                </div>
+              )}
             </div>
           </div>
           <div className="text-gray-900 mb-4">
@@ -205,30 +147,38 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                   <p className="text-gray-900 text-sm font-bold">
                     Shipping : Standard
                   </p>
-                  <p className="text-green-500 text-sm font-bold uppercase">
-                    Free
-                  </p>
+                  {productDetails[0]?.orderCharge && parseFloat(productDetails[0].orderCharge) > 0 ? (
+                    <p className="text-gray-900 text-sm font-bold">
+                      + RS. {parseFloat(productDetails[0].orderCharge).toFixed(2)}
+                    </p>
+                  ) : (
+                    <p className="text-green-500 text-sm font-bold uppercase">
+                      Free
+                    </p>
+                  )}
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <p className="text-gray-900 text-sm font-bold uppercase">
-                    igst
+                    GST (18%)
                   </p>
                   <p className="text-gray-900 text-sm font-bold uppercase">
-                    00.00
+                     + RS. {productDetails[0]?.tax || "0.00"}
                   </p>
                 </div>
                 <hr />
                 <div className="flex justify-between items-center py-2">
-                  <p className="text-gray-900 text-sm font-bold">Discount</p>
+                  <p className="text-gray-900 text-sm font-bold">
+                    Discount {productDetails[0]?.promoDiscount && `(${productDetails[0].promoDiscount}%)`}
+                  </p>
                   <p className="text-red-500 uppercase text-sm font-bold">
-                    RS. {calculateDiscountAmount()}
+                    - RS. {productDetails[0]?.disamt || calculateDiscountAmount()}
                   </p>
                 </div>
                 <hr />
                 <div className="flex justify-between items-center py-2">
                   <p className="text-gray-900 text-sm font-bold">Total Paid</p>
                   <p className="text-gray-900 uppercase text-sm font-bold">
-                    RS. {calculateTotalPrice()}
+                    RS. {productDetails[0]?.invamt || calculateTotalPrice()}
                   </p>
                 </div>
               </div>
@@ -242,14 +192,12 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
             <h4 className="font-bold text-gray-900 text-xl py-2">
               Purchased Items
             </h4>
-            {/* Product List Container */}
             <div className="max-w-7xl mx-auto space-y-6 ">
               {productDetails.map((product, index) => (
                 <div
                   key={index}
                   className="flex flex-col md:flex-row bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                 >
-                  {/* Product Image */}
                   <div className="md:w-48 h-48 md:h-auto relative">
                     <img
                       src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
@@ -263,14 +211,11 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     )}
                   </div>
 
-                  {/* Product Details */}
                   <div className="flex-1 p-6">
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">
                       {product.product_name}
                     </h3>
-
-                    {/* Product Information Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                       <div className="flex items-center space-x-2">
                         <span className="text-gray-600">Quantity:</span>
                         <span className="font-semibold text-gray-900">{product.quantity}</span>
@@ -291,9 +236,29 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                       )}
                     </div>
 
+                    {/* Material information */}
+                    {product.material && (
+                      <div className="mb-3">
+                        <p className="text-gray-800">
+                          <span className="font-semibold">Material:</span>{' '}
+                          {product.material}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* SKU Count information */}
+                    {product.skuCount && (
+                      <div className="mb-3">
+                        <p className="text-gray-800">
+                          <span className="font-semibold">SKU Count:</span>{' '}
+                          {product.skuCount}
+                        </p>
+                      </div>
+                    )}
+
                     {/* Product Options */}
                     {product.product_config_id && (
-                      <div className="mb-6">
+                      <div className="mb-3">
                         <p className="text-gray-800">
                           <span className="font-semibold">Product Options:</span>{' '}
                           {product.product_config_id} : {product.product_option_id}

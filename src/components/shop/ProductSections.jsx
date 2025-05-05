@@ -3,8 +3,6 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import ProductStock from "../../../public/home/Reference NexiClassic Banner.webp";
-import Customization from "../../../public/home/Reference Customisation Banner.webp";
 
 const fadeSlide = {
   hidden: { opacity: 0, y: 30 },
@@ -50,7 +48,9 @@ const ProductSections = () => {
               className="relative"
             >
               <Image
-                src={ProductStock}
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/Reference NexiClassic Banner.webp`}
+                width={100}
+                height={100}
                 alt="Stock Products"
                 loading="lazy"
                 className="object-contain w-full"
@@ -82,7 +82,9 @@ const ProductSections = () => {
               className="relative"
             >
               <Image
-                src={Customization}
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/Reference Customisation Banner.webp`}
+                width={100}
+                height={100}
                 alt="Customization Tool"
                 loading="lazy"
                 className="object-contain w-full"

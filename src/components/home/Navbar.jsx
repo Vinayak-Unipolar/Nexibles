@@ -54,7 +54,7 @@ const Navbar = () => {
     >
       <div className="flex items-center justify-between h-20 px-8">
         <Link href="/" className="">
-          <img src="https://unicdn.barecms.com/neximedia/nexible.gif" alt="Logo" className="h-6" />
+          <img src= {`${process.env.NEXT_PUBLIC_CDN_URL}/Nexibles_Logo`} alt="Logo" className="h-6" />
         </Link>
         <div className="md:hidden">
           <button

@@ -22,7 +22,7 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-import Pop_up_image from "../../public/home/Tea.webp";
+
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const Modal = ({ isOpen, onClose }) => {
@@ -72,7 +72,7 @@ const Modal = ({ isOpen, onClose }) => {
 
         <div className="relative w-full h-52">
           <img
-            src={Pop_up_image.src}
+            src={`${process.env.NEXT_PUBLIC_CDN_URL}/Tea.webp`}
             alt="Nexibles Product"
             className="object-fill w-full h-full"
           />

@@ -607,38 +607,58 @@ export default function MyCart() {
                         onClick={() => removeCartItem(index)}
                       />
                     </div>
-                    {item?.selectedOptions &&
-                      Object.keys(item.selectedOptions).length > 0 ? (
-                      <div className="w-full bg-white">
-                        <ul className="text-sm md:text-base">
-                          {item?.selectedOptions &&
-                            Object.entries(item.selectedOptions).map(
-                              ([key, option]) => (
-                                <li key={key} className="text-gray-700">
-                                                                    {/* <h1 className="mt-1">Price: ₹{option.price}</h1> */}
-
-                                </li>
-                              )
+                    {item?.selectedOptions && Object.keys(item.selectedOptions).length > 0 ? (
+                      <div className="w-full bg-white overflow-x-auto">
+                        <table className="min-w-full text-sm md:text-base table-auto border border-gray-300">
+                          <tbody>
+                            {/* Combine width and length into a single "Dimension" row */}
+                            {item.selectedOptions.width && item.selectedOptions.length && (
+                              <tr className="border-b">
+                                <td className="p-1 text-sm capitalize">Dimension</td>
+                                <td className="p-1 text-sm">
+                                  {item.selectedOptions.width.optionName} x {item.selectedOptions.length.optionName}
+                                </td>
+                              </tr>
                             )}
-                          <li className="mt-1 text-sm list-none">
-                            Material: {item.material}
-<<<<<<< HEAD
-=======
+                            {/* Render other selected options, excluding width and length */}
+                            {Object.entries(item.selectedOptions).map(([key, option]) =>
+                              key !== "width" && key !== "length" ? (
+                                <tr key={key} className="border-b">
+                                  <td className="p-1 text-sm capitalize">{key.replace(/([A-Z])/g, " $1")}</td>
+                                  <td className="p-1 text-sm">{option.optionName}</td>
+                                </tr>
+                              ) : null
+                            )}
+                            <tr className="bg-gray-50">
+                              <td className="p-1">Category</td>
+                              <td className="p-1" colSpan="2">{item.category}</td>
+                            </tr>
+                            <tr className="bg-gray-50">
+                              <td className="p-1">Material</td>
+                              <td className="p-1" colSpan="2">{item.material}</td>
+                            </tr>
+                            <tr className="bg-gray-50">
+                              <td className="p-1">Price</td>
+                              <td className="p-1" colSpan="2">
+                                ₹{typeof item.price === "number" ? item.price.toFixed(0) : item.price} * 1
+                              </td>
+                            </tr>
+                            <tr className="bg-gray-50">
+                              <td className="p-1">SKU</td>
+                              {item.skuCount}
+                              </tr>
                             
->>>>>>> f485fed5cc687e8f75251d2171a0da8cbb22760e
-                          </li><li className="mt-1 font-semibold">
-                            <li className="mt-1 text-sm list-none">
-                              Price: ₹ {typeof item.price === 'number' ? item.price.toFixed(0) : item.price} / Sku: {item.skuCount}
-                            </li>
-                            <li className="mt-1 font-semibold list-none">
-                          Quantity: {item.quantity}
-                        </li>
+                            <tr className="bg-gray-50 font-semibold">
+                              <td className="p-1">Quantity</td>
+                              <td className="p-1" colSpan="2">{item.quantity}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div className="flex mt-2 justify-end">
+                          <li className="mt-1 font-semibold list-none">
+                            Total: ₹{typeof item.totalPrice === "number" ? item.totalPrice.toFixed(0) : item.totalPrice}
                           </li>
-                          <div className="flex mt-6 justify-end"><li className="mt-1 font-semibold list-none">
-                          Total:{typeof item.totalPrice === 'number' ? item.totalPrice.toFixed(0) : item.totalPrice}
-                        </li></div>
-
-                        </ul>
+                        </div>
                       </div>
                     ) : (
                       <>

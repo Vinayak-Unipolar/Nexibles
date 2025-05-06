@@ -1,4 +1,80 @@
+// import { createSlice } from '@reduxjs/toolkit';
+
+// const cartSlice = createSlice({
+//   name: 'cart',
+//   initialState: {
+//     items: [],
+//     appliedCoupon: null,
+//     gstAmount: 0,
+//   },
+//   reducers: {
+//     addToCart: (state, action) => {
+//       const product = action.payload;
+
+//       // Check for existing item by both `id` and `skuCount`
+//       const existingItem = state.items.find(item => item.id === product.id && item.skuCount === product.skuCount);
+
+//       if (existingItem) {
+//         // If the same product with the same SKU exists, update quantity and total price
+//         existingItem.quantity += product.quantity;
+//         existingItem.totalPrice = existingItem.price * existingItem.quantity;
+//       } else {
+//         // If the SKU is different or it's a new product, add it as a separate entry
+//         state.items.push({
+//           id: product.id,
+//           name: product.name,
+//           category: product.category,
+//           image: product.image,
+//           price: product.price,
+//           quantity: product.quantity,
+//           totalPrice: product.totalPrice,
+//           skuCount: product.skuCount,
+//           material: product.material  // Ensure SKU is stored properly
+//         });
+//       }
+//     },
+//     removeFromCart: (state, action) => {
+//       const index = action.payload;
+//       state.items = state.items.filter((_, i) => i !== index);
+//     },
+//     updateCartItems: (state, action) => {
+//       state.items = action.payload;
+//     },
+//     setCoupon: (state, action) => {
+//       state.appliedCoupon = action.payload;
+//     },
+//     removeCoupon: (state) => {
+//       state.appliedCoupon = null;
+//       state.items = state.items.map(item => ({
+//         ...item,
+//         discountedPrice: undefined,
+//         discountAmount: undefined,
+//         discountPercentage: undefined,
+//       }));
+//     },
+//     setGST: (state, action) => {
+//       state.gstAmount = action.payload;
+//     },
+//   },
+// });
+
+// export const {
+//   addToCart,
+//   removeFromCart,
+//   updateCartItems,
+//   setCoupon,
+//   removeCoupon,
+//   setGST
+// } = cartSlice.actions;
+// export default cartSlice.reducer;
+
 import { createSlice } from '@reduxjs/toolkit';
+
+const generateItemKey = (product) => {
+  const optionsString = JSON.stringify(product.selectedOptions || {});
+  // Include product.name to ensure unique items for different names
+  return `${product.id}-${product.name}-${product.skuCount}-${product.category}-${optionsString}`;
+};
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -10,29 +86,25 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const product = action.payload;
-      
-      // Check for existing item by both `id` and `skuCount`
-      const existingItem = state.items.find(item => item.id === product.id && item.skuCount === product.skuCount);
-      
+      if (!product.id || !product.name || !product.quantity || !product.totalPrice) {
+        console.warn('Invalid product data:', product);
+        return;
+      }
+      const itemKey = generateItemKey(product);
+      const existingItem = state.items.find(item => item.itemKey === itemKey);
+
       if (existingItem) {
-        // If the same product with the same SKU exists, update quantity and total price
+        // Update quantity and totalPrice for existing item
         existingItem.quantity += product.quantity;
-        existingItem.totalPrice = existingItem.price * existingItem.quantity;
+        existingItem.totalPrice += product.totalPrice;
       } else {
-        // If the SKU is different or it's a new product, add it as a separate entry
+        // Add new item with unique key
         state.items.push({
-          id: product.id,
-          name: product.name,
-          category: product.category,
-          image: product.image,
-          price: product.price,
-          quantity: product.quantity,
-          totalPrice: product.totalPrice,
-          skuCount: product.skuCount,
-          material: product.material  // Ensure SKU is stored properly
+          ...product,
+          itemKey,
         });
       }
-    },    
+    },
     removeFromCart: (state, action) => {
       const index = action.payload;
       state.items = state.items.filter((_, i) => i !== index);
@@ -45,6 +117,7 @@ const cartSlice = createSlice({
     },
     removeCoupon: (state) => {
       state.appliedCoupon = null;
+      // Reset coupon-related discount fields
       state.items = state.items.map(item => ({
         ...item,
         discountedPrice: undefined,
@@ -53,17 +126,23 @@ const cartSlice = createSlice({
       }));
     },
     setGST: (state, action) => {
-      state.gstAmount = action.payload;
+      state.gstAmount = Number(action.payload);
+    },
+    clearCart: (state) => {
+      state.items = [];
+      state.appliedCoupon = null;
+      state.gstAmount = 0;
     },
   },
 });
 
-export const { 
-  addToCart, 
-  removeFromCart, 
-  updateCartItems, 
-  setCoupon, 
-  removeCoupon, 
-  setGST 
+export const {
+  addToCart,
+  removeFromCart,
+  updateCartItems,
+  setCoupon,
+  removeCoupon,
+  setGST,
+  clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

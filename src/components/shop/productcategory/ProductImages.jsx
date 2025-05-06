@@ -156,47 +156,47 @@ const ProductImages = ({ productImages, defaultImage, onImageClick }) => {
                     onClick={() => state && state.scale > 1 ? null : handleImageClick(currentImageIndex)}
                   />
                 </TransformComponent>
+
+                {/* Zoom Controls Below Image */}
+                <div className="mt-4">
+                  <div className="flex items-center justify-center gap-2 bg-white bg-opacity-70 rounded-md p-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomOut();
+                      }}
+                      className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
+                      aria-label="Zoom out"
+                    >
+                      <span className="text-lg font-medium">−</span>
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        resetTransform();
+                      }}
+                      className="flex items-center justify-center w-16 h-10 text-sm font-medium text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
+                      aria-label="Reset zoom"
+                    >
+                      Reset
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomIn();
+                      }}
+                      className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
+                      aria-label="Zoom in"
+                    >
+                      <span className="text-lg font-medium">+</span>
+                    </button>
+                  </div>
+                </div>
               </>
             )}
           </TransformWrapper>
-
-          {/* Zoom Controls Below Image */}
-          <div className="mt-4">
-            <div className="flex items-center justify-center gap-2 bg-white bg-opacity-70 rounded-md p-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  zoomOut();
-                }}
-                className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
-                aria-label="Zoom out"
-              >
-                <span className="text-lg font-medium">−</span>
-              </button>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  resetTransform();
-                }}
-                className="flex items-center justify-center w-16 h-10 text-sm font-medium text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
-                aria-label="Reset zoom"
-              >
-                Reset
-              </button>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  zoomIn();
-                }}
-                className="flex items-center justify-center w-10 h-10 text-gray-500 border border-gray-100 rounded-md hover:bg-gray-50"
-                aria-label="Zoom in"
-              >
-                <span className="text-lg font-medium">+</span>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

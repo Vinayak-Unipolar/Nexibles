@@ -1,8 +1,5 @@
 import React from 'react'
-import Factory from '../../../public/Pictures/Factory.png'
-import FactoryImage from '../../../public/Pictures/Factory Facade.png'
-import Image3 from '../../../public/Pictures/Customer Centric .png'
-import Image from 'next/image';
+
 const About = () => {
   return (
     <div className="p-4 sm:p-6 md:p-10 mt-12 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-[#fafafa]">
@@ -16,9 +13,9 @@ const About = () => {
         {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br />
         {`high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
       <div className="grid grid-cols-3 gap-2 mt-2">
-        <img src={Factory.src} alt="factory" className="w-full max-h-72 object-contain" />
-        <img src={FactoryImage.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
-        <img src={Image3.src} alt="factory" className="w-full h-auto max-h-72 object-contain" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Factory.webp`} alt="Factory" className="w-full max-h-72 object-contain" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Factory Facade.webp`} alt="Factory Facade" className="w-full h-auto max-h-72 object-contain" />
+        <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Customer Centric .webp`} alt="Customer Centric" className="w-full h-auto max-h-72 object-contain" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6 sm:mt-8 md:mt-10 w-full max-w-5xl">
         <div className="flex flex-col items-center">
@@ -31,7 +28,7 @@ const About = () => {
               <path d="M31.1836 18.4904C31.1836 20.0703 32.4689 21.3557 34.049 21.3557C35.6291 21.3557 36.9144 20.0703 36.9144 18.4904C36.9144 16.9104 35.629 15.625 34.049 15.625C32.469 15.625 31.1836 16.9104 31.1836 18.4904ZM34.049 17.2656C34.7244 17.2656 35.2738 17.815 35.2738 18.4904C35.2738 19.1658 34.7244 19.7151 34.049 19.7151C33.3736 19.7151 32.8243 19.1658 32.8243 18.4904C32.8243 17.815 33.3736 17.2656 34.049 17.2656Z" fill="#1F1F1F" />
             </svg>
           </div>
-          <h1 className="text-center font-bold mt-2 text-sm sm:text-base">24/7 Customer Service</h1>
+          <h1 className="text-center font-bold mt-2 text-sm sm:text-base">WhatsApp Support for Enquiries</h1>
           <p className="text-center text-xs sm:text-sm mt-2">{`We're here to help you with any questions or concerns you have, 24/7.`}</p>
 
         </div>
@@ -45,8 +42,8 @@ const About = () => {
               <path d="M46.3049 45.5556C46.0493 45.5556 45.7916 45.4667 45.5827 45.2867L37.8049 38.62C37.556 38.4112 37.416 38.1023 37.416 37.7778C37.416 37.4534 37.556 37.1445 37.8049 36.9356L45.5827 30.2689C46.0471 29.8711 46.7449 29.9223 47.1493 30.3889C47.5493 30.8534 47.4938 31.5556 47.0271 31.9556L40.236 37.7778L47.0293 43.6023C47.496 44.0023 47.5493 44.7023 47.1516 45.1689C46.9271 45.4245 46.6182 45.5556 46.3049 45.5556Z" fill="#1F1F1F" />
             </svg>
           </div>
-          <h1 className="text-center font-bold mt-2 text-sm sm:text-base">14-Day Money Back</h1>
-          <p className="text-center text-xs sm:text-sm mt-2">{`If you're not satisfied with your purchase, simply return it within 14 days for a refund.`}</p>
+          <h1 className="text-center font-bold mt-2 text-sm sm:text-base"> 24 Hr Order Cancellation Window</h1>
+          <p className="text-center text-xs sm:text-sm mt-2">{`Order cancellation with 24 hours of order placement will receive 50% refund.`}</p>
         </div>
         <div className="flex flex-col items-center">
           <div className="flex justify-center">

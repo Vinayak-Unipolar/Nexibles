@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
-import nexiblegif from '../../../public/home/nexible.gif';
 import Link from 'next/link';
 import { IoCartOutline, IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { RiArrowDropUpLine, RiArrowDropDownLine } from "react-icons/ri";

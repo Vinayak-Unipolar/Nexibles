@@ -1,12 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import topqualitylamination from '../../../public/features/topqualitylamination.png';
-import easycustomization from '../../../public/features/easycustomization.png';
-import capsleeves from '../../../public/features/capsleeves.png';
-import finishoptions from '../../../public/features/finishoptions.png';
-import highlyadaptable from '../../../public/features/highlyadaptable.png';
-import degree from '../../../public/features/degree.png';
-
 
 const AllCategoryCards = ({ categoryData }) => {
   const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -33,7 +26,7 @@ const AllCategoryCards = ({ categoryData }) => {
       {/* All Categories title */}
       <div className="px-4 mb-10 md:px-64">
         <p className="text-center text-[30px] md:text-[40px] font-semibold">
-          All Categories
+          All Pouches
         </p>
       </div>
 
@@ -69,12 +62,12 @@ const AllCategoryCards = ({ categoryData }) => {
         <div className="flex justify-center">
           <div className="grid w-full max-w-4xl grid-cols-2 gap-4 md:grid-cols-3">
             {[
-              { title: "Top-Quality Lamination", image: topqualitylamination },
-              { title: "Easy Customization", image: easycustomization },
-              { title: "360-degree Coverage", image: degree },
-              { title: "Highly Adaptable", image: highlyadaptable },
-              { title: "Cap sleeves", image: capsleeves },
-              { title: "Finish Options", image: finishoptions },
+              { title: "Top-Quality Lamination", image:`${process.env.NEXT_PUBLIC_CDN_URL}/topqualitylamination.png` },
+              { title: "Easy Customization", image:`${process.env.NEXT_PUBLIC_CDN_URL}/easycustomization.png` },
+              { title: "360-degree Coverage", image:`${process.env.NEXT_PUBLIC_CDN_URL}/degree.png` },
+              { title: "Highly Adaptable", image:`${process.env.NEXT_PUBLIC_CDN_URL}/highlyadaptable.png`},
+              { title: "Cap sleeves", image:`${process.env.NEXT_PUBLIC_CDN_URL}/capsleeves.png`},
+              { title: "Finish Options", image:`${process.env.NEXT_PUBLIC_CDN_URL}/finishoptions.png` },
             ].map((feature, index) => (
               <div
                 key={index}

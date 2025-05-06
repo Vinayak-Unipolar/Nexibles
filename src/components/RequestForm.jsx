@@ -24,12 +24,10 @@ function RequestForm() {
     requestSampleKit: false,
   });
 
-  // State to manage submission status and messages
   const [submitStatus, setSubmitStatus] = useState(null);
   const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
-  // List of all countries
   const countries = [
     "India",
     "United Arab Emirates",
@@ -226,10 +224,8 @@ function RequestForm() {
     "Zimbabwe",
   ];
 
-  // Options for Language Preference
   const languages = ["Hindi", "English", "Marathi", "Gujarati", "Kannada"];
 
-  // Options for Industry
   const industries = [
     "Beverages",
     "Bread and other Bakery",
@@ -258,7 +254,6 @@ function RequestForm() {
     "Tobacco",
   ];
 
-  // Options for Order Quantity
   const orderQuantities = [
     "1,000 – 5,000 units",
     "5,000 – 10,000 units",
@@ -268,14 +263,12 @@ function RequestForm() {
     "250,000+ units",
   ];
 
-  // Options for Package Buying History
   const packageBuyingHistories = [
     "First Time Packaging Buyer",
     "Switching Packaging Providers",
     "Seeking Additional Packaging Provider",
   ];
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -302,7 +295,6 @@ function RequestForm() {
     }
   }, [formData.requestSampleKit]);
 
-  // Calculate total amount if sample kit is requested
   const calculateTotal = () => {
     if (formData.requestSampleKit) {
       const basePrice = 350;
@@ -355,8 +347,6 @@ function RequestForm() {
         origin: "Nexibles",  
         orderDetails: await getRequestFormOrderDetails(),
       };
-//console.log("orderDetails being sent:", JSON.stringify(await getRequestFormOrderDetails()));
-//console.log("Full request payload:", JSON.stringify(requestBody));
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
         method: "POST",
@@ -563,7 +553,6 @@ function RequestForm() {
             )}
 
             <form onSubmit={handleSubmit}>
-              {/* Name Section */}
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
@@ -878,19 +867,15 @@ function RequestForm() {
                   Request Sample Kit
                 </label>
               </div>
-
-              {/* Display price information if sample kit is selected */}
               {formData.requestSampleKit && total && (
                 <div className="mb-4 rounded-md">
                   <p className="text-sm font-medium text-gray-800">Sample Kit Details:</p>
                   <p className="text-sm text-gray-600">Base Price: ₹{total.basePrice}</p>
                   <p className="text-sm text-gray-600">GST (18%): ₹{total.gst.toFixed(2)}</p>
-                  {/* <p className="text-sm font-medium text-gray-800">Total: ₹{total.total.toFixed(2)}</p> */}
                   <p className="text-sm text-gray-600 mt-1">Shipping is included in the price.</p>
                 </div>
               )}
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
@@ -901,8 +886,6 @@ function RequestForm() {
               </button>
             </form>
           </div>
-
-          {/* Right Side: Sample Text */}
           <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
             <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
               {`Let's Build Your Packaging Breakthrough`}
@@ -916,7 +899,6 @@ function RequestForm() {
                   {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
                 </p>
               </div>
-
               <div>
                 <p className="text-sm font-medium text-gray-800">
                   {`That's exactly what Nexibles was created for.`}
@@ -925,7 +907,6 @@ function RequestForm() {
                   {`When you request a free quote, you're not just asking for a price.`}
                 </p>
               </div>
-
               <div>
                 <p className="text-sm font-medium text-gray-800">
                   {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
@@ -934,7 +915,6 @@ function RequestForm() {
                   {`Here’s what happens next:`}
                 </h3>
               </div>
-
               <div>
                 <p className="text-sm font-medium text-gray-800">
                   {`Our team of packaging experts will review your requirements.`}

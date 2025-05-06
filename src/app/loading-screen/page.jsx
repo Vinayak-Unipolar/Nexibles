@@ -19,7 +19,7 @@ import { useState, useEffect } from "react";
   }, [letters.length, onComplete]);
   
   return (
-    <div className="fixed inset-0 z-[9999] bg-white text-black flex items-center justify-center font-poppins font-medium">
+    <div className="fixed inset-0 z-[9999] bg-white text-black flex items-center justify-center font-poppins font-semibold">
       <div className="flex flex-col items-center space-y-6">
         <div className="flex items-center justify-center space-x-0 text-4xl md:text-5xl lg:text-6xl tracking-normal">
           {letters.map((letter, index) => (

@@ -11,9 +11,6 @@ const MyDashboard = () => {
             <h2 className="mb-6 text-2xl font-bold text-gray-900">My Dashboard</h2>
             <p className="text-2xl font-semibold text-gray-900">Hello, {user?.result?.firstName || user?.firstName} !</p>
             <p className="text-gray-900">Your Account Activity</p>
-            {/*<div className="py-6">
-              <button className="px-6 py-2 text-white uppercase bg-black rounded-full w-60">account settings</button>
-            </div>*/}
         </div>
     </div>
   )

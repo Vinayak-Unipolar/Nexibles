@@ -69,6 +69,7 @@ const Configuration = () => {
   // Login to get a fresh token on every page refresh
   const loginForThirdParty = useCallback(async (retries = 3) => {
     setToken(null); // Clear existing token in state
+  
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
         // Ideally, move this to a secure backend API
@@ -263,17 +264,19 @@ const Configuration = () => {
 
   useEffect(() => {
     let isMounted = true;
+  
     const initialize = async () => {
       setLoading(true);
       setError(null);
       setIsAuthLoading(true);
+  
       if (!user) {
         router.push('/login');
         setIsAuthLoading(false);
         setLoading(false);
         return;
       }
-
+  
       // Fetch a new token on every page refresh
       const authToken = await loginForThirdParty();
       if (!authToken && isMounted) {
@@ -282,7 +285,7 @@ const Configuration = () => {
         setLoading(false);
         return;
       }
-
+  
       if (isMounted) {
         const [productSuccess, categorySuccess] = await Promise.all([
           fetchProductData(authToken),
@@ -293,7 +296,7 @@ const Configuration = () => {
           return;
         }
       }
-
+  
       if (isMounted) {
         setIsAuthLoading(false);
         setLoading(false);
@@ -301,6 +304,7 @@ const Configuration = () => {
     };
   
     initialize();
+  
     return () => {
       isMounted = false;
     };
@@ -351,10 +355,12 @@ const Configuration = () => {
   const handleRequestQuotation = async () => {
     setIsQuotationLoading(true);
     setError(null);
+  
     try {
       // Always fetch a fresh token for critical actions
       const authToken = await loginForThirdParty();
       if (!authToken) throw new Error('Authentication token is missing.');
+  
       if (!jobName) throw new Error('Project name is required');
       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
@@ -522,10 +528,10 @@ const Configuration = () => {
   );
 
   if (process.env.NODE_ENV === 'development') {
-   // console.log('Selected Category ID:', selectedCategory);
-    //console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
-    //console.log('Normalized Category Name:', normalizedCategoryName);
-    //console.log('Pouch Opening Options:', pouchOpeningOptions);
+    console.log('Selected Category ID:', selectedCategory);
+    console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
+    console.log('Normalized Category Name:', normalizedCategoryName);
+    console.log('Pouch Opening Options:', pouchOpeningOptions);
     if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
       console.warn('Warning: "Radius Seal" not found in optionalProcesses');
     }

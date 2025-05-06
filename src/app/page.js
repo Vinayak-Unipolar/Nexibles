@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { LoadingScreen } from "./loading-screen/page";
+import  LoadingScreen  from "./loading-screen/page";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "@/components/shop/Footer";
 import AdvantageItem from "@/components/home/AdvantageItem";

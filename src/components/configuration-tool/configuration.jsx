@@ -69,7 +69,6 @@ const Configuration = () => {
   // Login to get a fresh token on every page refresh
   const loginForThirdParty = useCallback(async (retries = 3) => {
     setToken(null); // Clear existing token in state
-
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
         // Ideally, move this to a secure backend API
@@ -84,7 +83,7 @@ const Configuration = () => {
             ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
           }),
         });
-
+  
         const result = await response.json();
         if (result.status && result.data?.token) {
           const newToken = result.data.token;
@@ -264,12 +263,10 @@ const Configuration = () => {
 
   useEffect(() => {
     let isMounted = true;
-
     const initialize = async () => {
       setLoading(true);
       setError(null);
       setIsAuthLoading(true);
-
       if (!user) {
         router.push('/login');
         setIsAuthLoading(false);
@@ -302,9 +299,8 @@ const Configuration = () => {
         setLoading(false);
       }
     };
-
+  
     initialize();
-
     return () => {
       isMounted = false;
     };
@@ -355,17 +351,15 @@ const Configuration = () => {
   const handleRequestQuotation = async () => {
     setIsQuotationLoading(true);
     setError(null);
-
     try {
       // Always fetch a fresh token for critical actions
       const authToken = await loginForThirdParty();
       if (!authToken) throw new Error('Authentication token is missing.');
-
       if (!jobName) throw new Error('Project name is required');
       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
       if (!selectedMandatoryProcess) throw new Error('Mandatory process is required');
-
+  
       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
       const normalizedCategoryName = categoryName?.trim().toLowerCase();
       const optionalProcessIds = [
@@ -374,7 +368,7 @@ const Configuration = () => {
         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
         ...selectedMultiProcesses,
       ].filter(Boolean);
-
+  
       const payload = {
         formData: {
           job_name: jobName || 'Untitled Project',
@@ -401,7 +395,7 @@ const Configuration = () => {
         printingTypeId: '8',
         customerId: '26176',
       };
-
+  
       const response = await fetch(
         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
         {
@@ -414,7 +408,7 @@ const Configuration = () => {
           body: JSON.stringify(payload),
         }
       );
-
+  
       const result = await response.json();
       if (result.status && result.data?.costing_data?.length > 0) {
         setCostData(result.data.costing_data[0]);

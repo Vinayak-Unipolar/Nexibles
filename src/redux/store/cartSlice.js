@@ -117,6 +117,7 @@ const cartSlice = createSlice({
     },
     removeCoupon: (state) => {
       state.appliedCoupon = null;
+      // Reset coupon-related discount fields
       state.items = state.items.map(item => ({
         ...item,
         discountedPrice: undefined,

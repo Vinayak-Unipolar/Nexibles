@@ -622,6 +622,10 @@ export default function MyCart() {
                             )}
                           <li className="mt-1 text-sm list-none">
                             Material: {item.material}
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> f485fed5cc687e8f75251d2171a0da8cbb22760e
                           </li><li className="mt-1 font-semibold">
                             <li className="mt-1 text-sm list-none">
                               Price: ₹ {typeof item.price === 'number' ? item.price.toFixed(0) : item.price} / Sku: {item.skuCount}

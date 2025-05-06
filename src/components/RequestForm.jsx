@@ -911,8 +911,8 @@ function RequestForm() {
                 <p className="text-sm font-medium text-gray-800">
                   {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
                 </p>
-                <h3 className="pb-2 mb-4 text-xl mt-2 font-bold text-gray-800 border-b-2 border-orange-500">
-                  {`Here’s what happens next:`}
+                <h3 className="pb-2 mb-4 text-xl mt-6 font-bold text-gray-800 border-b-2 border-orange-500">
+                  {`Here’s What Happens Next`}
                 </h3>
               </div>
               <div>

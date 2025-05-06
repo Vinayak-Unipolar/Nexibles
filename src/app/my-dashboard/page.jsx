@@ -36,14 +36,14 @@ const DashboardPage = () => {
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
+        <div>
             <Navbar />
-            <div className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-                <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 md:flex gap-8">
-                    <div className="w-full md:w-1/3 mb-6 md:mb-0">
+            <div className="mt-12 containers md:mt-16">
+                <div className="md:flex">
+                    <div className="w-full bg-white md:w-1/3">
                         <MyAccount />
                     </div>
-                    <div className="w-full md:w-2/3">
+                    <div className="w-full md:w-full">
                         <MyDashboard />
                     </div>
                 </div>

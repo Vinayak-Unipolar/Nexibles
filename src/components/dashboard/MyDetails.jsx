@@ -9,10 +9,10 @@ function MyDetails() {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-gray-100">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="p-10 bg-white rounded-2xl shadow-xl text-center max-w-md w-full mx-4 relative overflow-hidden border border-gray-100">
-          <div className="absolute top-0 left-0 w-32 h-32 bg-gray-50 rounded-full -ml-16 -mt-16 opacity-50"></div>
-          <div className="absolute bottom-0 right-0 w-32 h-32 bg-gray-50 rounded-full -mr-16 -mb-16 opacity-50"></div>
+          <div className="absolute top-0 left-0 w-32 h-32 rounded-full -ml-16 -mt-16 opacity-50"></div>
+          <div className="absolute bottom-0 right-0 w-32 h-32 rounded-full -mr-16 -mb-16 opacity-50"></div>
           <div className="relative">
             <div className="w-16 h-1 bg-[#103b60] mx-auto mb-6 rounded-full"></div>
             <div className="text-2xl font-semibold text-gray-800 mb-2">
@@ -21,7 +21,7 @@ function MyDetails() {
             <div className="text-xl font-medium text-gray-600 mb-6">
               Please log in to view your details.
             </div>
-            <div className="p-4 bg-gray-50 rounded-xl text-sm text-gray-500 border border-gray-100">
+            <div className="p-4 rounded-xl text-sm text-gray-500 border border-gray-100">
               Your personal information is only visible after authentication.
             </div>
             <button className="mt-8 px-6 py-3 bg-[#103b60] text-white font-medium rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-0.5 w-full">
@@ -57,7 +57,7 @@ function MyDetails() {
       <div className="w-full bg-white  overflow-hidden">
         {/* Header Section with geometric pattern */}
         <div className="relative p-8 border-b border-gray-100">
-          <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-r from-gray-50 to-white opacity-80"></div>
+          <div className="absolute top-0 left-0 w-full h-16 opacity-80"></div>
           <div className="relative flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 tracking-tight">My Details</h2>
@@ -67,17 +67,17 @@ function MyDetails() {
               Edit
             </button>
           </div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-full -mr-16 -mt-16 opacity-30"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gray-50 rounded-full -ml-12 -mb-12 opacity-30"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-16 -mt-16 opacity-30"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full -ml-12 -mb-12 opacity-30"></div>
         </div>
 
         {/* Content Section */}
-        <div className="p-8 bg-gradient-to-b from-white to-gray-50">
+        <div className="p-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {/* Left Column */}
             <div className="space-y-8">
               <div className="p-6 rounded-xl bg-white shadow-sm border border-gray-100 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gray-50 rounded-full -mr-8 -mt-8 opacity-30"></div>
+                <div className="absolute top-0 right-0 w-16 h-16 rounded-full -mr-8 -mt-8 opacity-30"></div>
                 <h3 className="text-lg font-semibold text-[#103b60] mb-6 flex items-center">
                   <div className="w-1 h-6 bg-[#103b60] mr-3 rounded-full"></div>
                   Personal
@@ -99,7 +99,7 @@ function MyDetails() {
               </div>
 
               <div className="p-6 rounded-xl bg-white shadow-sm border border-gray-100 relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 w-20 h-20 bg-gray-50 rounded-full -ml-10 -mb-10 opacity-30"></div>
+                <div className="absolute bottom-0 left-0 w-20 h-20 rounded-full -ml-10 -mb-10 opacity-30"></div>
                 <h3 className="text-lg font-semibold text-[#103b60] mb-6 flex items-center">
                   <div className="w-1 h-6 bg-[#103b60] mr-3 rounded-full"></div>
                   Professional
@@ -120,7 +120,7 @@ function MyDetails() {
             {/* Right Column */}
             <div className="space-y-8">
               <div className="p-6 rounded-xl bg-white shadow-sm border border-gray-100 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-16 h-16 bg-gray-50 rounded-full -ml-8 -mt-8 opacity-30"></div>
+                <div className="absolute top-0 left-0 w-16 h-16 rounded-full -ml-8 -mt-8 opacity-30"></div>
                 <h3 className="text-lg font-semibold text-[#103b60] mb-6 flex items-center">
                   <div className="w-1 h-6 bg-[#103b60] mr-3 rounded-full"></div>
                   Contact
@@ -138,7 +138,7 @@ function MyDetails() {
               </div>
 
               <div className="p-6 rounded-xl bg-white shadow-sm border border-gray-100 relative overflow-hidden">
-                <div className="absolute bottom-0 right-0 w-20 h-20 bg-gray-50 rounded-full -mr-10 -mb-10 opacity-30"></div>
+                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-full -mr-10 -mb-10 opacity-30"></div>
                 <h3 className="text-lg font-semibold text-[#103b60] mb-6 flex items-center">
                   <div className="w-1 h-6 bg-[#103b60] mr-3 rounded-full"></div>
                   Location

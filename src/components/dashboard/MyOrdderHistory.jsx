@@ -282,7 +282,7 @@ const MyOrderHistory = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
             <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-12">
                 <div className="space-y-8">
                     {orders.length === 0 ? (

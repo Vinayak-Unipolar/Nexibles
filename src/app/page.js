@@ -153,7 +153,7 @@ const Home = () => {
         const data = await response.json();
         if (data.status === "success") {
           const filterCategory = data.data.filter(
-            (category) => category.origin?.toLowerCase() === "nexibles"
+            (category) => category.origin?.toLowerCase() === "nexibles "
           );
           setData(filterCategory);
         } else {

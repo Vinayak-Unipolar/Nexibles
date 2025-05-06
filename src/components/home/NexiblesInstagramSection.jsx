@@ -85,8 +85,6 @@ export default function NexiblesInstagramSection() {
             ease: "linear",
           }}
         >
-
-          
           {[...brandLogos, ...brandLogos].map((brand, idx) => (
             <div
               key={`${brand.id}-${idx}`}

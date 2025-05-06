@@ -12,7 +12,6 @@ import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTest
 import ProductSections from "@/components/shop/ProductSections";
 import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
 import Industries from "@/components/home/Industries";
-
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const Modal = ({ isOpen, onClose }) => {

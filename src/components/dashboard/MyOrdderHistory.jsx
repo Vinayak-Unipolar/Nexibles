@@ -41,21 +41,24 @@ const MyOrderHistory = () => {
                     throw new Error('Failed to fetch order history');
                 }
                 const data = await response.json();
-
+    
                 const filteredOrders = data.orderDetails.filter(order => order.origin === "Nexibles");
                 const sortedOrders = filteredOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
                 setOrders(sortedOrders);
-
+    
+                // Remove localStorage usage completely
                 const downloadedState = {};
                 filteredOrders.forEach(order => {
-                    downloadedState[order.orderNo] = localStorage.getItem(`keylineDownloaded_${order.orderNo}`) === 'true';
+                    downloadedState[order.orderNo] = false; // or null/undefined based on your default behavior
                 });
                 setKeylineDownloaded(downloadedState);
+    
             } catch (error) {
                 console.error('Error fetching order history:', error);
                 toast.error('Failed to fetch order history. Please try again.');
             }
         };
+
 
         const fetchOrderFiles = async () => {
             try {

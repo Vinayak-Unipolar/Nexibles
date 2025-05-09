@@ -1,5 +1,4 @@
 import React from 'react';
-import categoryimg from '../../../public/cards/categorybgimg.jpg';
 
 function CategoryImageBg() {
   return (

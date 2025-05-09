@@ -1,22 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  FaInstagram,
-  FaFacebookF,
-  FaTwitter,
-  FaPinterestP,
-} from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import { LoadingScreen } from "./loading-screen/page";
+import  LoadingScreen  from "./loading-screen/page";
 import "react-toastify/dist/ReactToastify.css";
-import WhatWeDo from "@/components/home/WhatWeDo";
 import Footer from "@/components/shop/Footer";
-import GreenPart from "@/components/home/GreenPart";
 import AdvantageItem from "@/components/home/AdvantageItem";
 import HeaderSection from "@/components/home/HeaderSection";
 import Navbar from "@/components/shop/Navbar";
-import Trendingproducts from "@/components/shop/trendingproducts/Trendingproducts";
-import Productcategory from "@/components/shop/productcategory/Productcategory";
 import Popularproducts from "@/components/shop/popularproducts/Popularproducts";
 import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTestimonials";
 import ProductSections from "@/components/shop/ProductSections";
@@ -153,7 +143,7 @@ const Home = () => {
         const data = await response.json();
         if (data.status === "success") {
           const filterCategory = data.data.filter(
-            (category) => category.origin?.toLowerCase() === "nexibles"
+            (category) => category.origin?.toLowerCase() === "nexibles "
           );
           setData(filterCategory);
         } else {

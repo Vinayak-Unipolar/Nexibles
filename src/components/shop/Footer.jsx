@@ -104,6 +104,8 @@ const Footer = () => {
                 Sign up for our newsletter and be the first
                 to find out about new features & offers.
               </motion.p>
+
+              
               <motion.form
                 onSubmit={handleSubscribe}
                 className="flex items-center overflow-hidden bg-white rounded-md"

@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Instagram } from "lucide-react";
-
-
 export default function NexiblesInstagramSection() {
-
   const [instaFeed] = useState([
     {
       image: `${process.env.NEXT_PUBLIC_CDN_URL}/insta01.png`,

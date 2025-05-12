@@ -193,7 +193,7 @@ const HeaderSection = () => {
                         variants={textVariants}
                       >
                         <motion.h2
-                          className="text-[5vw] md:text-[6vw] font-bold tracking-wider text-center mb-2 md:mb-0"
+                          className="text-[5vw] md:text-[6vw] font-extrabold tracking-wider text-center mb-2 md:mb-0"
                           style={outlineTextStyle}
                           variants={textVariants}
                         >

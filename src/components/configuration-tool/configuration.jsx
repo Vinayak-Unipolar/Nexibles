@@ -52,6 +52,7 @@ const Configuration = () => {
   const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState(Array(quantity).fill(false));
 
   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
+  const DEFAULT_IMAGE_URL = `${NEXI_CDN_URL}/category/default-image.jpg`;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -69,9 +70,9 @@ const Configuration = () => {
   // Login to get a fresh token on every page refresh
   const loginForThirdParty = useCallback(async (retries = 3) => {
     setToken(null); // Clear existing token in state
+  
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        // Ideally, move this to a secure backend API
         const response = await fetch('https://nexiblesapp.barecms.com/proxy?r=user/authenticate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -103,56 +104,8 @@ const Configuration = () => {
     }
   }, []);
 
-  // Fetch category data
-  const fetchCategoryData = useCallback(async (retries = 3) => {
-    const APIURL = process.env.NEXT_PUBLIC_API_URL;
-    const token = process.env.NEXT_PUBLIC_API_KEY;
-
-    if (!APIURL || !token) {
-      setError('API URL or API Key is missing.');
-      return false;
-    }
-
-    for (let attempt = 1; retries; attempt++) {
-      try {
-        const response = await fetch(`${APIURL}/api/category_master`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'API-Key': token,
-          },
-        });
-
-        const data = await response.json();
-        if (data.status === 'success' && Array.isArray(data.data)) {
-          const filterCategory = data.data
-            .filter((category) => category.origin?.toLowerCase() === 'nexibles')
-            .map((category) => ({
-              id: category.id,
-              name: category.name,
-              bg_Img: category.bg_Img,
-              cat_url: category.cat_url || '',
-            }));
-          setCategories(filterCategory);
-          if (filterCategory.length > 0) {
-            setSelectedCategory(filterCategory[0].id);
-          }
-          return true;
-        } else {
-          throw new Error(data.error || 'Failed to fetch category data');
-        }
-      } catch (err) {
-        if (attempt === retries) {
-          setError(err.message || 'Error fetching category data');
-          return false;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-      }
-    }
-  }, []);
-
-  // Fetch product data
-  const fetchProductData = useCallback(async (authToken, retries = 3) => {
+  // Fetch category data from the provided API
+  const fetchCategoryData = useCallback(async (authToken, retries = 3) => {
     if (!authToken) {
       setError('Authentication token is missing.');
       return false;
@@ -172,8 +125,67 @@ const Configuration = () => {
 
         const data = await response.json();
         if (data.status && Array.isArray(data.data)) {
-          const targetProduct = data.data.find((p) => p.id === '122');
-          if (!targetProduct) throw new Error('Product ID 122 not found');
+          const uniqueCategories = [];
+          const seenNames = new Set();
+          
+          data.data.forEach((product) => {
+            const productName = product.product_name?.trim();
+            if (productName && !seenNames.has(productName.toLowerCase())) {
+              seenNames.add(productName.toLowerCase());
+              uniqueCategories.push({
+                id: product.id,
+                name: productName,
+                bg_Img: product.product_picture || DEFAULT_IMAGE_URL,
+                cat_url: '',
+              });
+            }
+          });
+
+          setCategories(uniqueCategories);
+          if (uniqueCategories.length > 0) {
+            // Set selectedCategory to the category with id '122' if it exists, otherwise first category
+            const defaultCategory = uniqueCategories.find(cat => cat.id === '122') || uniqueCategories[0];
+            setSelectedCategory(defaultCategory.id);
+          }
+          return true;
+        } else {
+          throw new Error(data.message || 'Failed to fetch category data');
+        }
+      } catch (err) {
+        console.error(`Category fetch attempt ${attempt} failed:`, err.message);
+        if (attempt === retries) {
+          setError(err.message || 'Error fetching category data');
+          return false;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      }
+    }
+  }, []);
+
+  // Fetch product data based on categoryId
+  const fetchProductData = useCallback(async (authToken, categoryId, retries = 3) => {
+    if (!authToken) {
+      setError('Authentication token is missing.');
+      return false;
+    }
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const response = await fetch(
+          'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              Environment: 'frontdesk',
+            },
+          }
+        );
+
+        const data = await response.json();
+        if (data.status && Array.isArray(data.data)) {
+          // Find product matching the categoryId
+          const targetProduct = data.data.find((p) => p.id === categoryId);
+          if (!targetProduct) throw new Error(`Product with ID ${categoryId} not found`);
 
           setProduct(targetProduct);
 
@@ -252,6 +264,7 @@ const Configuration = () => {
           throw new Error(data.message || 'Failed to fetch product data');
         }
       } catch (err) {
+        console.error(`Product fetch attempt ${attempt} failed:`, err.message);
         if (attempt === retries) {
           setError(err.message);
           return false;
@@ -263,17 +276,19 @@ const Configuration = () => {
 
   useEffect(() => {
     let isMounted = true;
+  
     const initialize = async () => {
       setLoading(true);
       setError(null);
       setIsAuthLoading(true);
+  
       if (!user) {
         router.push('/login');
         setIsAuthLoading(false);
         setLoading(false);
         return;
       }
-
+  
       // Fetch a new token on every page refresh
       const authToken = await loginForThirdParty();
       if (!authToken && isMounted) {
@@ -282,18 +297,23 @@ const Configuration = () => {
         setLoading(false);
         return;
       }
-
+  
       if (isMounted) {
-        const [productSuccess, categorySuccess] = await Promise.all([
-          fetchProductData(authToken),
-          fetchCategoryData(),
-        ]);
-        if (!productSuccess || !categorySuccess) {
+        // Fetch categories first to set selectedCategory
+        const categorySuccess = await fetchCategoryData(authToken);
+        if (!categorySuccess) {
+          window.location.reload();
+          return;
+        }
+
+        // Fetch product data using default ID '122' initially
+        const productSuccess = await fetchProductData(authToken, '122');
+        if (!productSuccess) {
           window.location.reload();
           return;
         }
       }
-
+  
       if (isMounted) {
         setIsAuthLoading(false);
         setLoading(false);
@@ -301,10 +321,11 @@ const Configuration = () => {
     };
   
     initialize();
+  
     return () => {
       isMounted = false;
     };
-  }, [user, router, loginForThirdParty, fetchProductData, fetchCategoryData]);
+  }, [user, router, loginForThirdParty, fetchCategoryData, fetchProductData]);
 
   useEffect(() => {
     setIsSkuQuantityOpen(Array(quantity).fill(false));
@@ -351,14 +372,14 @@ const Configuration = () => {
   const handleRequestQuotation = async () => {
     setIsQuotationLoading(true);
     setError(null);
+  
     try {
-      // Always fetch a fresh token for critical actions
       const authToken = await loginForThirdParty();
       if (!authToken) throw new Error('Authentication token is missing.');
+  
       if (!jobName) throw new Error('Project name is required');
       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
-      if (!selectedMandatoryProcess) throw new Error('Mandatory process is required');
   
       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
       const normalizedCategoryName = categoryName?.trim().toLowerCase();
@@ -391,7 +412,7 @@ const Configuration = () => {
           optional_process: optionalProcessIds,
           type: 'basic',
         },
-        productId: '122',
+        productId: selectedCategory || '122', // Fallback to '122' if selectedCategory is empty
         printingTypeId: '8',
         customerId: '26176',
       };
@@ -463,7 +484,7 @@ const Configuration = () => {
       id: product.id,
       name: jobName || product.title || 'Custom Pouch',
       category: categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouches',
-      image: `${NEXI_CDN_URL}/category/${categories.find((cat) => cat.id === selectedCategory)?.bg_Img || 'default-image.jpg'}`,
+      image: categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL,
       price: unitPrice,
       quantity: totalQuantity,
       totalPrice: totalPrice,
@@ -522,10 +543,11 @@ const Configuration = () => {
   );
 
   if (process.env.NODE_ENV === 'development') {
-   // console.log('Selected Category ID:', selectedCategory);
-    //console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
-    //console.log('Normalized Category Name:', normalizedCategoryName);
-    //console.log('Pouch Opening Options:', pouchOpeningOptions);
+    console.log('Selected Category ID:', selectedCategory);
+    console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
+    console.log('Normalized Category Name:', normalizedCategoryName);
+    console.log('Pouch Opening Options:', pouchOpeningOptions);
+    console.log('Category Image:', categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL);
     if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
       console.warn('Warning: "Radius Seal" not found in optionalProcesses');
     }
@@ -677,27 +699,42 @@ const Configuration = () => {
                         {isCategoryOpen && (
                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
-                              className="p-2 cursor-pointer hover:bg-gray-100"
+                              className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
                               onClick={() => {
-                                setSelectedCategory('');
+                                setSelectedCategory('122');
+                                fetchProductData(token, '122');
                                 setIsCategoryOpen(false);
                               }}
                             >
-                              Select category
+                              <div className="w-6 h-6 mr-2 flex-shrink-0"></div>
+                              <span>Select default category</span>
                             </div>
                             {categories.map((category) => (
                               <div
                                 key={category.id}
-                                className="p-2 cursor-pointer hover:bg-gray-100"
+                                className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
                                 onClick={() => {
                                   setSelectedCategory(category.id);
                                   if (category.name.trim().toLowerCase() === 'stand up pouch') {
                                     setSelectedPouchOpening('');
                                   }
+                                  fetchProductData(token, category.id);
                                   setIsCategoryOpen(false);
                                 }}
                               >
-                                {category.name}
+                                <div className="w-6 h-6 mr-2 flex-shrink-0">
+                                  <Image
+                                    src={category.bg_Img}
+                                    alt={category.name}
+                                    width={24}
+                                    height={24}
+                                    className="object-contain rounded"
+                                    onError={(e) => {
+                                      e.target.src = DEFAULT_IMAGE_URL;
+                                    }}
+                                  />
+                                </div>
+                                <span>{category.name}</span>
                               </div>
                             ))}
                           </div>
@@ -1216,15 +1253,13 @@ const Configuration = () => {
                 <div className="relative h-40 w-48">
                   {selectedCategory && categories.length > 0 ? (
                     <Image
-                      src={`${NEXI_CDN_URL}/category/${categories.find((cat) => cat.id === selectedCategory)?.bg_Img || 'default-image.jpg'}`}
-                      alt={
-                        categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouch Image'
-                      }
+                      src={categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL}
+                      alt={categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouch Image'}
                       layout="fill"
                       objectFit="contain"
                       className="rounded-lg"
                       onError={(e) => {
-                        e.target.src = `${NEXI_CDN_URL}/category/default-image.jpg`;
+                        e.target.src = DEFAULT_IMAGE_URL;
                       }}
                     />
                   ) : (

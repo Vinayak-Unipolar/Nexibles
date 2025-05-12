@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -9,6 +9,7 @@ export default function StatsAndTestimonials() {
   const [activeStatCard, setActiveStatCard] = useState('customers');
   const [testimonials, setTestimonials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedTestimonial, setSelectedTestimonial] = useState(null);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -36,6 +37,7 @@ export default function StatsAndTestimonials() {
               (item.company || ""),
             content: item.description,
             image: item.image || "",
+            fullDescription: item.fullDescription || item.description,
           }));
           setTestimonials(formattedTestimonials);
         }
@@ -80,54 +82,62 @@ export default function StatsAndTestimonials() {
     },
   ];
 
+  // Arrow variants for Framer Motion animations
+  const arrowVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.4, ease: "easeOut" } },
+  };
+
   // Custom Arrow Components
-  const PrevArrow = (props) => {
-    const { className, style, onClick } = props;
+  const PrevArrow = ({ onClick }) => {
     return (
-      <div
-        className={className}
-        style={{ ...style, display: 'block', left: '10px', zIndex: 1 }}
+      <motion.button
         onClick={onClick}
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        aria-label="Previous testimonial"
+        initial="hidden"
+        animate="visible"
+        variants={arrowVariants}
       >
-        {/* You can customize the arrow icon or style here */}
-        {/* <svg
-          className="w-8 h-8 text-black"
-          fill="currentColor"
-          viewBox="0 0 20 20"
+        <svg
           xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5"
         >
-          <path
-            fillRule="evenodd"
-            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-            clipRule="evenodd"
-          />
-        </svg> */}
-      </div>
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </motion.button>
     );
   };
 
-  const NextArrow = (props) => {
-    const { className, style, onClick } = props;
+  const NextArrow = ({ onClick }) => {
     return (
-      <div
-        className={className}
-        style={{ ...style, display: 'block', right: '10px', zIndex: 1 }}
+      <motion.button
         onClick={onClick}
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        aria-label="Next testimonial"
+        initial="hidden"
+        animate="visible"
+        variants={arrowVariants}
       >
-        {/* You can customize the arrow icon or style here */}
-        {/* <svg
-          className="w-8 h-8 text-black"
-          fill="currentColor"
-          viewBox="0 0 20 20"
+        <svg
           xmlns="http://www.w3.org/2000/svg"
+         inin viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5"
         >
-          <path
-            fillRule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clipRule="evenodd"
-          />
-        </svg> */}
-      </div>
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </motion.button>
     );
   };
 
@@ -166,8 +176,32 @@ export default function StatsAndTestimonials() {
     }),
   };
 
+  const modalVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.9,
+    },
+    visible: { 
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20
+      }
+    },
+    exit: { 
+      opacity: 0,
+      scale: 0.9,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col w-full">
+      {/* Testimonials Section */}
       <motion.div
         className="w-full bg-[#ffd13e] md:py-12 px-4 md:px-8"
         initial={{ opacity: 0, y: 50 }}
@@ -191,7 +225,7 @@ export default function StatsAndTestimonials() {
           ) : (
             <Slider {...sliderSettings}>
               {testimonials.map((testimonial, index) => (
-                <div key={testimonial.id} className="px-3">
+                <div key={testimonial.id} className="px-3 cursor-pointer" onClick={() => setSelectedTestimonial(testimonial)}>
                   <motion.div
                     className="relative md:w-[550px] lg:h-[350px] xl:h-[300px] mx-auto bg-white rounded-lg mt-24 md:mt-18 mb-10 pt-16 pb-6 px-6 shadow-lg"
                     variants={testimonialCardVariants}
@@ -238,6 +272,63 @@ export default function StatsAndTestimonials() {
           )}
         </div>
       </motion.div>
+
+      {/* Testimonial Modal */}
+      <AnimatePresence>
+        {selectedTestimonial && (
+          <motion.div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedTestimonial(null)}
+          >
+            <motion.div 
+              className="relative w-11/12 max-w-2xl p-8 bg-white rounded-2xl shadow-2xl"
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button 
+                className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+                onClick={() => setSelectedTestimonial(null)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Modal Content */}
+              <div className="flex flex-col items-center">
+                {/* Client Image */}
+                <div className="mb-6">
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/testimonials/${selectedTestimonial.image}`}
+                    alt={selectedTestimonial.name}
+                    width={200}
+                    height={200}
+                    className="rounded-full shadow-lg"
+                  />
+                </div>
+
+                {/* Client Details */}
+                <div className="text-center">
+                  <h3 className="mb-2 text-2xl font-bold text-gray-800">{selectedTestimonial.name}</h3>
+                  <p className="mb-4 text-gray-600">{selectedTestimonial.designationcompany}</p>
+                </div>
+
+                {/* Full Testimonial */}
+                <div className="mt-6 text-center text-gray-700">
+                  <p className="text-lg leading-relaxed">{selectedTestimonial.fullDescription}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

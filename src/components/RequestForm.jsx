@@ -356,7 +356,7 @@ function RequestForm() {
         },
         body: JSON.stringify(requestBody),
       });
-      console.log("Payload", requestBody);
+      //console.log("Payload", requestBody);
       const responseData = await response.json();
       if (responseData.success === true) {
         if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
@@ -416,26 +416,69 @@ function RequestForm() {
         enquiry_source: "Nexibles Website",
         request_sample_kit: formData.requestSampleKit,
       };
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(leadData),
-      });
+      const emailData = {
+        clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+        clientEmail: formData.email,
+        phone: formData.phone,
+        message: `
+          Project Description: ${formData.projectDescription || "Not provided"}
+          Industry: ${formData.industry || "Not provided"}
+          Order Quantity: ${formData.orderQuantity || "Not provided"}
+          Package Buying History: ${
+            formData.packageBuyingHistory || "Not provided"
+          }
+          Company: ${formData.companyName || "Not provided"}
+          Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
+        `,
+      };
+
+      const leadResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(leadData),
+        }
+      );
+
+      if (!leadResponse.ok) {
+        throw new Error("Failed to save lead");
+      }
+
+      // Call /send-email to send emails
+      const emailResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify(emailData),
+        }
+      );
+
+      if (!emailResponse.ok) {
+        const emailError = await emailResponse.json();
+        throw new Error(emailError.error || "Failed to send emails");
+      }
+
       const orderResult = await createOrder();
       if (!orderResult.success) {
-        setLoading(false);
-        toast.error("Failed to create order. Please try again.");
-        return;
+        throw new Error("Failed to create order");
       }
+
       const amount = total ? total.total : 413;
       if (isNaN(amount) || amount <= 0) {
         throw new Error("Invalid total price for payment");
       }
 
-      var baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
-      if (typeof window !== "undefined") baseUrl = window.location.origin;
+      const baseUrl =
+        typeof window !== "undefined"
+          ? window.location.origin
+          : process.env.NEXT_PUBLIC_API_URL;
 
       const transactionId = "T" + Date.now();
       const orderNo = orderResult.orderNo;
@@ -449,15 +492,21 @@ function RequestForm() {
         transactionId,
         redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
       };
-       const paymentResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, data);
-       if (typeof window !== "undefined") window.location.href = paymentResponse.data.url;
+
+      const paymentResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
+        data
+      );
+      if (typeof window !== "undefined")
+        window.location.href = paymentResponse.data.url;
     } catch (error) {
       setLoading(false);
       console.error("Error processing payment:", error);
-      toast.error("Failed to process payment");
-      setSubmitStatus("Failed to process payment. Please try again.");
+      toast.error(`Failed: ${error.message}`);
+      setSubmitStatus(`Failed: ${error.message}`);
     }
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -162,26 +162,21 @@ const Home = () => {
 
   return (
     <>
-      {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}
-      <div
-        className={`min-h-screen transition-opacity duration-700 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <GoogleAnalytics />
-        <ToastContainer position="top-right" autoClose={3000} />
-        <Modal isOpen={showModal} onClose={closeModal} />
-        <Navbar />
-        <HeaderSection />
-        <Industries />
-        <Popularproducts />
-        <ProductSections />
-        <AdvantageItem />
-        <StatsAndTestimonials />
-        <NexiblesInstagramSection />
-        <Footer />
-      </div>
-    </>
+    <div className="min-h-screen">
+      <GoogleAnalytics />
+      <ToastContainer position="top-right" autoClose={3000} />
+      <Modal isOpen={showModal} onClose={closeModal} />
+      <Navbar />
+      <HeaderSection />
+      <Industries />
+      <Popularproducts />
+      <ProductSections />
+      <AdvantageItem />
+      <StatsAndTestimonials />
+      <NexiblesInstagramSection />
+      <Footer />
+    </div>
+  </>
   );
 };
 

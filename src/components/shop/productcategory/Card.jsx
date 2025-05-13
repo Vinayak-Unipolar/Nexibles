@@ -57,7 +57,7 @@ export default function Card({ product, isLoading }) {
                 height={400}
                 layout="responsive"
               />
-              <p className="mt-4 text-center text-gray-500">No products found</p>
+              {/* <p className="mt-4 text-center text-gray-500">No products found</p> */}
             </div>
           </div>
         )}

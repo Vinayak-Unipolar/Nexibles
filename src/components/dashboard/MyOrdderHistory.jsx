@@ -17,6 +17,8 @@ const MyOrderHistory = () => {
     const [orderFiles, setOrderFiles] = useState({});
     const [skuNames, setSkuNames] = useState({});
     const [skuUploads, setSkuUploads] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 2;
 
     const hasOrderFiles = (orderNo) => {
         return orderFiles[orderNo]?.length > 0;
@@ -81,7 +83,6 @@ const MyOrderHistory = () => {
                     }, {});
                     setOrderFiles(filesByOrder);
 
-                    // Initialize skuUploads based on existing files
                     const initialSkuUploads = {};
                     Object.keys(filesByOrder).forEach(orderNo => {
                         initialSkuUploads[orderNo] = {};
@@ -256,144 +257,191 @@ const MyOrderHistory = () => {
         for (let i = 1; i <= skuCount; i++) {
             skus.push({
                 sku_no: `SKU${i}`,
-                sku_name: `SKU Name ${i}`
+                sku_name: `SKU Name ${i}`, // Added comma here to fix syntax error
             });
         }
         return skus;
     };
 
+    const groupedOrders = groupOrdersByOrderNo();
+    const totalPages = Math.ceil(Object.keys(groupedOrders).length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentOrders = Object.entries(groupedOrders).slice(startIndex, endIndex);
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
     return (
         <div className="min-h-screen">
-            <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-4 sm:py-2">
-                <div className="space-y-6 md:mt-2">
+            <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-12">
+                <div className="space-y-8">
                     {orders.length === 0 ? (
-                        <p className="text-gray-900">No orders found.</p>
+                        <p className="text-gray-900 text-lg text-center">No orders found.</p>
                     ) : (
-                        Object.entries(groupOrdersByOrderNo()).map(([orderNo, orderGroup]) => (
-                            <div key={orderNo} className="bg-white border border-gray-200 rounded-lg shadow-lg">
-                                <div className="p-4 sm:p-6">
-                                    <h2 className="mb-4 text-lg font-bold sm:text-xl">Order #{orderNo}</h2>
+                        <>
+                            {currentOrders.map(([orderNo, orderGroup]) => (
+                                <div key={orderNo} className="bg-white border border-gray-200 rounded-xl shadow-lg">
+                                    <div className="p-6 sm:p-8">
+                                        <h2 className="mb-6 text-xl font-semibold text-gray-900 sm:text-2xl">Order #{orderNo}</h2>
 
-                                    {orderGroup.map(order => {
-                                        const displayPrice = order.discountedPrice ? parseFloat(order.discountedPrice) : order.price;
-                                        const hasDiscount = order.discountAmount && parseFloat(order.discountAmount) > 0;
-                                        const skus = generateSkuData(order.skuCount);
+                                        {orderGroup.map(order => {
+                                            const displayPrice = order.discountedPrice ? parseFloat(order.discountedPrice) : order.price;
+                                            const hasDiscount = order.discountAmount && parseFloat(order.discountAmount) > 0;
+                                            const skus = generateSkuData(order.skuCount);
 
-                                        return (
-                                            <div key={order.id} className="flex flex-col gap-6 py-4 border-t lg:flex-row first:border-t-0">
-                                                <div className="flex-shrink-0 w-full lg:w-80">
-                                                    <img
-                                                        src={`${CDN_URL}/product/${order.image}`}
-                                                        alt={order.product_name}
-                                                        className="object-contain w-full h-64 rounded-md lg:h-48"
-                                                    />
-                                                </div>
-
-                                                <div className="flex-grow space-y-4">
-                                                    <h3 className="text-xl font-bold text-gray-900">{order.product_name}</h3>
-
-                                                    <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                                                        <p><span className="font-semibold">Order Date:</span> {formatDate(order.orderDate)}</p>
-                                                        <p><span className="font-semibold">Quantity:</span> {order.quantity}</p>
-                                                        <p><span className="font-semibold">Sku Count:</span> {order.skuCount}</p>
-                                                        <p><span className="font-semibold">Material:</span> {order.material}</p>
-
-                                                        {hasDiscount ? (
-                                                            <>
-                                                                <p><span className="font-semibold">Original Price:</span> ₹{order.price}</p>
-                                                                <p><span className="font-semibold">Discount:</span> {order.discountPercentage}% (₹{order.discountAmount})</p>
-                                                                <p className="text-green-600"><span className="font-semibold">Discounted Price:</span> ₹{displayPrice}</p>
-                                                            </>
-                                                        ) : (
-                                                            <p><span className="font-semibold">Total Price:</span> ₹{displayPrice}</p>
-                                                        )}
-
-                                                        {order.product_config_id && (
-                                                            <p><span className="font-semibold">Product Options:</span> {order.product_config_id} : {order.product_option_id}</p>
-                                                        )}
+                                            return (
+                                                <div key={order.id} className="flex flex-col gap-6 py-6 border-t border-gray-200 lg:flex-row first:border-t-0">
+                                                    <div className="flex-shrink-0 w-full lg:w-80">
+                                                        <img
+                                                            src={`${CDN_URL}/product/${order.image}`}
+                                                            alt={order.product_name}
+                                                            className="object-contain w-full h-64 rounded-lg lg:h-48"
+                                                            onError={(e) => (e.target.src = '/placeholder-image.jpg')}
+                                                        />
                                                     </div>
 
-                                                    <div className="pt-4 space-y-4">
-                                                        <button
-                                                            className="inline-flex items-center px-4 py-2 bg-[#103b60] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm"
-                                                            onClick={() => handleKeylineDownload(orderNo, order.product_id)}
-                                                        >
-                                                            <FiDownload className="mr-2" size={16} />
-                                                            Keyline
-                                                        </button>
+                                                    <div className="flex-grow space-y-4">
+                                                        <h3 className="text-xl font-semibold text-gray-900 sm:text-2xl">{order.product_name}</h3>
 
-                                                        {(keylineDownloaded[orderNo] || hasOrderFiles(orderNo)) && (
-                                                            <div className="space-y-4">
-                                                                <div className="flex flex-col gap-3">
-                                                                    {skus.map((sku, index) => {
-                                                                        const isUploaded = skuUploads[orderNo]?.[sku.sku_no] || false;
-                                                                        return (
-                                                                            <div key={sku.sku_no} className="flex items-center gap-3">
-                                                                                <input
-                                                                                    type="text"
-                                                                                    value={skuNames[`${orderNo}_${sku.sku_no}`] }
-                                                                                    onChange={(e) => handleSkuNameChange(orderNo, sku.sku_no, e.target.value)}
-                                                                                    className="w-40 px-2 py-1 border border-gray-300 rounded-md"
-                                                                                    placeholder="Enter SKU Name"
-                                                                                />
-                                                                                <label
-                                                                                    htmlFor={`upload_${orderNo}_${sku.sku_no}`}
-                                                                                    className={`inline-flex items-center justify-center px-4 py-2 bg-[#30384E] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm cursor-pointer
-                                                                                        ${uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                                                >
-                                                                                    <MdOutlineFileUpload className="mr-2" size={16} />
-                                                                                    {uploadingOrder === `${orderNo}_${sku.sku_no}` ? 'Uploading...' : `Upload for ${sku.sku_no}`}
-                                                                                </label>
-                                                                                <input
-                                                                                    type="file"
-                                                                                    id={`upload_${orderNo}_${sku.sku_no}`}
-                                                                                    className="hidden"
-                                                                                    onChange={(e) => handleDesignUpload(orderNo, sku.sku_no, e)}
-                                                                                    accept="image/*,.pdf"
-                                                                                    multiple
-                                                                                    disabled={uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded}
-                                                                                />
-                                                                            </div>
-                                                                        );
-                                                                    })}
-                                                                </div>
+                                                        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
+                                                            <p><span className="font-semibold text-gray-700">Order Date:</span> {formatDate(order.orderDate)}</p>
+                                                            <p><span className="font-semibold text-gray-700">Quantity:</span> {order.quantity}</p>
+                                                            <p><span className="font-semibold text-gray-700">Sku Count:</span> {order.skuCount}</p>
+                                                            <p><span className="font-semibold text-gray-700">Material:</span> {order.material}</p>
 
-                                                                {orderFiles[orderNo] && orderFiles[orderNo].length > 0 && (
-                                                                    <div className="mt-4 text-sm">
-                                                                        <h3 className="mb-2 font-semibold">Uploaded Files:</h3>
-                                                                        <div className="space-y-2">
-                                                                            {orderFiles[orderNo].map((file) => (
-                                                                                <div
-                                                                                    key={file.id}
-                                                                                    className="flex items-start w-full"
-                                                                                >
-                                                                                    <span className="font-medium w-[100px] shrink-0">
-                                                                                        {file.sku_name} ({file.sku_no}):
-                                                                                    </span>
-                                                                                    <span className="text-[#4B6284] ml-2 truncate max-w-[calc(100%-120px)]" title={file.file_name}>
-                                                                                        {file.file_name.split('_').pop()}
-                                                                                    </span>
+                                                            {hasDiscount ? (
+                                                                <>
+                                                                    <p><span className="font-semibold text-gray-700">Original Price:</span> ₹{order.price}</p>
+                                                                    <p><span className="font-semibold text-gray-700">Discount:</span> {order.discountPercentage}% (₹{order.discountAmount})</p>
+                                                                    <p className="text-green-600 font-semibold">Discounted Price: ₹{displayPrice}</p>
+                                                                </>
+                                                            ) : (
+                                                                <p><span className="font-semibold text-gray-700">Total Price:</span> ₹{displayPrice}</p>
+                                                            )}
+
+                                                            {order.product_config_id && (
+                                                                <p><span className="font-semibold text-gray-700">Product Options:</span> {order.product_config_id} : {order.product_option_id}</p>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="pt-4 space-y-4">
+                                                            <button
+                                                                className="inline-flex items-center px-4 py-2 bg-[#103b60] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm font-medium shadow-sm hover:shadow-md"
+                                                                onClick={() => handleKeylineDownload(orderNo, order.product_id)}
+                                                            >
+                                                                <FiDownload className="mr-2" size={16} />
+                                                                Keyline
+                                                            </button>
+
+                                                            {(keylineDownloaded[orderNo] || hasOrderFiles(orderNo)) && (
+                                                                <div className="space-y-4">
+                                                                    <div className="flex flex-col gap-3">
+                                                                        {skus.map((sku, index) => {
+                                                                            const isUploaded = skuUploads[orderNo]?.[sku.sku_no] || false;
+                                                                            return (
+                                                                                <div key={sku.sku_no} className="flex items-center gap-3 flex-wrap">
+                                                                                    <input
+                                                                                        type="text"
+                                                                                        value={skuNames[`${orderNo}_${sku.sku_no}`] || sku.sku_name}
+                                                                                        onChange={(e) => handleSkuNameChange(orderNo, sku.sku_no, e.target.value)}
+                                                                                        className="w-40 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                        placeholder="Enter SKU Name"
+                                                                                    />
+                                                                                    <label
+                                                                                        htmlFor={`upload_${orderNo}_${sku.sku_no}`}
+                                                                                        className={`inline-flex items-center justify-center px-4 py-2 bg-[#30384E] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm font-medium cursor-pointer shadow-sm hover:shadow-md
+                                                                                            ${uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                                                    >
+                                                                                        <MdOutlineFileUpload className="mr-2" size={16} />
+                                                                                        {uploadingOrder === `${orderNo}_${sku.sku_no}` ? 'Uploading...' : `Upload for ${sku.sku_no}`}
+                                                                                    </label>
+                                                                                    <input
+                                                                                        type="file"
+                                                                                        id={`upload_${orderNo}_${sku.sku_no}`}
+                                                                                        className="hidden"
+                                                                                        onChange={(e) => handleDesignUpload(orderNo, sku.sku_no, e)}
+                                                                                        accept="image/*,.pdf"
+                                                                                        multiple
+                                                                                        disabled={uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded}
+                                                                                    />
                                                                                 </div>
-                                                                            ))}
-                                                                        </div>
+                                                                            );
+                                                                        })}
                                                                     </div>
-                                                                )}
-                                                            </div>
-                                                        )}
 
-                                                        {!keylineDownloaded[orderNo] && !hasOrderFiles(orderNo) && (
-                                                            <p className="text-sm italic text-gray-600">
-                                                                Download the keyline to upload the design
-                                                            </p>
-                                                        )}
+                                                                    {orderFiles[orderNo] && orderFiles[orderNo].length > 0 && (
+                                                                        <div className="mt-4 text-sm">
+                                                                            <h3 className="mb-2 font-semibold text-gray-700">Uploaded Files:</h3>
+                                                                            <div className="space-y-2">
+                                                                                {orderFiles[orderNo].map((file) => (
+                                                                                    <div
+                                                                                        key={file.id}
+                                                                                        className="flex items-start w-full"
+                                                                                    >
+                                                                                        <span className="font-medium w-[100px] shrink-0 text-gray-700">
+                                                                                            {file.sku_name} ({file.sku_no}):
+                                                                                        </span>
+                                                                                        <span className="text-[#4B6284] ml-2 truncate max-w-[calc(100%-120px)]" title={file.file_name}>
+                                                                                            {file.file_name.split('_').pop()}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            )}
+
+                                                            {!keylineDownloaded[orderNo] && !hasOrderFiles(orderNo) && (
+                                                                <p className="text-sm italic text-gray-600">
+                                                                    Download the keyline to upload the design
+                                                                </p>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    })}
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ))}
+
+                            {Object.keys(groupedOrders).length > 0 && (
+                                <div className="flex items-center justify-center mt-8 space-x-4">
+                                    <button
+                                        onClick={handlePreviousPage}
+                                        disabled={currentPage === 1}
+                                        className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm
+                                            ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#103b60] text-white'}`}
+                                    >
+                                        <FiChevronLeft className="mr-2" size={16} />
+                                        Previous
+                                    </button>
+                                    <span className="text-sm text-gray-700">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+                                    <button
+                                        onClick={handleNextPage}
+                                        disabled={currentPage === totalPages}
+                                        className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm
+                                            ${currentPage === totalPages ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#103b60] text-white'}`}
+                                    >
+                                        Next
+                                        <FiChevronRight className="ml-2" size={16} />
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>

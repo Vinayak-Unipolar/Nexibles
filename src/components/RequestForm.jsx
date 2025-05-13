@@ -1,7 +1,7 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import axios from "axios"; 
+import axios from "axios";
 function RequestForm() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -24,12 +24,10 @@ function RequestForm() {
     requestSampleKit: false,
   });
 
-  // State to manage submission status and messages
   const [submitStatus, setSubmitStatus] = useState(null);
   const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
-  // List of all countries
   const countries = [
     "India",
     "United Arab Emirates",
@@ -226,10 +224,8 @@ function RequestForm() {
     "Zimbabwe",
   ];
 
-  // Options for Language Preference
-  const languages = ["Hindi","English","Marathi","Gujarati","Kannada"];
+  const languages = ["Hindi", "English", "Marathi", "Gujarati", "Kannada"];
 
-  // Options for Industry
   const industries = [
     "Beverages",
     "Bread and other Bakery",
@@ -258,7 +254,6 @@ function RequestForm() {
     "Tobacco",
   ];
 
-  // Options for Order Quantity
   const orderQuantities = [
     "1,000 – 5,000 units",
     "5,000 – 10,000 units",
@@ -268,14 +263,12 @@ function RequestForm() {
     "250,000+ units",
   ];
 
-  // Options for Package Buying History
   const packageBuyingHistories = [
     "First Time Packaging Buyer",
     "Switching Packaging Providers",
     "Seeking Additional Packaging Provider",
   ];
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -302,7 +295,6 @@ function RequestForm() {
     }
   }, [formData.requestSampleKit]);
 
-  // Calculate total amount if sample kit is requested
   const calculateTotal = () => {
     if (formData.requestSampleKit) {
       const basePrice = 350;
@@ -322,21 +314,11 @@ function RequestForm() {
       const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       const orderDate = new Date().toISOString();
       const finalTotal = total ? total.total.toFixed(2) : "413.00";
-      
-      // Create order details for sample kit
-      const orderDetails = [{
-        productId: "SAMPLE-KIT",
-        productName: "Nexibles Sample Kit",
-        quantity: 1,
-        price: total ? total.basePrice.toString() : "350.00",
-        subTotal: total ? total.basePrice.toString() : "350.00"
-      }];
-
       const requestBody = {
         orderNo,
         orderDate,
         pmtMethod: "PhonePe",
-        customerID: `CUST-${Date.now()}`,
+        customerID: `CUST-${Date.now()}`,  
         salutation: "",
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -351,10 +333,10 @@ function RequestForm() {
         country: formData.country,
         remark: formData.projectDescription,
         coupon: "",
-        currency: "INR",
+        currency: "",  
         invamt: finalTotal,
         tax: total ? total.gst.toFixed(2) : "63.00",
-        ordstatus: "pending",
+        ordstatus: "",  
         discount: "0",
         disamt: "0",
         promoDiscount: "0",
@@ -362,27 +344,20 @@ function RequestForm() {
         orderCharge: "0.00",
         ipAddress: "",
         confirm_status: "0",
-        origin: "Nexibles Website",
-        orderDetails: orderDetails,
-        orderType: "Sample Kit",
-        languagePreference: formData.languagePreference,
-        industry: formData.industry,
-        packageBuyingHistory: formData.packageBuyingHistory
+        origin: "Nexibles",  
+        orderDetails: await getRequestFormOrderDetails(),
       };
 
-      //console.log("Creating order with:", requestBody);
-      
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json", 
-          "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" 
+        headers: {
+          "Content-Type": "application/json",
+          "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq"
         },
         body: JSON.stringify(requestBody),
       });
-      
+      console.log("Payload", requestBody);
       const responseData = await response.json();
-
       if (responseData.success === true) {
         if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
         return { success: true, orderNo: responseData.orderNo };
@@ -397,12 +372,98 @@ function RequestForm() {
     }
   };
 
+  const getRequestFormOrderDetails = async () => {
+    return [{
+      id:0,  
+      name: "Nexibles Sample Kit", 
+      price: "413.00",
+      quantity: 1,  
+      payment_status: "pending",
+      discountAmount: "0.00",
+      discountPercentage: "0.00",
+      discountedPrice: "0.00",
+      product_config_id: null, 
+      product_option_id: null,  
+      origin: "Nexibles Website",
+      skuCount: 1, 
+      material: "",
+      total_cost: "413.00",
+    }];
+  };
+
   const makePayment = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // First create the lead
+      const leadData = {
+        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        company_name: formData.companyName,
+        language_preference: formData.languagePreference,
+        website_url: formData.companyWebsite,
+        industry_sector: formData.industry,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        street_address: formData.streetAddress,
+        address_line_2: formData.addressLine2,
+        zip_postal_code: formData.zipPostalCode,
+        products_interested_in: formData.projectDescription,
+        quote_quantity: formData.orderQuantity,
+        package_buying_history: formData.packageBuyingHistory,
+        enquiry_source: "Nexibles Website",
+        request_sample_kit: formData.requestSampleKit,
+      };
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(leadData),
+      });
+      const orderResult = await createOrder();
+      if (!orderResult.success) {
+        setLoading(false);
+        toast.error("Failed to create order. Please try again.");
+        return;
+      }
+      const amount = total ? total.total : 413;
+      if (isNaN(amount) || amount <= 0) {
+        throw new Error("Invalid total price for payment");
+      }
+
+      var baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
+      if (typeof window !== "undefined") baseUrl = window.location.origin;
+
+      const transactionId = "T" + Date.now();
+      const orderNo = orderResult.orderNo;
+
+      const data = {
+        orderNo,
+        name: formData.firstName,
+        number: formData.phone,
+        MUID: `CUST-${Date.now()}`,
+        amount: Math.round(amount * 100),
+        transactionId,
+        redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
+      };
+       const paymentResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, data);
+       if (typeof window !== "undefined") window.location.href = paymentResponse.data.url;
+    } catch (error) {
+      setLoading(false);
+      console.error("Error processing payment:", error);
+      toast.error("Failed to process payment");
+      setSubmitStatus("Failed to process payment. Please try again.");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.requestSampleKit) {
+      makePayment(e);
+    } else {
       const leadData = {
         full_name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
@@ -424,125 +485,50 @@ function RequestForm() {
         request_sample_kit: formData.requestSampleKit,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(leadData),
-      });
-      
-      // Then create the order
-      const orderResult = await createOrder();
-      if (!orderResult.success) {
-        setLoading(false);
-        toast.error("Failed to create order. Please try again.");
-        return;
-      }
-
-      const amount = total ? total.total : 413;
-      if (isNaN(amount) || amount <= 0) {
-        throw new Error("Invalid total price for payment");
-      }
-
-      var baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
-      if (typeof window !== "undefined") baseUrl = window.location.origin;
-
-      const transactionId = "T" + Date.now();
-      const orderNo = orderResult.orderNo;
-
-      const data = {
-        orderNo,
-        name: formData.firstName,
-        number: formData.phone,
-        MUID: `CUST-${Date.now()}`,
-        amount: Math.round(amount * 100), 
-        transactionId,
-        redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
-      };
-
-      const paymentResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, data);
-      if (typeof window !== "undefined") window.location.href = paymentResponse.data.url;
-    } catch (error) {
-      setLoading(false);
-      console.error("Error processing payment:", error);
-      toast.error("Failed to process payment");
-      setSubmitStatus("Failed to process payment. Please try again.");
-    }
-  };
-  
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.requestSampleKit) {
-      makePayment(e);
-    } else {
-      const leadData = {
-      full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: formData.email,
-      phone: formData.phone,
-      company_name: formData.companyName,
-      language_preference: formData.languagePreference,
-      website_url: formData.companyWebsite,
-      industry_sector: formData.industry,
-      city: formData.city,
-      state: formData.state,
-      country: formData.country,
-      street_address: formData.streetAddress,
-      address_line_2: formData.addressLine2,
-      zip_postal_code: formData.zipPostalCode,
-      products_interested_in: formData.projectDescription,
-      quote_quantity: formData.orderQuantity,
-      package_buying_history: formData.packageBuyingHistory,
-      enquiry_source: "Nexibles Website",
-      request_sample_kit: formData.requestSampleKit,
-    };
-
-    // Send POST request to the backend
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(leadData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
       })
-      .then((data) => {
-        setSubmitStatus("Form submitted successfully!");
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          companyName: "",
-          languagePreference: "",
-          industry: "",
-          companyWebsite: "",
-          streetAddress: "",
-          addressLine2: "",
-          city: "",
-          state: "",
-          zipPostalCode: "",
-          country: "",
-          orderQuantity: "",
-          packageBuyingHistory: "",
-          projectDescription: "",
-          requestSampleKit: false,
-        }); 
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setSubmitStatus("Form submitted successfully!");
+          setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            companyName: "",
+            languagePreference: "",
+            industry: "",
+            companyWebsite: "",
+            streetAddress: "",
+            addressLine2: "",
+            city: "",
+            state: "",
+            zipPostalCode: "",
+            country: "",
+            orderQuantity: "",
+            packageBuyingHistory: "",
+            projectDescription: "",
+            requestSampleKit: false,
+          });
 
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth", 
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        })
+        .catch((error) => {
+          setSubmitStatus(`Failed to submit form: ${error.message}`);
         });
-      })
-      .catch((error) => {
-        setSubmitStatus(`Failed to submit form: ${error.message}`);
-      });
     }
   };
 
@@ -550,7 +536,6 @@ function RequestForm() {
     <div className="py-4 sm:py-8 bg-[#ece0cc] min-h-screen">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Left Side: Form */}
           <div className="lg:col-span-2">
             <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl border-black-500">
               Request A Free Quote
@@ -558,18 +543,16 @@ function RequestForm() {
 
             {submitStatus && (
               <div
-                className={`mb-4 muslim:p-4 p-4 rounded text-sm sm:text-base ${
-                  submitStatus.includes("success")
+                className={`mb-4 muslim:p-4 p-4 rounded text-sm sm:text-base ${submitStatus.includes("success")
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700"
-                }`}
+                  }`}
               >
                 {submitStatus}
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
-              {/* Name Section */}
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
@@ -884,35 +867,28 @@ function RequestForm() {
                   Request Sample Kit
                 </label>
               </div>
-
-              {/* Display price information if sample kit is selected */}
               {formData.requestSampleKit && total && (
                 <div className="mb-4 rounded-md">
                   <p className="text-sm font-medium text-gray-800">Sample Kit Details:</p>
                   <p className="text-sm text-gray-600">Base Price: ₹{total.basePrice}</p>
                   <p className="text-sm text-gray-600">GST (18%): ₹{total.gst.toFixed(2)}</p>
-                  {/* <p className="text-sm font-medium text-gray-800">Total: ₹{total.total.toFixed(2)}</p> */}
                   <p className="text-sm text-gray-600 mt-1">Shipping is included in the price.</p>
                 </div>
               )}
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {loading ? "Processing..." : formData.requestSampleKit ? `Pay ₹${total ? total.total.toFixed(0) : 413}` : "Submit"}
               </button>
             </form>
           </div>
-
-          {/* Right Side: Sample Text */}
           <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
             <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
-            {`Let's Build Your Packaging Breakthrough`}
+              {`Let's Build Your Packaging Breakthrough`}
             </h3>
             <div className="space-y-6">
               <div>
@@ -920,28 +896,25 @@ function RequestForm() {
                   {`Industry Leading Turnaround Times`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
+                  {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
                 </p>
               </div>
-
               <div>
                 <p className="text-sm font-medium text-gray-800">
-                {`That's exactly what Nexibles was created for.`}
+                  {`That's exactly what Nexibles was created for.`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                 {`When you request a free quote, you're not just asking for a price.`}
+                  {`When you request a free quote, you're not just asking for a price.`}
                 </p>
               </div>
-
               <div>
                 <p className="text-sm font-medium text-gray-800">
                   {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
                 </p>
-                <h3 className="pb-2 mb-4 text-xl mt-2 font-bold text-gray-800 border-b-2 border-orange-500">
-                 {`Here’s what happens next:`}
+                <h3 className="pb-2 mb-4 text-xl mt-6 font-bold text-gray-800 border-b-2 border-orange-500">
+                  {`Here’s What Happens Next`}
                 </h3>
               </div>
-
               <div>
                 <p className="text-sm font-medium text-gray-800">
                   {`Our team of packaging experts will review your requirements.`}

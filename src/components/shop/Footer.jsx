@@ -19,11 +19,8 @@ const Footer = () => {
     margin: "0px 0px -100px 0px",
   });
 
-  // Hotjar Tracking Code Integration
   useEffect(() => {
-    // Only run in the browser
     if (typeof window !== "undefined") {
-      // Check if Hotjar script is already added to avoid duplicates
       if (!window.hj) {
         (function(h, o, t, j, a, r) {
           h.hj = h.hj || function() { (h.hj.q = h.hj.q || []).push(arguments); };
@@ -36,7 +33,7 @@ const Footer = () => {
         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
       }
     }
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []); 
 
   const handleSubscribe = async (e) => {
     e.preventDefault();

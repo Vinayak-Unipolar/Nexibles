@@ -185,6 +185,8 @@ const HeaderSection = () => {
                       isActive={true}
                       onVideoEnd={handleVideoEnd}
                     />
+
+                    
                     {index === 0 && (
                       <motion.div
                         className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 pointer-events-none md:mt-[-10vh]"

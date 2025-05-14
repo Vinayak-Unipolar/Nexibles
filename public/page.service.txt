@@ -1,0 +1,68 @@
+const pool = require('../../config/database');
+
+module.exports = {
+    getAllPages: function (cb) {
+        const query = `SELECT * FROM pages`;
+        pool.query(query, [], (err, result) => {
+            if (err) return cb(err);
+            cb(null, result);
+        });
+    },
+
+    getPageById: function (id, cb) {
+        const query = `SELECT * FROM pages WHERE id = ?`;
+        pool.query(query, [id], (err, result) => {
+            if (err) return cb(err);
+            cb(null, result.length ? result[0] : null);
+        });
+    },
+
+    createPage: function (params, cb) {
+        const query = `INSERT INTO pages (title, meta_description, metadata, content, page, url, keywords) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        pool.query(
+            query,
+            [
+                params.title,
+                params.meta_description,
+                params.metadata,
+                params.content,
+                params.page,
+                params.url,
+                params.keywords
+            ],
+            (err, result) => {
+                if (err) return cb(err);
+                cb(null, { id: result.insertId, ...params });
+            }
+        );
+    },
+
+    updatePage: function (params, id, cb) {
+        const query = `UPDATE pages SET title = ?, meta_description = ?, metadata = ?, content = ?, page = ?, url = ?, keywords = ? WHERE id = ?`;
+        pool.query(
+            query,
+            [
+                params.title,
+                params.meta_description,
+                params.metadata,
+                params.content,
+                params.page,
+                params.url,
+                params.keywords,
+                id
+            ],
+            (err, result) => {
+                if (err) return cb(err);
+                cb(null, result.affectedRows > 0 ? { id, ...params } : null);
+            }
+        );
+    },
+
+    deletePage: function (id, cb) {
+        const query = `DELETE FROM pages WHERE id = ?`;
+        pool.query(query, [id], (err, result) => {
+            if (err) return cb(err);
+            cb(null, result.affectedRows > 0);
+        });
+    }
+};

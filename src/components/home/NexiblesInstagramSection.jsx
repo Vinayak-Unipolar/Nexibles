@@ -103,6 +103,7 @@ export default function NexiblesInstagramSection() {
 
       {/* Infinite Marquee for Brand Logos */}
       <div className="relative w-full pt-8 overflow-hidden">
+<<<<<<< HEAD
         <motion.div
           className="flex space-x-8 w-max"
           animate={{ x: ["0%", "-15%"] }}
@@ -138,6 +139,53 @@ export default function NexiblesInstagramSection() {
             </div>
           ))}
         </motion.div>
+=======
+        {isLoading ? (
+          <div className="flex justify-center items-center h-24">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          </div>
+        ) : brandLogos.length > 0 ? (
+          <motion.div
+            className="flex space-x-8 w-max"
+            animate={{ 
+              x: [0, -((brandLogos.length * 110) / 2)], 
+            }}
+            transition={{
+              duration: brandLogos.length * 0.75, // Increased speed
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "linear",
+            }}
+          >
+            {duplicatedLogos.map((brand, idx) => (
+              <div
+                key={`${brand.id}-${idx}`}
+                className="flex items-center justify-center flex-shrink-0 w-24 h-24"
+              >
+                <Image
+                  src={
+                    NEXI_CDN_URL && brand.image
+                      ? `${NEXI_CDN_URL}/clients/${brand.image}`
+                      : "/placeholder.png"
+                  }
+                  alt={brand.name || `Brand ${brand.id}`}
+                  width={96}
+                  height={96}
+                  className="object-contain hover:scale-110 transition-transform duration-300 ease-in-out"
+                  onError={(e) => {
+                    console.error(
+                      `Failed to load image: ${NEXI_CDN_URL}/clients/${brand.image}`
+                    );
+                    e.target.src = "/placeholder.png";
+                  }}
+                />
+              </div>
+            ))}
+          </motion.div>
+        ) : (
+          <p className="text-center text-gray-500">No brand logos available</p>
+        )}
+>>>>>>> 1d0a363aed40e9527b5cac445fcdeedd7df3d70d
       </div>
     </div>
   );

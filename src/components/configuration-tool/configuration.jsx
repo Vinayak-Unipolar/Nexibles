@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/store/cartSlice';
 import { toast } from 'react-toastify';
+import Loader from '../comman/Loader';
 
 const Configuration = () => {
   const { user } = useAuth();
@@ -548,9 +549,13 @@ const Configuration = () => {
     console.log('Normalized Category Name:', normalizedCategoryName);
     console.log('Pouch Opening Options:', pouchOpeningOptions);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     console.log('Category Image:', categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL);
 >>>>>>> f5f8f5824d4127c3a374ddebcbddb24f07c136ec
+=======
+    console.log('Category Image:', categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL);
+>>>>>>> 1d0a363aed40e9527b5cac445fcdeedd7df3d70d
     if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
       console.warn('Warning: "Radius Seal" not found in optionalProcesses');
     }
@@ -599,7 +604,7 @@ const Configuration = () => {
   if (isAuthLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+        <div className="text-gray-600"><Loader /></div>
       </div>
     );
   }

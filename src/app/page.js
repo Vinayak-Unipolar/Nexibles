@@ -73,8 +73,7 @@ const Modal = ({ isOpen, onClose }) => {
           </p>
 
           <h2 className="mb-6 text-xl font-bold text-center">
-            Receive Offers Your Next Order,<br />
-            Exclusive Offers & More!
+        Subscribe to get notified about our <br /> upcoming offers and more!
           </h2>
 
           <input

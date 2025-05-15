@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { X } from "lucide-react";
 
-function RequestForm({ isOpen, onClose }) {
+function RequestForm({ isOpen, onClose, initialCategory = "" }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,7 +15,7 @@ function RequestForm({ isOpen, onClose }) {
     companyName: "",
     languagePreference: "",
     industry: "",
-    category: "", // Added category field
+    category: initialCategory, // Initialize with the passed initialCategory
     companyWebsite: "",
     streetAddress: "",
     addressLine2: "",
@@ -34,8 +34,8 @@ function RequestForm({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [categories, setCategories] = useState([]); // State for categories
-  const [loadingCategories, setLoadingCategories] = useState(true); // Loading state for categories
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   const countries = [
     "India",
@@ -278,6 +278,14 @@ function RequestForm({ isOpen, onClose }) {
     "Seeking Additional Packaging Provider",
   ];
 
+  // Update formData.category when initialCategory changes
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      category: initialCategory,
+    }));
+  }, [initialCategory]);
+
   // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
@@ -455,7 +463,7 @@ function RequestForm({ isOpen, onClose }) {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
-        category: formData.category, // Added category to leadData
+        category: formData.category,
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -578,7 +586,7 @@ function RequestForm({ isOpen, onClose }) {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
-        category: formData.category, // Added category to leadData
+        category: formData.category,
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -769,7 +777,7 @@ function RequestForm({ isOpen, onClose }) {
                     </label>
                     <select
                       name="languagePreference"
-                      value={formData.languagePreference}
+                      value={formData.LlanguagPreference}
                       onChange={handleChange}
                       className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
                       required

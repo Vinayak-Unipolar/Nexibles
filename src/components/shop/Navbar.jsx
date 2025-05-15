@@ -453,7 +453,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Pouches", path: "/all-category" },
-    { name: "Industries", path: "/industries" },
+    { name: "Industries", path: "/all-industry" },
     { name: "About", path: "/about" },
   ];
 
@@ -736,7 +736,7 @@ const Navbar = () => {
               {[
                 { name: "Home", path: "/" },
                 { name: "Pouches", path: "/all-category" },
-                { name: "Industries", path: "/industries" },
+                { name: "Industries", path: "/all-industry" },
                 { name: "About", path: "/about" },
                 { name: "Shop Online", path: "/shop" },
                 { name: "Customize Pouch", path: "/configuration-tool" },

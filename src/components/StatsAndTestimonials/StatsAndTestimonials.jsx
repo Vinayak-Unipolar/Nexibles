@@ -323,7 +323,7 @@ export default function StatsAndTestimonials() {
 
                 {/* Full Testimonial */}
                 <div className=" text-center text-gray-700">
-                  <p className="text-xs leading-relaxed">{selectedTestimonial.fullDescription}</p>
+                  <p className="md:text-sm text-xs leading-relaxed">{selectedTestimonial.fullDescription}</p>
                 </div>
               </div>
             </motion.div>

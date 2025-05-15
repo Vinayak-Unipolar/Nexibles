@@ -195,11 +195,16 @@ const HeaderSection = () => {
                         variants={textVariants}
                       >
                         <motion.h2
-                          className="text-[5vw] md:text-[6vw] font-extrabold tracking-wider text-center mb-2 md:mb-0"
-                          style={outlineTextStyle}
-                          variants={textVariants}
-                        >
-                          DIGITALLY PRINTED
+                            className="text-[7vw] sm:text-[6.5vw] md:text-[6vw] font-black tracking-wider text-center mb-2 md:mb-0 italic"
+                            style={{
+                              WebkitTextStroke: 'clamp(0.5px, 0.4vw, 2px) white',
+                              color: 'transparent',
+                              letterSpacing: 'clamp(0.5px, 0.3vw, 3px)',
+                              textShadow: '0px 0px 1px rgba(255,255,255,0.1)'
+                            }}
+                            variants={textVariants}
+                          >
+                            DIGITALLY PRINTED
                         </motion.h2>
                         <motion.h1
                           className="text-[7vw] md:text-[7.6vw] tracking-wider text-center font-[1000] italic"

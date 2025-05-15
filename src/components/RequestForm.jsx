@@ -1,9 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { X } from "lucide-react";
 
-function RequestForm() {
+function RequestForm({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -29,6 +32,7 @@ function RequestForm() {
   const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const countries = [
     "India",
@@ -275,7 +279,7 @@ function RequestForm() {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     if (name === "email") {
@@ -290,9 +294,9 @@ function RequestForm() {
 
   useEffect(() => {
     if (formData.requestSampleKit) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        country: "India"
+        country: "India",
       }));
     }
   }, [formData.requestSampleKit]);
@@ -309,203 +313,214 @@ function RequestForm() {
   const total = calculateTotal();
 
   const createOrder = async () => {
-  if (isProcessingOrder) return false;
-  setIsProcessingOrder(true);
+    if (isProcessingOrder) return false;
+    setIsProcessingOrder(true);
 
-  try {
-    const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-    const orderDate = new Date().toISOString();
-    const finalTotal = total ? total.total.toFixed(2) : "413.00";
-    const requestBody = {
-      orderNo,
-      orderDate,
-      pmtMethod: "PhonePe",
-      customerID: `CUST-${Date.now()}`,  
-      salutation: "",
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      mobile: formData.phone,
-      eMail: formData.email,
-      street: formData.streetAddress,
-      address: `${formData.streetAddress}, ${formData.addressLine2}`,
-      city: formData.city,
-      state: formData.state,
-      company: formData.companyName,
-      zipcode: formData.zipPostalCode,
-      country: formData.country,
-      remark: formData.projectDescription,
-      coupon: "",
-      currency: "",  
-      invamt: finalTotal,
-      tax: total ? total.gst.toFixed(2) : "63.00",
-      ordstatus: "",  
-      discount: "0",
-      disamt: "0",
-      promoDiscount: "0",
-      minDeliveryAmt: finalTotal,
-      orderCharge: "0.00",
-      ipAddress: "",
-      confirm_status: "0",
-      origin: "Nexibles",  
-      orderDetails: await getRequestFormOrderDetails(),
-    };
+    try {
+      const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const orderDate = new Date().toISOString();
+      const finalTotal = total ? total.total.toFixed(2) : "413.00";
+      const requestBody = {
+        orderNo,
+        orderDate,
+        pmtMethod: "PhonePe",
+        customerID: `CUST-${Date.now()}`,
+        salutation: "",
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        mobile: formData.phone,
+        eMail: formData.email,
+        street: formData.streetAddress,
+        address: `${formData.streetAddress}, ${formData.addressLine2}`,
+        city: formData.city,
+        state: formData.state,
+        company: formData.companyName,
+        zipcode: formData.zipPostalCode,
+        country: formData.country,
+        remark: formData.projectDescription,
+        coupon: "",
+        currency: "",
+        invamt: finalTotal,
+        tax: total ? total.gst.toFixed(2) : "63.00",
+        ordstatus: "",
+        discount: "0",
+        disamt: "0",
+        promoDiscount: "0",
+        minDeliveryAmt: finalTotal,
+        orderCharge: "0.00",
+        ipAddress: "",
+        confirm_status: "0",
+        origin: "Nexibles",
+        orderDetails: await getRequestFormOrderDetails(),
+      };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq"
-      },
-      body: JSON.stringify(requestBody),
-    });
-    const responseData = await response.json();
-    if (responseData.success === true) {
-      if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
-      return { success: true, orderNo: responseData.orderNo };
-    } else {
-      throw new Error(responseData.message || "Failed to create order");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/createorder`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+      const responseData = await response.json();
+      if (responseData.success === true) {
+        if (typeof window !== "undefined")
+          localStorage.setItem("orderNo", responseData.orderNo);
+        return { success: true, orderNo: responseData.orderNo };
+      } else {
+        throw new Error(responseData.message || "Failed to create order");
+      }
+    } catch (error) {
+      console.error("Error in createOrder:", error);
+      return { success: false, error };
+    } finally {
+      setIsProcessingOrder(false);
     }
-  } catch (error) {
-    console.error("Error in createOrder:", error);
-    return { success: false, error };
-  } finally {
-    setIsProcessingOrder(false);
-  }
-};
-
-  const getRequestFormOrderDetails = async () => {
-    return [{
-      id: 0,
-      name: "Nexibles Sample Kit",
-      price: "413.00",
-      quantity: 1,
-      payment_status: "pending",
-      discountAmount: "0.00",
-      discountPercentage: "0.00",
-      discountedPrice: "0.00",
-      product_config_id: null,
-      product_option_id: null,
-      origin: "Nexibles Website",
-      skuCount: 1,
-      material: "",
-      total_cost: "413.00",
-    }];
   };
 
-const makePayment = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-
-  try {
-    const leadData = {
-      full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: formData.email,
-      phone: formData.phone,
-      company_name: formData.companyName,
-      language_preference: formData.languagePreference,
-      website_url: formData.companyWebsite,
-      industry_sector: formData.industry,
-      city: formData.city,
-      state: formData.state,
-      country: formData.country,
-      street_address: formData.streetAddress,
-      address_line_2: formData.addressLine2,
-      zip_postal_code: formData.zipPostalCode,
-      products_interested_in: formData.projectDescription,
-      quote_quantity: formData.orderQuantity,
-      package_buying_history: formData.packageBuyingHistory,
-      enquiry_source: "Nexibles Website",
-      request_sample_kit: formData.requestSampleKit,
-    };
-    const emailData = {
-      clientName: `${formData.firstName} ${formData.lastName}`.trim(),
-      clientEmail: formData.email,
-      phone: formData.phone,
-      message: `
-        Project Description: ${formData.projectDescription || "Not provided"}
-        Industry: ${formData.industry || "Not provided"}
-        Order Quantity: ${formData.orderQuantity || "Not provided"}
-        Package Buying History: ${formData.packageBuyingHistory || "Not provided"}
-        Company: ${formData.companyName || "Not provided"}
-        Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
-      `,
-    };
-
-    const leadResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
+  const getRequestFormOrderDetails = async () => {
+    return [
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(leadData),
+        id: 0,
+        name: "Nexibles Sample Kit",
+        price: "413.00",
+        quantity: 1,
+        payment_status: "pending",
+        discountAmount: "0.00",
+        discountPercentage: "0.00",
+        discountedPrice: "0.00",
+        product_config_id: null,
+        product_option_id: null,
+        origin: "Nexibles Website",
+        skuCount: 1,
+        material: "",
+        total_cost: "413.00",
+      },
+    ];
+  };
+
+  const makePayment = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const leadData = {
+        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        company_name: formData.companyName,
+        language_preference: formData.languagePreference,
+        website_url: formData.companyWebsite,
+        industry_sector: formData.industry,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        street_address: formData.streetAddress,
+        address_line_2: formData.addressLine2,
+        zip_postal_code: formData.zipPostalCode,
+        products_interested_in: formData.projectDescription,
+        quote_quantity: formData.orderQuantity,
+        package_buying_history: formData.packageBuyingHistory,
+        enquiry_source: "Nexibles Website",
+        request_sample_kit: formData.requestSampleKit,
+      };
+      const emailData = {
+        clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+        clientEmail: formData.email,
+        phone: formData.phone,
+        message: `
+          Project Description: ${formData.projectDescription || "Not provided"}
+          Industry: ${formData.industry || "Not provided"}
+          Order Quantity: ${formData.orderQuantity || "Not provided"}
+          Package Buying History: ${formData.packageBuyingHistory || "Not provided"}
+          Company: ${formData.companyName || "Not provided"}
+          Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
+        `,
+      };
+
+      const leadResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(leadData),
+        }
+      );
+
+      if (!leadResponse.ok) {
+        throw new Error("Failed to save lead");
       }
-    );
 
-    if (!leadResponse.ok) {
-      throw new Error("Failed to save lead");
-    }
+      const emailResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify(emailData),
+        }
+      );
 
-    const emailResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-        },
-        body: JSON.stringify(emailData),
+      if (!emailResponse.ok) {
+        const emailError = await emailResponse.json();
+        throw new Error(emailError.error || "Failed to send emails");
       }
-    );
 
-    if (!emailResponse.ok) {
-      const emailError = await emailResponse.json();
-      throw new Error(emailError.error || "Failed to send emails");
+      const orderResult = await createOrder();
+      if (!orderResult.success) {
+        throw new Error("Failed to create order");
+      }
+
+      const amount = total ? total.total : 413;
+      if (isNaN(amount) || amount <= 0) {
+        throw new Error("Invalid total price for payment");
+      }
+
+      const baseUrl =
+        typeof window !== "undefined"
+          ? window.location.origin
+          : process.env.NEXT_PUBLIC_API_URL;
+
+      const transactionId = "T" + Date.now();
+      const orderNo = orderResult.orderNo;
+
+      const data = {
+        orderNo,
+        name: formData.firstName,
+        number: formData.phone,
+        MUID: `CUST-${Date.now()}`,
+        amount: Math.round(amount * 100),
+        transactionId,
+        redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
+      };
+
+      const paymentResponse = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
+        data
+      );
+      if (typeof window !== "undefined")
+        window.location.href = paymentResponse.data.url;
+    } catch (error) {
+      setLoading(false);
+      console.error("Error processing payment:", error);
+      toast.error(`Failed: ${error.message}`);
+      setSubmitStatus(`Failed: ${error.message}`);
     }
+  };
 
-    const orderResult = await createOrder();
-    if (!orderResult.success) {
-      throw new Error("Failed to create order");
-    }
-
-    const amount = total ? total.total : 413;
-    if (isNaN(amount) || amount <= 0) {
-      throw new Error("Invalid total price for payment");
-    }
-
-    const baseUrl =
-      typeof window !== "undefined"
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_API_URL;
-
-    const transactionId = "T" + Date.now();
-    const orderNo = orderResult.orderNo;
-
-    const data = {
-      orderNo,
-      name: formData.firstName,
-      number: formData.phone,
-      MUID: `CUST-${Date.now()}`,
-      amount: Math.round(amount * 100),
-      transactionId,
-      redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
-    };
-
-    const paymentResponse = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
-      data
-    );
-    if (typeof window !== "undefined")
-      window.location.href = paymentResponse.data.url;
-  } catch (error) {
-    setLoading(false);
-    console.error("Error processing payment:", error);
-    toast.error(`Failed: ${error.message}`);
-    setSubmitStatus(`Failed: ${error.message}`);
-  }
-};
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (formData.requestSampleKit && !termsAccepted) {
+      setSubmitStatus("Please accept the Terms and Conditions.");
+      return;
+    }
     if (formData.requestSampleKit) {
       makePayment(e);
     } else {
@@ -565,11 +580,8 @@ const makePayment = async (e) => {
             projectDescription: "",
             requestSampleKit: false,
           });
-
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
+          setTermsAccepted(false);
+          onClose();
         })
         .catch((error) => {
           setSubmitStatus(`Failed to submit form: ${error.message}`);
@@ -578,439 +590,462 @@ const makePayment = async (e) => {
   };
 
   return (
-    <div className="py-4 sm:py-8 bg-[#ece0cc] min-h-screen">
-      <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl border-black-500">
-              Request A Free Quote
-            </h2>
-
-            {submitStatus && (
-              <div
-                className={`mb-4 muslim:p-4 p-4 rounded text-sm sm:text-base ${
-                  submitStatus.includes("success")
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {submitStatus}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1">
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Name *
-                  </label>
-                  <div className="flex flex-col sm:flex-row sm:space-x-4">
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      placeholder="First Name"
-                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      placeholder="Last Name"
-                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md sm:mt-1 focus:outline-none "
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Email"
-                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  />
-                  {emailError && (
-                    <p className="mt-1 text-sm text-red-500">{emailError}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Phone *
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="Phone"
-                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                    maxLength={10}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Company Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="companyName"
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    placeholder="Company Name"
-                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Language Preference *
-                  </label>
-                  <select
-                    name="languagePreference"
-                    value={formData.languagePreference}
-                    onChange={handleChange}
-                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  >
-                    <option value="" className="text-gray-900">
-                      Please select...
-                    </option>
-                    {languages.map((language) => (
-                      <option
-                        key={language}
-                        value={language}
-                        className="text-gray-900"
-                      >
-                        {language}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Industry *
-                  </label>
-                  <select
-                    name="industry"
-                    value={formData.industry}
-                    onChange={handleChange}
-                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  >
-                    <option value="" className="text-gray-900">
-                      Please select...
-                    </option>
-                    {industries.map((industry) => (
-                      <option
-                        key={industry}
-                        value={industry}
-                        className="text-gray-900"
-                      >
-                        {industry}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Company Website
-                  </label>
-                  <input
-                    type="url"
-                    name="companyWebsite"
-                    value={formData.companyWebsite}
-                    onChange={handleChange}
-                    placeholder="https://"
-                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                  />
-                </div>
-              </div>
-
-             
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-black sm:text-md">
-                  Describe Your Project
-                </label>
-                <textarea
-                  name="projectDescription"
-                  value={formData.projectDescription}
-                  onChange={handleChange}
-                  placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                  className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
-                ></textarea>
-              </div>
-
-        <div className="mb-4 flex items-center">
-  <label className="flex items-center cursor-pointer">
-    <input
-      type="checkbox"
-      id="requestSampleKit"
-      name="requestSampleKit"
-      checked={formData.requestSampleKit}
-      onChange={handleChange}
-      className="sr-only" // Hide default checkbox
-    />
-    <span
-      className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out
-        ${formData.requestSampleKit ? 'bg-[#103b60]' : ''}`}
-    >
-      {formData.requestSampleKit && (
-        <svg
-          className="absolute w-4 h-4 text-black top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={onClose}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="3"
-            d="M5 13l4 
-4 10-10"
-          />
-        </svg>
-      )}
-    </span>
-    <span className="text-md font-semibold text-black">
-      Request Sample Kit
-    </span>
-  </label>
-</div>
-              {formData.requestSampleKit && (
-                <>
-                
-              <h3 className="pb-2 mb-4 text-sm font-semibold text-black border-b-2 border-black sm:text-xl">
-                Packaging Information
-              </h3>
-                 <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Order Quantity *
-                  </label>
-                  <select
-                    name="orderQuantity"
-                    value={formData.orderQuantity}
-                    onChange={handleChange}
-                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  >
-                    <option value="" className="text-gray-900">
-                      Please select...
-                    </option>
-                    {orderQuantities.map((quantity) => (
-                      <option
-                        key={quantity}
-                        value={quantity}
-                        className="text-gray-900"
-                      >
-                        {quantity}
-                      </option>
-                    ))}
-                  </select>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            className="relative w-full h-full max-h-full sm:max-w-4xl sm:h-auto bg-[#ece0cc] sm:rounded-lg sm:shadow-lg overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={onClose}
+              className="absolute top-6 right-4 text-black text-2xl font-bold focus:outline-none"
+            >
+              <X/>
+            </button>
+            <div className="p-4 sm:p-6 lg:p-8">
+              <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
+                Request A Free Quote
+              </h2>
+
+              {submitStatus && (
+                <div
+                  className={`mb-4 p-4 rounded text-sm sm:text-base ${
+                    submitStatus.includes("success")
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {submitStatus}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Package Buying History *
-                  </label>
-                  <select
-                    name="packageBuyingHistory"
-                    value={formData.packageBuyingHistory}
-                    onChange={handleChange}
-                    className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  >
-                    <option value="" className="text-gray-900">
-                      Please select...
-                    </option>
-                    {packageBuyingHistories.map((history) => (
-                      <option
-                        key={history}
-                        value={history}
-                        className="text-gray-900"
-                      >
-                        {history}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-                  <div className="mb-4">
+              )}
+
+              <form onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1">
+                  <div>
                     <label className="block text-sm font-medium text-black sm:text-md">
-                      Address *
+                      Name *
                     </label>
-                    <input
-                      type="text"
-                      name="streetAddress"
-                      value={formData.streetAddress}
-                      onChange={handleChange}
-                      placeholder="Street Address"
-                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="addressLine2"
-                      value={formData.addressLine2}
-                      onChange={handleChange}
-                      placeholder="Address Line 2"
-                      className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    />
-                    <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-3">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4">
                       <input
                         type="text"
-                        name="city"
-                        value={formData.city}
+                        name="firstName"
+                        value={formData.firstName}
                         onChange={handleChange}
-                        placeholder="City"
-                        className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                        placeholder="First Name"
+                        className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
                         required
                       />
                       <input
                         type="text"
-                        name="state"
-                        value={formData.state}
+                        name="lastName"
+                        value={formData.lastName}
                         onChange={handleChange}
-                        placeholder="State"
-                        className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                        placeholder="Last Name"
+                        className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md sm:mt-1 focus:outline-none"
                         required
-                      />
-                      <input
-                        type="text"
-                        name="zipPostalCode"
-                        value={formData.zipPostalCode}
-                        onChange={handleChange}
-                        placeholder="ZIP / Postal Code"
-                        className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                        required
-                        maxLength={6}
                       />
                     </div>
                   </div>
+                </div>
 
-                  <div className="mb-4">
+                <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                  <div>
                     <label className="block text-sm font-medium text-black sm:text-md">
-                      Country *
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Email"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                    />
+                    {emailError && (
+                      <p className="mt-1 text-sm text-red-500">{emailError}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Phone *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Phone"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                      maxLength={10}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Company Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      placeholder="Company Name"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Language Preference *
                     </label>
                     <select
-                      name="country"
-                      value={formData.country}
+                      name="languagePreference"
+                      value={formData.languagePreference}
                       onChange={handleChange}
-                      className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
+                      className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
                       required
                     >
                       <option value="" className="text-gray-900">
                         Please select...
                       </option>
-                      {countries.map((country) => (
+                      {languages.map((language) => (
                         <option
-                          key={country}
-                          value={country}
+                          key={language}
+                          value={language}
                           className="text-gray-900"
                         >
-                          {country}
+                          {language}
                         </option>
                       ))}
                     </select>
                   </div>
+                </div>
 
-                  {total && (
-                    <div className="mb-4 rounded-md">
-                      <p className="text-sm font-medium text-gray-800">Sample Kit Details:</p>
-                      <p className="text-sm text-gray-600">Base Price: ₹{total.basePrice}</p>
-                      <p className="text-sm text-gray-600">GST (18%): ₹{total.gst.toFixed(2)}</p>
-                      <p className="text-sm text-gray-600 mt-1">Shipping is included in the price.</p>
+                <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Industry *
+                    </label>
+                    <select
+                      name="industry"
+                      value={formData.industry}
+                      onChange={handleChange}
+                      className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                    >
+                      <option value="" className="text-gray-900">
+                        Please select...
+                      </option>
+                      {industries.map((industry) => (
+                        <option
+                          key={industry}
+                          value={industry}
+                          className="text-gray-900"
+                        >
+                          {industry}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Company Website
+                    </label>
+                    <input
+                      type="url"
+                      name="companyWebsite"
+                      value={formData.companyWebsite}
+                      onChange={handleChange}
+                      placeholder="https://"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-black sm:text-md">
+                    Describe Your Project
+                  </label>
+                  <textarea
+                    name="projectDescription"
+                    value={formData.projectDescription}
+                    onChange={handleChange}
+                    placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
+                    className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
+                  ></textarea>
+                </div>
+
+                <div className="mb-4 flex items-center">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      id="requestSampleKit"
+                      name="requestSampleKit"
+                      checked={formData.requestSampleKit}
+                      onChange={handleChange}
+                      className="sr-only"
+                    />
+                    <span
+                      className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out
+                        ${formData.requestSampleKit ? "bg-[#103b60]" : ""}`}
+                    >
+                      {formData.requestSampleKit && (
+                        <svg
+                          className="absolute w-4 h-4 text-black top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            d="M5 13l4 4 10-10"
+                          />
+                        </svg>
+                      )}
+                    </span>
+                    <span className="text-md font-semibold text-black">
+                      Request Sample Kit
+                    </span>
+                  </label>
+                </div>
+
+                {formData.requestSampleKit && (
+                  <>
+                    <h3 className="pb-2 mb-4 text-sm font-semibold text-black border-b-2 border-black sm:text-xl">
+                      Packaging Information
+                    </h3>
+                    <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-medium text-black sm:text-md">
+                          Order Quantity *
+                        </label>
+                        <select
+                          name="orderQuantity"
+                          value={formData.orderQuantity}
+                          onChange={handleChange}
+                          className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
+                        >
+                          <option value="" className="text-gray-900">
+                            Please select...
+                          </option>
+                          {orderQuantities.map((quantity) => (
+                            <option
+                              key={quantity}
+                              value={quantity}
+                              className="text-gray-900"
+                            >
+                              {quantity}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-black sm:text-md">
+                          Package Buying History *
+                        </label>
+                        <select
+                          name="packageBuyingHistory"
+                          value={formData.packageBuyingHistory}
+                          onChange={handleChange}
+                          className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
+                        >
+                          <option value="" className="text-gray-900">
+                            Please select...
+                          </option>
+                          {packageBuyingHistories.map((history) => (
+                            <option
+                              key={history}
+                              value={history}
+                              className="text-gray-900"
+                            >
+                              {history}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
-                  )}
-                </>
-              )}
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-black sm:text-md">
+                        Address *
+                      </label>
+                      <input
+                        type="text"
+                        name="streetAddress"
+                        value={formData.streetAddress}
+                        onChange={handleChange}
+                        placeholder="Street Address"
+                        className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="addressLine2"
+                        value={formData.addressLine2}
+                        onChange={handleChange}
+                        placeholder="Address Line 2"
+                        className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      />
+                      <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-3">
+                        <input
+                          type="text"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          placeholder="City"
+                          className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
+                        />
+                        <input
+                          type="text"
+                          name="state"
+                          value={formData.state}
+                          onChange={handleChange}
+                          placeholder="State"
+                          className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
+                        />
+                        <input
+                          type="text"
+                          name="zipPostalCode"
+                          value={formData.zipPostalCode}
+                          onChange={handleChange}
+                          placeholder="ZIP / Postal Code"
+                          className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
+                          maxLength={6}
+                        />
+                      </div>
+                    </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {loading
-                  ? "Processing..."
-                  : formData.requestSampleKit
-                  ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
-                  : "Submit"}
-              </button>
-            </form>
-          </div>
-          <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
-            <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
-              {`Let's Build Your Packaging Breakthrough`}
-            </h3>
-            <div className="space-y-6">
-              <div>
-                <p className="text-sm font-medium text-gray-800">
-                  {`Industry Leading Turnaround Times`}
-                </p>
-                <p className="mt-1 text-sm text-gray-600">
-                  {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing óexisting business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">
-                  {`That's exactly what Nexibles was created for.`}
-                </p>
-                <p className="mt-1 text-sm text-gray-600">
-                  {`When you request a free quote, you're not just asking for a price.`}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">
-                  {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
-                </p>
-                <h3 className="pb-2 mb-4 text-xl mt-6 font-bold text-gray-800 border-b-2 border-orange-500">
-                  {`Here’s What Happens Next`}
-                </h3>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">
-                  {`Our team of packaging experts will review your requirements.`}
-                </p>
-                <p className="mt-1 text-sm text-gray-600">
-                  {`We’ll suggest the best options suited to your product, budget, and goals.`}
-                </p>
-                <p className="mt-1 text-sm text-gray-600">
-                  {`We’ll send you a detailed, transparent quote — no hidden costs, no surprises.`}
-                </p>
-                <p className="mt-1 text-sm text-gray-600">
-                  {`We’ll guide you through every step if you choose to move forward — from artwork to material selection to final production.`}
-                </p>
-                <p className="mt-1 text-sm text-gray-600">
-                  {`And it all starts right here — with a simple form.`}
-                </p>
-              </div>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-black sm:text-md">
+                        Country *
+                      </label>
+                      <select
+                        name="country"
+                        value={formData.country}
+                        onChange={handleChange}
+                        className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                        required
+                      >
+                        <option value="" className="text-gray-900">
+                          Please select...
+                        </option>
+                        {countries.map((country) => (
+                          <option
+                            key={country}
+                            value={country}
+                            className="text-gray-900"
+                          >
+                            {country}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {total && (
+                      <div className="mb-4 rounded-md">
+                        <p className="text-sm font-medium text-gray-800">
+                          Sample Kit Details:
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Base Price: ₹{total.basePrice}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          GST (18%): ₹{total.gst.toFixed(2)}
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Shipping is included in the price.
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="mb-4 flex items-center">
+                      <label className="flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          id="termsAccepted"
+                          name="termsAccepted"
+                          checked={termsAccepted}
+                          onChange={(e) => setTermsAccepted(e.target.checked)}
+                          className="sr-only"
+                          required
+                        />
+                        <span
+                          className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out
+                            ${termsAccepted ? "bg-[#103b60]" : ""}`}
+                        >
+                          {termsAccepted && (
+                            <svg
+                              className="absolute w-4 h-4 text-black top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M5 13l4 4 10-10"
+                              />
+                            </svg>
+                          )}
+                        </span>
+                        <span className="text-md font-semibold text-black">
+                          I agree to the{" "}
+                          <Link
+                            href="/terms-and-conditions"
+                            className="underline text-blue-600 hover:text-blue-800"
+                          >
+                            Terms and Conditions
+                          </Link>
+                        </span>
+                      </label>
+                    </div>
+                  </>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading || (formData.requestSampleKit && !termsAccepted)}
+                  className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
+                    loading || (formData.requestSampleKit && !termsAccepted)
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                >
+                  {loading
+                    ? "Processing..."
+                    : formData.requestSampleKit
+                    ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
+                    : "Submit"}
+                </button>
+              </form>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

@@ -37,11 +37,11 @@ function FAQ() {
   };
 
   return (
-    <div className=" px-12 mx-40 pb-12 bg-[#ece0cc]">
-      <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
+    <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-6xl pb-8 sm:pb-12 bg-[#ece0cc]">
+      <h2 className="pb-2 mb-4 text-lg sm:text-xl lg:text-2xl font-semibold text-black border-b-2 border-black">
         Frequently Asked Questions
       </h2>
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {faqs.map((faq, index) => (
           <div
             key={index}
@@ -49,15 +49,15 @@ function FAQ() {
           >
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full p-4 text-left text-sm font-medium text-black sm:text-md flex justify-between items-center focus:outline-none"
+              className="w-full p-3 sm:p-4 text-left text-xs sm:text-sm lg:text-md font-medium text-black flex justify-between items-center focus:outline-none"
             >
               <span>{faq.question}</span>
-              <span className="text-lg">
+              <span className="text-base sm:text-lg">
                 {openIndex === index ? "−" : "+"}
               </span>
             </button>
             {openIndex === index && (
-              <div className="p-4 text-sm text-gray-600 sm:text-base border-t border-black">
+              <div className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base text-gray-600 border-t border-black">
                 {faq.answer}
               </div>
             )}

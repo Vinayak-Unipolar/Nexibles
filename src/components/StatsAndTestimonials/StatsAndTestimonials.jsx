@@ -317,13 +317,13 @@ export default function StatsAndTestimonials() {
 
                 {/* Client Details */}
                 <div className="text-center">
-                  <h3 className="mb-2 text-2xl font-bold text-gray-800">{selectedTestimonial.name}</h3>
+                  <h3 className="mb-2 text-lg font-bold text-gray-800">{selectedTestimonial.name}</h3>
                   <p className="mb-4 text-gray-600">{selectedTestimonial.designationcompany}</p>
                 </div>
 
                 {/* Full Testimonial */}
-                <div className="mt-6 text-center text-gray-700">
-                  <p className="text-lg leading-relaxed">{selectedTestimonial.fullDescription}</p>
+                <div className=" text-center text-gray-700">
+                  <p className="md:text-sm text-xs leading-relaxed">{selectedTestimonial.fullDescription}</p>
                 </div>
               </div>
             </motion.div>

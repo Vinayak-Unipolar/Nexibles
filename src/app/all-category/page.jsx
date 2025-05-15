@@ -6,7 +6,7 @@ import AllCategoryCards from '@/components/all-category/AllCategoryCards'
 import HeadingRoutes from '@/components/all-category/HeadingRoutes'
 import CategoryImageBg from '@/components/all-category/CategoryImageBg'
 import Loader from '@/components/comman/Loader'
-import PopularProducts from '@/components/shop/popularproducts/Popularproducts'
+import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials'
 
 const Page = () => {
 
@@ -23,6 +23,7 @@ const Page = () => {
              <PopularProducts />
         </div>
       </div>
+      <StatsAndTestimonials />
       <Footer />
     </div>
   )

@@ -288,41 +288,41 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
 
   // Fetch categories on component mount
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoadingCategories(true);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/category_master`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-            },
+      const fetchCategories = async () => {
+        try {
+          setLoadingCategories(true);
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/category_master`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch categories");
           }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        const data = await response.json();
-        console.log("Fetched categories:", data);
-        if (Array.isArray(data.data)) {
-          setCategories(data.data);
-        } else {
-          console.error("Categories data is not an array:", data);
+          const data = await response.json();
+          console.log("Fetched categories:", data);
+          if (Array.isArray(data.data)) {
+            setCategories(data.data);
+          } else {
+            console.error("Categories data is not an array:", data);
+            setCategories([]);
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+          toast.error("Failed to load categories");
           setCategories([]);
+        } finally {
+          setLoadingCategories(false);
         }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        toast.error("Failed to load categories");
-        setCategories([]);
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
+      };
+  
+      fetchCategories();
+    }, []);
+    
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({

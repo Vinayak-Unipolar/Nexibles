@@ -82,7 +82,7 @@ export default function PopularProducts() {
           animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}
         >
-          Explore Pouch Types
+          Explore Custom Pouches
         </motion.h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">

@@ -101,69 +101,76 @@ function Login() {
     });
 
     const handleRegister = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`${APIURL}/api/login/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userDetails)
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    e.preventDefault();
+    try {
+        const response = await fetch(`${APIURL}/api/login/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userDetails)
+        });
+
+        const data = await response.json(); // Parse the response JSON
+
+        if (response.ok) {
+            if (data.status === 'error' && data.message.includes('is already exist')) {
+                toast.error('Email already exists. Please use a different email.');
             } else {
-                const data = await response.json();
-                toast.success("Registered Successfully!. Please Login");
-                setUserDetails({
-                    customerId: "",
-                    firstName: "",
-                    middleName: "",
-                    lastName: "",
-                    cName: "",
-                    gender: "",
-                    houseno: "",
-                    floor: "",
-                    address: "",
-                    address2: "",
-                    landmark: "",
-                    city: "",
-                    prov: "",
-                    zip: "",
-                    country: "",
-                    phone: "",
-                    emailAddress: "",
-                    mobile: "",
-                    mobile2: "",
-                    company: "",
-                    title: "",
-                    workPhone: "",
-                    dateOfBirth: "",
-                    anniversary: "",
-                    newsletter: "",
-                    ipaddress: "",
-                    subsms: "",
-                    addedDate: "",
-                    addedBy: "",
-                    refby: "",
-                    datasource: "",
-                    occupation: "",
-                    designation: "",
-                    contactpref: "",
-                    pref: "",
-                    activatedon: "",
-                    securecode: "",
-                    active: "",
-                    password: "",
-                    profImage: "",
-                })
-                setIsLogin(true);
+                throw new Error(data.message || 'Network response was not ok');
             }
-        } catch (error) {
-            console.error('Error:', error.message);
-            toast.error(error.message);
+        } else {
+            // Reset user details
+            setUserDetails({
+                customerId: "",
+                firstName: "",
+                middleName: "",
+                lastName: "",
+                cName: "",
+                gender: "",
+                houseno: "",
+                floor: "",
+                address: "",
+                address2: "",
+                landmark: "",
+                city: "",
+                prov: "",
+                zip: "",
+                country: "",
+                phone: "",
+                emailAddress: "",
+                mobile: "",
+                mobile2: "",
+                company: "",
+                title: "",
+                workPhone: "",
+                dateOfBirth: "",
+                anniversary: "",
+                newsletter: "",
+                ipaddress: "",
+                subsms: "",
+                addedDate: "",
+                addedBy: "",
+                refby: "",
+                datasource: "",
+                occupation: "",
+                designation: "",
+                contactpref: "",
+                pref: "",
+                activatedon: "",
+                securecode: "",
+                active: "",
+                password: "",
+                profImage: "",
+            });
+            setIsLogin(true);
+            toast.success("Registered Successfully! Please Login");
         }
-    };
+    } catch (error) {
+        console.error('Error:', error.message);
+        toast.error(error.message || 'An error occurred during registration');
+    }
+};
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);

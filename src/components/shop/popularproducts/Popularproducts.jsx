@@ -3,10 +3,11 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
-
+import RequestForm from "../../RequestForm";
 export default function PopularProducts() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const sectionRef = useRef(null);
@@ -42,10 +43,13 @@ export default function PopularProducts() {
     fetchCategories();
   }, [apiKey, APIURL]);
 
-  // Animation variants
   const titleVariants = {
     hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const cardVariants = {
@@ -57,6 +61,14 @@ export default function PopularProducts() {
     }),
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div ref={sectionRef} className="py-8 bg-white md:py-12 lg:py-16">
       <div className="container px-4 mx-auto">
@@ -66,7 +78,7 @@ export default function PopularProducts() {
           animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}
         >
-          Explore Pouch Types 
+          Explore Pouch Types
         </motion.h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
@@ -100,18 +112,18 @@ export default function PopularProducts() {
                         {category.name}
                       </p>
                       <div className="flex justify-center space-x-2">
-                        <Link 
-                          href={`/category/${category.cat_url}`} 
+                        <Link
+                          href={`/category/${category.cat_url}`}
                           className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md sm:rounded-md bg-white border border-black hover:bg-gray-100 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
                         >
                           Details
                         </Link>
-                        <Link
-                          href="/request-quote"
+                        <button
+                          onClick={handleOpenModal}
                           className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md sm:rounded-md bg-[#ffd13e] border border-black hover:bg-yellow-500 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
                         >
                           Get Quote
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -131,16 +143,17 @@ export default function PopularProducts() {
                   </div>
                   <div className="mt-3 text-center w-full">
                     <div className="w-3/4 h-4 mx-auto bg-gray-200 rounded animate-pulse mb-4"></div>
-                                          <div className="flex justify-center space-x-2">
-                        <div className="w-16 h-7 sm:w-20 sm:h-8 bg-white border border-black rounded animate-pulse"></div>
-                        <div className="w-16 h-7 sm:w-20 sm:h-8 bg-[#ffd13e] border border-black rounded animate-pulse"></div>
-                      </div>
+                    <div className="flex justify-center space-x-2">
+                      <div className="w-16 h-7 sm:w-20 sm:h-8 bg-white border border-black rounded animate-pulse"></div>
+                      <div className="w-16 h-7 sm:w-20 sm:h-8 bg-[#ffd13e] border border-black rounded animate-pulse"></div>
+                    </div>
                   </div>
                 </div>
               ))
           )}
         </div>
       </div>
+      <RequestForm isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 }

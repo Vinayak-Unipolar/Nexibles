@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { FaCheck, FaCoffee, FaHeartbeat, FaSpa, FaPaw, FaLeaf } from 'react-icons/fa';
 import { MdExpandMore } from 'react-icons/md';
 import { useState } from 'react';
+import Footer from '@/components/shop/Footer';
+import Navbar from '@/components/shop/Navbar';
 
 const StandUpPouches = () => {
   const fadeInUp = {
@@ -63,6 +65,7 @@ const StandUpPouches = () => {
 
   return (
     <main className="bg-white text-black">
+      <Navbar/>
       {/* Hero Section */}
       <section className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -519,6 +522,7 @@ const StandUpPouches = () => {
           </div>
         </div>
       </section>
+      <Footer/>
     </main>
   );
 };

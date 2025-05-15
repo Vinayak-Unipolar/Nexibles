@@ -1110,7 +1110,7 @@ function RequestFormPage() {
           </div>
           <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
             <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
-              Let's Build Your Packaging Breakthrough
+              Lets Build Your Packaging Breakthrough
             </h3>
             <div className="space-y-6">
               <div>
@@ -1123,18 +1123,18 @@ function RequestFormPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-800">
-                  That's exactly what Nexibles was created for.
+                  Thats exactly what Nexibles was created for.
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  When you request a free quote, you're not just asking for a price.
+                  When you request a free quote, you are not just asking for a price.
                 </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-800">
-                  You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.
+                  You are taking the first step towards a smarter, faster, more flexible way to bring your brand to life.
                 </p>
                 <h3 className="pb-2 mb-4 text-xl mt-6 font-bold text-gray-800 border-b-2 border-orange-500">
-                  Here’s What Happens Next
+                  Here What Happens Next
                 </h3>
               </div>
               <div>

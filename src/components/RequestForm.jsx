@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+
 function RequestForm() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -28,6 +29,7 @@ function RequestForm() {
   const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
+
   const countries = [
     "India",
     "United Arab Emirates",
@@ -277,11 +279,11 @@ function RequestForm() {
     }));
 
     if (name === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value) && value.length > 0) {
         setEmailError("Please enter a valid email address");
       } else {
-        setEmailError(""); // Clear error if valid
+        setEmailError("");
       }
     }
   };
@@ -307,207 +309,201 @@ function RequestForm() {
   const total = calculateTotal();
 
   const createOrder = async () => {
-    if (isProcessingOrder) return false;
-    setIsProcessingOrder(true);
+  if (isProcessingOrder) return false;
+  setIsProcessingOrder(true);
 
-    try {
-      const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-      const orderDate = new Date().toISOString();
-      const finalTotal = total ? total.total.toFixed(2) : "413.00";
-      const requestBody = {
-        orderNo,
-        orderDate,
-        pmtMethod: "PhonePe",
-        customerID: `CUST-${Date.now()}`,  
-        salutation: "",
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        mobile: formData.phone,
-        eMail: formData.email,
-        street: formData.streetAddress,
-        address: `${formData.streetAddress}, ${formData.addressLine2}`,
-        city: formData.city,
-        state: formData.state,
-        company: formData.companyName,
-        zipcode: formData.zipPostalCode,
-        country: formData.country,
-        remark: formData.projectDescription,
-        coupon: "",
-        currency: "",  
-        invamt: finalTotal,
-        tax: total ? total.gst.toFixed(2) : "63.00",
-        ordstatus: "",  
-        discount: "0",
-        disamt: "0",
-        promoDiscount: "0",
-        minDeliveryAmt: finalTotal,
-        orderCharge: "0.00",
-        ipAddress: "",
-        confirm_status: "0",
-        origin: "Nexibles",  
-        orderDetails: await getRequestFormOrderDetails(),
-      };
+  try {
+    const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const orderDate = new Date().toISOString();
+    const finalTotal = total ? total.total.toFixed(2) : "413.00";
+    const requestBody = {
+      orderNo,
+      orderDate,
+      pmtMethod: "PhonePe",
+      customerID: `CUST-${Date.now()}`,  
+      salutation: "",
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      mobile: formData.phone,
+      eMail: formData.email,
+      street: formData.streetAddress,
+      address: `${formData.streetAddress}, ${formData.addressLine2}`,
+      city: formData.city,
+      state: formData.state,
+      company: formData.companyName,
+      zipcode: formData.zipPostalCode,
+      country: formData.country,
+      remark: formData.projectDescription,
+      coupon: "",
+      currency: "",  
+      invamt: finalTotal,
+      tax: total ? total.gst.toFixed(2) : "63.00",
+      ordstatus: "",  
+      discount: "0",
+      disamt: "0",
+      promoDiscount: "0",
+      minDeliveryAmt: finalTotal,
+      orderCharge: "0.00",
+      ipAddress: "",
+      confirm_status: "0",
+      origin: "Nexibles",  
+      orderDetails: await getRequestFormOrderDetails(),
+    };
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq"
-        },
-        body: JSON.stringify(requestBody),
-      });
-      //console.log("Payload", requestBody);
-      const responseData = await response.json();
-      if (responseData.success === true) {
-        if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
-        return { success: true, orderNo: responseData.orderNo };
-      } else {
-        throw new Error(responseData.message || "Failed to create order");
-      }
-    } catch (error) {
-      console.error("Error in createOrder:", error);
-      return { success: false, error };
-    } finally {
-      setIsProcessingOrder(false);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createorder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq"
+      },
+      body: JSON.stringify(requestBody),
+    });
+    const responseData = await response.json();
+    if (responseData.success === true) {
+      if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
+      return { success: true, orderNo: responseData.orderNo };
+    } else {
+      throw new Error(responseData.message || "Failed to create order");
     }
-  };
+  } catch (error) {
+    console.error("Error in createOrder:", error);
+    return { success: false, error };
+  } finally {
+    setIsProcessingOrder(false);
+  }
+};
 
   const getRequestFormOrderDetails = async () => {
     return [{
-      id:0,  
-      name: "Nexibles Sample Kit", 
+      id: 0,
+      name: "Nexibles Sample Kit",
       price: "413.00",
-      quantity: 1,  
+      quantity: 1,
       payment_status: "pending",
       discountAmount: "0.00",
       discountPercentage: "0.00",
       discountedPrice: "0.00",
-      product_config_id: null, 
-      product_option_id: null,  
+      product_config_id: null,
+      product_option_id: null,
       origin: "Nexibles Website",
-      skuCount: 1, 
+      skuCount: 1,
       material: "",
       total_cost: "413.00",
     }];
   };
 
-  const makePayment = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const makePayment = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const leadData = {
-        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        phone: formData.phone,
-        company_name: formData.companyName,
-        language_preference: formData.languagePreference,
-        website_url: formData.companyWebsite,
-        industry_sector: formData.industry,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country,
-        street_address: formData.streetAddress,
-        address_line_2: formData.addressLine2,
-        zip_postal_code: formData.zipPostalCode,
-        products_interested_in: formData.projectDescription,
-        quote_quantity: formData.orderQuantity,
-        package_buying_history: formData.packageBuyingHistory,
-        enquiry_source: "Nexibles Website",
-        request_sample_kit: formData.requestSampleKit,
-      };
-      const emailData = {
-        clientName: `${formData.firstName} ${formData.lastName}`.trim(),
-        clientEmail: formData.email,
-        phone: formData.phone,
-        message: `
-          Project Description: ${formData.projectDescription || "Not provided"}
-          Industry: ${formData.industry || "Not provided"}
-          Order Quantity: ${formData.orderQuantity || "Not provided"}
-          Package Buying History: ${
-            formData.packageBuyingHistory || "Not provided"
-          }
-          Company: ${formData.companyName || "Not provided"}
-          Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
-        `,
-      };
+  try {
+    const leadData = {
+      full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+      email: formData.email,
+      phone: formData.phone,
+      company_name: formData.companyName,
+      language_preference: formData.languagePreference,
+      website_url: formData.companyWebsite,
+      industry_sector: formData.industry,
+      city: formData.city,
+      state: formData.state,
+      country: formData.country,
+      street_address: formData.streetAddress,
+      address_line_2: formData.addressLine2,
+      zip_postal_code: formData.zipPostalCode,
+      products_interested_in: formData.projectDescription,
+      quote_quantity: formData.orderQuantity,
+      package_buying_history: formData.packageBuyingHistory,
+      enquiry_source: "Nexibles Website",
+      request_sample_kit: formData.requestSampleKit,
+    };
+    const emailData = {
+      clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+      clientEmail: formData.email,
+      phone: formData.phone,
+      message: `
+        Project Description: ${formData.projectDescription || "Not provided"}
+        Industry: ${formData.industry || "Not provided"}
+        Order Quantity: ${formData.orderQuantity || "Not provided"}
+        Package Buying History: ${formData.packageBuyingHistory || "Not provided"}
+        Company: ${formData.companyName || "Not provided"}
+        Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
+      `,
+    };
 
-      const leadResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(leadData),
-        }
-      );
-
-      if (!leadResponse.ok) {
-        throw new Error("Failed to save lead");
+    const leadResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(leadData),
       }
+    );
 
-      // Call /send-email to send emails
-      const emailResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-          },
-          body: JSON.stringify(emailData),
-        }
-      );
-
-      if (!emailResponse.ok) {
-        const emailError = await emailResponse.json();
-        throw new Error(emailError.error || "Failed to send emails");
-      }
-
-      const orderResult = await createOrder();
-      if (!orderResult.success) {
-        throw new Error("Failed to create order");
-      }
-
-      const amount = total ? total.total : 413;
-      if (isNaN(amount) || amount <= 0) {
-        throw new Error("Invalid total price for payment");
-      }
-
-      const baseUrl =
-        typeof window !== "undefined"
-          ? window.location.origin
-          : process.env.NEXT_PUBLIC_API_URL;
-
-      const transactionId = "T" + Date.now();
-      const orderNo = orderResult.orderNo;
-
-      const data = {
-        orderNo,
-        name: formData.firstName,
-        number: formData.phone,
-        MUID: `CUST-${Date.now()}`,
-        amount: Math.round(amount * 100),
-        transactionId,
-        redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
-      };
-
-      const paymentResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
-        data
-      );
-      if (typeof window !== "undefined")
-        window.location.href = paymentResponse.data.url;
-    } catch (error) {
-      setLoading(false);
-      console.error("Error processing payment:", error);
-      toast.error(`Failed: ${error.message}`);
-      setSubmitStatus(`Failed: ${error.message}`);
+    if (!leadResponse.ok) {
+      throw new Error("Failed to save lead");
     }
-  };
 
+    const emailResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+        body: JSON.stringify(emailData),
+      }
+    );
 
+    if (!emailResponse.ok) {
+      const emailError = await emailResponse.json();
+      throw new Error(emailError.error || "Failed to send emails");
+    }
+
+    const orderResult = await createOrder();
+    if (!orderResult.success) {
+      throw new Error("Failed to create order");
+    }
+
+    const amount = total ? total.total : 413;
+    if (isNaN(amount) || amount <= 0) {
+      throw new Error("Invalid total price for payment");
+    }
+
+    const baseUrl =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_API_URL;
+
+    const transactionId = "T" + Date.now();
+    const orderNo = orderResult.orderNo;
+
+    const data = {
+      orderNo,
+      name: formData.firstName,
+      number: formData.phone,
+      MUID: `CUST-${Date.now()}`,
+      amount: Math.round(amount * 100),
+      transactionId,
+      redirectUrl: `${baseUrl}/api/check-status?transactionId=${transactionId}&url=${baseUrl}`,
+    };
+
+    const paymentResponse = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
+      data
+    );
+    if (typeof window !== "undefined")
+      window.location.href = paymentResponse.data.url;
+  } catch (error) {
+    setLoading(false);
+    console.error("Error processing payment:", error);
+    toast.error(`Failed: ${error.message}`);
+    setSubmitStatus(`Failed: ${error.message}`);
+  }
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.requestSampleKit) {
@@ -592,10 +588,11 @@ function RequestForm() {
 
             {submitStatus && (
               <div
-                className={`mb-4 muslim:p-4 p-4 rounded text-sm sm:text-base ${submitStatus.includes("success")
+                className={`mb-4 muslim:p-4 p-4 rounded text-sm sm:text-base ${
+                  submitStatus.includes("success")
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700"
-                  }`}
+                }`}
               >
                 {submitStatus}
               </div>
@@ -630,7 +627,6 @@ function RequestForm() {
                 </div>
               </div>
 
-              {/* Email and Phone Section */}
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
@@ -666,7 +662,6 @@ function RequestForm() {
                 </div>
               </div>
 
-              {/* Company Name and Language Preference Section */}
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
@@ -709,7 +704,6 @@ function RequestForm() {
                 </div>
               </div>
 
-              {/* Industry and Company Website Section */}
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
@@ -751,92 +745,65 @@ function RequestForm() {
                 </div>
               </div>
 
-              {/* Address Section */}
+             
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-black sm:text-md">
-                  Address *
+                  Describe Your Project
                 </label>
-                <input
-                  type="text"
-                  name="streetAddress"
-                  value={formData.streetAddress}
+                <textarea
+                  name="projectDescription"
+                  value={formData.projectDescription}
                   onChange={handleChange}
-                  placeholder="Street Address"
-                  className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                  required
-                />
-                <input
-                  type="text"
-                  name="addressLine2"
-                  value={formData.addressLine2}
-                  onChange={handleChange}
-                  placeholder="Address Line 2"
-                  className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                />
-                <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-3">
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="City"
-                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleChange}
-                    placeholder="State"
-                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="zipPostalCode"
-                    value={formData.zipPostalCode}
-                    onChange={handleChange}
-                    placeholder="ZIP / Postal Code"
-                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
-                    required
-                    maxLength={6}
-                  />
-                </div>
+                  placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
+                  className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
+                ></textarea>
               </div>
 
-              {/* Country Section */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-black sm:text-md">
-                  Country *
-                </label>
-                <select
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
-                  required
-                >
-                  <option value="" className="text-gray-900">
-                    Please select...
-                  </option>
-                  {countries.map((country) => (
-                    <option
-                      key={country}
-                      value={country}
-                      className="text-gray-900"
-                    >
-                      {country}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Packaging Information Section */}
+        <div className="mb-4 flex items-center">
+  <label className="flex items-center cursor-pointer">
+    <input
+      type="checkbox"
+      id="requestSampleKit"
+      name="requestSampleKit"
+      checked={formData.requestSampleKit}
+      onChange={handleChange}
+      className="sr-only" // Hide default checkbox
+    />
+    <span
+      className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out
+        ${formData.requestSampleKit ? 'bg-[#103b60]' : ''}`}
+    >
+      {formData.requestSampleKit && (
+        <svg
+          className="absolute w-4 h-4 text-black top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="3"
+            d="M5 13l4 
+4 10-10"
+          />
+        </svg>
+      )}
+    </span>
+    <span className="text-md font-semibold text-black">
+      Request Sample Kit
+    </span>
+  </label>
+</div>
+              {formData.requestSampleKit && (
+                <>
+                
               <h3 className="pb-2 mb-4 text-sm font-semibold text-black border-b-2 border-black sm:text-xl">
                 Packaging Information
               </h3>
-              <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                 <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
                     Order Quantity *
@@ -888,50 +855,108 @@ function RequestForm() {
                   </select>
                 </div>
               </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Address *
+                    </label>
+                    <input
+                      type="text"
+                      name="streetAddress"
+                      value={formData.streetAddress}
+                      onChange={handleChange}
+                      placeholder="Street Address"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="addressLine2"
+                      value={formData.addressLine2}
+                      onChange={handleChange}
+                      placeholder="Address Line 2"
+                      className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                    />
+                    <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-3">
+                      <input
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="City"
+                        className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        placeholder="State"
+                        className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="zipPostalCode"
+                        value={formData.zipPostalCode}
+                        onChange={handleChange}
+                        placeholder="ZIP / Postal Code"
+                        className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                        required
+                        maxLength={6}
+                      />
+                    </div>
+                  </div>
 
-              {/* Project Description Section */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-black sm:text-md">
-                  Describe Your Project
-                </label>
-                <textarea
-                  name="projectDescription"
-                  value={formData.projectDescription}
-                  onChange={handleChange}
-                  placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                  className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
-                ></textarea>
-              </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Country *
+                    </label>
+                    <select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none "
+                      required
+                    >
+                      <option value="" className="text-gray-900">
+                        Please select...
+                      </option>
+                      {countries.map((country) => (
+                        <option
+                          key={country}
+                          value={country}
+                          className="text-gray-900"
+                        >
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div className="mb-4 flex items-center">
-                <input
-                  type="checkbox"
-                  id="requestSampleKit"
-                  name="requestSampleKit"
-                  checked={formData.requestSampleKit}
-                  onChange={handleChange}
-                  className="mr-2 h-4 w-4"
-                />
-                <label htmlFor="requestSampleKit" className="text-sm font-medium text-black">
-                  Request Sample Kit
-                </label>
-              </div>
-              {formData.requestSampleKit && total && (
-                <div className="mb-4 rounded-md">
-                  <p className="text-sm font-medium text-gray-800">Sample Kit Details:</p>
-                  <p className="text-sm text-gray-600">Base Price: ₹{total.basePrice}</p>
-                  <p className="text-sm text-gray-600">GST (18%): ₹{total.gst.toFixed(2)}</p>
-                  <p className="text-sm text-gray-600 mt-1">Shipping is included in the price.</p>
-                </div>
+                  {total && (
+                    <div className="mb-4 rounded-md">
+                      <p className="text-sm font-medium text-gray-800">Sample Kit Details:</p>
+                      <p className="text-sm text-gray-600">Base Price: ₹{total.basePrice}</p>
+                      <p className="text-sm text-gray-600">GST (18%): ₹{total.gst.toFixed(2)}</p>
+                      <p className="text-sm text-gray-600 mt-1">Shipping is included in the price.</p>
+                    </div>
+                  )}
+                </>
               )}
 
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
-                {loading ? "Processing..." : formData.requestSampleKit ? `Pay ₹${total ? total.total.toFixed(0) : 413}` : "Submit"}
+                {loading
+                  ? "Processing..."
+                  : formData.requestSampleKit
+                  ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
+                  : "Submit"}
               </button>
             </form>
           </div>
@@ -945,7 +970,7 @@ function RequestForm() {
                   {`Industry Leading Turnaround Times`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
+                  {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing óexisting business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
                 </p>
               </div>
               <div>

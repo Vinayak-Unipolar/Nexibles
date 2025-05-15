@@ -1,3 +1,4 @@
+import FAQ from '@/components/FAQ'
 import RequestForm from '@/components/RequestForm'
 import Footer from '@/components/shop/Footer'
 import Navbar from '@/components/shop/Navbar'
@@ -7,8 +8,9 @@ function page() {
   return (
     <div>
       <Navbar />
-      <div className='mt-16'>
+      <div className='mt-16 bg-[#ece0cc]'>
         <RequestForm />
+        <FAQ/>
       </div>
       <Footer />
     </div>

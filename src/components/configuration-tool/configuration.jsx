@@ -278,7 +278,7 @@ const Configuration = () => {
   useEffect(() => {
   if (!user) {
     toast.warning('You need to be logged in to customize .', {
-      toastId: 'login-warning', // Prevent duplicate toasts
+      toastId: 'login-warning',
     });
     router.push('/login');
     setIsAuthLoading(false);

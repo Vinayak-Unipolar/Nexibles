@@ -7,9 +7,9 @@ import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/store/cartSlice';
-import { toast } from 'react-toastify';
 import Loader from '../comman/Loader';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Configuration = () => {
   const { user } = useAuth();
   const router = useRouter();
@@ -276,19 +276,23 @@ const Configuration = () => {
   }, []);
 
   useEffect(() => {
+  if (!user) {
+    toast.warning('You need to be logged in to customize .', {
+      toastId: 'login-warning', // Prevent duplicate toasts
+    });
+    router.push('/login');
+    setIsAuthLoading(false);
+    setLoading(false);
+  }
+}, [user, router]);
+
+  useEffect(() => {
     let isMounted = true;
   
     const initialize = async () => {
       setLoading(true);
       setError(null);
       setIsAuthLoading(true);
-  
-      if (!user) {
-        router.push('/login');
-        setIsAuthLoading(false);
-        setLoading(false);
-        return;
-      }
   
       // Fetch a new token on every page refresh
       const authToken = await loginForThirdParty();

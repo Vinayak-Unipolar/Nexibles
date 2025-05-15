@@ -6,6 +6,7 @@ import AllCategoryCards from '@/components/all-category/AllCategoryCards'
 import HeadingRoutes from '@/components/all-category/HeadingRoutes'
 import CategoryImageBg from '@/components/all-category/CategoryImageBg'
 import Loader from '@/components/comman/Loader'
+import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials'
 
 const Page = () => {
   const [categoryData, setCategoryData] = useState([])
@@ -56,6 +57,7 @@ const Page = () => {
           <AllCategoryCards categoryData={categoryData} />
         </div>
       </div>
+      <StatsAndTestimonials />
       <Footer />
     </div>
   )

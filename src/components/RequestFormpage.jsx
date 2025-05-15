@@ -276,7 +276,6 @@ function RequestFormPage() {
     "Seeking Additional Packaging Provider",
   ];
 
-  // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -314,7 +313,7 @@ function RequestFormPage() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target; // Fixed: Changed _checked to checked
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
@@ -398,7 +397,7 @@ function RequestFormPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
           },
           body: JSON.stringify(requestBody),
         }
@@ -453,7 +452,7 @@ function RequestFormPage() {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
-        category: formData.category,
+        category: formData.category, // Added category to leadData
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -576,7 +575,7 @@ function RequestFormPage() {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
-        category: formData.category,
+        category: formData.category, // Added category to leadData
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -633,10 +632,7 @@ function RequestFormPage() {
             requestSampleKit: false,
           });
           setTermsAccepted(false);
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
+          onClose();
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
@@ -757,7 +753,7 @@ function RequestFormPage() {
                     required
                   >
                     <option value="" className="text-gray-900">
-                      Please select...
+                      Please language...
                     </option>
                     {languages.map((language) => (
                       <option

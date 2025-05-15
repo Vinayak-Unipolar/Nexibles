@@ -15,6 +15,7 @@ function RequestForm({ isOpen, onClose }) {
     companyName: "",
     languagePreference: "",
     industry: "",
+    category: "", // Added category field
     companyWebsite: "",
     streetAddress: "",
     addressLine2: "",
@@ -33,6 +34,8 @@ function RequestForm({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [categories, setCategories] = useState([]); // State for categories
+  const [loadingCategories, setLoadingCategories] = useState(true); // Loading state for categories
 
   const countries = [
     "India",
@@ -275,6 +278,43 @@ function RequestForm({ isOpen, onClose }) {
     "Seeking Additional Packaging Provider",
   ];
 
+  // Fetch categories on component mount
+  useEffect(() => {
+      const fetchCategories = async () => {
+        try {
+          setLoadingCategories(true);
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/category_master`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch categories");
+          }
+          const data = await response.json();
+          console.log("Fetched categories:", data);
+          if (Array.isArray(data.data)) {
+            setCategories(data.data);
+          } else {
+            console.error("Categories data is not an array:", data);
+            setCategories([]);
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+          toast.error("Failed to load categories");
+          setCategories([]);
+        } finally {
+          setLoadingCategories(false);
+        }
+      };
+  
+      fetchCategories();
+    }, []);
+    
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -360,7 +400,7 @@ function RequestForm({ isOpen, onClose }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
           },
           body: JSON.stringify(requestBody),
         }
@@ -415,6 +455,7 @@ function RequestForm({ isOpen, onClose }) {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
+        category: formData.category, // Added category to leadData
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -434,6 +475,7 @@ function RequestForm({ isOpen, onClose }) {
         message: `
           Project Description: ${formData.projectDescription || "Not provided"}
           Industry: ${formData.industry || "Not provided"}
+          Category: ${formData.category || "Not provided"}
           Order Quantity: ${formData.orderQuantity || "Not provided"}
           Package Buying History: ${formData.packageBuyingHistory || "Not provided"}
           Company: ${formData.companyName || "Not provided"}
@@ -441,19 +483,23 @@ function RequestForm({ isOpen, onClose }) {
         `,
       };
 
+      console.log("Submitting leadData in makePayment:", leadData);
+
       const leadResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
           },
           body: JSON.stringify(leadData),
         }
       );
 
       if (!leadResponse.ok) {
-        throw new Error("Failed to save lead");
+        const errorData = await leadResponse.json();
+        throw new Error(errorData.message || "Failed to save lead");
       }
 
       const emailResponse = await fetch(
@@ -532,6 +578,7 @@ function RequestForm({ isOpen, onClose }) {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
+        category: formData.category, // Added category to leadData
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -545,20 +592,26 @@ function RequestForm({ isOpen, onClose }) {
         request_sample_kit: formData.requestSampleKit,
       };
 
+      console.log("Submitting leadData:", leadData);
+
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "API-Key": process.env.NEXT_PUBLIC_API_KEY,
         },
         body: JSON.stringify(leadData),
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            return response.json().then((errorData) => {
+              throw new Error(errorData.message || "Network response was not ok");
+            });
           }
           return response.json();
         })
         .then((data) => {
+          console.log("Lead submission response:", data);
           setSubmitStatus("Form submitted successfully!");
           setFormData({
             firstName: "",
@@ -568,6 +621,7 @@ function RequestForm({ isOpen, onClose }) {
             companyName: "",
             languagePreference: "",
             industry: "",
+            category: "",
             companyWebsite: "",
             streetAddress: "",
             addressLine2: "",
@@ -584,6 +638,7 @@ function RequestForm({ isOpen, onClose }) {
           onClose();
         })
         .catch((error) => {
+          console.error("Error submitting form:", error);
           setSubmitStatus(`Failed to submit form: ${error.message}`);
         });
     }
@@ -610,7 +665,7 @@ function RequestForm({ isOpen, onClose }) {
               onClick={onClose}
               className="absolute top-6 right-4 text-black text-2xl font-bold focus:outline-none"
             >
-              <X/>
+              <X />
             </button>
             <div className="p-4 sm:p-6 lg:p-8">
               <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
@@ -761,6 +816,44 @@ function RequestForm({ isOpen, onClose }) {
                       ))}
                     </select>
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      Category *
+                    </label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                      disabled={loadingCategories}
+                    >
+                      <option value="" className="text-gray-900">
+                        {loadingCategories
+                          ? "Loading categories..."
+                          : "Please select..."}
+                      </option>
+                      {loadingCategories ? null : Array.isArray(categories) &&
+                        categories.length > 0 ? (
+                        categories.map((category) => (
+                          <option
+                            key={category.id}
+                            value={category.name}
+                            className="text-gray-900"
+                          >
+                            {category.name}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="" className="text-gray-900" disabled>
+                          No categories available
+                        </option>
+                      )}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                   <div>
                     <label className="block text-sm font-medium text-black sm:text-md">
                       Company Website
@@ -1027,7 +1120,9 @@ function RequestForm({ isOpen, onClose }) {
 
                 <button
                   type="submit"
-                  disabled={loading || (formData.requestSampleKit && !termsAccepted)}
+                  disabled={
+                    loading || (formData.requestSampleKit && !termsAccepted)
+                  }
                   className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
                     loading || (formData.requestSampleKit && !termsAccepted)
                       ? "opacity-50 cursor-not-allowed"

@@ -3,7 +3,9 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaCheck } from 'react-icons/fa6';
+import { FaCheck, FaCoffee, FaHeartbeat, FaSpa, FaPaw, FaLeaf } from 'react-icons/fa';
+import { MdExpandMore } from 'react-icons/md';
+import { useState } from 'react';
 
 const StandUpPouches = () => {
   const fadeInUp = {
@@ -21,13 +23,50 @@ const StandUpPouches = () => {
     },
   };
 
+  // Features list to map both to the list and the pointers on the image
+  const features = [
+    'Hang holes for display',
+    'Zipper closure for resealability',
+    'Custom printing for branding',
+    'High-barrier materials for protection',
+    'Self-standing bottom gusset',
+    'Eco-friendly and recyclable options',
+  ];
+
+  // Positions for the hollow pointers on the image, aligned with the pouch image
+  const pointerPositions = [
+    { top: '5%', left: '50%', label: features[0] }, // Hang hole (top center)
+    { top: '15%', left: '65%', label: features[1] }, // Zipper (top right, adjusted to be on the pouch)
+    { top: '40%', left: '45%', label: features[2] }, // Custom printing (center label area, adjusted to be on the pouch)
+    { top: '30%', left: '35%', label: features[3] }, // High-barrier materials (left side, adjusted to be on the pouch)
+    { top: '85%', left: '50%', label: features[4] }, // Bottom gusset (bottom center, adjusted to be on the pouch)
+    { top: '60%', left: '65%', label: features[5] }, // Eco-friendly (right side, adjusted to be on the pouch)
+  ];
+
+  // Wave animation for the signal effect on hover
+  const waveAnimation = {
+    scale: [1, 1.5, 1],
+    opacity: [0.5, 0, 0],
+    transition: {
+      repeat: Infinity,
+      duration: 1.5,
+      ease: 'easeOut',
+    },
+  };
+
+  // State for FAQ accordion
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   return (
     <main className="bg-white text-black">
       {/* Hero Section */}
       <section className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center gap-14 items-center">
-            {/* Left: Content */}
             <motion.div
               className="flex flex-col justify-center"
               initial="hidden"
@@ -61,7 +100,6 @@ const StandUpPouches = () => {
                 </Link>
               </motion.div>
             </motion.div>
-            {/* Right: Image */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -83,9 +121,10 @@ const StandUpPouches = () => {
 
       {/* Key Features & Benefits */}
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:pxDann8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <motion.div
+              className="relative"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
@@ -98,6 +137,38 @@ const StandUpPouches = () => {
                 src="https://cdn.nexibles.com/product/160x240+90%20SUP.webp"
                 width={500}
               />
+              {/* Hollow Pointers on Image */}
+              {pointerPositions.map((pointer, index) => (
+                <div
+                  key={index}
+                  className="absolute group"
+                  style={{ top: pointer.top, left: pointer.left }}
+                >
+                  {/* Hollow Circle (Smaller, like a Japanese coin) */}
+                  <div className="relative flex items-center justify-center">
+                    <span className="flex items-center justify-center w-4 h-4 border-[6px] border-white rounded-full bg-transparent">
+                      <span className="w-1.5 h-1.5 bg-transparent rounded-full" />
+                    </span>
+                    {/* Signal Wave Animation on Hover */}
+                    <motion.div
+                      className="absolute w-4 h-4 border border-white rounded-full group-hover:opacity-100 opacity-0"
+                      animate={waveAnimation}
+                    />
+                    <motion.div
+                      className="absolute w-6 h-6 border border-white rounded-full group-hover:opacity-100 opacity-0"
+                      animate={{ ...waveAnimation, transition: { ...waveAnimation.transition, delay: 0.3 } }}
+                    />
+                    <motion.div
+                      className="absolute w-8 h-8 border border-white rounded-full group-hover:opacity-100 opacity-0"
+                      animate={{ ...waveAnimation, transition: { ...waveAnimation.transition, delay: 0.6 } }}
+                    />
+                  </div>
+                  {/* Tooltip on Hover */}
+                  <div className="absolute left-full ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-10 w-48">
+                    <span className="text-sm text-black">{pointer.label}</span>
+                  </div>
+                </div>
+              ))}
             </motion.div>
             <motion.div
               className="space-y-6"
@@ -183,7 +254,7 @@ const StandUpPouches = () => {
                   key={index}
                   style={{ marginLeft: index % 2 === 0 ? '0' : '2rem' }}
                   variants={fadeInUp}
-                  whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
+                  whileHover={{ scale: 1.05, rotatehov: index % 2 === 0 ? 2 : -2 }}
                 >
                   <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-400 rounded-full group-hover:scale-150 transition-transform duration-300" />
                   <strong className="text-xl text-black font-semibold">{app.title}:</strong>
@@ -326,16 +397,17 @@ const StandUpPouches = () => {
       </section>
 
       {/* Industries We Serve */}
-      <section className="py-16 bg-white overflow-hidden">
+      <section className="py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
-            className="text-4xl font-bold text-center mb-12 text-black relative"
+            className="text-4xl font-bold text-center mb-12 text-black relative group"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, type: 'spring', stiffness: 120 }}
             viewport={{ once: true }}
           >
             Industries We Serve
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-0 h-1 w-0 bg-yellow-400 transition-all duration-500 group-hover:w-1/4" />
             <motion.div
               className="absolute top-0 right-4 w-6 h-6 bg-yellow-400 rounded-full"
               animate={{ scale: [1, 1.2, 1] }}
@@ -343,31 +415,36 @@ const StandUpPouches = () => {
             />
           </motion.h2>
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
             initial="hidden"
             whileInView="visible"
             variants={staggerChildren}
             viewport={{ once: true }}
           >
             {[
-              'Food & Beverage Brands',
-              'Health Supplement Companies',
-              'Cosmetic & Personal Care Brands',
-              'Pet Product Manufacturers',
-              'Organic & Eco-Friendly Brands',
+              { name: 'Food & Beverage Brands', icon: <FaCoffee className="w-8 h-8 text-yellow-400" /> },
+              { name: 'Health Supplement Companies', icon: <FaHeartbeat className="w-8 h-8 text-yellow-400" /> },
+              { name: 'Cosmetic & Personal Care Brands', icon: <FaSpa className="w-8 h-8 text-yellow-400" /> },
+              { name: 'Pet Product Manufacturers', icon: <FaPaw className="w-8 h-8 text-yellow-400" /> },
+              { name: 'Organic & Eco-Friendly Brands', icon: <FaLeaf className="w-8 h-8 text-yellow-400" /> },
             ].map((industry, index) => (
               <motion.div
-                className="relative flex items-center justify-center w-48 h-48 mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
-                initial={{ opacity: 0, y: 20, rotate: -10 }}
                 key={index}
-                style={{ transform: `translateY(${index % 2 === 0 ? '0' : '2rem'})` }}
-                transition={{ duration: 0.6, type: 'spring', stiffness: 100 }}
+                className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden p-6 flex flex-col items-center text-center"
+                initial={{ opacity: 0, y: 20, rotate: -5 }}
                 variants={fadeInUp}
-                whileHover={{ scale: 1.1, rotate: 5 }}
                 whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
+                transition={{ duration: 0.6, type: 'spring', stiffness: 100 }}
               >
-                <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-400 rounded-full group-hover:scale-150 transition-transform duration-300" />
-                <p className="text-lg text-black text-center px-4">{industry}</p>
+                <div className="absolute inset-0 bg-yellow-100 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                <div className="mb-4">{industry.icon}</div>
+                <p className="text-lg font-semibold text-black">{industry.name}</p>
+                <motion.div
+                  className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ repeat: Infinity, duration: 1.8 }}
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -378,44 +455,66 @@ const StandUpPouches = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-12 lg:px-8">
           <motion.h2
-            className="text-4xl font-bold text-center mb-12 text-black"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="text-4xl font-bold text-center mb-12 text-black relative group"
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             Frequently Asked Questions
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-0 h-1 w-0 bg-yellow-400 transition-all duration-500 group-hover:w-1/4" />
           </motion.h2>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {[
               {
-                a: 'Yes, all materials are FDA-compliant and suitable for direct food contact.',
                 q: 'Are your stand up pouches food-grade?',
+                a: 'Yes, all materials are FDA-compliant and suitable for direct food contact.',
               },
               {
-                a: 'Absolutely. We offer recyclable and biodegradable stand up pouches for brands focused on sustainability.',
                 q: 'Do you offer eco-friendly options?',
+                a: 'Absolutely. We offer recyclable and biodegradable stand up pouches for brands focused on sustainability.',
               },
               {
-                a: 'Yes, we provide stand up pouch mockups so you can approve the size, print, and finish before final production.',
                 q: 'Can I see a mockup before placing a full order?',
+                a: 'Yes, we provide stand up pouch mockups so you can approve the size, print, and finish before final production.',
               },
               {
-                a: 'We offer flexible MOQs to support businesses of all sizes.',
                 q: 'What is your minimum order quantity (MOQ)?',
+                a: 'We offer flexible MOQs to support businesses of all sizes.',
               },
             ].map((faq, index) => (
-              <motion.article
-                className="bg-gray-100 p-6 border-l-4 border-yellow-400"
-                initial={{ opacity: 0, y: 50 }}
+              <motion.div
                 key={index}
+                className="bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
               >
-                <h3 className="text-xl font-semibold text-black mb-2">{faq.q}</h3>
-                <p className="text-lg text-black">{faq.a}</p>
-              </motion.article>
+                <button
+                  className="w-full flex justify-between items-center p-6 text-left"
+                  onClick={() => toggleFaq(index)}
+                >
+                  <h3 className="text-xl font-semibold text-black">{faq.q}</h3>
+                  <motion.div
+                    animate={{ rotate: openFaq === index ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <MdExpandMore className="w-6 h-6 text-yellow-400" />
+                  </motion.div>
+                </button>
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{
+                    height: openFaq === index ? 'auto' : 0,
+                    opacity: openFaq === index ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  className="overflow-hidden"
+                >
+                  <p className="text-lg text-black px-6 pb-6">{faq.a}</p>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>

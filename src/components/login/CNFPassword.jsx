@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const CNFPassword = ({ token }) => {
   const router = useRouter();
-  const token2 = token;
+  console.log(token);
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
 
   const [newPassword, setNewPassword] = useState("");
@@ -24,7 +24,7 @@ const CNFPassword = ({ token }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token2, newPassword }),
+        body: JSON.stringify({ token, newPassword }),
       });
       const data = await response.json();
       if (response.ok) {

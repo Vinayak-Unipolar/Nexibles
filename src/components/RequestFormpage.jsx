@@ -276,6 +276,7 @@ function RequestFormPage() {
     "Seeking Additional Packaging Provider",
   ];
 
+  // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -313,7 +314,7 @@ function RequestFormPage() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target; // Fixed: Changed _checked to checked
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
@@ -397,7 +398,7 @@ function RequestFormPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+            "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq",
           },
           body: JSON.stringify(requestBody),
         }
@@ -452,7 +453,7 @@ function RequestFormPage() {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
-        category: formData.category, // Added category to leadData
+        category: formData.category,
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -575,7 +576,7 @@ function RequestFormPage() {
         language_preference: formData.languagePreference,
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
-        category: formData.category, // Added category to leadData
+        category: formData.category,
         city: formData.city,
         state: formData.state,
         country: formData.country,
@@ -632,7 +633,10 @@ function RequestFormPage() {
             requestSampleKit: false,
           });
           setTermsAccepted(false);
-          onClose();
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
@@ -753,7 +757,7 @@ function RequestFormPage() {
                     required
                   >
                     <option value="" className="text-gray-900">
-                      Please language...
+                      Please select...
                     </option>
                     {languages.map((language) => (
                       <option
@@ -1110,7 +1114,7 @@ function RequestFormPage() {
           </div>
           <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
             <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
-              Lets Build Your Packaging Breakthrough
+              {`Let's Build Your Packaging Breakthrough`}
             </h3>
             <div className="space-y-6">
               <div>
@@ -1118,23 +1122,23 @@ function RequestFormPage() {
                   Industry Leading Turnaround Times
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.
+                  {`At Nexibles, we believe packaging is more than a product — it’s a powerful storyteller for your brand. Whether you’re launching a bold new idea or scaling an existing business, your packaging should move at the speed of your dreams — without compromises on quality, cost, or creativity.`}
                 </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-800">
-                  Thats exactly what Nexibles was created for.
+                  {`That's exactly what Nexibles was created for.`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  When you request a free quote, you are not just asking for a price.
+                  {`When you request a free quote, you're not just asking for a price.`}
                 </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-800">
-                  You are taking the first step towards a smarter, faster, more flexible way to bring your brand to life.
+                  {`You’re taking the first step towards a smarter, faster, more flexible way to bring your brand to life.`}
                 </p>
                 <h3 className="pb-2 mb-4 text-xl mt-6 font-bold text-gray-800 border-b-2 border-orange-500">
-                  Here What Happens Next
+                  {`Here’s What Happens Next`}
                 </h3>
               </div>
               <div>
@@ -1142,16 +1146,16 @@ function RequestFormPage() {
                   Our team of packaging experts will review your requirements.
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  We’ll suggest the best options suited to your product, budget, and goals.
+                  {`We’ll suggest the best options suited to your product, budget, and goals.`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  We’ll send you a detailed, transparent quote — no hidden costs, no surprises.
+                 {` We’ll send you a detailed, transparent quote — no hidden costs, no surprises.`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  We’ll guide you through every step if you choose to move forward — from artwork to material selection to final production.
+                  {`We’ll guide you through every step if you choose to move forward — from artwork to material selection to final production.`}
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  And it all starts right here — with a simple form.
+                  {`And it all starts right here — with a simple form.`}
                 </p>
               </div>
             </div>

@@ -277,11 +277,11 @@ function RequestForm() {
     }));
 
     if (name === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value) && value.length > 0) {
         setEmailError("Please enter a valid email address");
       } else {
-        setEmailError(""); // Clear error if valid
+        setEmailError(""); 
       }
     }
   };
@@ -356,7 +356,7 @@ function RequestForm() {
         },
         body: JSON.stringify(requestBody),
       });
-      //console.log("Payload", requestBody);
+
       const responseData = await response.json();
       if (responseData.success === true) {
         if (typeof window !== "undefined") localStorage.setItem("orderNo", responseData.orderNo);
@@ -447,7 +447,8 @@ function RequestForm() {
         throw new Error("Failed to save lead");
       }
 
-      // Call /send-email to send emails
+
+      
       const emailResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
         {

@@ -72,8 +72,7 @@ function MarketingTracker({ metaPixelId }) {
       n = f.fbq = function () {
         n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
       };
-      if (!f._fbq) f._fbq =intregrity = !0;
-      n.push = n;
+      if (!f._fbq) f._fbq = !0; // Fixed line      n.push = n;
       n.loaded = !0;
       n.version = '2.0';
       n.queue = [];

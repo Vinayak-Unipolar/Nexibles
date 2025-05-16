@@ -221,7 +221,7 @@ const Modal = ({ isOpen, onClose }) => {
       });
       if (response.ok) {
         toast.success('Successfully subscribed!');
-        trackSignUpForm(); // Track Sign Up conversion
+        trackSignUpForm();
         setEmail('');
         onClose();
       } else {
@@ -329,19 +329,6 @@ const Home = () => {
     setShowModal(false);
   };
 
-  // Example Quote Form Handler (replace with your actual form logic)
-  const handleQuoteSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Replace with your quote form submission logic (e.g., API call)
-      console.log('Quote form submitted');
-      toast.success('Quote request submitted!');
-      trackQuoteForm('/thank-you'); // Track Quote Form conversion
-    } catch (error) {
-      console.error('Quote form error:', error);
-      toast.error('Failed to submit quote request.');
-    }
-  };
 
   // Example WhatsApp Click Handler
   const handleWhatsAppClick = () => {

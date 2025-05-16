@@ -27,6 +27,8 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     packageBuyingHistory: "",
     projectDescription: "",
     requestSampleKit: false,
+    gst_in: "", 
+
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -330,6 +332,19 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
+    if (name === "gstin") {
+      const formattedValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: formattedValue,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
+
     if (name === "email") {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value) && value.length > 0) {
@@ -475,6 +490,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
         package_buying_history: formData.packageBuyingHistory,
         enquiry_source: "Nexibles Website",
         request_sample_kit: formData.requestSampleKit,
+        gstin: formData.gst_in || "",
       };
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -591,6 +607,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
         package_buying_history: formData.packageBuyingHistory,
         enquiry_source: "Nexibles Website",
         request_sample_kit: formData.requestSampleKit,
+        gst_in: formData.gst_in || "",
       };
 
       console.log("Submitting leadData:", leadData);
@@ -630,6 +647,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
             state: "",
             zipPostalCode: "",
             country: "",
+            gstin: "",
             orderQuantity: "",
             packageBuyingHistory: "",
             projectDescription: "",
@@ -883,42 +901,28 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                   ></textarea>
                 </div>
 
-                <div className="mb-4 flex items-center">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      id="requestSampleKit"
-                      name="requestSampleKit"
-                      checked={formData.requestSampleKit}
-                      onChange={handleChange}
-                      className="sr-only"
-                    />
+                <div className="flex items-center gap-4 mt-6 mb-4">
+                  <span className="text-lg font-semibold">Request Sample Kit</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        requestSampleKit: !prev.requestSampleKit,
+                      }))
+                    }
+                    className={`relative inline-flex items-center h-7 w-14 rounded-full shadow-inner transition-colors duration-300 focus:outline-none ring-2 ring-offset-1 ${
+                      formData.requestSampleKit ? "bg-red-500 ring-red-300" : "bg-gray-300 ring-gray-200"
+                    }`}
+                  >
                     <span
-                      className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out
-                        ${formData.requestSampleKit ? "bg-[#103b60]" : ""}`}
-                    >
-                      {formData.requestSampleKit && (
-                        <svg
-                          className="absolute w-4 h-4 text-black top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M5 13l4 4 10-10"
-                          />
-                        </svg>
-                      )}
-                    </span>
-                    <span className="text-md font-semibold text-black">
-                      Request Sample Kit
-                    </span>
-                  </label>
+                      className={`inline-block w-6 h-6 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
+                        formData.requestSampleKit ? "translate-x-7" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
                 </div>
+
 
                 {formData.requestSampleKit && (
                   <>
@@ -1028,30 +1032,45 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                       </div>
                     </div>
 
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-black sm:text-md">
-                        Country *
-                      </label>
-                      <select
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                        required
-                      >
-                        <option value="" className="text-gray-900">
-                          Please select...
-                        </option>
-                        {countries.map((country) => (
-                          <option
-                            key={country}
-                            value={country}
-                            className="text-gray-900"
-                          >
-                            {country}
+                    <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-medium text-black sm:text-md">
+                          GSTIN
+                        </label>
+                        <input
+                          type="text"
+                          name="gstin"
+                          value={formData.gst_in || ""}
+                          onChange={handleChange}
+                          placeholder="Enter GSTIN (optional)"
+                          className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-black sm:text-md">
+                          Country *
+                        </label>
+                        <select
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
+                        >
+                          <option value="" className="text-gray-900">
+                            Please select...
                           </option>
-                        ))}
-                      </select>
+                          {countries.map((country) => (
+                            <option
+                              key={country}
+                              value={country}
+                              className="text-gray-900"
+                            >
+                              {country}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
                     {total && (

@@ -95,7 +95,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Pouches", path: "/all-category" },
     { name: "Industries", path: "/all-industry" },
-    { name: "About", path: "/about" },
+    { name: "About Us", path: "/about" },
   ];
 
   const logoVariants = {
@@ -392,10 +392,9 @@ const Navbar = () => {
                 { name: "Home", path: "/" },
                 { name: "Pouches", path: "/all-category" },
                 { name: "Industries", path: "/all-industry" },
-                { name: "About", path: "/about" },
+                { name: "About Us", path: "/about" },
                 { name: "Shop Online", path: "/shop" },
                 { name: "Customize Pouch", path: "/configuration-tool" },
-                { name: "About Nexibles", path: "/about-us" },
                 { name: "Contact Us", path: "/contact" },
               ].map((item, index) => (
                 <motion.div

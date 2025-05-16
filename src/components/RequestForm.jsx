@@ -1039,7 +1039,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                         </label>
                         <input
                           type="text"
-                          name="gstin"
+                          name="gst_in"
                           value={formData.gst_in || ""}
                           onChange={handleChange}
                           placeholder="Enter GSTIN (optional)"

@@ -28,7 +28,6 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     projectDescription: "",
     requestSampleKit: false,
     gst_in: "", 
-
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -280,7 +279,6 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     "Seeking Additional Packaging Provider",
   ];
 
-  // Update formData.category when initialCategory changes
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
@@ -288,7 +286,6 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     }));
   }, [initialCategory]);
 
-  // Fetch categories on component mount
   useEffect(() => {
       const fetchCategories = async () => {
         try {

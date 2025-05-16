@@ -51,8 +51,11 @@ const AdvantageItem = ({ icon, heading, description }) => {
 
 const Advantages = () => {
   return (
-    <div className="w-full mt-4 sm:mt-6 bg-white">
-      <h2 className="mb-4 sm:mb-8 text-xl sm:text-2xl md:text-4xl font-bold text-center">Our Advantages</h2>
+    <div className="w-full mt-4 sm:mt-0 md:mt-0 md:mb-4 bg-white">
+     <h2 className="text-center font-bold text-[1.5rem] sm:text-2xl md:text-4xl lg:text-4xl leading-tight tracking-tight mb-4 sm:mt-10 sm:mb-6">
+        Benefits of Digitally Printed Pouches
+      </h2>
+
       <div
         role="list"
         className="container grid grid-cols-1 gap-3 sm:gap-6 md:gap-8 mx-auto sm:grid-cols-2 md:grid-cols-4 px-4 py-4 sm:py-8"

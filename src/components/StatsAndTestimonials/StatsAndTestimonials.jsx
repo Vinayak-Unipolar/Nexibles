@@ -209,13 +209,14 @@ export default function StatsAndTestimonials() {
         transition={{ duration: 0.6 }}
       >
         <motion.h2
-          className="mt-6 mb-12 text-2xl font-bold text-center text-black md:text-3xl md:mt-0"
+          className="text-center font-bold text-[1.5rem] sm:text-2xl md:text-4xl lg:text-4xl leading-tight tracking-tight mt-8 mb-4 sm:mt-10 sm:mb-6 text-black"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          What People Are Saying
+          Real Stories, Real Impact
         </motion.h2>
+
 
         <div className="relative px-4 mx-auto mb-16 max-w-7xl md:px-0">
           {isLoading ? (
@@ -316,13 +317,13 @@ export default function StatsAndTestimonials() {
 
                 {/* Client Details */}
                 <div className="text-center">
-                  <h3 className="mb-2 text-2xl font-bold text-gray-800">{selectedTestimonial.name}</h3>
+                  <h3 className="mb-2 text-lg font-bold text-gray-800">{selectedTestimonial.name}</h3>
                   <p className="mb-4 text-gray-600">{selectedTestimonial.designationcompany}</p>
                 </div>
 
                 {/* Full Testimonial */}
-                <div className="mt-6 text-center text-gray-700">
-                  <p className="text-lg leading-relaxed">{selectedTestimonial.fullDescription}</p>
+                <div className=" text-center text-gray-700">
+                  <p className="md:text-sm text-xs leading-relaxed">{selectedTestimonial.fullDescription}</p>
                 </div>
               </div>
             </motion.div>

@@ -645,8 +645,17 @@ const handleSubmit = (e) => {
     return;
   }
   
- const eventID = `Quote_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  const eventID = `Quote_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   fbq('trackCustom', 'RequestQuote', { eventID });
+
+  const emailData = {
+    clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+    clientEmail: formData.email,
+    phone: formData.phone,
+    message: `
+      ${formData.projectDescription || "Not provided"}
+    `,
+  };
 
   if (formData.requestSampleKit) {
     makePayment(e);
@@ -674,6 +683,7 @@ const handleSubmit = (e) => {
 
     console.log("Submitting leadData:", leadData);
 
+    // First save the lead data
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
       method: "POST",
       headers: {
@@ -692,6 +702,26 @@ const handleSubmit = (e) => {
       })
       .then((data) => {
         console.log("Lead submission response:", data);
+        
+        // After saving lead data, send the email notification
+        return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify(emailData),
+        });
+      })
+      .then((emailResponse) => {
+        if (!emailResponse.ok) {
+          return emailResponse.json().then((emailError) => {
+            throw new Error(emailError.error || "Failed to send email");
+          });
+        }
+        return emailResponse.json();
+      })
+      .then(() => {
         setSubmitStatus("Form submitted successfully!");
         setFormData({
           firstName: "",
@@ -716,7 +746,10 @@ const handleSubmit = (e) => {
           requestSampleKit: false,
         });
         setTermsAccepted(false);
-        onClose();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       })
       .catch((error) => {
         console.error("Error submitting form:", error);

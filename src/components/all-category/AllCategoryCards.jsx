@@ -1,10 +1,21 @@
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ProductFeatures from "./ProductFeatures";
 
 const AllCategoryCards = ({ categoryData }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
   const PUBLIC_CDN_URL = process.env.NEXT_PUBLIC_CDN_URL || "https://cdn.nexibles.com";
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="h-auto bg-white">
@@ -44,20 +55,18 @@ const AllCategoryCards = ({ categoryData }) => {
                   >
                     Details
                   </Link>
-                  <Link
-                    href="/request-quote"
+                  <button
+                    onClick={handleOpenModal}
                     className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md bg-[#ffd13e] border border-black hover:bg-yellow-500 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
                   >
                     Get Quote
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-
-      {/* Key Product Features Section */}
       <ProductFeatures />
     </div>
   );

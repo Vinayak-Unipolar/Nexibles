@@ -14,6 +14,7 @@ function RequestFormPage() {
     languagePreference: "",
     industry: "",
     category: "",
+    gst_in:"",
     companyWebsite: "",
     streetAddress: "",
     addressLine2: "",
@@ -471,13 +472,7 @@ function RequestFormPage() {
         clientEmail: formData.email,
         phone: formData.phone,
         message: `
-          Project Description: ${formData.projectDescription || "Not provided"}
-          Industry: ${formData.industry || "Not provided"}
-          Category: ${formData.category || "Not provided"}
-          Order Quantity: ${formData.orderQuantity || "Not provided"}
-          Package Buying History: ${formData.packageBuyingHistory || "Not provided"}
-          Company: ${formData.companyName || "Not provided"}
-          Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
+          ${formData.projectDescription || "Not provided"}
         `,
       };
 
@@ -501,7 +496,7 @@ function RequestFormPage() {
       }
 
       const emailResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`,
         {
           method: "POST",
           headers: {
@@ -577,6 +572,7 @@ function RequestFormPage() {
         website_url: formData.companyWebsite,
         industry_sector: formData.industry,
         category: formData.category,
+        gst_in:formData.gst_in,
         city: formData.city,
         state: formData.state,
         country: formData.country,

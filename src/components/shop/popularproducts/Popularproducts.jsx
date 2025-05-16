@@ -4,10 +4,12 @@ import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 import RequestForm from "../../RequestForm";
+
 export default function PopularProducts() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(""); // New state to track the selected category
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const sectionRef = useRef(null);
@@ -61,12 +63,14 @@ export default function PopularProducts() {
     }),
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (categoryName) => {
+    setSelectedCategory(categoryName); // Set the selected category
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setSelectedCategory(""); // Reset the selected category when closing the modal
   };
 
   return (
@@ -112,18 +116,20 @@ export default function PopularProducts() {
                         {category.name}
                       </p>
                       <div className="flex justify-center space-x-2">
-                        <Link
-                          href={`/category/${category.cat_url}`}
-                          className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md sm:rounded-md bg-white border border-black hover:bg-gray-100 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
-                        >
-                          Details
-                        </Link>
-                        <button
-                          onClick={handleOpenModal}
-                          className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md sm:rounded-md bg-[#ffd13e] border border-black hover:bg-yellow-500 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
-                        >
-                          Get Quote
-                        </button>
+                        <div className="flex justify-center items-center gap-2 flex-wrap">
+                          <Link
+                            href={`/category/${category.cat_url}`}
+                            className="px-4 py-1.5 text-xs font-medium rounded border border-black hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
+                          >
+                            Details
+                          </Link>
+                          <button
+                            onClick={() => handleOpenModal(category.name)}
+                            className="px-4 py-1.5 text-xs font-medium rounded border border-black bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
+                          >
+                            Get Quote
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -153,7 +159,11 @@ export default function PopularProducts() {
           )}
         </div>
       </div>
-      <RequestForm isOpen={isModalOpen} onClose={handleCloseModal} />
+      <RequestForm
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        initialCategory={selectedCategory} // Pass the selected category to the form
+      />
     </div>
   );
 }

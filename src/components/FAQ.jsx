@@ -6,29 +6,48 @@ function FAQ() {
 
   const faqs = [
     {
-      question: "What is included in the Nexibles Sample Kit?",
+      question: "How do I request a quote for custom printed pouches?",
       answer:
-        "The Nexibles Sample Kit includes a variety of packaging samples such as pouches, sachets, and eco-friendly materials. It showcases different sizes, finishes, and material types to help you choose the best packaging for your product.",
+        "Fill out the quote form by selecting your pouch type, size, quantity, and finish. Add any specific requirements like zippers, windows, or spouts. Our team will send a tailored quote within 24 to 48 hours.",
     },
     {
-      question: "How long does it take to receive a quote?",
+      question: "What is the minimum order quantity (MOQ) at Nexibles?",
       answer:
-        "Once you submit the form, our team typically reviews your requirements and sends a detailed quote within 1-2 business days. For urgent requests, please mention your timeline in the project description.",
+        "Our MOQs are the lowest in the industry—starting at just 500 pieces. You can opt for Nexi Classic sizes for faster production or request custom dimensions using our configuration tool.",
     },
     {
-      question: "Can I customize the packaging for my brand?",
+      question: "Can I request a quote for multiple pouch types or SKUs in one go?",
       answer:
-        "Yes, Nexibles offers fully customizable packaging solutions. You can specify pouch types, sizes, colors, finishes, and branding elements like logos and designs to align with your brand identity.",
+        "Yes, you can! Please use the comment section in the form to briefly elaborate on each product or SKU requirement. This helps us create an accurate and consolidated quote for you.",
     },
     {
-      question: "What are the minimum order quantities for packaging?",
-      answer:
-        "Our minimum order quantities start at 1,000 units, but we offer flexible options for businesses of all sizes. Select your preferred quantity in the form, and we’ll tailor the quote to your needs.",
+      question: "What details should I include for a faster quote?",
+      answer: `To speed up the process, include:
+- Product type and pouch format (e.g., Stand-Up, Spout)
+- Size (in mm or choose Nexi Classic)
+- Quantity per SKU
+- Material preference (matte/glossy/metallic)
+- Features needed (zipper, valve, window, etc.)`,
     },
     {
-      question: "Is shipping included in the Sample Kit price?",
+      question: "How long does it take to receive a quotation?",
       answer:
-        "Yes, the Sample Kit price of ₹413 (including GST) covers shipping within India. For international shipping, please contact our team for additional details.",
+        "You’ll receive a custom quote via email or WhatsApp within 24–48 hours of submitting your complete requirements.",
+    },
+    {
+      question: "How to order a sample kit?",
+      answer:
+        "Simply check the “Order Sample Kit” box while submitting the form. A nominal courier fee of ₹350 + GST will be charged at checkout. You’ll receive a set of printed pouch samples for evaluation.",
+    },
+    {
+      question: "What happens after I approve the quote?",
+      answer:
+        "Once you approve the quote and artwork (or request design help), we begin prepress work. Production starts within 24–48 hours post payment, and dispatch follows in 7–10 business days.",
+    },
+    {
+      question: "Do you ship across India and internationally?",
+      answer:
+        "Yes, we ship pan-India including Tier 2 and Tier 3 cities. International shipping is also available. Shipping charges are extra and calculated separately based on your delivery location.",
     },
   ];
 
@@ -57,7 +76,7 @@ function FAQ() {
               </span>
             </button>
             {openIndex === index && (
-              <div className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base text-gray-600 border-t border-black">
+              <div className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base text-gray-600 border-t border-black whitespace-pre-line">
                 {faq.answer}
               </div>
             )}

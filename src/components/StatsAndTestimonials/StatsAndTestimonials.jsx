@@ -127,7 +127,7 @@ export default function StatsAndTestimonials() {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-         inin viewBox="0 0 24 24"
+          inin viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -177,11 +177,11 @@ export default function StatsAndTestimonials() {
   };
 
   const modalVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       scale: 0.9,
     },
-    visible: { 
+    visible: {
       opacity: 1,
       scale: 1,
       transition: {
@@ -190,7 +190,7 @@ export default function StatsAndTestimonials() {
         damping: 20
       }
     },
-    exit: { 
+    exit: {
       opacity: 0,
       scale: 0.9,
       transition: {
@@ -277,14 +277,14 @@ export default function StatsAndTestimonials() {
       {/* Testimonial Modal */}
       <AnimatePresence>
         {selectedTestimonial && (
-          <motion.div 
+          <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedTestimonial(null)}
           >
-            <motion.div 
+            <motion.div
               className="relative w-11/12 max-w-2xl p-8 bg-white rounded-2xl shadow-2xl"
               variants={modalVariants}
               initial="hidden"
@@ -293,7 +293,7 @@ export default function StatsAndTestimonials() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
-              <button 
+              <button
                 className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
                 onClick={() => setSelectedTestimonial(null)}
               >
@@ -322,7 +322,14 @@ export default function StatsAndTestimonials() {
                 </div>
 
                 {/* Full Testimonial */}
-                <div className=" text-center text-gray-700">
+                <div className=" text-center text-gray-700 h-[calc(50vh-120px)] overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+                  <style>
+                    {`
+            .overflow-y-auto::-webkit-scrollbar {
+              display: none;
+            }
+            `}
+                  </style>
                   <p className="md:text-sm text-xs leading-relaxed">{selectedTestimonial.fullDescription}</p>
                 </div>
               </div>

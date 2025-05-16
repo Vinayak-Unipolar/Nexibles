@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.4 }}
-                  className="fixed top-1/2 right-0 transform -translate-y-1/2 flex justify-end p-5 z-40"
+                  className="fixed bottom-24 right-0 transform -translate-y-1/2 flex justify-end p-5 z-40"
                 >
                   <SettingsButton />
                 </motion.div>

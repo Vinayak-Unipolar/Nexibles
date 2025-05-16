@@ -15,6 +15,7 @@ import NexiblesInstagramSection from '@/components/home/NexiblesInstagramSection
 import Industries from '@/components/home/Industries';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import MarketingTracker, { trackQuoteForm, trackSignUpForm, trackWhatsAppChat } from '@/components/MarketingTracker';
+import BrandLogosSection from '@/components/instagramandlogos/BrandLogosSection';
 
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
@@ -158,6 +159,14 @@ const Home = () => {
       <Industries />
       <Popularproducts />
       <StatsAndTestimonials />
+      <section className="py-10 bg-white">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="text-4xl font-bold text-gray-800 mb-8 tracking-tight text-center">
+                  Trusted by 1500+ Brands
+                </h2>
+                <BrandLogosSection />
+              </div>
+            </section>
       <AdvantageItem />
       <ProductSections />
       <NexiblesInstagramSection />

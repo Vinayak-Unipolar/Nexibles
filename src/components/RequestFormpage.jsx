@@ -14,7 +14,6 @@ function RequestFormPage() {
     languagePreference: "",
     industry: "",
     category: "",
-    gst_in:"",
     companyWebsite: "",
     streetAddress: "",
     addressLine2: "",
@@ -26,6 +25,7 @@ function RequestFormPage() {
     packageBuyingHistory: "",
     projectDescription: "",
     requestSampleKit: false,
+    gst_in: "", 
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -620,6 +620,7 @@ function RequestFormPage() {
             state: "",
             zipPostalCode: "",
             country: "",
+            gst_in: "",
             orderQuantity: "",
             packageBuyingHistory: "",
             projectDescription: "",
@@ -991,7 +992,7 @@ function RequestFormPage() {
                         </label>
                         <input
                           type="text"
-                          name="gstin"
+                          name="gst_in"
                           value={formData.gst_in || ""}
                           onChange={handleChange}
                           placeholder="Enter GSTIN (optional)"

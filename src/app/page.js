@@ -1,21 +1,24 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import  LoadingScreen  from "./loading-screen/page";
-import "react-toastify/dist/ReactToastify.css";
-import Footer from "@/components/shop/Footer";
-import AdvantageItem from "@/components/home/AdvantageItem";
-import HeaderSection from "@/components/home/HeaderSection";
-import Navbar from "@/components/shop/Navbar";
-import Popularproducts from "@/components/shop/popularproducts/Popularproducts";
-import StatsAndTestimonials from "@/components/StatsAndTestimonials/StatsAndTestimonials";
-import ProductSections from "@/components/shop/ProductSections";
-import NexiblesInstagramSection from "@/components/home/NexiblesInstagramSection";
-import Industries from "@/components/home/Industries";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import LoadingScreen from './loading-screen/page';
+import 'react-toastify/dist/ReactToastify.css';
+import Footer from '@/components/shop/Footer';
+import AdvantageItem from '@/components/home/AdvantageItem';
+import HeaderSection from '@/components/home/HeaderSection';
+import Navbar from '@/components/shop/Navbar';
+import Popularproducts from '@/components/shop/popularproducts/Popularproducts';
+import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials';
+import ProductSections from '@/components/shop/ProductSections';
+import NexiblesInstagramSection from '@/components/home/NexiblesInstagramSection';
+import Industries from '@/components/home/Industries';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
+import MarketingTracker, { trackQuoteForm, trackSignUpForm, trackWhatsAppChat } from '@/components/MarketingTracker';
+import BrandLogosSection from '@/components/instagramandlogos/BrandLogosSection';
 
 const Modal = ({ isOpen, onClose }) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const token = process.env.NEXT_PUBLIC_API_KEY;
 
   if (!isOpen) return null;
@@ -23,27 +26,28 @@ const Modal = ({ isOpen, onClose }) => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) {
-      toast.error("Please enter a valid email.");
+      toast.error('Please enter a valid email.');
       return;
     }
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-type": "application/json",
-          "API-Key": token,
+          'Content-type': 'application/json',
+          'API-Key': token,
         },
-        body: JSON.stringify({ email: email, origin: "nexibles" }),
+        body: JSON.stringify({ email: email, origin: 'nexibles' }),
       });
       if (response.ok) {
-        toast.success("Successfully subscribed!");
-        setEmail("");
+        toast.success('Successfully subscribed!');
+        trackSignUpForm(); 
+        setEmail('');
         onClose();
       } else {
-        toast.error("Subscription failed. Please try again.");
+        toast.error('Subscription failed. Please try again.');
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again later.");
+      toast.error('An error occurred. Please try again later.');
     }
   };
 
@@ -73,8 +77,7 @@ const Modal = ({ isOpen, onClose }) => {
           </p>
 
           <h2 className="mb-6 text-xl font-bold text-center">
-            Receive Offers Your Next Order,<br />
-            Exclusive Offers & More!
+            Subscribe to get notified about our <br /> upcoming offers and more!
           </h2>
 
           <input
@@ -90,21 +93,6 @@ const Modal = ({ isOpen, onClose }) => {
           >
             Subscribe
           </button>
-          {/* Social Media Icons */}
-          {/* <div className="flex justify-center space-x-4">
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaFacebookF size={18} />
-            </a>
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaTwitter size={18} />
-            </a>
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaInstagram size={18} />
-            </a>
-            <a href="#" className="text-black hover:text-gray-600">
-              <FaPinterestP size={18} />
-            </a>
-          </div> */}
         </div>
       </div>
     </div>
@@ -119,37 +107,37 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const lastShown = localStorage.getItem("modalLastShown");
+    const lastShown = localStorage.getItem('modalLastShown');
     const now = new Date().getTime();
     const oneDay = 24 * 60 * 60 * 1000;
 
     const timer = setTimeout(() => {
       if (!lastShown || now - parseInt(lastShown) > oneDay) {
         setShowModal(true);
-        localStorage.setItem("modalLastShown", now.toString());
+        localStorage.setItem('modalLastShown', now.toString());
       }
     }, 10000);
 
     const fetchData = async () => {
       try {
         const response = await fetch(`${APIURL}/api/category_master`, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-type": "application/json",
-            "API-Key": token,
+            'Content-type': 'application/json',
+            'API-Key': token,
           },
         });
         const data = await response.json();
-        if (data.status === "success") {
+        if (data.status === 'success') {
           const filterCategory = data.data.filter(
-            (category) => category.origin?.toLowerCase() === "nexibles "
+            (category) => category.origin?.toLowerCase() === 'nexibles'
           );
           setData(filterCategory);
         } else {
-          console.error("failed to fetch categories", data.error);
+          console.error('Failed to fetch categories:', data.error);
         }
       } catch (error) {
-        console.log("Error Fetching Data", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchData();
@@ -161,22 +149,29 @@ const Home = () => {
   };
 
   return (
-    <>
     <div className="min-h-screen">
       <GoogleAnalytics />
+      <MarketingTracker metaPixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
       <ToastContainer position="top-right" autoClose={3000} />
       <Modal isOpen={showModal} onClose={closeModal} />
       <Navbar />
       <HeaderSection />
       <Industries />
       <Popularproducts />
-      <ProductSections />
-      <AdvantageItem />
       <StatsAndTestimonials />
+      <section className="py-10 bg-white">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="text-4xl font-bold text-gray-800 mb-8 tracking-tight text-center">
+                  Trusted by 1500+ Brands
+                </h2>
+                <BrandLogosSection />
+              </div>
+            </section>
+      <AdvantageItem />
+      <ProductSections />
       <NexiblesInstagramSection />
       <Footer />
     </div>
-  </>
   );
 };
 

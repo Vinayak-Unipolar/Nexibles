@@ -58,7 +58,7 @@ export default function Backdrop() {
         @media (max-width: 768px) {
           .swiper-button-next,
           .swiper-button-prev {
-            display: none;
+            display: none ;
           }
         }
       `}</style>

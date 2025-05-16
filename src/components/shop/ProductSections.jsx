@@ -39,7 +39,7 @@ const ProductSections = () => {
       <div className="flex flex-col md:flex-row justify-center">
         {/* Stock Products Section */}
         <div className="relative overflow-hidden group w-full">
-          <Link href="/all-category" className="block relative">
+          <Link href="/shop" className="block relative">
             <motion.div
               custom="left"
               initial="hidden"
@@ -87,7 +87,7 @@ const ProductSections = () => {
                 height={100}
                 alt="Customization Tool"
                 loading="lazy"
-                className="object-contain w-full"
+                className="object-contain w-full translate-y-[1px]"
                 quality={100}
               />
               <motion.div

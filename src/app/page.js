@@ -365,9 +365,9 @@ const Home = () => {
       <HeaderSection />
       <Industries />
       <Popularproducts />
+      <StatsAndTestimonials />
       <AdvantageItem />
       <ProductSections />
-      <StatsAndTestimonials />
       <NexiblesInstagramSection />
       <Footer />
     </div>

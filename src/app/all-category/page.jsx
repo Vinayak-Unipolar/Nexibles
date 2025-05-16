@@ -7,6 +7,7 @@ import HeadingRoutes from '@/components/all-category/HeadingRoutes'
 import CategoryImageBg from '@/components/all-category/CategoryImageBg'
 import Loader from '@/components/comman/Loader'
 import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials'
+import PopularProducts from '@/components/shop/popularproducts/Popularproducts'
 
 const Page = () => {
 

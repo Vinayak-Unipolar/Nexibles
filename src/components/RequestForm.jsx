@@ -1115,7 +1115,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                         <span className="text-md font-semibold text-black">
                           I agree to the{" "}
                           <Link
-                            href="/terms-and-conditions"
+                            href="/terms-conditions"
                             className="underline text-blue-600 hover:text-blue-800"
                           >
                             Terms and Conditions

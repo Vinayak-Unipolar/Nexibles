@@ -103,43 +103,6 @@ export default function NexiblesInstagramSection() {
 
       {/* Infinite Marquee for Brand Logos */}
       <div className="relative w-full pt-8 overflow-hidden">
-<<<<<<< HEAD
-        <motion.div
-          className="flex space-x-8 w-max"
-          animate={{ x: ["0%", "-15%"] }}
-          transition={{
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: 20,
-            ease: "linear",
-          }}
-        >
-          {[...brandLogos, ...brandLogos].map((brand, idx) => (
-            <div
-              key={`${brand.id}-${idx}`}
-              className="flex items-center justify-center flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24"
-            >
-              <Image
-                src={
-                  NEXI_CDN_URL && brand.image
-                    ? `${NEXI_CDN_URL}/clients/${brand.image}`
-                    : "/placeholder.png"
-                }
-                alt={`Brand ${brand.id}`}
-                width={60}
-                height={60}
-                className="object-contain"
-                onError={(e) => {
-                  console.error(
-                    `Failed to load image: ${NEXI_CDN_URL}/clients/${brand.image}`
-                  );
-                  e.target.src = "/placeholder.png";
-                }}
-              />
-            </div>
-          ))}
-        </motion.div>
-=======
         {isLoading ? (
           <div className="flex justify-center items-center h-24">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -185,7 +148,6 @@ export default function NexiblesInstagramSection() {
         ) : (
           <p className="text-center text-gray-500">No brand logos available</p>
         )}
->>>>>>> 1d0a363aed40e9527b5cac445fcdeedd7df3d70d
       </div>
     </div>
   );

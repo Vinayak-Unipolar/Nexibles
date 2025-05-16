@@ -322,14 +322,15 @@ export default function StatsAndTestimonials() {
                 </div>
 
                 {/* Full Testimonial */}
-                <div className=" text-center text-gray-700 h-[calc(50vh-120px)] overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-                  <style>
+                <div className=" text-center text-gray-700 h-[calc(50vh-120px)] overflow-x-auto">
+                  {/* <style>
                     {`
             .overflow-y-auto::-webkit-scrollbar {
               display: none;
             }
             `}
-                  </style>
+             style={{ scrollbarWidth: "none" }}
+                  </style> */}
                   <p className="md:text-sm text-xs leading-relaxed">{selectedTestimonial.fullDescription}</p>
                 </div>
               </div>

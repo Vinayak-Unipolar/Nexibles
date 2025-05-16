@@ -102,16 +102,27 @@ const Shop = () => {
             </div>
             
             {/* Right Column */}
-            <div className="text-center flex flex-col justify-center">
-              <h3 className="text-center">With <span className='font-bold text-2xl text-[#ffd13d]'>NexiClassic</span>,<br />launching a new <span className="font-thin text-2xl">product</span> becomes a</h3>
-              
-              <h2 className="text-2xl font-bold text-center" style={{ color: '#103b60' }}>Hassle-Free</h2>
-              <h2 className="text-2xl font-bold text-center ml-4" style={{ color: '#103b60' }}>Cost-Effective Endeavor</h2>
-              
-              <p className="text-center">allowing you to focus on</p>
-              <h3 className="text-center"><span style={{ color: '#103b60' }} className="font-bold text-2xl ml-12">Scaling</span> Your <span style={{ color: '#103b60' }} className="font-bold text-2xl">Brand</span></h3>
-              <h3 className="text-center"><span style={{ color: '#103b60' }} className="font-bold text-2xl ">Refining</span> Your <span style={{ color: '#103b60' }} className="font-bold text-2xl mr-12">Products</span></h3>
-            </div>
+         <div className="text-center flex flex-col justify-center">
+  <h3 className="text-center mb-[-2px]">
+    With <span className="font-bold text-3xl text-[#ffd13d]">NexiClassic</span>,<br />
+    launching a new <span className="font-thin text-2xl">product</span> becomes a
+  </h3>
+  <h2 className="text-2xl font-bold text-center mb-[-2px]" style={{ color: '#103b60' }}>
+    Hassle-Free,
+  </h2>
+  <h2 className="text-[25px] font-bold text-center ml-16 mb-[-2px]" style={{ color: '#103b60' }}>
+    Cost-Effective Endeavor,
+  </h2>
+  <p className="text-center mb-[-2px]">allowing you to focus on</p>
+  <h3 className="text-center mb-[-2px]">
+    <span style={{ color: '#103b60' }} className="font-bold text-2xl ml-16">Scaling</span> Your{' '}
+    <span style={{ color: '#103b60' }} className="font-bold text-2xl">Brand,</span>
+  </h3>
+  <h3 className="text-center">
+    <span style={{ color: '#103b60' }} className="font-bold text-2xl">Refining</span> Your{' '}
+    <span style={{ color: '#103b60' }} className="font-bold text-2xl mr-12">Products,</span>
+  </h3>
+</div>
           </div>
         </motion.section>
 

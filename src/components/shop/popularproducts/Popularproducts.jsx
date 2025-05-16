@@ -112,7 +112,7 @@ export default function PopularProducts() {
                       />
                     </div>
                     <div className="mt-3 text-center w-full">
-                      <p className="text-xs sm:text-sm md:text-base font-bold tracking-wider text-black uppercase mb-2 sm:mb-3 md:mb-4">
+                      <p className="text-xs sm:text-sm md:text-sm font-bold tracking-wider text-black mb-2 sm:mb-3 md:mb-4">
                         {category.name}
                       </p>
                       <div className="flex justify-center space-x-2">

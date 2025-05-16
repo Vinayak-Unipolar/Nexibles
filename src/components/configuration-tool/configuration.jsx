@@ -671,7 +671,7 @@ const Configuration = () => {
                 </div>
               </motion.div>
 
-              <motion.div className="mb-8 z-30" variants={itemVariants}>
+              <motion.div className="mb-8 relative z-30" variants={itemVariants}>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
                   Pouch Specifications
@@ -948,7 +948,7 @@ const Configuration = () => {
               </motion.div>
 
               <motion.div className="mb-8" variants={itemVariants}>
-                <h2 className="text-2xl z-10 font-semibold text-gray-800 mb-4 flex items-center">
+                <h2 className="text-2xl z-10 font-semibold text-gray-800 mb-4 flex items-center relative z-10">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
                   SKU Configuration
                 </h2>

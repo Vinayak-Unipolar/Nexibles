@@ -40,7 +40,7 @@ const Modal = ({ isOpen, onClose }) => {
       });
       if (response.ok) {
         toast.success('Successfully subscribed!');
-        trackSignUpForm(); 
+        trackSignUpForm();
         setEmail('');
         onClose();
       } else {
@@ -161,7 +161,7 @@ const Home = () => {
       <StatsAndTestimonials />
       <section className="py-10 bg-white">
               <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-4xl font-bold text-gray-800 mb-8 tracking-tight text-center">
+                <h2 className="md:text-4xl text-2xl font-bold text-black mb-8 tracking-tight text-center">
                   Trusted by 1500+ Brands
                 </h2>
                 <BrandLogosSection />

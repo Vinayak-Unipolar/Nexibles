@@ -447,26 +447,25 @@ function RequestFormPage() {
 
     try {
       const leadData = {
-        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        phone: formData.phone,
-        company_name: formData.companyName,
-        language_preference: formData.languagePreference,
-        website_url: formData.companyWebsite,
-        industry_sector: formData.industry,
-        category: formData.category,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country,
-        street_address: formData.streetAddress,
-        address_line_2: formData.addressLine2,
-        zip_postal_code: formData.zipPostalCode,
-        products_interested_in: formData.projectDescription,
-        quote_quantity: formData.orderQuantity,
-        package_buying_history: formData.packageBuyingHistory,
-        enquiry_source: "Nexibles Website",
-        request_sample_kit: formData.requestSampleKit,
-      };
+  full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+  email: formData.email,
+  alternate_email: null,
+  phone: formData.phone,
+  company_name: formData.companyName,
+  website_url: formData.companyWebsite,
+  industry_sector: formData.industry,
+  city: formData.city,
+  state: formData.state,
+  country: formData.country,
+  products_interested_in: formData.projectDescription,
+  enquiry_source: "Nexibles Website",
+  referred_by: null,
+  lead_assigned_to: null,
+  visiting_card: null,
+  additional_comments: formData.projectDescription,
+  category: formData.category,
+  gst_in: formData.gst_in || ""
+};
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
         clientEmail: formData.email,
@@ -564,27 +563,25 @@ function RequestFormPage() {
       makePayment(e);
     } else {
       const leadData = {
-        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        phone: formData.phone,
-        company_name: formData.companyName,
-        language_preference: formData.languagePreference,
-        website_url: formData.companyWebsite,
-        industry_sector: formData.industry,
-        category: formData.category,
-        gst_in:formData.gst_in,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country,
-        street_address: formData.streetAddress,
-        address_line_2: formData.addressLine2,
-        zip_postal_code: formData.zipPostalCode,
-        products_interested_in: formData.projectDescription,
-        quote_quantity: formData.orderQuantity,
-        package_buying_history: formData.packageBuyingHistory,
-        enquiry_source: "Nexibles Website",
-        request_sample_kit: formData.requestSampleKit,
-      };
+  full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+  email: formData.email,
+  alternate_email: null,
+  phone: formData.phone,
+  company_name: formData.companyName,
+  website_url: formData.companyWebsite,
+  industry_sector: formData.industry,
+  city: formData.city,
+  state: formData.state,
+  country: formData.country,
+  products_interested_in: formData.projectDescription,
+  enquiry_source: "Nexibles Website",
+  referred_by: null,
+  lead_assigned_to: null,
+  visiting_card: null,
+  additional_comments: formData.projectDescription,
+  category: formData.category,
+  gst_in: formData.gst_in || ""
+};
 
       console.log("Submitting leadData:", leadData);
 

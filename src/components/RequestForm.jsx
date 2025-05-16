@@ -573,88 +573,125 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.requestSampleKit && !termsAccepted) {
-      setSubmitStatus("Please accept the Terms and Conditions.");
-      return;
-    }
-    if (formData.requestSampleKit) {
-      makePayment(e);
-    } else {
-      const leadData = {
-  full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-  email: formData.email,
-  alternate_email: null,
-  phone: formData.phone,
-  company_name: formData.companyName,
-  website_url: formData.companyWebsite,
-  industry_sector: formData.industry,
-  city: formData.city,
-  state: formData.state,
-  country: formData.country,
-  products_interested_in: formData.projectDescription,
-  enquiry_source: "Nexibles Website",
-  referred_by: null,
-  lead_assigned_to: null,
-  visiting_card: null,
-  additional_comments: formData.projectDescription,
-  category: formData.category,
-  gst_in: formData.gst_in || ""
-};
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (formData.requestSampleKit && !termsAccepted) {
+    setSubmitStatus("Please accept the Terms and Conditions.");
+    return;
+  }
+  
+  const eventID = `Quote_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  fbq('trackCustom', 'RequestQuote', { eventID });
 
-      console.log("Submitting leadData:", leadData);
-
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-        },
-        body: JSON.stringify(leadData),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((errorData) => {
-              throw new Error(errorData.message || "Network response was not ok");
-            });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Lead submission response:", data);
-          setSubmitStatus("Form submitted successfully!");
-          setFormData({
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            companyName: "",
-            languagePreference: "",
-            industry: "",
-            category: "",
-            companyWebsite: "",
-            streetAddress: "",
-            addressLine2: "",
-            city: "",
-            state: "",
-            zipPostalCode: "",
-            country: "",
-            gst_in: "",
-            orderQuantity: "",
-            packageBuyingHistory: "",
-            projectDescription: "",
-            requestSampleKit: false,
-          });
-          setTermsAccepted(false);
-          onClose();
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-          setSubmitStatus(`Failed to submit form: ${error.message}`);
-        });
-    }
+  const emailData = {
+    clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+    clientEmail: formData.email,
+    phone: formData.phone,
+    message: `
+      ${formData.projectDescription || "Not provided"}
+    `,
   };
+
+  if (formData.requestSampleKit) {
+    makePayment(e);
+  } else {
+    const leadData = {
+      full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+      email: formData.email,
+      alternate_email: null,
+      phone: formData.phone,
+      company_name: formData.companyName,
+      website_url: formData.companyWebsite,
+      industry_sector: formData.industry,
+      city: formData.city,
+      state: formData.state,
+      country: formData.country,
+      products_interested_in: formData.projectDescription,
+      enquiry_source: "Nexibles Website",
+      referred_by: null,
+      lead_assigned_to: null,
+      visiting_card: null,
+      additional_comments: formData.projectDescription,
+      category: formData.category,
+      gst_in: formData.gst_in || ""
+    };
+
+    console.log("Submitting leadData:", leadData);
+
+    // First save the lead data
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+      },
+      body: JSON.stringify(leadData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw new Error(errorData.message || "Network response was not ok");
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Lead submission response:", data);
+        
+        // After saving lead data, send the email notification
+        return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify(emailData),
+        });
+      })
+      .then((emailResponse) => {
+        if (!emailResponse.ok) {
+          return emailResponse.json().then((emailError) => {
+            throw new Error(emailError.error || "Failed to send email");
+          });
+        }
+        return emailResponse.json();
+      })
+      .then(() => {
+        setSubmitStatus("Form submitted successfully!");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          companyName: "",
+          languagePreference: "",
+          industry: "",
+          category: "",
+          companyWebsite: "",
+          streetAddress: "",
+          addressLine2: "",
+          city: "",
+          state: "",
+          zipPostalCode: "",
+          country: "",
+          gst_in: "",
+          orderQuantity: "",
+          packageBuyingHistory: "",
+          projectDescription: "",
+          requestSampleKit: false,
+        });
+        setTermsAccepted(false);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+        setSubmitStatus(`Failed to submit form: ${error.message}`);
+      });
+  }
+};
 
   return (
     <AnimatePresence>

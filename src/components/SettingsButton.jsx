@@ -196,7 +196,7 @@ const SettingsButton = () => {
           {/* Border container that wraps both the text and button */}
           <AnimatePresence>
             <motion.div
-              className="absolute rounded-full bg-gradient-to-r from-gray-500 to-gray-900"
+              className="absolute rounded-full bg-gradient-to-r from-blue-500 to-blue-900"
               initial={{ width: 60, height: 60, left: 0 }}
               animate={{
                 width: isExpanded ? 240 : 60,
@@ -331,14 +331,14 @@ const SettingsButton = () => {
 
           {/* Main cog button */}
           <motion.div
-            className="flex items-center justify-center bg-gradient-to-r from-gray-500 to-gray-900 rounded-full shadow-lg relative overflow-hidden"
-            whileHover={{
-              boxShadow:
-                "0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(59, 130, 246, 0.5)",
-              background:
-                "linear-gradient(135deg, #4b5563, #1f2937, #4b5563)",
-              transition: { duration: 0.4, ease: "easeInOut" },
-            }}
+            className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-900 rounded-full shadow-lg relative overflow-hidden"
+            // whileHover={{
+            //   boxShadow:
+            //     "0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(59, 130, 246, 0.5)",
+            //   background:
+            //     "linear-gradient(135deg, #4b5563, #1f2937, #4b5563)",
+            //   transition: { duration: 0.4, ease: "easeInOut" },
+            // }}
             whileTap={{
               scale: 0.85,
               rotate: 90,

@@ -23,11 +23,17 @@ const Navbar = () => {
     isShopDropdownOpen: false,
   });
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 0,
+    isMobile: false,
+    isTablet: false,
+    isIPadPro: false
+  });
   const { user, logout } = useAuth();
   const cartItems = useSelector((state) => state.cart.items);
   const cartItemCount = cartItems.length;
   const navbarRef = useRef(null);
+  const dropdownRef = useRef(null);
   const isNavbarInView = useInView(navbarRef, { once: true, amount: 0.5 });
 
   useEffect(() => {
@@ -36,19 +42,46 @@ const Navbar = () => {
     };
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) {
-        setToggleStates((prev) => ({ ...prev, isMenuOpen: false }));
+      const width = window.innerWidth;
+      const isIPadPro = (width >= 1024 && width <= 1366);
+      
+      setScreenSize({
+        width,
+        isMobile: width < 768,
+        isTablet: width >= 768 && width < 1024,
+        isIPadPro
+      });
+      
+      if (width >= 1200) {
+        setToggleStates((prev) => ({ 
+          ...prev, 
+          isMenuOpen: false,
+          showPersonDropdown: false
+        }));
+      }
+    };
+
+    // Handle clicks outside of dropdown
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setToggleStates(prev => ({
+          ...prev,
+          showPersonDropdown: false
+        }));
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    // Initialize on mount
     handleResize();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -115,6 +148,7 @@ const Navbar = () => {
       transition: { duration: 0.6, delay: 0.2, ease: "easeOut" },
     },
   };
+  
   const isActive = (path) => {
     if (path === "/") {
       return pathname === path;
@@ -148,7 +182,8 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          <div className="items-center hidden absolute left-1/2 transform -translate-x-1/2 space-x-12 md:flex">
+          {/* Desktop Navigation - Only visible on large screens (1200px and up) */}
+          <div className="items-center hidden xl:flex absolute left-1/2 transform -translate-x-1/2 space-x-12">
             {navItems.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -172,7 +207,8 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Right Nav Items - Desktop Only */}
+          <div className="hidden xl:flex items-center space-x-4">
             <motion.div
               custom={0}
               initial="hidden"
@@ -220,6 +256,7 @@ const Navbar = () => {
             </motion.div>
 
             <motion.div
+              ref={dropdownRef}
               custom={3}
               initial="hidden"
               animate={isNavbarInView ? "visible" : "hidden"}
@@ -266,20 +303,34 @@ const Navbar = () => {
             </motion.div>
           </div>
 
-          {/* Mobile Navigation */}
-          <div className="flex items-center space-x-4 md:hidden">
+          {/* Mobile, Tablet, and iPad Pro Navigation */}
+          <div className="flex items-center xl:hidden">
+            {/* Special iPad Pro Navigation - Shown only at iPad Pro width */}
+            {screenSize.isIPadPro && (
+              <div className="flex items-center">
+                <Link
+                  href="/shop"
+                  className="inline-block mr-6 px-4 py-1.5 text-sm font-medium rounded-full border border-gray-300 text-gray-800 transition duration-300 hover:bg-gray-100"
+                >
+                  Shop Online
+                </Link>
+              </div>
+            )}
+            
             <motion.div
               custom={0}
               initial="hidden"
               animate={isNavbarInView ? "visible" : "hidden"}
               variants={iconVariants}
+              className="mr-6"
             >
               <Link
                 href="/request-quote"
-                className="inline-block px-4 py-1.5 text-sm font-medium rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black"
+                className="inline-block px-4 py-2 text-sm font-medium rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
               >
                 Request a Quote
               </Link>
+
             </motion.div>
 
             <motion.div
@@ -287,6 +338,7 @@ const Navbar = () => {
               initial="hidden"
               animate={isNavbarInView ? "visible" : "hidden"}
               variants={iconVariants}
+              className="mr-6"
             >
               <Link href="/my-cart" className="relative flex items-center text-black">
                 <div className="relative">
@@ -325,16 +377,17 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile/Tablet Menu Overlay */}
       <AnimatePresence>
         {toggleStates.isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 flex flex-col bg-white pt-16"
+            className="fixed inset-0 z-40 flex flex-col bg-white pt-16 overflow-hidden"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={mobileMenuVariants}
           >
-            <div className="flex-1 px-6 py-6 overflow-y-auto">
+            <div className="flex-1 px-4 sm:px-6 py-6 overflow-y-auto">
               {[
                 { name: "Home", path: "/" },
                 { name: "Pouches", path: "/all-category" },
@@ -354,7 +407,7 @@ const Navbar = () => {
                 >
                   <Link
                     href={item.path}
-                    className={`block py-3 text-lg font-medium ${
+                    className={`block py-2.5 sm:py-3 text-base sm:text-lg font-medium ${
                       isActive(item.path)
                         ? "text-black font-semibold"
                         : "text-gray-600"
@@ -367,7 +420,7 @@ const Navbar = () => {
               ))}
               
               <motion.div
-                className="mt-6"
+                className="mt-4 sm:mt-6"
                 custom={8}
                 initial="hidden"
                 animate="visible"
@@ -375,7 +428,7 @@ const Navbar = () => {
               >
                 <Link
                   href="/login"
-                  className="flex items-center text-lg font-medium text-gray-600"
+                  className="flex items-center text-base sm:text-lg font-medium text-gray-600"
                   onClick={() => handleToggle("isMenuOpen")}
                 >
                   <IoPersonOutline className="mr-2" size={20} /> 
@@ -385,17 +438,17 @@ const Navbar = () => {
             </div>
 
             <motion.div
-              className="px-6 py-6 bg-[#30384E] text-white"
+              className="px-4 sm:px-6 py-4 sm:py-6 bg-[#30384E] text-white"
               initial="hidden"
               animate="visible"
               variants={contactVariants}
             >
-              <h3 className="text-xl font-semibold mb-4">MEET WITH US</h3>
-              <p className="text-base leading-relaxed mb-4">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">MEET WITH US</h3>
+              <p className="text-sm sm:text-base leading-relaxed mb-3 sm:mb-4">
                 Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
               </p>
-              <h3 className="text-lg font-semibold mb-2">CALL US</h3>
-              <p className="text-sm">+91 9821045101</p>
+              <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">CALL US</h3>
+              <p className="text-xs sm:text-sm">+91 9821045101</p>
             </motion.div>
           </motion.div>
         )}

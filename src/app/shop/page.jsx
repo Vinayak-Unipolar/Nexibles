@@ -37,6 +37,12 @@ const itemVariants = {
   },
 };
 
+const Highlight = ({ children }) => (
+  <span className="bg-yellow-300 text-blue-600 uppercase font-bold px-1">
+    {children}
+  </span>
+);
+
 const Shop = () => {
   const [categoryData, setData] = useState([]);
   const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -86,20 +92,26 @@ const Shop = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30 rounded-2xl" />
           <div className="relative z-10">
             <h1 className="text-4xl font-bold text-center text-gray-800 mb-6 tracking-tight">
-              NexiClassic Series
+              <Highlight>NexiClassic</Highlight> Series
             </h1>
-            <p className="text-lg text-gray-600 leading-relaxed text-center max-w-3xl mx-auto">
-              The NexiClassic series is crafted with precision, drawing from our extensive experience working with brands across various industry segments. These pouches are designed to offer flexibility and accessibility to businesses of all sizes, ensuring that quality packaging is within reach for every brand.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed text-center max-w-3xl mx-auto mt-4">
-              One of the standout features of NexiClassic pouches is the ability to order in smaller quantities, starting from just 500 pieces per SKU. This makes them a perfect fit for emerging brands, start-ups, and businesses exploring new product lines without the burden of excessive packaging inventory.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed text-center max-w-3xl mx-auto mt-4">
-              For brand owners, this eliminates the traditional challenges associated with high minimum order quantities (MOQs), which often result in unnecessary stockpiling and financial strain. Instead, NexiClassic empowers you to experiment with different product variations, introduce seasonal or limited-edition offerings, and enter new market segments—all while maintaining a lean and efficient supply chain.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed text-center max-w-3xl mx-auto mt-4">
-              With NexiClassic, launching a new product becomes a hassle-free, cost-effective endeavor, allowing you to focus on scaling your brand, refining your products, and engaging with your customers.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  The <Highlight>NexiClassic</Highlight> series is crafted with precision, drawing from our extensive experience working with brands across various industry segments. These pouches are designed to offer flexibility and accessibility to businesses of all sizes, ensuring that quality packaging is within reach for every brand.
+                </p>
+                <p className="text-lg text-gray-600 leading-relaxed mt-4">
+                  One of the standout features of <Highlight>NexiClassic</Highlight> pouches is the ability to order in smaller quantities, starting from just <Highlight>500</Highlight> pieces per SKU. This makes them a perfect fit for emerging brands, start-ups, and businesses exploring new product lines without the burden of excessive packaging inventory.
+                </p>
+              </div>
+              <div>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  For brand owners, this eliminates the traditional challenges associated with high minimum order quantities (<Highlight>MOQs</Highlight>), which often result in unnecessary stockpiling and financial strain. Instead, <Highlight>NexiClassic</Highlight> empowers you to experiment with different product variations, introduce seasonal or limited-edition offerings, and enter new market segments—all while maintaining a lean and efficient supply chain.
+                </p>
+                <p className="text-lg text-gray-600 leading-relaxed mt-4">
+                  With <Highlight>NexiClassic</Highlight>, launching a new product becomes a hassle-free, cost-effective endeavor, allowing you to focus on scaling your brand, refining your products, and engaging with your customers.
+                </p>
+              </div>
+            </div>
           </div>
         </motion.section>
 

@@ -15,7 +15,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     companyName: "",
     languagePreference: "",
     industry: "",
-    category: initialCategory, // Initialize with the passed initialCategory
+    category: initialCategory,
     companyWebsite: "",
     streetAddress: "",
     addressLine2: "",
@@ -332,7 +332,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    if (name === "gstin") {
+    if (name === "gst_in") {
       const formattedValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
       setFormData((prevData) => ({
         ...prevData,
@@ -471,27 +471,25 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
 
     try {
       const leadData = {
-        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        phone: formData.phone,
-        company_name: formData.companyName,
-        language_preference: formData.languagePreference,
-        website_url: formData.companyWebsite,
-        industry_sector: formData.industry,
-        category: formData.category,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country,
-        street_address: formData.streetAddress,
-        address_line_2: formData.addressLine2,
-        zip_postal_code: formData.zipPostalCode,
-        products_interested_in: formData.projectDescription,
-        quote_quantity: formData.orderQuantity,
-        package_buying_history: formData.packageBuyingHistory,
-        enquiry_source: "Nexibles Website",
-        request_sample_kit: formData.requestSampleKit,
-        gstin: formData.gst_in || "",
-      };
+  full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+  email: formData.email,
+  alternate_email: null,
+  phone: formData.phone,
+  company_name: formData.companyName,
+  website_url: formData.companyWebsite,
+  industry_sector: formData.industry,
+  city: formData.city,
+  state: formData.state,
+  country: formData.country,
+  products_interested_in: formData.projectDescription,
+  enquiry_source: "Nexibles Website",
+  referred_by: null,
+  lead_assigned_to: null,
+  visiting_card: null,
+  additional_comments: formData.projectDescription,
+  category: formData.category,
+  gst_in: formData.gst_in || ""
+};
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
         clientEmail: formData.email,
@@ -588,27 +586,25 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
       makePayment(e);
     } else {
       const leadData = {
-        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-        email: formData.email,
-        phone: formData.phone,
-        company_name: formData.companyName,
-        language_preference: formData.languagePreference,
-        website_url: formData.companyWebsite,
-        industry_sector: formData.industry,
-        category: formData.category,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country,
-        street_address: formData.streetAddress,
-        address_line_2: formData.addressLine2,
-        zip_postal_code: formData.zipPostalCode,
-        products_interested_in: formData.projectDescription,
-        quote_quantity: formData.orderQuantity,
-        package_buying_history: formData.packageBuyingHistory,
-        enquiry_source: "Nexibles Website",
-        request_sample_kit: formData.requestSampleKit,
-        gst_in: formData.gst_in || "",
-      };
+  full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+  email: formData.email,
+  alternate_email: null,
+  phone: formData.phone,
+  company_name: formData.companyName,
+  website_url: formData.companyWebsite,
+  industry_sector: formData.industry,
+  city: formData.city,
+  state: formData.state,
+  country: formData.country,
+  products_interested_in: formData.projectDescription,
+  enquiry_source: "Nexibles Website",
+  referred_by: null,
+  lead_assigned_to: null,
+  visiting_card: null,
+  additional_comments: formData.projectDescription,
+  category: formData.category,
+  gst_in: formData.gst_in || ""
+};
 
       console.log("Submitting leadData:", leadData);
 
@@ -647,7 +643,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
             state: "",
             zipPostalCode: "",
             country: "",
-            gstin: "",
+            gst_in: "",
             orderQuantity: "",
             packageBuyingHistory: "",
             projectDescription: "",
@@ -1039,7 +1035,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                         </label>
                         <input
                           type="text"
-                          name="gstin"
+                          name="gst_in"
                           value={formData.gst_in || ""}
                           onChange={handleChange}
                           placeholder="Enter GSTIN (optional)"

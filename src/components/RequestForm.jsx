@@ -472,15 +472,8 @@ function RequestForm({ isOpen, onClose }) {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
         clientEmail: formData.email,
         phone: formData.phone,
-        message: `
-          Project Description: ${formData.projectDescription || "Not provided"}
-          Industry: ${formData.industry || "Not provided"}
-          Category: ${formData.category || "Not provided"}
-          Order Quantity: ${formData.orderQuantity || "Not provided"}
-          Package Buying History: ${formData.packageBuyingHistory || "Not provided"}
-          Company: ${formData.companyName || "Not provided"}
-          Request Sample Kit: ${formData.requestSampleKit ? "Yes" : "No"}
-        `,
+        message:`
+          ${formData.projectDescription || "Not provided"}`
       };
 
       console.log("Submitting leadData in makePayment:", leadData);
@@ -503,7 +496,7 @@ function RequestForm({ isOpen, onClose }) {
       }
 
       const emailResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/send-email`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`,
         {
           method: "POST",
           headers: {
@@ -927,14 +920,13 @@ function RequestForm({ isOpen, onClose }) {
                     <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                       <div>
                         <label className="block text-sm font-medium text-black sm:text-md">
-                          Order Quantity *
+                          Order Quantity 
                         </label>
                         <select
                           name="orderQuantity"
                           value={formData.orderQuantity}
                           onChange={handleChange}
                           className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
                         >
                           <option value="" className="text-gray-900">
                             Please select...
@@ -952,14 +944,13 @@ function RequestForm({ isOpen, onClose }) {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-black sm:text-md">
-                          Package Buying History *
+                          Package Buying History 
                         </label>
                         <select
                           name="packageBuyingHistory"
                           value={formData.packageBuyingHistory}
                           onChange={handleChange}
                           className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
                         >
                           <option value="" className="text-gray-900">
                             Please select...

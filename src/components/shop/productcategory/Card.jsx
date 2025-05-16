@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from "next/link";
-import Image from "next/image"; // Using Next.js Image for performance
+import Image from "next/image";
 import Loading from '../../comman/Loader';
 import { ShoppingBag, Home } from 'lucide-react';
 
@@ -9,7 +9,6 @@ export default function Card({ product, isLoading }) {
     return <Loading />;
   }
 
-  // Function to encode URL segments properly
   const createProductUrl = (category, name, id) => {
     return `/product/${encodeURIComponent(category.toLowerCase()).replace(/%20/g, '-')}/${encodeURIComponent(name.toLowerCase()).replace(/%20/g, '-')}/${id}`;
   };

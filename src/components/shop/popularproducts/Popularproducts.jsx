@@ -112,22 +112,24 @@ export default function PopularProducts() {
                       />
                     </div>
                     <div className="mt-3 text-center w-full">
-                      <p className="text-xs sm:text-sm md:text-base font-bold tracking-wider text-black uppercase mb-2 sm:mb-3 md:mb-4">
+                      <p className="text-xs sm:text-sm md:text-sm font-bold tracking-wider text-black mb-2 sm:mb-3 md:mb-4">
                         {category.name}
                       </p>
                       <div className="flex justify-center space-x-2">
-                        <Link
-                          href={`/category/${category.cat_url}`}
-                          className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md sm:rounded-md bg-white border border-black hover:bg-gray-100 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
-                        >
-                          Details
-                        </Link>
-                        <button
-                          onClick={() => handleOpenModal(category.name)} // Pass the category name to the modal
-                          className="inline-block px-3 py-1.5 sm:px-4 md:px-6 sm:py-2 text-xs sm:text-sm font-medium rounded-md sm:rounded-md bg-[#ffd13e] border border-black hover:bg-yellow-500 text-black transition duration-300 w-24 sm:w-28 md:w-32 text-center"
-                        >
-                          Get Quote
-                        </button>
+                        <div className="flex justify-center items-center gap-2 flex-wrap">
+                          <Link
+                            href={`/category/${category.cat_url}`}
+                            className="px-4 py-1.5 text-xs font-medium rounded border border-black hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
+                          >
+                            Details
+                          </Link>
+                          <button
+                            onClick={() => handleOpenModal(category.name)}
+                            className="px-4 py-1.5 text-xs font-medium rounded border border-black bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
+                          >
+                            Get Quote
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

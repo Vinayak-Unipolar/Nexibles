@@ -90,7 +90,6 @@ const Footer = () => {
       <div className="px-6 mx-auto max-w-7xl py-14">
         <div className="flex flex-col justify-between gap-10 lg:flex-row md:gap-52 ">
 
-          {/* Subscribe Section */}
           <div className="flex-1">
             <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"}>
               <motion.h3 className="mb-4 text-lg font-bold tracking-widest" custom={0} variants={titleVariants}>

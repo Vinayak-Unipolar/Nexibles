@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import RequestForm from "../RequestForm";
+import ProductFeatures from "./ProductFeatures";
 
 const AllCategoryCards = ({ categoryData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +45,7 @@ const AllCategoryCards = ({ categoryData }) => {
                 />
               </div>
               <div className="mt-3 text-center w-full">
-                <p className="text-xs sm:text-sm md:text-base font-bold tracking-wider text-black uppercase mb-2 sm:mb-3 md:mb-4">
+                <p className="text-xs sm:text-sm md:text-sm font-bold tracking-wider text-black mb-2 sm:mb-3 md:mb-4">
                   {category.name}
                 </p>
                 <div className="flex justify-center space-x-2">
@@ -67,45 +67,7 @@ const AllCategoryCards = ({ categoryData }) => {
           </div>
         ))}
       </div>
-
-      {/* Key Product Features Section */}
-      <div className="px-4 py-10 mt-10 md:px-16">
-        <h2 className="mb-8 text-2xl font-semibold text-center md:text-3xl">
-          Key Product Features
-        </h2>
-        <div className="flex justify-center">
-          <div className="grid w-full max-w-4xl grid-cols-2 gap-4 md:grid-cols-3">
-            {[
-              { title: "Top-Quality Lamination", image:`${PUBLIC_CDN_URL}/topqualitylamination.png` },
-              { title: "Easy Customization", image:`${PUBLIC_CDN_URL}/easycustomization.png` },
-              { title: "360-degree Coverage", image:`${PUBLIC_CDN_URL}/degree.png` },
-              { title: "Highly Adaptable", image:`${PUBLIC_CDN_URL}/highlyadaptable.png` },
-              { title: "Cap sleeves", image:`${PUBLIC_CDN_URL}/capsleeves.png` },
-              { title: "Finish Options", image:`${PUBLIC_CDN_URL}/finishoptions.png` },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center w-full p-4 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-lg md:aspect-square"
-              >
-                <div className="relative w-24 h-24 mb-3 md:w-52 md:h-52">
-                  <Image
-                    src={feature.image}
-                    alt={feature.title}
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
-                <p className="font-semibold text-center text-gray-900 text-md">
-                  {feature.title}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Request Form Modal */}
-      <RequestForm isOpen={isModalOpen} onClose={handleCloseModal} />
+      <ProductFeatures />
     </div>
   );
 };

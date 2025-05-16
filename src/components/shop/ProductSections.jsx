@@ -87,7 +87,7 @@ const ProductSections = () => {
                 height={100}
                 alt="Customization Tool"
                 loading="lazy"
-                className="object-contain w-full"
+                className="object-contain w-full translate-y-[1px]"
                 quality={100}
               />
               <motion.div

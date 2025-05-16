@@ -221,7 +221,7 @@ const Modal = ({ isOpen, onClose }) => {
       });
       if (response.ok) {
         toast.success('Successfully subscribed!');
-        trackSignUpForm();
+        trackSignUpForm(); // Track Sign Up conversion
         setEmail('');
         onClose();
       } else {
@@ -327,19 +327,6 @@ const Home = () => {
 
   const closeModal = () => {
     setShowModal(false);
-  };
-
-
-  // Example WhatsApp Click Handler
-  const handleWhatsAppClick = () => {
-    const whatsappUrl = 'https://wa.me/1234567890'; // Replace with your WhatsApp number
-    try {
-      console.log('WhatsApp chat initiated');
-      trackWhatsAppChat(whatsappUrl); // Track WhatsApp Chat conversion
-      window.open(whatsappUrl, '_blank');
-    } catch (error) {
-      console.error('WhatsApp tracking error:', error);
-    }
   };
 
   return (

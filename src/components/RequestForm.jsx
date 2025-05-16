@@ -490,7 +490,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
         package_buying_history: formData.packageBuyingHistory,
         enquiry_source: "Nexibles Website",
         request_sample_kit: formData.requestSampleKit,
-        gstin: formData.gst_in || "",
+        gst_in: formData.gst_in || "",
       };
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),

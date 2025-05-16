@@ -683,11 +683,11 @@ const Configuration = () => {
                       <div className="relative">
                         <button
                           type="button"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center "
                           onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                           disabled={categories.length === 0}
                         >
-                          <span>
+                          <span className=''>
                             {categories.find((cat) => cat.id === selectedCategory)?.name || 'Select category'}
                           </span>
                           <svg

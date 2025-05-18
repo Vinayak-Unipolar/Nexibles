@@ -23,7 +23,7 @@ export default function InstagramSection() {
     <div>
       {/* Section Title */}
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="mb-2 text-3xl font-bold sm:text-4xl">
+        <h2 className="mb-2 md:text-3xl text-2xl font-bold sm:text-4xl">
           Nexibles On Instagram
         </h2>
         <p className="mb-8 text-gray-smartest-600">#Nexibles</p>

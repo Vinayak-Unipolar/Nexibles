@@ -175,7 +175,7 @@ const Industries = () => {
       {!loading && !error && (
         <>
           <motion.div
-            className="mx-auto mt-4 text-3xl font-bold text-center text-gray-800 pb md:text-4xl"
+            className="mx-auto mt-4 md:text-3xl text-2xl font-bold text-center text-gray-800 pb md:text-4xl"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={titleVariants}

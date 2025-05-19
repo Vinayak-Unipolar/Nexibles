@@ -88,13 +88,13 @@ export default function PopularProducts() {
                       <div className="flex justify-center items-center gap-2 flex-wrap">
                         <Link
                           href={`/category/${category.cat_url}`}
-                          className="px-4 py-1.5 text-xs font-medium rounded border border-black hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
+                          className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
                         >
                           Details
                         </Link>
                         <button
                           onClick={() => handleOpenModal(category.name)}
-                          className="px-4 py-1.5 text-xs font-medium rounded border border-black bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
+                          className="px-4 py-1.5 text-xs font-medium rounded bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
                         >
                           Get Quote
                         </button>

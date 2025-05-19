@@ -100,92 +100,104 @@ function Login() {
         profImage: "",
     });
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`${APIURL}/api/login/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userDetails)
-            });
+   const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch(`${APIURL}/api/login/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userDetails)
+        });
 
-            const data = await response.json(); // Parse the response JSON
+        const data = await response.json();
 
-            if (!response.ok) {
-                if (data.status === 'error' && data.message.includes('is already exist')) {
-                    toast.error('Email already exists. Please use a different email.');
-                } else {
-                    throw new Error(data.message || 'Network response was not ok');
-                }
+        if (!response.ok) {
+            if (data.status === 'error' && data.message.includes('is already exist')) {
+                toast.error('Email already exists. Please use a different email.');
             } else {
-                // Generate a unique eventID for the Sign up event
-                const uniqueEventID = `Signup_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-                // Trigger Meta Pixel Sign up Event
-                if (window.fbq) {
-                    window.fbq('track', 'Subscribe', {
-                        eventID: uniqueEventID
-                    });
-                } else {
-                    console.warn('Meta Pixel not initialized');
-                }
-
-                //google tag conversion
-                
-
-                // Reset user details
-                setUserDetails({
-                    customerId: "",
-                    firstName: "",
-                    middleName: "",
-                    lastName: "",
-                    cName: "",
-                    gender: "",
-                    houseno: "",
-                    floor: "",
-                    address: "",
-                    address2: "",
-                    landmark: "",
-                    city: "",
-                    prov: "",
-                    zip: "",
-                    country: "",
-                    phone: "",
-                    emailAddress: "",
-                    mobile: "",
-                    mobile2: "",
-                    company: "",
-                    title: "",
-                    workPhone: "",
-                    dateOfBirth: "",
-                    anniversary: "",
-                    newsletter: "",
-                    ipaddress: "",
-                    subsms: "",
-                    addedDate: "",
-                    addedBy: "",
-                    refby: "",
-                    datasource: "",
-                    occupation: "",
-                    designation: "",
-                    contactpref: "",
-                    pref: "",
-                    activatedon: "",
-                    securecode: "",
-                    active: "",
-                    password: "",
-                    profImage: "",
-                });
-                setIsLogin(true);
-                toast.success("Registered Successfully! Please Login");
+                throw new Error(data.message || 'Network response was not ok');
             }
-        } catch (error) {
-            console.error('Error:', error.message);
-            toast.error(error.message || 'An error occurred during registration');
+        } else {
+
+            // Generate event ID using date-time format: ddmmyyyyminutessseconds
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+            
+            const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
+            
+            // Track Google Ads Conversion 
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17014026366/6bz-COPv-MYaEP7g9bA_',
+                'event_callback': function() {
+                    console.log('Google conversion tracked successfully');
+                },
+                'transaction_id': eventId  // Adding eventID as transaction_id for deduplication
+            });
+            
+            // Track Meta/Facebook Conversion with same eventID
+            fbq('track', 'Subscribe', {
+                eventID: eventId
+            });
+            
+            console.log('Conversion event tracked with ID:', eventId);
+            setUserDetails({
+                customerId: "",
+                firstName: "",
+                middleName: "",
+                lastName: "",
+                cName: "",
+                gender: "",
+                houseno: "",
+                floor: "",
+                address: "",
+                address2: "",
+                landmark: "",
+                city: "",
+                prov: "",
+                zip: "",
+                country: "",
+                phone: "",
+                emailAddress: "",
+                mobile: "",
+                mobile2: "",
+                company: "",
+                title: "",
+                workPhone: "",
+                dateOfBirth: "",
+                anniversary: "",
+                newsletter: "",
+                ipaddress: "",
+                subsms: "",
+                addedDate: "",
+                addedBy: "",
+                refby: "",
+                datasource: "",
+                occupation: "",
+                designation: "",
+                contactpref: "",
+                pref: "",
+                activatedon: "",
+                securecode: "",
+                active: "",
+                password: "",
+                profImage: "",
+            });
+            setIsLogin(true);
+            toast.success("Registered Successfully! Please Login");
         }
-    };
+    } catch (error) {
+        console.error('Error:', error.message);
+        toast.error(error.message || 'An error occurred during registration');
+    }
+};
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);

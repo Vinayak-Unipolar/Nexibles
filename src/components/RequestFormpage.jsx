@@ -553,91 +553,6 @@ function RequestFormPage() {
     }
   };
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (formData.requestSampleKit && !termsAccepted) {
-//       setSubmitStatus("Please accept the Terms and Conditions.");
-//       return;
-//     }
-//     if (formData.requestSampleKit) {
-//       makePayment(e);
-//     } else {
-//       const leadData = {
-//   full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-//   email: formData.email,
-//   alternate_email: null,
-//   phone: formData.phone,
-//   company_name: formData.companyName,
-//   website_url: formData.companyWebsite,
-//   industry_sector: formData.industry,
-//   city: formData.city,
-//   state: formData.state,
-//   country: formData.country,
-//   products_interested_in: formData.projectDescription,
-//   enquiry_source: "Nexibles Website",
-//   referred_by: null,
-//   lead_assigned_to: null,
-//   visiting_card: null,
-//   additional_comments: formData.projectDescription,
-//   category: formData.category,
-//   gst_in: formData.gst_in || ""
-// };
-
-//       console.log("Submitting leadData:", leadData);
-
-//       fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-//         },
-//         body: JSON.stringify(leadData),
-//       })
-//         .then((response) => {
-//           if (!response.ok) {
-//             return response.json().then((errorData) => {
-//               throw new Error(errorData.message || "Network response was not ok");
-//             });
-//           }
-//           return response.json();
-//         })
-//         .then((data) => {
-//           console.log("Lead submission response:", data);
-//           setSubmitStatus("Form submitted successfully!");
-//           setFormData({
-//             firstName: "",
-//             lastName: "",
-//             email: "",
-//             phone: "",
-//             companyName: "",
-//             languagePreference: "",
-//             industry: "",
-//             category: "",
-//             companyWebsite: "",
-//             streetAddress: "",
-//             addressLine2: "",
-//             city: "",
-//             state: "",
-//             zipPostalCode: "",
-//             country: "",
-//             gst_in: "",
-//             orderQuantity: "",
-//             packageBuyingHistory: "",
-//             projectDescription: "",
-//             requestSampleKit: false,
-//           });
-//           setTermsAccepted(false);
-//           window.scrollTo({
-//             top: 0,
-//             behavior: "smooth",
-//           });
-//         })
-//         .catch((error) => {
-//           console.error("Error submitting form:", error);
-//           setSubmitStatus(`Failed to submit form: ${error.message}`);
-//         });
-//     }
-//   };
 const handleSubmit = (e) => {
   e.preventDefault();
   if (formData.requestSampleKit && !termsAccepted) {
@@ -645,8 +560,33 @@ const handleSubmit = (e) => {
     return;
   }
   
-  const eventID = `Quote_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-  fbq('trackCustom', 'RequestQuote', { eventID });
+   const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+  
+  // Format: Quote_ddmmyyyyminutessseconds
+  const eventId = `Quote_${day}${month}${year}${minutes}${seconds}${milliseconds}`;
+  
+  // Track conversions on both platforms with the same event ID
+  // Google Ads conversion tracking
+  gtag('event', 'conversion', {
+    'send_to': 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
+    'transaction_id': eventId,
+    'event_callback': function() {
+      console.log('Google conversion tracked successfully');
+    }
+  });
+  
+  // Meta/Facebook conversion tracking
+  fbq('trackCustom', 'RequestQuote', {
+    eventID: eventId
+  });
+  
+  console.log('Quote conversion event tracked with ID:', eventId);
 
   const emailData = {
     clientName: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -701,9 +641,6 @@ const handleSubmit = (e) => {
         return response.json();
       })
       .then((data) => {
-        console.log("Lead submission response:", data);
-        
-        // After saving lead data, send the email notification
         return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
           method: "POST",
           headers: {

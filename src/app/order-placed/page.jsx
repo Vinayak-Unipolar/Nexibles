@@ -16,6 +16,7 @@ const Orderplaced = () => {
   const dispatch = useDispatch();
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
+const [purchaseTracked, setPurchaseTracked] = useState(false);
 
   const fetchOrderDetails = async () => {
     try {
@@ -23,12 +24,12 @@ const Orderplaced = () => {
 
       const customerId = user?.result?.customerId || user?.customerId;
       const authToken = typeof window !== "undefined" ? localStorage.getItem('token') : null;
-       const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
+      const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
 
-       if (!orderNo) {
-         router.push('/');
-         return;
-       }
+      if (!orderNo) {
+        router.push('/');
+        return;
+      }
 
       const response = await fetch(`${APIURL}/api/getorderdetails/${customerId}`, {
         method: 'GET',
@@ -44,6 +45,37 @@ const Orderplaced = () => {
 
         if (relevantOrder.length > 0) {
           setOrderDetails(relevantOrder);
+          
+          // Track Purchase event for Meta
+          if (!purchaseTracked && searchParams.get('status') === 'success') {
+            // Use invamt as the order total
+            const orderTotal = parseFloat(relevantOrder[0].invamt) || 0;
+            
+            // Use product_id from the response
+            const productIds = [relevantOrder[0].product_id];
+            
+            // Generate unique event ID
+            const eventId = `purchase-${relevantOrder[0].orderNo}`;
+            
+            // Track Meta Purchase event
+            fbq('track', 'Purchase', {
+              value: orderTotal,
+              currency: 'INR',
+              content_ids: productIds,
+              content_type: 'product',
+              eventID: eventId
+            });
+            
+            console.log('Purchase conversion tracked:', {
+              order_id: relevantOrder[0].orderNo,
+              value: orderTotal,
+              eventID: eventId,
+              product_id: productIds
+            });
+            
+            setPurchaseTracked(true);
+          }
+          
           dispatch(updateCartItems([])); 
           dispatch(removeCoupon());
         } 
@@ -56,7 +88,7 @@ const Orderplaced = () => {
       router.push('/');
     }
   };
-
+  
   useEffect(() => {
     if (user) {
       fetchOrderDetails();

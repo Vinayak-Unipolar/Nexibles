@@ -29,6 +29,10 @@ const Whatsapp = () => {
   const handleClick = () => {
     setClicked(true);
     setTimeout(() => setClicked(false), 700);
+
+    // Google Ads conversion tracking
+    gtag_report_conversion('https://wa.me/919821045101');
+
   };
 
   // Generate random particles for the burst effect
@@ -58,15 +62,15 @@ const Whatsapp = () => {
     const distance = 20;
     const x = Math.cos(angle) * distance;
     const y = Math.sin(angle) * distance;
-    
+
     return (
       <motion.div
         key={i}
         className="absolute w-1 h-1 bg-green-300 rounded-full"
-        style={{ 
-          left: "50%", 
-          top: "50%", 
-          marginLeft: -0.5, 
+        style={{
+          left: "50%",
+          top: "50%",
+          marginLeft: -0.5,
           marginTop: -0.5,
         }}
         animate={{
@@ -88,14 +92,14 @@ const Whatsapp = () => {
 
   // Main button variants
   const buttonVariants = {
-    initial: { 
-      opacity: 0, 
-      scale: 0.8, 
-      y: 20 
+    initial: {
+      opacity: 0,
+      scale: 0.8,
+      y: 20
     },
-    animate: { 
-      opacity: 1, 
-      scale: 1, 
+    animate: {
+      opacity: 1,
+      scale: 1,
       y: 0,
       transition: {
         opacity: { duration: 0.6 },
@@ -105,18 +109,18 @@ const Whatsapp = () => {
     },
     hover: {
       scale: 1.1,
-      transition: { 
-        type: "spring", 
-        stiffness: 400, 
-        damping: 10 
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
       }
     },
     tap: {
       scale: 0.9,
-      transition: { 
-        type: "spring", 
-        stiffness: 800, 
-        damping: 10 
+      transition: {
+        type: "spring",
+        stiffness: 800,
+        damping: 10
       }
     }
   };
@@ -190,14 +194,14 @@ const Whatsapp = () => {
 
   // Tooltip animation variants
   const tooltipVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 10, 
-      scale: 0.8 
+    hidden: {
+      opacity: 0,
+      y: 10,
+      scale: 0.8
     },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       scale: 1,
       transition: {
         type: "spring",
@@ -205,9 +209,9 @@ const Whatsapp = () => {
         damping: 15
       }
     },
-    exit: { 
-      opacity: 0, 
-      y: 10, 
+    exit: {
+      opacity: 0,
+      y: 10,
       scale: 0.8,
       transition: {
         duration: 0.2
@@ -221,17 +225,17 @@ const Whatsapp = () => {
       <motion.div
         className="absolute rounded-full"
         animate={{
-          boxShadow: hovered 
+          boxShadow: hovered
             ? [
-                "0 0 0 0 rgba(37, 211, 102, 0)",
-                "0 0 0 20px rgba(37, 211, 102, 0.1)",
-                "0 0 0 40px rgba(37, 211, 102, 0)"
-              ]
+              "0 0 0 0 rgba(37, 211, 102, 0)",
+              "0 0 0 20px rgba(37, 211, 102, 0.1)",
+              "0 0 0 40px rgba(37, 211, 102, 0)"
+            ]
             : [
-                "0 0 0 0 rgba(37, 211, 102, 0)",
-                "0 0 0 15px rgba(37, 211, 102, 0.1)",
-                "0 0 0 30px rgba(37, 211, 102, 0)"
-              ]
+              "0 0 0 0 rgba(37, 211, 102, 0)",
+              "0 0 0 15px rgba(37, 211, 102, 0.1)",
+              "0 0 0 30px rgba(37, 211, 102, 0)"
+            ]
         }}
         transition={{
           duration: hovered ? 1.5 : 3,
@@ -257,28 +261,28 @@ const Whatsapp = () => {
             animate="visible"
             exit="exit"
           >
-            <motion.div 
+            <motion.div
               className="flex items-center gap-2"
               animate={{ x: [0, 3, 0] }}
-              transition={{ 
-                duration: 1, 
-                repeat: Infinity, 
-                repeatDelay: 1 
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatDelay: 1
               }}
             >
               <span>Chat with us</span>
               <FaWhatsapp size={16} />
             </motion.div>
-            
+
             {/* Tooltip arrow */}
-            <motion.div 
+            <motion.div
               className="absolute top-1/2 right-0 w-2 h-2 bg-white transform translate-x-1 -translate-y-1/2 rotate-45"
-              animate={{ 
-                backgroundColor: ["#ffffff", "#f9fafb", "#ffffff"] 
+              animate={{
+                backgroundColor: ["#ffffff", "#f9fafb", "#ffffff"]
               }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity 
+              transition={{
+                duration: 2,
+                repeat: Infinity
               }}
             />
           </motion.div>
@@ -343,9 +347,8 @@ const Whatsapp = () => {
 
         {/* WhatsApp link and icon */}
         <a
-          href="https://wa.me/919821045101"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="javascript:void(0);" // Changed from direct link to use the conversion tracking function
+          onClick={handleClick}
           className="relative block"
         >
           <motion.div
@@ -363,7 +366,7 @@ const Whatsapp = () => {
       <motion.div
         className="absolute w-full h-full rounded-full bg-green-400"
         initial={{ scale: 0, opacity: 0.2 }}
-        animate={{ 
+        animate={{
           scale: [0, 1.8, 0],
           opacity: [0.2, 0, 0]
         }}

@@ -137,19 +137,11 @@ export default function PCCardDetails({ productDetails }) {
     };
 
     const eventId = `cart_${productDetails.product.id}`;
-
-    // Track Meta/Facebook AddToCart conversion
     fbq('track', 'AddToCart', {
       content_ids: [productDetails.product.id],
       content_type: 'product',
       value: totalPrice,
       currency: 'INR',
-      eventID: eventId
-    });
-
-    console.log('AddToCart conversion tracked:', {
-      product_id: productDetails.product.id,
-      value: totalPrice,
       eventID: eventId
     });
 

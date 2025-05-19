@@ -91,7 +91,7 @@ export default function Shipping({ defaultAddress, addresses }) {
 
   const CheckShippingCost = async (zipcode, items) => {
     if (!zipcode) {
-      console.log('No zip code provided for shipping cost check');
+      //console.log('No zip code provided for shipping cost check');
       return;
     }
     try {
@@ -200,7 +200,7 @@ export default function Shipping({ defaultAddress, addresses }) {
           mobile: defaultAddress.data.mobile || "",
         }));
       } else {
-        console.log('No default address zip found in defaultAddress:', defaultAddress);
+       // console.log('No default address zip found in defaultAddress:', defaultAddress);
       }
 
       const newSubTotal = calculateSubtotal();
@@ -226,7 +226,7 @@ export default function Shipping({ defaultAddress, addresses }) {
       if (defaultAddress?.data?.zip) {
         await CheckShippingCost(defaultAddress.data.zip, correctedItems);
       } else {
-        console.log('No zip code available to check shipping cost');
+        //console.log('No zip code available to check shipping cost');
         const newTotalPrice = (parseFloat(totalAfterDiscount) + calculatedGst).toFixed(2);
         setTotalPrice(newTotalPrice);
       }
@@ -353,7 +353,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         origin: "Nexibles",
         orderDetails: await getOrderDetailsFromRedux(),
       };
-      console.log(requestBody);
+      //console.log(requestBody);
       const response = await fetch(`${APIURL}/api/createorder`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" },

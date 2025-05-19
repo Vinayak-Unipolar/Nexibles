@@ -8,11 +8,11 @@ const gtag_report_conversion = (url) => {
     console.warn("gtag is not defined. Ensure gtag.js is loaded via GoogleAnalytics.jsx.");
     return false;
   }
-  console.log("Sending Google Ads conversion event");
+  //console.log("Sending Google Ads conversion event");
   window.gtag('event', 'conversion', {
-    'send_to': 'AW-17014026366', 
+    'send_to': 'AW-17014026366',
     'event_callback': () => {
-      console.log("Google Ads conversion tracking successful");
+      //console.log("Google Ads conversion tracking successful");
     }
   });
   return false;
@@ -45,11 +45,11 @@ const Whatsapp = () => {
     setTimeout(() => setClicked(false), 700);
 
     // Google Ads conversion tracking
-    console.log("Attempting Google Ads conversion tracking for WhatsApp click");
+    //console.log("Attempting Google Ads conversion tracking for WhatsApp click");
     gtag_report_conversion("https://wa.me/919821045101");
 
     // Open WhatsApp in a new tab
-    console.log("Opening WhatsApp in a new tab: https://wa.me/919821045101");
+    //console.log("Opening WhatsApp in a new tab: https://wa.me/919821045101");
     window.open("https://wa.me/919821045101", "_blank", "noopener,noreferrer");
   };
 

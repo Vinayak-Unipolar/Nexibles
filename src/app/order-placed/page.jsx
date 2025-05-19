@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect, useState, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCartItems, removeCoupon } from '../../redux/store/cartSlice'; 
+import { updateCartItems, removeCoupon } from '../../redux/store/cartSlice';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
 import OrderPlaced from '@/components/shipping/OrderPlaced';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
-import SearchParamsHandler from '../../components/Search'; 
+import SearchParamsHandler from '../../components/Search';
 const Orderplaced = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [defaultAddress, setDefaultAddress] = useState();
@@ -45,19 +45,11 @@ const [purchaseTracked, setPurchaseTracked] = useState(false);
 
         if (relevantOrder.length > 0) {
           setOrderDetails(relevantOrder);
-          
-          // Track Purchase event for Meta
+
           if (!purchaseTracked && searchParams.get('status') === 'success') {
-            // Use invamt as the order total
             const orderTotal = parseFloat(relevantOrder[0].invamt) || 0;
-            
-            // Use product_id from the response
             const productIds = [relevantOrder[0].product_id];
-            
-            // Generate unique event ID
             const eventId = `purchase-${relevantOrder[0].orderNo}`;
-            
-            // Track Meta Purchase event
             fbq('track', 'Purchase', {
               value: orderTotal,
               currency: 'INR',
@@ -65,20 +57,12 @@ const [purchaseTracked, setPurchaseTracked] = useState(false);
               content_type: 'product',
               eventID: eventId
             });
-            
-            console.log('Purchase conversion tracked:', {
-              order_id: relevantOrder[0].orderNo,
-              value: orderTotal,
-              eventID: eventId,
-              product_id: productIds
-            });
-            
             setPurchaseTracked(true);
           }
-          
-          dispatch(updateCartItems([])); 
+
+          dispatch(updateCartItems([]));
           dispatch(removeCoupon());
-        } 
+        }
       } else {
         console.error("Failed to fetch order details:", data.message);
         router.push('/');
@@ -88,7 +72,7 @@ const [purchaseTracked, setPurchaseTracked] = useState(false);
       router.push('/');
     }
   };
-  
+
   useEffect(() => {
     if (user) {
       fetchOrderDetails();

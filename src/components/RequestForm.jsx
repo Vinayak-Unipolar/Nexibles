@@ -303,7 +303,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
             throw new Error("Failed to fetch categories");
           }
           const data = await response.json();
-          console.log("Fetched categories:", data);
+          //console.log("Fetched categories:", data);
           if (Array.isArray(data.data)) {
             setCategories(data.data);
           } else {
@@ -495,7 +495,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
           ${formData.projectDescription || "Not provided"}`
       };
 
-      console.log("Submitting leadData in makePayment:", leadData);
+      //console.log("Submitting leadData in makePayment:", leadData);
 
       const leadResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/leads`,
@@ -590,17 +590,17 @@ const handleSubmit = (e) => {
 
   // Function to wait for gtag to load (up to 10 seconds)
   const waitForGtag = (callback, timeout = 10000) => {
-    console.log('Checking for gtag...');
+    //console.log('Checking for gtag...');
     const start = Date.now();
     const checkGtag = () => {
       if (typeof window.gtag === 'function') {
-        console.log('gtag found, executing callback');
+        //console.log('gtag found, executing callback');
         callback();
       } else if (Date.now() - start < timeout) {
-        console.log('gtag not found, retrying... (elapsed: ' + (Date.now() - start) + 'ms)');
+        //console.log('gtag not found, retrying... (elapsed: ' + (Date.now() - start) + 'ms)');
         setTimeout(checkGtag, 100);
       } else {
-        console.warn('Google gtag is not defined after timeout. Conversion not tracked. Possible ad blocker interference.');
+        //console.warn('Google gtag is not defined after timeout. Conversion not tracked. Possible ad blocker interference.');
       }
     };
     checkGtag();
@@ -608,17 +608,17 @@ const handleSubmit = (e) => {
 
   // Function to wait for fbq to load (up to 10 seconds)
   const waitForFbq = (callback, timeout = 10000) => {
-    console.log('Checking for fbq...');
+    //console.log('Checking for fbq...');
     const start = Date.now();
     const checkFbq = () => {
       if (typeof window.fbq === 'function') {
-        console.log('fbq found, executing callback');
+        //console.log('fbq found, executing callback');
         callback();
       } else if (Date.now() - start < timeout) {
-        console.log('fbq not found, retrying...');
+        //console.log('fbq not found, retrying...');
         setTimeout(checkFbq, 100);
       } else {
-        console.warn('Facebook fbq is not defined after timeout. Conversion not tracked.');
+        //console.warn('Facebook fbq is not defined after timeout. Conversion not tracked.');
       }
     };
     checkFbq();
@@ -630,7 +630,7 @@ const handleSubmit = (e) => {
       send_to: 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
       transaction_id: eventId,
       event_callback: () => {
-        console.log('Google conversion tracked successfully');
+        //console.log('Google conversion tracked successfully');
       },
     });
   });
@@ -638,10 +638,10 @@ const handleSubmit = (e) => {
   // Track Meta/Facebook Conversion
   waitForFbq(() => {
     window.fbq('trackCustom', 'RequestQuote', { eventID: eventId });
-    console.log('Facebook conversion tracked successfully');
+    //console.log('Facebook conversion tracked successfully');
   });
 
-  console.log('Quote conversion event tracked with ID:', eventId);
+  //console.log('Quote conversion event tracked with ID:', eventId);
 
   const emailData = {
     clientName: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -676,7 +676,7 @@ const handleSubmit = (e) => {
       gst_in: formData.gst_in || ""
     };
 
-    console.log("Submitting leadData:", leadData);
+    //console.log("Submitting leadData:", leadData);
 
     // First save the lead data
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
@@ -696,7 +696,7 @@ const handleSubmit = (e) => {
         return response.json();
       })
       .then((data) => {
-        console.log("Lead submission response:", data);
+        //console.log("Lead submission response:", data);
 
         // After saving lead data, send the email notification
         return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {

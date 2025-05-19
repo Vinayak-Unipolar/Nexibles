@@ -122,6 +122,10 @@ const Shop = () => {
     <span style={{ color: '#103b60' }} className="font-bold text-2xl">Refining</span> Your{' '}
     <span style={{ color: '#103b60' }} className="font-bold text-2xl mr-12">Products,</span>
   </h3>
+  <h3 className="text-center  ml-20">And {' '}
+    <span style={{ color: '#103b60' }} className="font-bold text-2xl ">Engaging</span> with your {''}
+    <span style={{ color: '#103b60' }} className="font-bold text-2xl mr-12"> customers.</span>
+  </h3>
 </div>
           </div>
         </motion.section>

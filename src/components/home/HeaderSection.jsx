@@ -237,7 +237,7 @@ const HeaderSection = () => {
                           variants={buttonVariants}
                         >
                           <a
-                            href="/businesses"
+                            href="/all-industry"
                             className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:text-xl md:py-3 md:px-8 py-2 px-4 rounded-full text-xs transition-colors"
                           >
                             Explore Industries

@@ -751,7 +751,7 @@ const Configuration = () => {
                 </div>
               </motion.div>
 
-              <motion.div className="mb-8 relative z-10" variants={itemVariants}>
+              <motion.div className="mb-8 relative z-50" variants={itemVariants}>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
                   Pouch Specifications
@@ -781,7 +781,7 @@ const Configuration = () => {
                           </svg>
                         </button>
                         {isCategoryOpen && (
-                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
                               className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
                               onClick={() => {
@@ -851,7 +851,7 @@ const Configuration = () => {
                           </svg>
                         </button>
                         {isWidthOpen && (
-                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
                               className="p-2 cursor-pointer hover:bg-gray-100"
                               onClick={() => {
@@ -914,7 +914,7 @@ const Configuration = () => {
                           </svg>
                         </button>
                         {isMaterialOpen && (
-                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
                               className="p-2 cursor-pointer hover:bg-gray-100"
                               onClick={() => {
@@ -999,7 +999,7 @@ const Configuration = () => {
               </motion.div>
 
               <motion.div className="mb-8" variants={itemVariants}>
-                <h2 className="text-2xl relative z-10 font-semibold text-gray-800 mb-4 flex items-center">
+                <h2 className="text-2xl relative z-40 font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
                   SKU Configuration
                 </h2>
@@ -1113,7 +1113,7 @@ const Configuration = () => {
               </motion.div>
 
               {(sealOptions.length > 0 || hangHoleOptions.length > 0 || pouchOpeningOptions.length > 0 || multiSelectOptions.length > 0) && (
-                <motion.div className="mb-8 relative z-10" variants={itemVariants}>
+                <motion.div className="mb-8 relative" variants={itemVariants}>
                   <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                     <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">4</span>
                     Optional Processes

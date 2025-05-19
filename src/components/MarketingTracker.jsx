@@ -34,7 +34,7 @@ function MarketingTracker({ metaPixelId }) {
       });
       const result = await response.json();
       if (response.ok) {
-        //console.log('Meta event sent:', result);
+        console.log('Meta event sent:', result);
       } else {
         console.error('Meta event error:', result);
       }
@@ -71,7 +71,7 @@ function MarketingTracker({ metaPixelId }) {
         setTimeout(() => tryGtag(attempts - 1, delay), delay);
         return false;
       }
-      console.log(`Sending conversion: ${sendTo}`);
+      //console.log(`Sending conversion: ${sendTo}`);
       window.gtag('event', 'conversion', {
         send_to: sendTo,
         event_callback: () => {
@@ -113,7 +113,7 @@ function MarketingTracker({ metaPixelId }) {
       window.fbq('init', metaPixelId);
       window.fbq('track', 'PageView');
       // Uncomment to trigger Meta Purchase event on mount
-      // sendMetaPurchaseEvent();
+      sendMetaPurchaseEvent();
     }
 
     // Google Tag Initialization

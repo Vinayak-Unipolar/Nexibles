@@ -15,8 +15,6 @@ import Whatsapp from '@/components/Whatsapp';
 import SettingsButton from '@/components/SettingsButton';
 import { useEffect } from 'react';
 
-// Import this line - add toast style overrides
-import '../components/toastify/toast-overrides.css'; 
 
 export default function RootLayout({ children }) {
   // Optional: If you're seeing multiple toast containers,

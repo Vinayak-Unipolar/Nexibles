@@ -44,6 +44,8 @@ const Configuration = () => {
   const [isWidthOpen, setIsWidthOpen] = useState(false);
   const [isLengthOpen, setIsLengthOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
+  const [lengthError, setlengthError] =useState(false);
+  const [lengthInput, setlengthInput] =useState(false); 
   const [isMandatoryProcessOpen, setIsMandatoryProcessOpen] = useState(false);
   const [isQuantityOpen, setIsQuantityOpen] = useState(false);
   const [isSealOpen, setIsSealOpen] = useState(false);

@@ -1,0 +1,67 @@
+/* styles/toast-overrides.css */
+
+/* Force specific styling to override react-toastify defaults */
+.Toastify__toast {
+  min-height: auto !important;
+  padding: 0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Make sure toast background is transparent so our styles apply */
+.Toastify__toast-body {
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: normal !important;
+  background: transparent !important;
+}
+
+/* Make progress bar thinner and positioned correctly */
+.Toastify__progress-bar {
+  height: 3px !important;
+  bottom: 0 !important;
+}
+
+/* Style for different toast types */
+.Toastify__toast--success {
+  background-color: rgba(236, 253, 245, 1) !important; /* Light teal (bg-teal-50) */
+}
+
+.Toastify__toast--error {
+  background-color: rgba(254, 242, 242, 1) !important; /* Light red (bg-red-50) */
+}
+
+.Toastify__toast--warning {
+  background-color: rgba(254, 252, 232, 1) !important; /* Light yellow (bg-yellow-50) */
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .Toastify__toast--success {
+    background-color: rgba(20, 83, 45, 0.3) !important; /* Dark teal (bg-teal-800/30) */
+  }
+  
+  .Toastify__toast--error {
+    background-color: rgba(127, 29, 29, 0.3) !important; /* Dark red (bg-red-800/30) */
+  }
+  
+  .Toastify__toast--warning {
+    background-color: rgba(133, 77, 14, 0.3) !important; /* Dark yellow (bg-yellow-800/30) */
+  }
+}
+
+.custom-toast-container {
+  z-index: 9999 !important;
+}
+
+.custom-toast {
+  background-color: #fdf4e3;
+  color: #222;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-toast-body {
+  font-size: 0.9rem;
+}
+

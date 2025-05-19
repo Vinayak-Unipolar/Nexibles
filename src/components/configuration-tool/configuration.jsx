@@ -10,7 +10,6 @@ import { addToCart } from '../../redux/store/cartSlice';
 import Loader from '../comman/Loader';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 const Configuration = () => {
   const { user } = useAuth();
   const router = useRouter();
@@ -20,8 +19,7 @@ const Configuration = () => {
   const [jobName, setJobName] = useState('');
   const [sizeOptions, setSizeOptions] = useState({ widths: [], lengths: [] });
   const [selectedWidth, setSelectedWidth] = useState(null);
-  const [lengthInput, setLengthInput] = useState('');
-  const [lengthError, setLengthError] = useState('');
+  const [selectedLength, setSelectedLength] = useState(null);
   const [materialOptions, setMaterialOptions] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [mandatoryProcesses, setMandatoryProcesses] = useState([]);
@@ -31,6 +29,7 @@ const Configuration = () => {
   const [selectedHangHole, setSelectedHangHole] = useState('');
   const [selectedPouchOpening, setSelectedPouchOpening] = useState('');
   const [selectedMultiProcesses, setSelectedMultiProcesses] = useState([]);
+  const [zipperOptions, setZipperOptions] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [designNames, setDesignNames] = useState(['']);
   const [selectedQuantities, setSelectedQuantities] = useState([500]);
@@ -44,17 +43,16 @@ const Configuration = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isWidthOpen, setIsWidthOpen] = useState(false);
+  const [isLengthOpen, setIsLengthOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
   const [isMandatoryProcessOpen, setIsMandatoryProcessOpen] = useState(false);
   const [isQuantityOpen, setIsQuantityOpen] = useState(false);
   const [isSealOpen, setIsSealOpen] = useState(false);
   const [isHangHoleOpen, setIsHangHoleOpen] = useState(false);
   const [isPouchOpeningOpen, setIsPouchOpeningOpen] = useState(false);
-  const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState([false]);
-  const [gussetOptions, setGussetOptions] = useState([]);
-  const [selectedGusset, setSelectedGusset] = useState(null);
+  const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState(Array(quantity).fill(false));
 
-  const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || 'https://cdn.nexibles.com';
+  const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
   const DEFAULT_IMAGE_URL = `${NEXI_CDN_URL}/category/default-image.jpg`;
 
   const containerVariants = {
@@ -70,8 +68,10 @@ const Configuration = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
   };
 
+  // Login to get a fresh token on every page refresh
   const loginForThirdParty = useCallback(async (retries = 3) => {
-    setToken(null);
+    setToken(null); // Clear existing token in state
+  
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
         const response = await fetch('https://nexiblesapp.barecms.com/proxy?r=user/authenticate', {
@@ -85,7 +85,7 @@ const Configuration = () => {
             ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
           }),
         });
-
+  
         const result = await response.json();
         if (result.status && result.data?.token) {
           const newToken = result.data.token;
@@ -105,6 +105,7 @@ const Configuration = () => {
     }
   }, []);
 
+  // Fetch category data from the provided API
   const fetchCategoryData = useCallback(async (authToken, retries = 3) => {
     if (!authToken) {
       setError('Authentication token is missing.');
@@ -127,7 +128,7 @@ const Configuration = () => {
         if (data.status && Array.isArray(data.data)) {
           const uniqueCategories = [];
           const seenNames = new Set();
-
+          
           data.data.forEach((product) => {
             const productName = product.product_name?.trim();
             if (productName && !seenNames.has(productName.toLowerCase())) {
@@ -143,7 +144,8 @@ const Configuration = () => {
 
           setCategories(uniqueCategories);
           if (uniqueCategories.length > 0) {
-            const defaultCategory = uniqueCategories.find((cat) => cat.id === '122') || uniqueCategories[0];
+            // Set selectedCategory to the category with id '122' if it exists, otherwise first category
+            const defaultCategory = uniqueCategories.find(cat => cat.id === '122') || uniqueCategories[0];
             setSelectedCategory(defaultCategory.id);
           }
           return true;
@@ -161,6 +163,7 @@ const Configuration = () => {
     }
   }, []);
 
+  // Fetch product data based on categoryId
   const fetchProductData = useCallback(async (authToken, categoryId, retries = 3) => {
     if (!authToken) {
       setError('Authentication token is missing.');
@@ -181,29 +184,40 @@ const Configuration = () => {
 
         const data = await response.json();
         if (data.status && Array.isArray(data.data)) {
+          // Find product matching the categoryId
           const targetProduct = data.data.find((p) => p.id === categoryId);
           if (!targetProduct) throw new Error(`Product with ID ${categoryId} not found`);
 
           setProduct(targetProduct);
 
-          const { minimum_length, maximum_length } = targetProduct;
+          const { minimum_width, maximum_width, minimum_length, maximum_length } = targetProduct;
 
           if (
+            !minimum_width ||
+            !maximum_width ||
             !minimum_length ||
             !maximum_length ||
+            isNaN(parseInt(minimum_width)) ||
+            isNaN(parseInt(maximum_width)) ||
             isNaN(parseInt(minimum_length)) ||
             isNaN(parseInt(maximum_length))
           ) {
-            throw new Error('Invalid length parameters in product data');
+            throw new Error('Invalid size parameters in product data');
           }
 
+          const widthStep = (parseInt(maximum_width) - parseInt(minimum_width)) / 9;
+          const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
+          const widths = Array.from({ length: 10 }, (_, i) => {
+            const width = Math.round(parseInt(minimum_width) + i * widthStep);
+            return { value: width, label: `${width} mm` };
+          });
           const lengths = Array.from({ length: 10 }, (_, i) => {
-            const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
             const length = Math.round(parseInt(minimum_length) + i * lengthStep);
             return { value: length, label: `${length} mm` };
           });
-          setSizeOptions((prev) => ({ ...prev, lengths }));
-          setLengthInput(lengths[0]?.value?.toString() || '');
+          setSizeOptions({ widths, lengths });
+          setSelectedWidth(widths[0] || null);
+          setSelectedLength(lengths[0] || null);
 
           const materials = Array.isArray(targetProduct.pouch_media)
             ? targetProduct.pouch_media.map((m) => ({
@@ -236,6 +250,16 @@ const Configuration = () => {
             : [];
           setOptionalProcesses(optional);
 
+          const zippers = Array.isArray(targetProduct.pouch_postpress)
+            ? targetProduct.pouch_postpress
+                .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
+                .map((p) => ({
+                  value: p.id,
+                  label: p.process_name,
+                }))
+            : [];
+          setZipperOptions(zippers);
+
           return true;
         } else {
           throw new Error(data.message || 'Failed to fetch product data');
@@ -251,80 +275,26 @@ const Configuration = () => {
     }
   }, []);
 
-  const fetchGussetData = useCallback(async (authToken, productId, retries = 3) => {
-    if (!authToken || !productId) {
-      setError('Authentication token or product ID is missing.');
-      return false;
-    }
-
-    for (let attempt = 1; attempt <= retries; attempt++) {
-      try {
-        const response = await fetch(
-          `https://nexiblesapp.barecms.com/proxy?r=products/get-product-gusset-list&product_id=${productId}&press_id=82`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-              Environment: 'frontdesk',
-            },
-          }
-        );
-
-        const data = await response.json();
-        if (data.status && Array.isArray(data.data)) {
-          const validGussets = data.data
-            .filter((g) => g.status === '1' && parseInt(g.pouch_width) > 0)
-            .map((g) => ({
-              id: g.id,
-              pouch_width: g.pouch_width,
-              open_size: g.open_size,
-              close_size: g.close_size,
-              label: `${g.pouch_width} mm`,
-            }));
-
-          setGussetOptions(validGussets);
-          setSelectedGusset(validGussets[0] || null);
-
-          const widths = validGussets.map((g) => ({
-            value: parseInt(g.pouch_width),
-            label: `${g.pouch_width} mm`,
-          }));
-          setSizeOptions((prev) => ({ ...prev, widths }));
-          setSelectedWidth(widths[0] || null);
-
-          return true;
-        } else {
-          throw new Error(data.message || 'Failed to fetch gusset data');
-        }
-      } catch (err) {
-        console.error(`Gusset fetch attempt ${attempt} failed:`, err.message);
-        if (attempt === retries) {
-          setError(err.message || 'Error fetching gusset data');
-          return false;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-      }
-    }
-  }, []);
-
   useEffect(() => {
-    if (!user) {
-      toast.warning('You need to be logged in to customize.', {
-        toastId: 'login-warning',
-      });
-      router.push('/login');
-      setIsAuthLoading(false);
-      setLoading(false);
-    }
-  }, [user, router]);
+  if (!user) {
+    toast.warning('You need to be logged in to customize .', {
+      toastId: 'login-warning',
+    });
+    router.push('/login');
+    setIsAuthLoading(false);
+    setLoading(false);
+  }
+}, [user, router]);
 
   useEffect(() => {
     let isMounted = true;
-
+  
     const initialize = async () => {
       setLoading(true);
       setError(null);
       setIsAuthLoading(true);
-
+  
+      // Fetch a new token on every page refresh
       const authToken = await loginForThirdParty();
       if (!authToken && isMounted) {
         setError('Authentication failed.');
@@ -332,54 +302,38 @@ const Configuration = () => {
         setLoading(false);
         return;
       }
-
+  
       if (isMounted) {
+        // Fetch categories first to set selectedCategory
         const categorySuccess = await fetchCategoryData(authToken);
         if (!categorySuccess) {
-          setError('Failed to load categories. Please try again.');
-          setIsAuthLoading(false);
-          setLoading(false);
+          window.location.reload();
           return;
         }
 
+        // Fetch product data using default ID '122' initially
         const productSuccess = await fetchProductData(authToken, '122');
         if (!productSuccess) {
-          setError('Failed to load product data. Please try again.');
-          setIsAuthLoading(false);
-          setLoading(false);
-          return;
-        }
-
-        const gussetSuccess = await fetchGussetData(authToken, '122');
-        if (!gussetSuccess) {
-          setError('Failed to load gusset data. Please try again.');
-          setIsAuthLoading(false);
-          setLoading(false);
+          window.location.reload();
           return;
         }
       }
-
+  
       if (isMounted) {
         setIsAuthLoading(false);
         setLoading(false);
       }
     };
-
+  
     initialize();
-
+  
     return () => {
       isMounted = false;
     };
-  }, [user, router, loginForThirdParty, fetchCategoryData, fetchProductData, fetchGussetData]);
+  }, [user, router, loginForThirdParty, fetchCategoryData, fetchProductData]);
 
   useEffect(() => {
-    if (token && selectedCategory) {
-      fetchGussetData(token, selectedCategory);
-    }
-  }, [selectedCategory, token, fetchGussetData]);
-
-  useEffect(() => {
-    setIsSkuQuantityOpen(Array(Math.max(1, quantity)).fill(false));
+    setIsSkuQuantityOpen(Array(quantity).fill(false));
   }, [quantity]);
 
   useEffect(() => {
@@ -391,14 +345,13 @@ const Configuration = () => {
     jobName,
     selectedCategory,
     selectedWidth,
-    lengthInput,
+    selectedLength,
     selectedMaterial,
     selectedMandatoryProcess,
     selectedSeal,
     selectedHangHole,
     selectedPouchOpening,
     selectedMultiProcesses,
-    selectedGusset,
     quantity,
     designNames,
     selectedQuantities,
@@ -406,71 +359,49 @@ const Configuration = () => {
 
   const handleMultiProcessChange = (processId) => {
     setSelectedMultiProcesses((prev) =>
-      prev.includes(processId) ? prev.filter((id) => id !== processId) : [...prev, processId]
+      prev.includes(processId)
+        ? prev.filter((id) => id !== processId)
+        : [...prev, processId]
     );
   };
 
   const handleQuantityChange = (index, value) => {
     if (index >= quantity) return;
     const updated = [...selectedQuantities];
-    updated[index] = parseInt(value) || 500;
+    updated[index] = parseInt(value);
     setSelectedQuantities(updated);
   };
 
-  const handleLengthInputChange = (value) => {
-    setLengthInput(value);
-    setLengthError('');
-
-    if (!value) return;
-
-    const numValue = parseInt(value);
-    if (isNaN(numValue) || numValue <= 0) {
-      setLengthError('Please enter a valid positive number');
-      return;
-    }
-
-    if (product) {
-      const minLength = parseInt(product.minimum_length);
-      const maxLength = parseInt(product.maximum_length);
-      if (numValue < minLength || numValue > maxLength) {
-        setLengthError(`Length must be between ${minLength} mm and ${maxLength} mm`);
-      }
-    }
-  };
-
-  const totalQuantity = selectedQuantities.reduce((a, b) => a + (parseInt(b) || 0), 0);
+  const totalQuantity = selectedQuantities.reduce((a, b) => a + b, 0);
 
   const handleRequestQuotation = async () => {
     setIsQuotationLoading(true);
     setError(null);
-
+  
     try {
       const authToken = await loginForThirdParty();
       if (!authToken) throw new Error('Authentication token is missing.');
-
+  
       if (!jobName) throw new Error('Project name is required');
-      if (!selectedWidth) throw new Error('Width is required');
-      if (!lengthInput) throw new Error('Length is required');
-      if (lengthError) throw new Error('Invalid length value');
+      if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
-      if (!selectedGusset) throw new Error('Gusset is required');
-
+  
       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
-      const normalizedCategoryName = categoryName?.trim().toLowerCase() || '';
+      const normalizedCategoryName = categoryName?.trim().toLowerCase();
       const optionalProcessIds = [
         selectedSeal,
         selectedHangHole,
         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
         ...selectedMultiProcesses,
       ].filter(Boolean);
-
+  
       const payload = {
         formData: {
           job_name: jobName || 'Untitled Project',
           quantity_one: totalQuantity.toString(),
           quantity_two: '0',
           quantity_three: '0',
-          length: lengthInput.toString(),
+          length: selectedLength?.value.toString() || '',
           width: selectedWidth?.value.toString() || '',
           no_of_sku: quantity.toString(),
           pouch_printing_color: '7',
@@ -479,18 +410,18 @@ const Configuration = () => {
           media_1: '',
           media_2: '',
           media_3: '',
-          gusset_size: selectedGusset?.close_size || '3',
+          gusset_size: '3',
           gusset_color: '7',
           seal_size: '',
           mandatory_one_process: selectedMandatoryProcess?.value || '',
           optional_process: optionalProcessIds,
           type: 'basic',
         },
-        productId: selectedCategory || '122',
+        productId: selectedCategory || '122', // Fallback to '122' if selectedCategory is empty
         printingTypeId: '8',
         customerId: '26176',
       };
-
+  
       const response = await fetch(
         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
         {
@@ -503,7 +434,7 @@ const Configuration = () => {
           body: JSON.stringify(payload),
         }
       );
-
+  
       const result = await response.json();
       if (result.status && result.data?.costing_data?.length > 0) {
         setCostData(result.data.costing_data[0]);
@@ -535,36 +466,28 @@ const Configuration = () => {
       return;
     }
 
-    const unitPrice = totalQuantity > 0 ? totalCost / totalQuantity : 0;
+    const unitPrice = totalCost / totalQuantity;
     const totalPrice = totalCost;
 
     const selectedOptions = {
       width: { optionName: selectedWidth?.label || 'Not specified', price: 0 },
-      length: { optionName: lengthInput ? `${lengthInput} mm` : 'Not specified', price: 0 },
+      length: { optionName: selectedLength?.label || 'Not specified', price: 0 },
       mandatoryProcess: { optionName: selectedMandatoryProcess?.label || 'Not specified', price: 0 },
       seal: { optionName: sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'None', price: 0 },
-      hangHole: {
-        optionName: hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'None',
-        price: 0,
-      },
-      pouchOpening: {
-        optionName: pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'None',
-        price: 0,
-      },
-      gusset: { optionName: selectedGusset?.label || 'Not specified', price: 0 },
+      hangHole: { optionName: hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'None', price: 0 },
+      pouchOpening: { optionName: pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'None', price: 0 },
       additionalOptions: {
-        optionName:
-          multiSelectOptions
-            .filter((opt) => selectedMultiProcesses.includes(opt.id))
-            .map((opt) => opt.name)
-            .join(', ') || 'None',
+        optionName: multiSelectOptions
+          .filter((opt) => selectedMultiProcesses.includes(opt.id))
+          .map((opt) => opt.name)
+          .join(', ') || 'None',
         price: 0,
       },
     };
 
     const productToAdd = {
       id: product.id,
-      name: jobName || product.product_name || 'Custom Pouch',
+      name: jobName || product.title || 'Custom Pouch',
       category: categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouches',
       image: categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL,
       price: unitPrice,
@@ -629,7 +552,6 @@ const Configuration = () => {
     console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
     console.log('Normalized Category Name:', normalizedCategoryName);
     console.log('Pouch Opening Options:', pouchOpeningOptions);
-    console.log('Gusset Options:', gussetOptions);
     if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
       console.warn('Warning: "Radius Seal" not found in optionalProcesses');
     }
@@ -678,9 +600,7 @@ const Configuration = () => {
   if (isAuthLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">
-          <Loader />
-        </div>
+        <div className="text-gray-600"><Loader /></div>
       </div>
     );
   }
@@ -730,7 +650,7 @@ const Configuration = () => {
           <motion.div
             className="bg-white rounded-2xl shadow-xl overflow-hidden"
             variants={containerVariants}
-            initial="hidden"
+            initial="motion"
             animate="visible"
           >
             <div className="p-8">
@@ -751,7 +671,7 @@ const Configuration = () => {
                 </div>
               </motion.div>
 
-              <motion.div className="mb-8 relative z-50" variants={itemVariants}>
+              <motion.div className="mb-8" variants={itemVariants}>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
                   Pouch Specifications
@@ -781,13 +701,12 @@ const Configuration = () => {
                           </svg>
                         </button>
                         {isCategoryOpen && (
-                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
                               className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
                               onClick={() => {
                                 setSelectedCategory('122');
                                 fetchProductData(token, '122');
-                                fetchGussetData(token, '122');
                                 setIsCategoryOpen(false);
                               }}
                             >
@@ -804,7 +723,6 @@ const Configuration = () => {
                                     setSelectedPouchOpening('');
                                   }
                                   fetchProductData(token, category.id);
-                                  fetchGussetData(token, category.id);
                                   setIsCategoryOpen(false);
                                 }}
                               >
@@ -851,7 +769,7 @@ const Configuration = () => {
                           </svg>
                         </button>
                         {isWidthOpen && (
-                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
                               className="p-2 cursor-pointer hover:bg-gray-100"
                               onClick={() => {
@@ -879,19 +797,50 @@ const Configuration = () => {
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Length (mm)</label>
-                      <input
-                        type="number"
-                        placeholder={`Enter length (${product?.minimum_length || '0'}-${product?.maximum_length || '0'} mm)`}
-                        className={`w-full px-4 py-3 border ${lengthError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none`}
-                        value={lengthInput}
-                        onChange={(e) => handleLengthInputChange(e.target.value)}
-                        min={product?.minimum_length || 0}
-                        max={product?.maximum_length || Infinity}
-                      />
-                      {lengthError && (
-                        <p className="text-sm text-red-500 mt-1">{lengthError}</p>
-                      )}
+                      <label className="block text-gray-700 font-medium mb-2">Length</label>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
+                          onClick={() => setIsLengthOpen(!isLengthOpen)}
+                        >
+                          <span>{selectedLength?.label || 'Select length'}</span>
+                          <svg
+                            className="w-5 h-5 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        {isLengthOpen && (
+                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                            <div
+                              className="p-2 cursor-pointer hover:bg-gray-100"
+                              onClick={() => {
+                                setSelectedLength(null);
+                                setIsLengthOpen(false);
+                              }}
+                            >
+                              Select length
+                            </div>
+                            {sizeOptions.lengths?.map((length, idx) => (
+                              <div
+                                key={idx}
+                                className="p-2 cursor-pointer hover:bg-gray-100"
+                                onClick={() => {
+                                  setSelectedLength(length);
+                                  setIsLengthOpen(false);
+                                }}
+                              >
+                                {length.label}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div>
@@ -914,7 +863,7 @@ const Configuration = () => {
                           </svg>
                         </button>
                         {isMaterialOpen && (
-                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
                             <div
                               className="p-2 cursor-pointer hover:bg-gray-100"
                               onClick={() => {
@@ -999,7 +948,7 @@ const Configuration = () => {
               </motion.div>
 
               <motion.div className="mb-8" variants={itemVariants}>
-                <h2 className="text-2xl relative z-40 font-semibold text-gray-800 mb-4 flex items-center">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
                   SKU Configuration
                 </h2>
@@ -1113,7 +1062,7 @@ const Configuration = () => {
               </motion.div>
 
               {(sealOptions.length > 0 || hangHoleOptions.length > 0 || pouchOpeningOptions.length > 0 || multiSelectOptions.length > 0) && (
-                <motion.div className="mb-8 relative" variants={itemVariants}>
+                <motion.div className="mb-8" variants={itemVariants}>
                   <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                     <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">4</span>
                     Optional Processes
@@ -1273,7 +1222,10 @@ const Configuration = () => {
                         <label className="block text-gray-700 font-medium mb-2">Additional Options</label>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           {multiSelectOptions.map((process) => (
-                            <label key={process.id} className="flex items-center space-x-3 text-gray-700">
+                            <label
+                              key={process.id}
+                              className="flex items-center space-x-3 text-gray-700"
+                            >
                               <input
                                 type="checkbox"
                                 value={process.id}
@@ -1307,8 +1259,9 @@ const Configuration = () => {
                     <Image
                       src={categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL}
                       alt={categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouch Image'}
-                      fill
-                      className="object-contain rounded-lg"
+                      layout="fill"
+                      objectFit="contain"
+                      className="rounded-lg"
                       onError={(e) => {
                         e.target.src = DEFAULT_IMAGE_URL;
                       }}
@@ -1322,15 +1275,14 @@ const Configuration = () => {
               </motion.div>
               <div className="mt-6 text-center text-gray-600 text-sm">
                 <p>
-                  {selectedWidth && lengthInput
-                    ? `${selectedWidth.label} x ${lengthInput} mm`
+                  {selectedWidth && selectedLength
+                    ? `${selectedWidth.label} x ${selectedLength.label}`
                     : 'Not selected'}
                 </p>
                 <p>
                   {selectedMaterial?.label || 'Not selected'} •{' '}
                   {selectedMandatoryProcess?.label || 'Not selected'}
                 </p>
-                {/* <p>Gusset: {selectedGusset?.label || 'Not selected'}</p> */}
                 <p>
                   Category: {categories.find((cat) => cat.id === selectedCategory)?.name || 'Not selected'}
                 </p>
@@ -1394,2843 +1346,6 @@ const Configuration = () => {
 };
 
 export default Configuration;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 'use client';
-// import React, { useState, useEffect, useCallback, useMemo } from 'react';
-// import Head from 'next/head';
-// import Image from 'next/image';
-// import { motion } from 'framer-motion';
-// import { useAuth } from '@/utils/authContext';
-// import { useRouter } from 'next/navigation';
-// import { useDispatch } from 'react-redux';
-// import { addToCart } from '../../redux/store/cartSlice';
-// import Loader from '../comman/Loader';
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
-// const Configuration = () => {
-//   const { user } = useAuth();
-//   const router = useRouter();
-//   const dispatch = useDispatch();
-//   const [isAuthLoading, setIsAuthLoading] = useState(true);
-//   const [product, setProduct] = useState(null);
-//   const [jobName, setJobName] = useState('');
-//   const [sizeOptions, setSizeOptions] = useState({ widths: [], lengths: [] });
-//   const [selectedWidth, setSelectedWidth] = useState(null);
-//   const [selectedLength, setSelectedLength] = useState(null);
-//   const [materialOptions, setMaterialOptions] = useState([]);
-//   const [selectedMaterial, setSelectedMaterial] = useState(null);
-//   const [mandatoryProcesses, setMandatoryProcesses] = useState([]);
-//   const [selectedMandatoryProcess, setSelectedMandatoryProcess] = useState(null);
-//   const [optionalProcesses, setOptionalProcesses] = useState([]);
-//   const [selectedSeal, setSelectedSeal] = useState('');
-//   const [selectedHangHole, setSelectedHangHole] = useState('');
-//   const [selectedPouchOpening, setSelectedPouchOpening] = useState('');
-//   const [selectedMultiProcesses, setSelectedMultiProcesses] = useState([]);
-//   const [quantity, setQuantity] = useState(1);
-//   const [designNames, setDesignNames] = useState(['']);
-//   const [selectedQuantities, setSelectedQuantities] = useState([500]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [costData, setCostData] = useState(null);
-//   const [isQuotationLoading, setIsQuotationLoading] = useState(false);
-//   const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
-//   const [token, setToken] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [selectedCategory, setSelectedCategory] = useState('');
-//   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-//   const [isWidthOpen, setIsWidthOpen] = useState(false);
-//   const [isLengthOpen, setIsLengthOpen] = useState(false);
-//   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
-//   const [isMandatoryProcessOpen, setIsMandatoryProcessOpen] = useState(false);
-//   const [isQuantityOpen, setIsQuantityOpen] = useState(false);
-//   const [isSealOpen, setIsSealOpen] = useState(false);
-//   const [isHangHoleOpen, setIsHangHoleOpen] = useState(false);
-//   const [isPouchOpeningOpen, setIsPouchOpeningOpen] = useState(false);
-//   const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState([false]);
-//   const [gussetOptions, setGussetOptions] = useState([]);
-//   const [selectedGusset, setSelectedGusset] = useState(null);
-//   const [isGussetOpen, setIsGussetOpen] = useState(false);
-
-//   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || 'https://cdn.nexibles.com';
-//   const DEFAULT_IMAGE_URL = `${NEXI_CDN_URL}/category/default-image.jpg`;
-
-//   const containerVariants = {
-//     hidden: { opacity: 0 },
-//     visible: {
-//       opacity: 1,
-//       transition: { staggerChildren: 0.1, delayChildren: 0.2, duration: 0.5 },
-//     },
-//   };
-
-//   const itemVariants = {
-//     hidden: { y: 20, opacity: 0 },
-//     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
-//   };
-
-//   const loginForThirdParty = useCallback(async (retries = 3) => {
-//     setToken(null);
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch('https://nexiblesapp.barecms.com/proxy?r=user/authenticate', {
-//           method: 'POST',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify({
-//             email: process.env.NEXT_PUBLIC_API_EMAIL || 'sales@artnext.in',
-//             password: process.env.NEXT_PUBLIC_API_PASSWORD || 'Artnext@1',
-//             subdomain: 'nexibles',
-//             otp: false,
-//             ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
-//           }),
-//         });
-
-//         const result = await response.json();
-//         if (result.status && result.data?.token) {
-//           const newToken = result.data.token;
-//           setToken(newToken);
-//           return newToken;
-//         } else {
-//           throw new Error(result.message || 'Login failed');
-//         }
-//       } catch (err) {
-//         console.error(`Authentication attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError('Failed to authenticate after multiple attempts.');
-//           return null;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   const fetchCategoryData = useCallback(async (authToken, retries = 3) => {
-//     if (!authToken) {
-//       setError('Authentication token is missing.');
-//       return false;
-//     }
-
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch(
-//           'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
-//           {
-//             headers: {
-//               Authorization: `Bearer ${authToken}`,
-//               Environment: 'frontdesk',
-//             },
-//           }
-//         );
-
-//         const data = await response.json();
-//         if (data.status && Array.isArray(data.data)) {
-//           const uniqueCategories = [];
-//           const seenNames = new Set();
-
-//           data.data.forEach((product) => {
-//             const productName = product.product_name?.trim();
-//             if (productName && !seenNames.has(productName.toLowerCase())) {
-//               seenNames.add(productName.toLowerCase());
-//               uniqueCategories.push({
-//                 id: product.id,
-//                 name: productName,
-//                 bg_Img: product.product_picture || DEFAULT_IMAGE_URL,
-//                 cat_url: '',
-//               });
-//             }
-//           });
-
-//           setCategories(uniqueCategories);
-//           if (uniqueCategories.length > 0) {
-//             const defaultCategory = uniqueCategories.find((cat) => cat.id === '122') || uniqueCategories[0];
-//             setSelectedCategory(defaultCategory.id);
-//           }
-//           return true;
-//         } else {
-//           throw new Error(data.message || 'Failed to fetch category data');
-//         }
-//       } catch (err) {
-//         console.error(`Category fetch attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError(err.message || 'Error fetching category data');
-//           return false;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   const fetchProductData = useCallback(async (authToken, categoryId, retries = 3) => {
-//     if (!authToken) {
-//       setError('Authentication token is missing.');
-//       return false;
-//     }
-
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch(
-//           'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
-//           {
-//             headers: {
-//               Authorization: `Bearer ${authToken}`,
-//               Environment: 'frontdesk',
-//             },
-//           }
-//         );
-
-//         const data = await response.json();
-//         if (data.status && Array.isArray(data.data)) {
-//           const targetProduct = data.data.find((p) => p.id === categoryId);
-//           if (!targetProduct) throw new Error(`Product with ID ${categoryId} not found`);
-
-//           setProduct(targetProduct);
-
-//           const { minimum_width, maximum_width, minimum_length, maximum_length } = targetProduct;
-
-//           if (
-//             !minimum_width ||
-//             !maximum_width ||
-//             !minimum_length ||
-//             !maximum_length ||
-//             isNaN(parseInt(minimum_width)) ||
-//             isNaN(parseInt(maximum_width)) ||
-//             isNaN(parseInt(minimum_length)) ||
-//             isNaN(parseInt(maximum_length))
-//           ) {
-//             throw new Error('Invalid size parameters in product data');
-//           }
-
-//           const widthStep = (parseInt(maximum_width) - parseInt(minimum_width)) / 9;
-//           const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
-//           const widths = Array.from({ length: 10 }, (_, i) => {
-//             const width = Math.round(parseInt(minimum_width) + i * widthStep);
-//             return { value: width, label: `${width} mm` };
-//           });
-//           const lengths = Array.from({ length: 10 }, (_, i) => {
-//             const length = Math.round(parseInt(minimum_length) + i * lengthStep);
-//             return { value: length, label: `${length} mm` };
-//           });
-//           setSizeOptions({ widths, lengths });
-//           setSelectedWidth(widths[0] || null);
-//           setSelectedLength(lengths[0] || null);
-
-//           const materials = Array.isArray(targetProduct.pouch_media)
-//             ? targetProduct.pouch_media.map((m) => ({
-//                 value: m.id,
-//                 label: m.media_title,
-//                 widths: m.media_widths ? m.media_widths.split(',') : [],
-//               }))
-//             : [];
-//           setMaterialOptions(materials);
-//           setSelectedMaterial(materials[0] || null);
-
-//           const mandatory = Array.isArray(targetProduct.pouch_postpress)
-//             ? targetProduct.pouch_postpress
-//                 .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
-//                 .map((p) => ({
-//                   value: p.id,
-//                   label: p.process_name,
-//                 }))
-//             : [];
-//           setMandatoryProcesses(mandatory);
-//           setSelectedMandatoryProcess(mandatory[0] || null);
-
-//           const optional = Array.isArray(targetProduct.pouch_postpress)
-//             ? targetProduct.pouch_postpress
-//                 .filter((p) => p.optional && !p.mandatory_any_one)
-//                 .map((p) => ({
-//                   id: p.id,
-//                   name: p.process_name,
-//                 }))
-//             : [];
-//           setOptionalProcesses(optional);
-
-//           return true;
-//         } else {
-//           throw new Error(data.message || 'Failed to fetch product data');
-//         }
-//       } catch (err) {
-//         console.error(`Product fetch attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError(err.message);
-//           return false;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   const fetchGussetData = useCallback(async (authToken, productId, retries = 3) => {
-//     if (!authToken || !productId) {
-//       setError('Authentication token or product ID is missing.');
-//       return false;
-//     }
-
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch(
-//           `https://nexiblesapp.barecms.com/proxy?r=products/get-product-gusset-list&product_id=${productId}&press_id=82`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${authToken}`,
-//               Environment: 'frontdesk',
-//             },
-//           }
-//         );
-
-//         const data = await response.json();
-//         if (data.status && Array.isArray(data.data)) {
-//           const validGussets = data.data
-//             .filter((g) => g.status === '1' && parseInt(g.pouch_width) > 0)
-//             .map((g) => ({
-//               id: g.id,
-//               pouch_width: g.pouch_width,
-//               open_size: g.open_size,
-//               close_size: g.close_size,
-//               label: `Width: ${g.pouch_width}mm, Open: ${g.open_size}mm, Close: ${g.close_size}mm`,
-//             }));
-//           setGussetOptions(validGussets);
-//           setSelectedGusset(validGussets[0] || null);
-//           return true;
-//         } else {
-//           throw new Error(data.message || 'Failed to fetch gusset data');
-//         }
-//       } catch (err) {
-//         console.error(`Gusset fetch attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError(err.message || 'Error fetching gusset data');
-//           return false;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     if (!user) {
-//       toast.warning('You need to be logged in to customize.', {
-//         toastId: 'login-warning',
-//       });
-//       router.push('/login');
-//       setIsAuthLoading(false);
-//       setLoading(false);
-//     }
-//   }, [user, router]);
-
-//   useEffect(() => {
-//     let isMounted = true;
-
-//     const initialize = async () => {
-//       setLoading(true);
-//       setError(null);
-//       setIsAuthLoading(true);
-
-//       const authToken = await loginForThirdParty();
-//       if (!authToken && isMounted) {
-//         setError('Authentication failed.');
-//         setIsAuthLoading(false);
-//         setLoading(false);
-//         return;
-//       }
-
-//       if (isMounted) {
-//         const categorySuccess = await fetchCategoryData(authToken);
-//         if (!categorySuccess) {
-//           setError('Failed to load categories. Please try again.');
-//           setIsAuthLoading(false);
-//           setLoading(false);
-//           return;
-//         }
-
-//         const productSuccess = await fetchProductData(authToken, '122');
-//         if (!productSuccess) {
-//           setError('Failed to load product data. Please try again.');
-//           setIsAuthLoading(false);
-//           setLoading(false);
-//           return;
-//         }
-
-//         const gussetSuccess = await fetchGussetData(authToken, '122');
-//         if (!gussetSuccess) {
-//           setError('Failed to load gusset data. Please try again.');
-//           setIsAuthLoading(false);
-//           setLoading(false);
-//           return;
-//         }
-//       }
-
-//       if (isMounted) {
-//         setIsAuthLoading(false);
-//         setLoading(false);
-//       }
-//     };
-
-//     initialize();
-
-//     return () => {
-//       isMounted = false;
-//     };
-//   }, [user, router, loginForThirdParty, fetchCategoryData, fetchProductData, fetchGussetData]);
-
-//   useEffect(() => {
-//     if (token && selectedCategory) {
-//       fetchGussetData(token, selectedCategory);
-//     }
-//   }, [selectedCategory, token, fetchGussetData]);
-
-//   useEffect(() => {
-//     setIsSkuQuantityOpen(Array(Math.max(1, quantity)).fill(false));
-//   }, [quantity]);
-
-//   useEffect(() => {
-//     if (isQuotationGenerated) {
-//       setIsQuotationGenerated(false);
-//       setCostData(null);
-//     }
-//   }, [
-//     jobName,
-//     selectedCategory,
-//     selectedWidth,
-//     selectedLength,
-//     selectedMaterial,
-//     selectedMandatoryProcess,
-//     selectedSeal,
-//     selectedHangHole,
-//     selectedPouchOpening,
-//     selectedMultiProcesses,
-//     selectedGusset,
-//     quantity,
-//     designNames,
-//     selectedQuantities,
-//   ]);
-
-//   const handleMultiProcessChange = (processId) => {
-//     setSelectedMultiProcesses((prev) =>
-//       prev.includes(processId) ? prev.filter((id) => id !== processId) : [...prev, processId]
-//     );
-//   };
-
-//   const handleQuantityChange = (index, value) => {
-//     if (index >= quantity) return;
-//     const updated = [...selectedQuantities];
-//     updated[index] = parseInt(value) || 500;
-//     setSelectedQuantities(updated);
-//   };
-
-//   const totalQuantity = selectedQuantities.reduce((a, b) => a + (parseInt(b) || 0), 0);
-
-//   const handleRequestQuotation = async () => {
-//     setIsQuotationLoading(true);
-//     setError(null);
-
-//     try {
-//       const authToken = await loginForThirdParty();
-//       if (!authToken) throw new Error('Authentication token is missing.');
-
-//       if (!jobName) throw new Error('Project name is required');
-//       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
-//       if (!selectedMaterial) throw new Error('Material is required');
-//       if (!selectedGusset) throw new Error('Gusset is required');
-
-//       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
-//       const normalizedCategoryName = categoryName?.trim().toLowerCase() || '';
-//       const optionalProcessIds = [
-//         selectedSeal,
-//         selectedHangHole,
-//         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
-//         ...selectedMultiProcesses,
-//       ].filter(Boolean);
-
-//       const payload = {
-//         formData: {
-//           job_name: jobName || 'Untitled Project',
-//           quantity_one: totalQuantity.toString(),
-//           quantity_two: '0',
-//           quantity_three: '0',
-//           length: selectedLength?.value.toString() || '',
-//           width: selectedWidth?.value.toString() || '',
-//           no_of_sku: quantity.toString(),
-//           pouch_printing_color: '7',
-//           media_id: selectedMaterial?.value || '',
-//           media_0: '',
-//           media_1: '',
-//           media_2: '',
-//           media_3: '',
-//           gusset_size: selectedGusset?.close_size || '3',
-//           gusset_color: '7',
-//           seal_size: '',
-//           mandatory_one_process: selectedMandatoryProcess?.value || '',
-//           optional_process: optionalProcessIds,
-//           type: 'basic',
-//         },
-//         productId: selectedCategory || '122',
-//         printingTypeId: '8',
-//         customerId: '26176',
-//       };
-
-//       const response = await fetch(
-//         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
-//         {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: `Bearer ${authToken}`,
-//             Environment: 'frontdesk',
-//           },
-//           body: JSON.stringify(payload),
-//         }
-//       );
-
-//       const result = await response.json();
-//       if (result.status && result.data?.costing_data?.length > 0) {
-//         setCostData(result.data.costing_data[0]);
-//         setIsQuotationGenerated(true);
-//       } else {
-//         throw new Error(result.message || 'Failed to generate quotation.');
-//       }
-//     } catch (err) {
-//       console.error('Quotation error:', err);
-//       const errorMessage = err.message.includes('token')
-//         ? 'Authentication token is invalid or expired. Please try again.'
-//         : err.message;
-//       setError(errorMessage);
-//       toast.error(`Failed to generate quotation: ${errorMessage}`);
-//     } finally {
-//       setIsQuotationLoading(false);
-//     }
-//   };
-
-//   const handleAddToCart = () => {
-//     if (!costData || !product) {
-//       toast.error('Cannot add to cart: Missing cost or product data');
-//       return;
-//     }
-
-//     const totalCost = Number(costData.total_cost);
-//     if (isNaN(totalCost)) {
-//       toast.error('Invalid cost data');
-//       return;
-//     }
-
-//     const unitPrice = totalQuantity > 0 ? totalCost / totalQuantity : 0;
-//     const totalPrice = totalCost;
-
-//     const selectedOptions = {
-//       width: { optionName: selectedWidth?.label || 'Not specified', price: 0 },
-//       length: { optionName: selectedLength?.label || 'Not specified', price: 0 },
-//       mandatoryProcess: { optionName: selectedMandatoryProcess?.label || 'Not specified', price: 0 },
-//       seal: { optionName: sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'None', price: 0 },
-//       hangHole: {
-//         optionName: hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'None',
-//         price: 0,
-//       },
-//       pouchOpening: {
-//         optionName: pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'None',
-//         price: 0,
-//       },
-//       gusset: { optionName: selectedGusset?.label || 'Not specified', price: 0 },
-//       additionalOptions: {
-//         optionName:
-//           multiSelectOptions
-//             .filter((opt) => selectedMultiProcesses.includes(opt.id))
-//             .map((opt) => opt.name)
-//             .join(', ') || 'None',
-//         price: 0,
-//       },
-//     };
-
-//     const productToAdd = {
-//       id: product.id,
-//       name: jobName || product.product_name || 'Custom Pouch',
-//       category: categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouches',
-//       image: categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL,
-//       price: unitPrice,
-//       quantity: totalQuantity,
-//       totalPrice: totalPrice,
-//       skuCount: quantity,
-//       material: selectedMaterial?.label || 'Not specified',
-//       selectedOptions,
-//     };
-
-//     dispatch(addToCart(productToAdd));
-//     toast.success('Product added to cart successfully!');
-//   };
-
-//   const normalizedCategoryName = useMemo(() => {
-//     const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name || '';
-//     return categoryName.trim().toLowerCase();
-//   }, [selectedCategory, categories]);
-
-//   const sealOptions = useMemo(
-//     () =>
-//       optionalProcesses
-//         .filter((p) => ['K-Seal', 'Radius Seal'].includes(p.name))
-//         .map((p) => ({ value: p.id, label: p.name })),
-//     [optionalProcesses]
-//   );
-
-//   const hangHoleOptions = useMemo(
-//     () =>
-//       optionalProcesses
-//         .filter((p) => ['D-Cut Handle Punch', 'Euro Hang Hole', 'Round Hang Hole'].includes(p.name))
-//         .map((p) => ({ value: p.id, label: p.name })),
-//     [optionalProcesses]
-//   );
-
-//   const pouchOpeningOptions = useMemo(
-//     () =>
-//       normalizedCategoryName !== 'stand up pouch'
-//         ? optionalProcesses
-//             .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
-//             .map((p) => ({ value: p.id, label: p.name }))
-//         : [],
-//     [normalizedCategoryName, optionalProcesses]
-//   );
-
-//   const radiusSealId = sealOptions.find((s) => s.label === 'Radius Seal')?.value;
-//   const multiSelectOptions = useMemo(
-//     () =>
-//       optionalProcesses
-//         .filter((p) => {
-//           if (p.name === 'Round Corner') {
-//             return selectedSeal === radiusSealId;
-//           }
-//           return ['Tear Notch', 'Valve'].includes(p.name);
-//         })
-//         .map((p) => ({ id: p.id, name: p.name })),
-//     [optionalProcesses, selectedSeal, radiusSealId]
-//   );
-
-//   if (process.env.NODE_ENV === 'development') {
-//     console.log('Selected Category ID:', selectedCategory);
-//     console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
-//     console.log('Normalized Category Name:', normalizedCategoryName);
-//     console.log('Pouch Opening Options:', pouchOpeningOptions);
-//     console.log('Gusset Options:', gussetOptions);
-//     if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
-//       console.warn('Warning: "Radius Seal" not found in optionalProcesses');
-//     }
-//     if (!multiSelectOptions.some((p) => p.name === 'Round Corner') && selectedSeal === radiusSealId) {
-//       console.warn('Warning: "Round Corner" not found in optionalProcesses when Radius Seal is selected');
-//     }
-//     if (normalizedCategoryName === 'stand up pouch' && pouchOpeningOptions.length > 0) {
-//       console.warn('Warning: Pouch Opening options should not be defined for Stand Up Pouch category');
-//     }
-//   }
-
-//   const SkeletonLoader = () => (
-//     <div className="animate-pulse space-y-6">
-//       <div className="h-10 bg-gray-200 rounded w-3/4 mx-auto"></div>
-//       <div className="flex flex-col lg:flex-row gap-8">
-//         <div className="lg:w-2/3 space-y-6">
-//           <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
-//             <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-//             <div className="h-12 bg-gray-200 rounded"></div>
-//             <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="lg:w-1/4">
-//           <div className="bg-gray-50 rounded-xl p-6 space-y-4">
-//             <div className="h-40 bg-gray-200 rounded"></div>
-//             <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
-//             <div className="h-4 bg-gray-200 rounded w-1/3 mx-auto"></div>
-//           </div>
-//           <div className="bg-white rounded-xl p-6 mt-6 space-y-4">
-//             <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto"></div>
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//             <div className="h-12 bg-gray-200 rounded"></div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-
-//   if (isAuthLoading) {
-//     return (
-//       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-//         <div className="text-gray-600">
-//           <Loader />
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (loading) return <div className="min-h-screen bg-gray-50 py-12 px-6"><SkeletonLoader /></div>;
-
-//   if (error && !product) {
-//     return (
-//       <div className="min-h-screen bg-gray-50 py-12 px-6">
-//         <div className="text-center p-4 text-red-500 bg-red-50 rounded-lg max-w-md mx-auto">
-//           {error}
-//           <button
-//             className="mt-4 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-//             onClick={() => window.location.reload()}
-//           >
-//             Retry
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-6">
-//       <Head>
-//         <title>Custom Pouches | Configuration Tool</title>
-//         <meta name="description" content="Configure your custom pouches with our interactive tool" />
-//       </Head>
-
-//       <motion.div
-//         initial={{ opacity: 0, y: -20 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         transition={{ duration: 0.8, delay: 0.2 }}
-//         className="text-center mb-12"
-//       >
-//         <h1 className="text-4xl font-bold text-gray-800 mb-2">Pouch Configuration Tool</h1>
-//         <p className="text-lg text-gray-600">Design your perfect packaging solution</p>
-//       </motion.div>
-
-//       <div className="flex flex-col lg:flex-row justify-center mx-auto gap-8">
-//         <motion.div
-//           className="lg:w-2/3"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//         >
-//           <motion.div
-//             className="bg-white rounded-2xl shadow-xl overflow-hidden"
-//             variants={containerVariants}
-//             initial="hidden"
-//             animate="visible"
-//           >
-//             <div className="p-8">
-//               <motion.div className="mb-8" variants={itemVariants}>
-//                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-//                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
-//                   Project Details
-//                 </h2>
-//                 <div className="bg-gray-50 p-6 rounded-xl">
-//                   <label className="block text-gray-700 font-medium mb-2">Project Name</label>
-//                   <input
-//                     type="text"
-//                     placeholder="Enter your project name"
-//                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none"
-//                     value={jobName}
-//                     onChange={(e) => setJobName(e.target.value)}
-//                   />
-//                 </div>
-//               </motion.div>
-
-//               <motion.div className="mb-8 relative z-10" variants={itemVariants}>
-//                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-//                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
-//                   Pouch Specifications
-//                 </h2>
-//                 <div className="bg-gray-50 p-6 rounded-xl">
-//                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Category</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-//                           disabled={categories.length === 0}
-//                         >
-//                           <span>
-//                             {categories.find((cat) => cat.id === selectedCategory)?.name || 'Select category'}
-//                           </span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isCategoryOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
-//                               onClick={() => {
-//                                 setSelectedCategory('122');
-//                                 fetchProductData(token, '122');
-//                                 fetchGussetData(token, '122');
-//                                 setIsCategoryOpen(false);
-//                               }}
-//                             >
-//                               <div className="w-6 h-6 mr-2 flex-shrink-0"></div>
-//                               <span>Select default category</span>
-//                             </div>
-//                             {categories.map((category) => (
-//                               <div
-//                                 key={category.id}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
-//                                 onClick={() => {
-//                                   setSelectedCategory(category.id);
-//                                   if (category.name.trim().toLowerCase() === 'stand up pouch') {
-//                                     setSelectedPouchOpening('');
-//                                   }
-//                                   fetchProductData(token, category.id);
-//                                   fetchGussetData(token, category.id);
-//                                   setIsCategoryOpen(false);
-//                                 }}
-//                               >
-//                                 <div className="w-6 h-6 mr-2 flex-shrink-0">
-//                                   <Image
-//                                     src={category.bg_Img}
-//                                     alt={category.name}
-//                                     width={24}
-//                                     height={24}
-//                                     className="object-contain rounded"
-//                                     onError={(e) => {
-//                                       e.target.src = DEFAULT_IMAGE_URL;
-//                                     }}
-//                                   />
-//                                 </div>
-//                                 <span>{category.name}</span>
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                       {categories.length === 0 && (
-//                         <p className="text-sm text-gray-500 mt-1">Loading categories...</p>
-//                       )}
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Width</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsWidthOpen(!isWidthOpen)}
-//                         >
-//                           <span>{selectedWidth?.label || 'Select width'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isWidthOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedWidth(null);
-//                                 setIsWidthOpen(false);
-//                               }}
-//                             >
-//                               Select width
-//                             </div>
-//                             {sizeOptions.widths?.map((width, idx) => (
-//                               <div
-//                                 key={idx}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedWidth(width);
-//                                   setIsWidthOpen(false);
-//                                 }}
-//                               >
-//                                 {width.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Length</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsLengthOpen(!isLengthOpen)}
-//                         >
-//                           <span>{selectedLength?.label || 'Select length'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isLengthOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedLength(null);
-//                                 setIsLengthOpen(false);
-//                               }}
-//                             >
-//                               Select length
-//                             </div>
-//                             {sizeOptions.lengths?.map((length, idx) => (
-//                               <div
-//                                 key={idx}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedLength(length);
-//                                   setIsLengthOpen(false);
-//                                 }}
-//                               >
-//                                 {length.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Gusset</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsGussetOpen(!isGussetOpen)}
-//                         >
-//                           <span>{selectedGusset?.label || 'Select gusset'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isGussetOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedGusset(null);
-//                                 setIsGussetOpen(false);
-//                               }}
-//                             >
-//                               Select gusset
-//                             </div>
-//                             {gussetOptions.map((gusset) => (
-//                               <div
-//                                 key={gusset.id}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedGusset(gusset);
-//                                   setIsGussetOpen(false);
-//                                 }}
-//                               >
-//                                 {gusset.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Material</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsMaterialOpen(!isMaterialOpen)}
-//                         >
-//                           <span>{selectedMaterial?.label || 'Select material'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isMaterialOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedMaterial(null);
-//                                 setIsMaterialOpen(false);
-//                               }}
-//                             >
-//                               Select material
-//                             </div>
-//                             {materialOptions.map((material, idx) => (
-//                               <div
-//                                 key={idx}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedMaterial(material);
-//                                   setIsMaterialOpen(false);
-//                                 }}
-//                               >
-//                                 {material.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                       {selectedMaterial && (
-//                         <p className="text-sm text-gray-500 mt-1">
-//                           Available widths: {selectedMaterial.widths.join(', ')} mm
-//                         </p>
-//                       )}
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Mandatory Process</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsMandatoryProcessOpen(!isMandatoryProcessOpen)}
-//                         >
-//                           <span>{selectedMandatoryProcess?.label || 'Select mandatory process'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isMandatoryProcessOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedMandatoryProcess(null);
-//                                 setIsMandatoryProcessOpen(false);
-//                               }}
-//                             >
-//                               Select mandatory process
-//                             </div>
-//                             {mandatoryProcesses
-//                               .filter((process) => process.label !== 'Aplix Zipper')
-//                               .map((process, idx) => (
-//                                 <div
-//                                   key={idx}
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedMandatoryProcess(process);
-//                                     setIsMandatoryProcessOpen(false);
-//                                   }}
-//                                 >
-//                                   {process.label}
-//                                 </div>
-//                               ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </motion.div>
-
-//               <motion.div className="mb-8" variants={itemVariants}>
-//                 <h2 className="text-2xl relative z-10 font-semibold text-gray-800 mb-4 flex items-center">
-//                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
-//                   SKU Configuration
-//                 </h2>
-//                 <div className="bg-gray-50 p-6 rounded-xl">
-//                   <div className="mb-6">
-//                     <label className="block text-gray-700 font-medium mb-2">Number of SKUs</label>
-//                     <div className="relative w-full md:w-1/2">
-//                       <button
-//                         type="button"
-//                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                         onClick={() => setIsQuantityOpen(!isQuantityOpen)}
-//                       >
-//                         <span>{quantity || 'Select number of SKUs'}</span>
-//                         <svg
-//                           className="w-5 h-5 text-gray-400"
-//                           fill="none"
-//                           stroke="currentColor"
-//                           viewBox="0 0 24 24"
-//                           xmlns="http://www.w3.org/2000/svg"
-//                         >
-//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                         </svg>
-//                       </button>
-//                       {isQuantityOpen && (
-//                         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((sku) => (
-//                             <div
-//                               key={sku}
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setQuantity(sku);
-//                                 setDesignNames(Array(sku).fill(''));
-//                                 setSelectedQuantities(Array(sku).fill(500));
-//                                 setIsQuantityOpen(false);
-//                               }}
-//                             >
-//                               {sku}
-//                             </div>
-//                           ))}
-//                         </div>
-//                       )}
-//                     </div>
-//                   </div>
-
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Design Names</label>
-//                       {[...Array(quantity)].map((_, index) => (
-//                         <div key={index} className="mb-3">
-//                           <input
-//                             type="text"
-//                             placeholder={`Design ${index + 1} name`}
-//                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none"
-//                             value={designNames[index] || ''}
-//                             onChange={(e) => {
-//                               const updated = [...designNames];
-//                               updated[index] = e.target.value;
-//                               setDesignNames(updated);
-//                             }}
-//                           />
-//                         </div>
-//                       ))}
-//                     </div>
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Quantity</label>
-//                       {[...Array(quantity)].map((_, index) => (
-//                         <div key={index} className="mb-3 relative">
-//                           <button
-//                             type="button"
-//                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                             onClick={() => {
-//                               const updated = [...isSkuQuantityOpen];
-//                               updated[index] = !updated[index];
-//                               setIsSkuQuantityOpen(updated);
-//                             }}
-//                           >
-//                             <span>{selectedQuantities[index] ? `${selectedQuantities[index]} Pcs` : 'Select quantity'}</span>
-//                             <svg
-//                               className="w-5 h-5 text-gray-400"
-//                               fill="none"
-//                               stroke="currentColor"
-//                               viewBox="0 0 24 24"
-//                               xmlns="http://www.w3.org/2000/svg"
-//                             >
-//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                             </svg>
-//                           </button>
-//                           {isSkuQuantityOpen[index] && (
-//                             <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                               {[500, 1000, 2000, 3000, 5000].map((qty) => (
-//                                 <div
-//                                   key={qty}
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     handleQuantityChange(index, qty);
-//                                     const updated = [...isSkuQuantityOpen];
-//                                     updated[index] = false;
-//                                     setIsSkuQuantityOpen(updated);
-//                                   }}
-//                                 >
-//                                   {qty} Pcs
-//                                 </div>
-//                               ))}
-//                             </div>
-//                           )}
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </motion.div>
-
-//               {(sealOptions.length > 0 || hangHoleOptions.length > 0 || pouchOpeningOptions.length > 0 || multiSelectOptions.length > 0) && (
-//                 <motion.div className="mb-8 relative z-10" variants={itemVariants}>
-//                   <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-//                     <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">4</span>
-//                     Optional Processes
-//                   </h2>
-//                   <div className="bg-gray-50 p-6 rounded-xl space-y-6">
-//                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//                       {sealOptions.length > 0 && (
-//                         <div>
-//                           <label className="block text-gray-700 font-medium mb-2">Seal Type</label>
-//                           <div className="relative">
-//                             <button
-//                               type="button"
-//                               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                               onClick={() => setIsSealOpen(!isSealOpen)}
-//                             >
-//                               <span>{sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'Select seal type'}</span>
-//                               <svg
-//                                 className="w-5 h-5 text-gray-400"
-//                                 fill="none"
-//                                 stroke="currentColor"
-//                                 viewBox="0 0 24 24"
-//                                 xmlns="http://www.w3.org/2000/svg"
-//                               >
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                               </svg>
-//                             </button>
-//                             {isSealOpen && (
-//                               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                                 <div
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedSeal('');
-//                                     setIsSealOpen(false);
-//                                   }}
-//                                 >
-//                                   Select seal type
-//                                 </div>
-//                                 {sealOptions.map((option) => (
-//                                   <div
-//                                     key={option.value}
-//                                     className="p-2 cursor-pointer hover:bg-gray-100"
-//                                     onClick={() => {
-//                                       setSelectedSeal(option.value);
-//                                       setIsSealOpen(false);
-//                                     }}
-//                                   >
-//                                     {option.label}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             )}
-//                           </div>
-//                         </div>
-//                       )}
-
-//                       {hangHoleOptions.length > 0 && (
-//                         <div>
-//                           <label className="block text-gray-700 font-medium mb-2">Hang Hole</label>
-//                           <div className="relative">
-//                             <button
-//                               type="button"
-//                               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                               onClick={() => setIsHangHoleOpen(!isHangHoleOpen)}
-//                             >
-//                               <span>{hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'Select hang hole'}</span>
-//                               <svg
-//                                 className="w-5 h-5 text-gray-400"
-//                                 fill="none"
-//                                 stroke="currentColor"
-//                                 viewBox="0 0 24 24"
-//                                 xmlns="http://www.w3.org/2000/svg"
-//                               >
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                               </svg>
-//                             </button>
-//                             {isHangHoleOpen && (
-//                               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                                 <div
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedHangHole('');
-//                                     setIsHangHoleOpen(false);
-//                                   }}
-//                                 >
-//                                   Select hang hole
-//                                 </div>
-//                                 {hangHoleOptions.map((option) => (
-//                                   <div
-//                                     key={option.value}
-//                                     className="p-2 cursor-pointer hover:bg-gray-100"
-//                                     onClick={() => {
-//                                       setSelectedHangHole(option.value);
-//                                       setIsHangHoleOpen(false);
-//                                     }}
-//                                   >
-//                                     {option.label}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             )}
-//                           </div>
-//                         </div>
-//                       )}
-
-//                       {pouchOpeningOptions.length > 0 && selectedCategory && (
-//                         <div className={normalizedCategoryName === 'stand up pouch' ? 'hidden' : ''}>
-//                           <label className="block text-gray-700 font-medium mb-2">Pouch Opening</label>
-//                           <div className="relative">
-//                             <button
-//                               type="button"
-//                               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                               onClick={() => setIsPouchOpeningOpen(!isPouchOpeningOpen)}
-//                             >
-//                               <span>{pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'Select pouch opening'}</span>
-//                               <svg
-//                                 className="w-5 h-5 text-gray-400"
-//                                 fill="none"
-//                                 stroke="currentColor"
-//                                 viewBox="0 0 24 24"
-//                                 xmlns="http://www.w3.org/2000/svg"
-//                               >
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                               </svg>
-//                             </button>
-//                             {isPouchOpeningOpen && (
-//                               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                                 <div
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedPouchOpening('');
-//                                     setIsPouchOpeningOpen(false);
-//                                   }}
-//                                 >
-//                                   Select pouch opening
-//                                 </div>
-//                                 {pouchOpeningOptions.map((option) => (
-//                                   <div
-//                                     key={option.value}
-//                                     className="p-2 cursor-pointer hover:bg-gray-100"
-//                                     onClick={() => {
-//                                       setSelectedPouchOpening(option.value);
-//                                       setIsPouchOpeningOpen(false);
-//                                     }}
-//                                   >
-//                                     {option.label}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             )}
-//                           </div>
-//                         </div>
-//                       )}
-//                     </div>
-
-//                     {multiSelectOptions.length > 0 && (
-//                       <div>
-//                         <label className="block text-gray-700 font-medium mb-2">Additional Options</label>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//                           {multiSelectOptions.map((process) => (
-//                             <label key={process.id} className="flex items-center space-x-3 text-gray-700">
-//                               <input
-//                                 type="checkbox"
-//                                 value={process.id}
-//                                 checked={selectedMultiProcesses.includes(process.id)}
-//                                 onChange={() => handleMultiProcessChange(process.id)}
-//                                 className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
-//                               />
-//                               <span>{process.name}</span>
-//                             </label>
-//                           ))}
-//                         </div>
-//                       </div>
-//                     )}
-//                   </div>
-//                 </motion.div>
-//               )}
-//             </div>
-//           </motion.div>
-//         </motion.div>
-
-//         <motion.div className="lg:w-1/4" variants={itemVariants}>
-//           <div className="sticky top-16">
-//             <div className="bg-gray-50 rounded-xl p-6 mb-6">
-//               <motion.div
-//                 className="flex justify-center"
-//                 whileHover={{ scale: 1.05 }}
-//                 transition={{ duration: 0.3 }}
-//               >
-//                 <div className="relative h-40 w-48">
-//                   {selectedCategory && categories.length > 0 ? (
-//                     <Image
-//                       src={categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL}
-//                       alt={categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouch Image'}
-//                       fill
-//                       className="object-contain rounded-lg"
-//                       onError={(e) => {
-//                         e.target.src = DEFAULT_IMAGE_URL;
-//                       }}
-//                     />
-//                   ) : (
-//                     <div className="h-full w-full bg-gray-200 rounded-lg flex items-center justify-center">
-//                       <span className="text-gray-500 text-sm">Select a category</span>
-//                     </div>
-//                   )}
-//                 </div>
-//               </motion.div>
-//               <div className="mt-6 text-center text-gray-600 text-sm">
-//                 <p>
-//                   {selectedWidth && selectedLength
-//                     ? `${selectedWidth.label} x ${selectedLength.label}`
-//                     : 'Not selected'}
-//                 </p>
-//                 <p>
-//                   {selectedMaterial?.label || 'Not selected'} •{' '}
-//                   {selectedMandatoryProcess?.label || 'Not selected'}
-//                 </p>
-//                 <p>Gusset: {selectedGusset?.label || 'Not selected'}</p>
-//                 <p>
-//                   Category: {categories.find((cat) => cat.id === selectedCategory)?.name || 'Not selected'}
-//                 </p>
-//               </div>
-//             </div>
-
-//             <motion.div
-//               className="bg-white rounded-xl shadow-lg p-6 border border-gray-100"
-//               whileHover={{ y: -5 }}
-//               transition={{ duration: 0.3 }}
-//             >
-//               <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Quotation</h3>
-//               <div className="mb-4 text-center text-gray-600 text-sm">
-//                 <p>{jobName || 'Your Custom Pouch'}</p>
-//               </div>
-//               <hr className="my-4 border-gray-200" />
-
-//               <div className="space-y-3">
-//                 <div className="flex justify-between">
-//                   <span className="text-gray-600">Total Quantity</span>
-//                   <span className="font-medium">{totalQuantity || 0} pcs</span>
-//                 </div>
-//                 {costData && (
-//                   <div className="flex justify-between font-bold text-lg text-gray-800">
-//                     <span>Total</span>
-//                     <span>₹{Number(costData.total_cost).toFixed(2)}</span>
-//                   </div>
-//                 )}
-//               </div>
-
-//               <div className="mt-8 space-y-4">
-//                 {isQuotationGenerated ? (
-//                   <motion.button
-//                     className="w-full py-3 px-4 font-medium rounded-lg bg-[#103b60] text-white hover:bg-[#0a2b47] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#103b60]"
-//                     whileHover={{ scale: 1.02 }}
-//                     whileTap={{ scale: 0.98 }}
-//                     onClick={handleAddToCart}
-//                   >
-//                     Add to Cart
-//                   </motion.button>
-//                 ) : (
-//                   <motion.button
-//                     className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
-//                       isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
-//                     }`}
-//                     whileHover={{ scale: isQuotationLoading ? 1 : 1.02 }}
-//                     whileTap={{ scale: isQuotationLoading ? 1 : 0.98 }}
-//                     onClick={handleRequestQuotation}
-//                     disabled={isQuotationLoading}
-//                   >
-//                     {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
-//                   </motion.button>
-//                 )}
-//               </div>
-//             </motion.div>
-//           </div>
-//         </motion.div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Configuration;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 'use client';
-// import React, { useState, useEffect, useCallback, useMemo } from 'react';
-// import Head from 'next/head';
-// import Image from 'next/image';
-// import { motion } from 'framer-motion';
-// import { useAuth } from '@/utils/authContext';
-// import { useRouter } from 'next/navigation';
-// import { useDispatch } from 'react-redux';
-// import { addToCart } from '../../redux/store/cartSlice';
-// import Loader from '../comman/Loader';
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// const Configuration = () => {
-//   const { user } = useAuth();
-//   const router = useRouter();
-//   const dispatch = useDispatch();
-//   const [isAuthLoading, setIsAuthLoading] = useState(true);
-//   const [product, setProduct] = useState(null);
-//   const [jobName, setJobName] = useState('');
-//   const [sizeOptions, setSizeOptions] = useState({ widths: [], lengths: [] });
-//   const [selectedWidth, setSelectedWidth] = useState(null);
-//   const [selectedLength, setSelectedLength] = useState(null);
-//   const [materialOptions, setMaterialOptions] = useState([]);
-//   const [selectedMaterial, setSelectedMaterial] = useState(null);
-//   const [mandatoryProcesses, setMandatoryProcesses] = useState([]);
-//   const [selectedMandatoryProcess, setSelectedMandatoryProcess] = useState(null);
-//   const [optionalProcesses, setOptionalProcesses] = useState([]);
-//   const [selectedSeal, setSelectedSeal] = useState('');
-//   const [selectedHangHole, setSelectedHangHole] = useState('');
-//   const [selectedPouchOpening, setSelectedPouchOpening] = useState('');
-//   const [selectedMultiProcesses, setSelectedMultiProcesses] = useState([]);
-//   const [zipperOptions, setZipperOptions] = useState([]);
-//   const [quantity, setQuantity] = useState(1);
-//   const [designNames, setDesignNames] = useState(['']);
-//   const [selectedQuantities, setSelectedQuantities] = useState([500]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [costData, setCostData] = useState(null);
-//   const [isQuotationLoading, setIsQuotationLoading] = useState(false);
-//   const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
-//   const [token, setToken] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [selectedCategory, setSelectedCategory] = useState('');
-//   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-//   const [isWidthOpen, setIsWidthOpen] = useState(false);
-//   const [isLengthOpen, setIsLengthOpen] = useState(false);
-//   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
-//   const [isMandatoryProcessOpen, setIsMandatoryProcessOpen] = useState(false);
-//   const [isQuantityOpen, setIsQuantityOpen] = useState(false);
-//   const [isSealOpen, setIsSealOpen] = useState(false);
-//   const [isHangHoleOpen, setIsHangHoleOpen] = useState(false);
-//   const [isPouchOpeningOpen, setIsPouchOpeningOpen] = useState(false);
-//   const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState(Array(quantity).fill(false));
-
-//   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
-//   const DEFAULT_IMAGE_URL = `${NEXI_CDN_URL}/category/default-image.jpg`;
-
-//   const containerVariants = {
-//     hidden: { opacity: 0 },
-//     visible: {
-//       opacity: 1,
-//       transition: { staggerChildren: 0.1, delayChildren: 0.2, duration: 0.5 },
-//     },
-//   };
-
-//   const itemVariants = {
-//     hidden: { y: 20, opacity: 0 },
-//     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
-//   };
-
-//   const loginForThirdParty = useCallback(async (retries = 3) => {
-//     setToken(null);
-
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch('https://nexiblesapp.barecms.com/proxy?r=user/authenticate', {
-//           method: 'POST',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify({
-//             email: process.env.NEXT_PUBLIC_API_EMAIL || 'sales@artnext.in',
-//             password: process.env.NEXT_PUBLIC_API_PASSWORD || 'Artnext@1',
-//             subdomain: 'nexibles',
-//             otp: false,
-//             ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
-//           }),
-//         });
-
-//         const result = await response.json();
-//         if (result.status && result.data?.token) {
-//           const newToken = result.data.token;
-//           setToken(newToken);
-//           return newToken;
-//         } else {
-//           throw new Error(result.message || 'Login failed');
-//         }
-//       } catch (err) {
-//         console.error(`Authentication attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError('Failed to authenticate after multiple attempts.');
-//           return null;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   // Fetch category data from the provided API
-//   const fetchCategoryData = useCallback(async (authToken, retries = 3) => {
-//     if (!authToken) {
-//       setError('Authentication token is missing.');
-//       return false;
-//     }
-
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch(
-//           'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
-//           {
-//             headers: {
-//               Authorization: `Bearer ${authToken}`,
-//               Environment: 'frontdesk',
-//             },
-//           }
-//         );
-
-//         const data = await response.json();
-//         if (data.status && Array.isArray(data.data)) {
-//           const uniqueCategories = [];
-//           const seenNames = new Set();
-
-//           data.data.forEach((product) => {
-//             const productName = product.product_name?.trim();
-//             if (productName && !seenNames.has(productName.toLowerCase())) {
-//               seenNames.add(productName.toLowerCase());
-//               uniqueCategories.push({
-//                 id: product.id,
-//                 name: productName,
-//                 bg_Img: product.product_picture || DEFAULT_IMAGE_URL,
-//                 cat_url: '',
-//               });
-//             }
-//           });
-
-//           setCategories(uniqueCategories);
-//           if (uniqueCategories.length > 0) {
-//             // Set selectedCategory to the category with id '122' if it exists, otherwise first category
-//             const defaultCategory = uniqueCategories.find(cat => cat.id === '122') || uniqueCategories[0];
-//             setSelectedCategory(defaultCategory.id);
-//           }
-//           return true;
-//         } else {
-//           throw new Error(data.message || 'Failed to fetch category data');
-//         }
-//       } catch (err) {
-//         console.error(`Category fetch attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError(err.message || 'Error fetching category data');
-//           return false;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   // Fetch product data based on categoryId
-//   const fetchProductData = useCallback(async (authToken, categoryId, retries = 3) => {
-//     if (!authToken) {
-//       setError('Authentication token is missing.');
-//       return false;
-//     }
-
-//     for (let attempt = 1; attempt <= retries; attempt++) {
-//       try {
-//         const response = await fetch(
-//           'https://nexiblesapp.barecms.com/proxy?r=products/get-product-list&product_type=8&press_id=82&limit=10&offset=0',
-//           {
-//             headers: {
-//               Authorization: `Bearer ${authToken}`,
-//               Environment: 'frontdesk',
-//             },
-//           }
-//         );
-
-//         const data = await response.json();
-//         if (data.status && Array.isArray(data.data)) {
-//           // Find product matching the categoryId
-//           const targetProduct = data.data.find((p) => p.id === categoryId);
-//           if (!targetProduct) throw new Error(`Product with ID ${categoryId} not found`);
-
-//           setProduct(targetProduct);
-
-//           const { minimum_width, maximum_width, minimum_length, maximum_length } = targetProduct;
-
-//           if (
-//             !minimum_width ||
-//             !maximum_width ||
-//             !minimum_length ||
-//             !maximum_length ||
-//             isNaN(parseInt(minimum_width)) ||
-//             isNaN(parseInt(maximum_width)) ||
-//             isNaN(parseInt(minimum_length)) ||
-//             isNaN(parseInt(maximum_length))
-//           ) {
-//             throw new Error('Invalid size parameters in product data');
-//           }
-
-//           const widthStep = (parseInt(maximum_width) - parseInt(minimum_width)) / 9;
-//           const lengthStep = (parseInt(maximum_length) - parseInt(minimum_length)) / 9;
-//           const widths = Array.from({ length: 10 }, (_, i) => {
-//             const width = Math.round(parseInt(minimum_width) + i * widthStep);
-//             return { value: width, label: `${width} mm` };
-//           });
-//           const lengths = Array.from({ length: 10 }, (_, i) => {
-//             const length = Math.round(parseInt(minimum_length) + i * lengthStep);
-//             return { value: length, label: `${length} mm` };
-//           });
-//           setSizeOptions({ widths, lengths });
-//           setSelectedWidth(widths[0] || null);
-//           setSelectedLength(lengths[0] || null);
-
-//           const materials = Array.isArray(targetProduct.pouch_media)
-//             ? targetProduct.pouch_media.map((m) => ({
-//               value: m.id,
-//               label: m.media_title,
-//               widths: m.media_widths ? m.media_widths.split(',') : [],
-//             }))
-//             : [];
-//           setMaterialOptions(materials);
-//           setSelectedMaterial(materials[0] || null);
-
-//           const mandatory = Array.isArray(targetProduct.pouch_postpress)
-//             ? targetProduct.pouch_postpress
-//               .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
-//               .map((p) => ({
-//                 value: p.id,
-//                 label: p.process_name,
-//               }))
-//             : [];
-//           setMandatoryProcesses(mandatory);
-//           setSelectedMandatoryProcess(mandatory[0] || null);
-
-//           const optional = Array.isArray(targetProduct.pouch_postpress)
-//             ? targetProduct.pouch_postpress
-//               .filter((p) => p.optional && !p.mandatory_any_one)
-//               .map((p) => ({
-//                 id: p.id,
-//                 name: p.process_name,
-//               }))
-//             : [];
-//           setOptionalProcesses(optional);
-
-//           const zippers = Array.isArray(targetProduct.pouch_postpress)
-//             ? targetProduct.pouch_postpress
-//               .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
-//               .map((p) => ({
-//                 value: p.id,
-//                 label: p.process_name,
-//               }))
-//             : [];
-//           setZipperOptions(zippers);
-
-//           return true;
-//         } else {
-//           throw new Error(data.message || 'Failed to fetch product data');
-//         }
-//       } catch (err) {
-//         console.error(`Product fetch attempt ${attempt} failed:`, err.message);
-//         if (attempt === retries) {
-//           setError(err.message);
-//           return false;
-//         }
-//         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
-//       }
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//   if (!user) {
-//     toast.warning('You need to be logged in to customize .', {
-//       toastId: 'login-warning',
-//     });
-//     router.push('/login');
-//     setIsAuthLoading(false);
-//     setLoading(false);
-//   }
-// }, [user, router]);
-
-//   useEffect(() => {
-//     let isMounted = true;
-
-//     const initialize = async () => {
-//       setLoading(true);
-//       setError(null);
-//       setIsAuthLoading(true);
-
-//       // Fetch a new token on every page refresh
-//       const authToken = await loginForThirdParty();
-//       if (!authToken && isMounted) {
-//         setError('Authentication failed.');
-//         setIsAuthLoading(false);
-//         setLoading(false);
-//         return;
-//       }
-
-//       if (isMounted) {
-//         // Fetch categories first to set selectedCategory
-//         const categorySuccess = await fetchCategoryData(authToken);
-//         if (!categorySuccess) {
-//           window.location.reload();
-//           return;
-//         }
-
-//         // Fetch product data using default ID '122' initially
-//         const productSuccess = await fetchProductData(authToken, '122');
-//         if (!productSuccess) {
-//           window.location.reload();
-//           return;
-//         }
-//       }
-
-//       if (isMounted) {
-//         setIsAuthLoading(false);
-//         setLoading(false);
-//       }
-//     };
-
-//     initialize();
-
-//     return () => {
-//       isMounted = false;
-//     };
-//   }, [user, router, loginForThirdParty, fetchCategoryData, fetchProductData]);
-
-//   useEffect(() => {
-//     setIsSkuQuantityOpen(Array(quantity).fill(false));
-//   }, [quantity]);
-
-//   useEffect(() => {
-//     if (isQuotationGenerated) {
-//       setIsQuotationGenerated(false);
-//       setCostData(null);
-//     }
-//   }, [
-//     jobName,
-//     selectedCategory,
-//     selectedWidth,
-//     selectedLength,
-//     selectedMaterial,
-//     selectedMandatoryProcess,
-//     selectedSeal,
-//     selectedHangHole,
-//     selectedPouchOpening,
-//     selectedMultiProcesses,
-//     quantity,
-//     designNames,
-//     selectedQuantities,
-//   ]);
-
-//   const handleMultiProcessChange = (processId) => {
-//     setSelectedMultiProcesses((prev) =>
-//       prev.includes(processId)
-//         ? prev.filter((id) => id !== processId)
-//         : [...prev, processId]
-//     );
-//   };
-
-//   const handleQuantityChange = (index, value) => {
-//     if (index >= quantity) return;
-//     const updated = [...selectedQuantities];
-//     updated[index] = parseInt(value);
-//     setSelectedQuantities(updated);
-//   };
-
-//   const totalQuantity = selectedQuantities.reduce((a, b) => a + b, 0);
-
-//   const handleRequestQuotation = async () => {
-//     setIsQuotationLoading(true);
-//     setError(null);
-
-//     try {
-//       const authToken = await loginForThirdParty();
-//       if (!authToken) throw new Error('Authentication token is missing.');
-
-//       if (!jobName) throw new Error('Project name is required');
-//       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
-//       if (!selectedMaterial) throw new Error('Material is required');
-//       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
-//       const normalizedCategoryName = categoryName?.trim().toLowerCase();
-//       const optionalProcessIds = [
-//         selectedSeal,
-//         selectedHangHole,
-//         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
-//         ...selectedMultiProcesses,
-//       ].filter(Boolean);
-
-//       const payload = {
-//         formData: {
-//           job_name: jobName || 'Untitled Project',
-//           quantity_one: totalQuantity.toString(),
-//           quantity_two: '0',
-//           quantity_three: '0',
-//           length: selectedLength?.value.toString() || '',
-//           width: selectedWidth?.value.toString() || '',
-//           no_of_sku: quantity.toString(),
-//           pouch_printing_color: '7',
-//           media_id: selectedMaterial?.value || '',
-//           media_0: '',
-//           media_1: '',
-//           media_2: '',
-//           media_3: '',
-//           gusset_size: '3',
-//           gusset_color: '7',
-//           seal_size: '',
-//           mandatory_one_process: selectedMandatoryProcess?.value || '',
-//           optional_process: optionalProcessIds,
-//           type: 'basic',
-//         },
-//         productId: selectedCategory || '122', // Fallback to '122' if selectedCategory is empty
-//         printingTypeId: '8',
-//         customerId: '26176',
-//       };
-
-//       const response = await fetch(
-//         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
-//         {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: `Bearer ${authToken}`,
-//             Environment: 'frontdesk',
-//           },
-//           body: JSON.stringify(payload),
-//         }
-//       );
-
-//       const result = await response.json();
-//       if (result.status && result.data?.costing_data?.length > 0) {
-//         setCostData(result.data.costing_data[0]);
-//         setIsQuotationGenerated(true);
-//       } else {
-//         throw new Error(result.message || 'Failed to generate quotation.');
-//       }
-//     } catch (err) {
-//       console.error('Quotation error:', err);
-//       const errorMessage = err.message.includes('token')
-//         ? 'Authentication token is invalid or expired. Please try again.'
-//         : err.message;
-//       setError(errorMessage);
-//       toast.error(`Failed to generate quotation: ${errorMessage}`);
-//     } finally {
-//       setIsQuotationLoading(false);
-//     }
-//   };
-
-//   const handleAddToCart = () => {
-//     if (!costData || !product) {
-//       toast.error('Cannot add to cart: Missing cost or product data');
-//       return;
-//     }
-
-//     const totalCost = Number(costData.total_cost);
-//     if (isNaN(totalCost)) {
-//       toast.error('Invalid cost data');
-//       return;
-//     }
-
-//     const unitPrice = totalCost / totalQuantity;
-//     const totalPrice = totalCost;
-
-//     const selectedOptions = {
-//       width: { optionName: selectedWidth?.label || 'Not specified', price: 0 },
-//       length: { optionName: selectedLength?.label || 'Not specified', price: 0 },
-//       mandatoryProcess: { optionName: selectedMandatoryProcess?.label || 'Not specified', price: 0 },
-//       seal: { optionName: sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'None', price: 0 },
-//       hangHole: { optionName: hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'None', price: 0 },
-//       pouchOpening: { optionName: pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'None', price: 0 },
-//       additionalOptions: {
-//         optionName: multiSelectOptions
-//           .filter((opt) => selectedMultiProcesses.includes(opt.id))
-//           .map((opt) => opt.name)
-//           .join(', ') || 'None',
-//         price: 0,
-//       },
-//     };
-
-//     const productToAdd = {
-//       id: product.id,
-//       name: jobName || product.title || 'Custom Pouch',
-//       category: categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouches',
-//       image: categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL,
-//       price: unitPrice,
-//       quantity: totalQuantity,
-//       totalPrice: totalPrice,
-//       skuCount: quantity,
-//       material: selectedMaterial?.label || 'Not specified',
-//       selectedOptions,
-//     };
-
-//     dispatch(addToCart(productToAdd));
-//     toast.success('Product added to cart successfully!');
-//   };
-
-//   const normalizedCategoryName = useMemo(() => {
-//     const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name || '';
-//     return categoryName.trim().toLowerCase();
-//   }, [selectedCategory, categories]);
-
-//   const sealOptions = useMemo(
-//     () =>
-//       optionalProcesses
-//         .filter((p) => ['K-Seal', 'Radius Seal'].includes(p.name))
-//         .map((p) => ({ value: p.id, label: p.name })),
-//     [optionalProcesses]
-//   );
-
-//   const hangHoleOptions = useMemo(
-//     () =>
-//       optionalProcesses
-//         .filter((p) => ['D-Cut Handle Punch', 'Euro Hang Hole', 'Round Hang Hole'].includes(p.name))
-//         .map((p) => ({ value: p.id, label: p.name })),
-//     [optionalProcesses]
-//   );
-
-//   const pouchOpeningOptions = useMemo(
-//     () =>
-//       normalizedCategoryName !== 'stand up pouch'
-//         ? optionalProcesses
-//           .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
-//           .map((p) => ({ value: p.id, label: p.name }))
-//         : [],
-//     [normalizedCategoryName, optionalProcesses]
-//   );
-
-//   const radiusSealId = sealOptions.find((s) => s.label === 'Radius Seal')?.value;
-//   const multiSelectOptions = useMemo(
-//     () =>
-//       optionalProcesses
-//         .filter((p) => {
-//           if (p.name === 'Round Corner') {
-//             return selectedSeal === radiusSealId;
-//           }
-//           return ['Tear Notch', 'Valve'].includes(p.name);
-//         })
-//         .map((p) => ({ id: p.id, name: p.name })),
-//     [optionalProcesses, selectedSeal, radiusSealId]
-//   );
-
-//   if (process.env.NODE_ENV === 'development') {
-//     console.log('Selected Category ID:', selectedCategory);
-//     console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
-//     console.log('Normalized Category Name:', normalizedCategoryName);
-//     console.log('Pouch Opening Options:', pouchOpeningOptions);
-//     if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
-//       console.warn('Warning: "Radius Seal" not found in optionalProcesses');
-//     }
-//     if (!multiSelectOptions.some((p) => p.name === 'Round Corner') && selectedSeal === radiusSealId) {
-//       console.warn('Warning: "Round Corner" not found in optionalProcesses when Radius Seal is selected');
-//     }
-//     if (normalizedCategoryName === 'stand up pouch' && pouchOpeningOptions.length > 0) {
-//       console.warn('Warning: Pouch Opening options should not be defined for Stand Up Pouch category');
-//     }
-//   }
-
-//   const SkeletonLoader = () => (
-//     <div className="animate-pulse space-y-6">
-//       <div className="h-10 bg-gray-200 rounded w-3/4 mx-auto"></div>
-//       <div className="flex flex-col lg:flex-row gap-8">
-//         <div className="lg:w-2/3 space-y-6">
-//           <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
-//             <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-//             <div className="h-12 bg-gray-200 rounded"></div>
-//             <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//               <div className="h-12 bg-gray-200 rounded"></div>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="lg:w-1/4">
-//           <div className="bg-gray-50 rounded-xl p-6 space-y-4">
-//             <div className="h-40 bg-gray-200 rounded"></div>
-//             <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
-//             <div className="h-4 bg-gray-200 rounded w-1/3 mx-auto"></div>
-//           </div>
-//           <div className="bg-white rounded-xl p-6 mt-6 space-y-4">
-//             <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto"></div>
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//             <div className="h-12 bg-gray-200 rounded"></div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-
-//   if (isAuthLoading) {
-//     return (
-//       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-//         <div className="text-gray-600"><Loader /></div>
-//       </div>
-//     );
-//   }
-
-//   if (loading) return <div className="min-h-screen bg-gray-50 py-12 px-6"><SkeletonLoader /></div>;
-
-//   if (error && !product) {
-//     return (
-//       <div className="min-h-screen bg-gray-50 py-12 px-6">
-//         <div className="text-center p-4 text-red-500 bg-red-50 rounded-lg max-w-md mx-auto">
-//           {error}
-//           <button
-//             className="mt-4 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-//             onClick={() => window.location.reload()}
-//           >
-//             Retry
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-6">
-//       <Head>
-//         <title>Custom Pouches | Configuration Tool</title>
-//         <meta name="description" content="Configure your custom pouches with our interactive tool" />
-//       </Head>
-
-//       <motion.div
-//         initial={{ opacity: 0, y: -20 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         transition={{ duration: 0.8, delay: 0.2 }}
-//         className="text-center mb-12"
-//       >
-//         <h1 className="text-4xl font-bold text-gray-800 mb-2">Pouch Configuration Tool</h1>
-//         <p className="text-lg text-gray-600">Design your perfect packaging solution</p>
-//       </motion.div>
-
-//       <div className="flex flex-col lg:flex-row justify-center mx-auto gap-8">
-//         <motion.div
-//           className="lg:w-2/3"
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//         >
-//           <motion.div
-//             className="bg-white rounded-2xl shadow-xl overflow-hidden"
-//             variants={containerVariants}
-//             initial="motion"
-//             animate="visible"
-//           >
-//             <div className="p-8">
-//               <motion.div className="mb-8" variants={itemVariants}>
-//                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-//                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
-//                   Project Details
-//                 </h2>
-//                 <div className="bg-gray-50 p-6 rounded-xl">
-//                   <label className="block text-gray-700 font-medium mb-2">Project Name</label>
-//                   <input
-//                     type="text"
-//                     placeholder="Enter your project name"
-//                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none"
-//                     value={jobName}
-//                     onChange={(e) => setJobName(e.target.value)}
-//                   />
-//                 </div>
-//               </motion.div>
-
-//               <motion.div className="mb-8 relative z-50" variants={itemVariants}>
-//                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-//                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
-//                   Pouch Specifications
-//                 </h2>
-//                 <div className="bg-gray-50 p-6 rounded-xl">
-//                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Category</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center "
-//                           onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-//                           disabled={categories.length === 0}
-//                         >
-//                           <span className=''>
-//                             {categories.find((cat) => cat.id === selectedCategory)?.name || 'Select category'}
-//                           </span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isCategoryOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
-//                               onClick={() => {
-//                                 setSelectedCategory('122');
-//                                 fetchProductData(token, '122');
-//                                 setIsCategoryOpen(false);
-//                               }}
-//                             >
-//                               <div className="w-6 h-6 mr-2 flex-shrink-0"></div>
-//                               <span>Select default category</span>
-//                             </div>
-//                             {categories.map((category) => (
-//                               <div
-//                                 key={category.id}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100 flex items-center"
-//                                 onClick={() => {
-//                                   setSelectedCategory(category.id);
-//                                   if (category.name.trim().toLowerCase() === 'stand up pouch') {
-//                                     setSelectedPouchOpening('');
-//                                   }
-//                                   fetchProductData(token, category.id);
-//                                   setIsCategoryOpen(false);
-//                                 }}
-//                               >
-//                                 <div className="w-6 h-6 mr-2 flex-shrink-0">
-//                                   <Image
-//                                     src={category.bg_Img}
-//                                     alt={category.name}
-//                                     width={24}
-//                                     height={24}
-//                                     className="object-contain rounded"
-//                                     onError={(e) => {
-//                                       e.target.src = DEFAULT_IMAGE_URL;
-//                                     }}
-//                                   />
-//                                 </div>
-//                                 <span>{category.name}</span>
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                       {categories.length === 0 && (
-//                         <p className="text-sm text-gray-500 mt-1">Loading categories...</p>
-//                       )}
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Width</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsWidthOpen(!isWidthOpen)}
-//                         >
-//                           <span>{selectedWidth?.label || 'Select width'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isWidthOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedWidth(null);
-//                                 setIsWidthOpen(false);
-//                               }}
-//                             >
-//                               Select width
-//                             </div>
-//                             {sizeOptions.widths?.map((width, idx) => (
-//                               <div
-//                                 key={idx}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedWidth(width);
-//                                   setIsWidthOpen(false);
-//                                 }}
-//                               >
-//                                 {width.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Length</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsLengthOpen(!isLengthOpen)}
-//                         >
-//                           <span>{selectedLength?.label || 'Select length'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isLengthOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedLength(null);
-//                                 setIsLengthOpen(false);
-//                               }}
-//                             >
-//                               Select length
-//                             </div>
-//                             {sizeOptions.lengths?.map((length, idx) => (
-//                               <div
-//                                 key={idx}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedLength(length);
-//                                   setIsLengthOpen(false);
-//                                 }}
-//                               >
-//                                 {length.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Material</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsMaterialOpen(!isMaterialOpen)}
-//                         >
-//                           <span>{selectedMaterial?.label || 'Select material'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isMaterialOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedMaterial(null);
-//                                 setIsMaterialOpen(false);
-//                               }}
-//                             >
-//                               Select material
-//                             </div>
-//                             {materialOptions.map((material, idx) => (
-//                               <div
-//                                 key={idx}
-//                                 className="p-2 cursor-pointer hover:bg-gray-100"
-//                                 onClick={() => {
-//                                   setSelectedMaterial(material);
-//                                   setIsMaterialOpen(false);
-//                                 }}
-//                               >
-//                                 {material.label}
-//                               </div>
-//                             ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                       {selectedMaterial && (
-//                         <p className="text-sm text-gray-500 mt-1">
-//                           Available widths: {selectedMaterial.widths.join(', ')} mm
-//                         </p>
-//                       )}
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Mandatory Process</label>
-//                       <div className="relative">
-//                         <button
-//                           type="button"
-//                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                           onClick={() => setIsMandatoryProcessOpen(!isMandatoryProcessOpen)}
-//                         >
-//                           <span>{selectedMandatoryProcess?.label || 'Select mandatory process'}</span>
-//                           <svg
-//                             className="w-5 h-5 text-gray-400"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             viewBox="0 0 24 24"
-//                             xmlns="http://www.w3.org/2000/svg"
-//                           >
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                           </svg>
-//                         </button>
-//                         {isMandatoryProcessOpen && (
-//                           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                             <div
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setSelectedMandatoryProcess(null);
-//                                 setIsMandatoryProcessOpen(false);
-//                               }}
-//                             >
-//                               Select mandatory process
-//                             </div>
-//                             {mandatoryProcesses
-//                               .filter((process) => process.label !== 'Aplix Zipper')
-//                               .map((process, idx) => (
-//                                 <div
-//                                   key={idx}
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedMandatoryProcess(process);
-//                                     setIsMandatoryProcessOpen(false);
-//                                   }}
-//                                 >
-//                                   {process.label}
-//                                 </div>
-//                               ))}
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </motion.div>
-
-//               <motion.div className="mb-8" variants={itemVariants}>
-//                 <h2 className="text-2xl relative z-40 font-semibold text-gray-800 mb-4 flex items-center ">
-//                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
-//                   SKU Configuration
-//                 </h2>
-//                 <div className="bg-gray-50 p-6 rounded-xl">
-//                   <div className="mb-6">
-//                     <label className="block text-gray-700 font-medium mb-2">Number of SKUs</label>
-//                     <div className="relative w-full md:w-1/2">
-//                       <button
-//                         type="button"
-//                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                         onClick={() => setIsQuantityOpen(!isQuantityOpen)}
-//                       >
-//                         <span>{quantity || 'Select number of SKUs'}</span>
-//                         <svg
-//                           className="w-5 h-5 text-gray-400"
-//                           fill="none"
-//                           stroke="currentColor"
-//                           viewBox="0 0 24 24"
-//                           xmlns="http://www.w3.org/2000/svg"
-//                         >
-//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                         </svg>
-//                       </button>
-//                       {isQuantityOpen && (
-//                         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((sku) => (
-//                             <div
-//                               key={sku}
-//                               className="p-2 cursor-pointer hover:bg-gray-100"
-//                               onClick={() => {
-//                                 setQuantity(sku);
-//                                 setDesignNames(Array(sku).fill(''));
-//                                 setSelectedQuantities(Array(sku).fill(500));
-//                                 setIsQuantityOpen(false);
-//                               }}
-//                             >
-//                               {sku}
-//                             </div>
-//                           ))}
-//                         </div>
-//                       )}
-//                     </div>
-//                   </div>
-
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Design Names</label>
-//                       {[...Array(quantity)].map((_, index) => (
-//                         <div key={index} className="mb-3">
-//                           <input
-//                             type="text"
-//                             placeholder={`Design ${index + 1} name`}
-//                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none"
-//                             value={designNames[index] || ''}
-//                             onChange={(e) => {
-//                               const updated = [...designNames];
-//                               updated[index] = e.target.value;
-//                               setDesignNames(updated);
-//                             }}
-//                           />
-//                         </div>
-//                       ))}
-//                     </div>
-//                     <div>
-//                       <label className="block text-gray-700 font-medium mb-2">Quantity</label>
-//                       {[...Array(quantity)].map((_, index) => (
-//                         <div key={index} className="mb-3 relative">
-//                           <button
-//                             type="button"
-//                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                             onClick={() => {
-//                               const updated = [...isSkuQuantityOpen];
-//                               updated[index] = !updated[index];
-//                               setIsSkuQuantityOpen(updated);
-//                             }}
-//                           >
-//                             <span>{selectedQuantities[index] ? `${selectedQuantities[index]} Pcs` : 'Select quantity'}</span>
-//                             <svg
-//                               className="w-5 h-5 text-gray-400"
-//                               fill="none"
-//                               stroke="currentColor"
-//                               viewBox="0 0 24 24"
-//                               xmlns="http://www.w3.org/2000/svg"
-//                             >
-//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                             </svg>
-//                           </button>
-//                           {isSkuQuantityOpen[index] && (
-//                             <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                               {[500, 1000, 2000, 3000, 5000].map((qty) => (
-//                                 <div
-//                                   key={qty}
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     handleQuantityChange(index, qty);
-//                                     const updated = [...isSkuQuantityOpen];
-//                                     updated[index] = false;
-//                                     setIsSkuQuantityOpen(updated);
-//                                   }}
-//                                 >
-//                                   {qty} Pcs
-//                                 </div>
-//                               ))}
-//                             </div>
-//                           )}
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </motion.div>
-
-//               {(sealOptions.length > 0 || hangHoleOptions.length > 0 || pouchOpeningOptions.length > 0 || multiSelectOptions.length > 0) && (
-//                 <motion.div className="mb-8 relative z-30" variants={itemVariants}>
-//                   <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
-//                     <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">4</span>
-//                     Optional Processes
-//                   </h2>
-//                   <div className="bg-gray-50 p-6 rounded-xl space-y-6">
-//                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//                       {sealOptions.length > 0 && (
-//                         <div>
-//                           <label className="block text-gray-700 font-medium mb-2">Seal Type</label>
-//                           <div className="relative">
-//                             <button
-//                               type="button"
-//                               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                               onClick={() => setIsSealOpen(!isSealOpen)}
-//                             >
-//                               <span>{sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'Select seal type'}</span>
-//                               <svg
-//                                 className="w-5 h-5 text-gray-400"
-//                                 fill="none"
-//                                 stroke="currentColor"
-//                                 viewBox="0 0 24 24"
-//                                 xmlns="http://www.w3.org/2000/svg"
-//                               >
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                               </svg>
-//                             </button>
-//                             {isSealOpen && (
-//                               <div className="absolute z-0 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                                 <div
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedSeal('');
-//                                     setIsSealOpen(false);
-//                                   }}
-//                                 >
-//                                   Select seal type
-//                                 </div>
-//                                 {sealOptions.map((option) => (
-//                                   <div
-//                                     key={option.value}
-//                                     className="p-2 cursor-pointer hover:bg-gray-100"
-//                                     onClick={() => {
-//                                       setSelectedSeal(option.value);
-//                                       setIsSealOpen(false);
-//                                     }}
-//                                   >
-//                                     {option.label}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             )}
-//                           </div>
-//                         </div>
-//                       )}
-
-//                       {hangHoleOptions.length > 0 && (
-//                         <div>
-//                           <label className="block text-gray-700 font-medium mb-2">Hang Hole</label>
-//                           <div className="relative">
-//                             <button
-//                               type="button"
-//                               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                               onClick={() => setIsHangHoleOpen(!isHangHoleOpen)}
-//                             >
-//                               <span>{hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'Select hang hole'}</span>
-//                               <svg
-//                                 className="w-5 h-5 text-gray-400"
-//                                 fill="none"
-//                                 stroke="currentColor"
-//                                 viewBox="0 0 24 24"
-//                                 xmlns="http://www.w3.org/2000/svg"
-//                               >
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                               </svg>
-//                             </button>
-//                             {isHangHoleOpen && (
-//                               <div className="absolute z-0 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                                 <div
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedHangHole('');
-//                                     setIsHangHoleOpen(false);
-//                                   }}
-//                                 >
-//                                   Select hang hole
-//                                 </div>
-//                                 {hangHoleOptions.map((option) => (
-//                                   <div
-//                                     key={option.value}
-//                                     className="p-2 cursor-pointer hover:bg-gray-100"
-//                                     onClick={() => {
-//                                       setSelectedHangHole(option.value);
-//                                       setIsHangHoleOpen(false);
-//                                     }}
-//                                   >
-//                                     {option.label}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             )}
-//                           </div>
-//                         </div>
-//                       )}
-
-//                       {pouchOpeningOptions.length > 0 && selectedCategory && (
-//                         <div className={normalizedCategoryName === 'stand up pouch' ? 'hidden' : ''}>
-//                           <label className="block text-gray-700 font-medium mb-2">Pouch Opening</label>
-//                           <div className="relative">
-//                             <button
-//                               type="button"
-//                               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300 outline-none appearance-none bg-white flex justify-between items-center"
-//                               onClick={() => setIsPouchOpeningOpen(!isPouchOpeningOpen)}
-//                             >
-//                               <span>{pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'Select pouch opening'}</span>
-//                               <svg
-//                                 className="w-5 h-5 text-gray-400"
-//                                 fill="none"
-//                                 stroke="currentColor"
-//                                 viewBox="0 0 24 24"
-//                                 xmlns="http://www.w3.org/2000/svg"
-//                               >
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-//                               </svg>
-//                             </button>
-//                             {isPouchOpeningOpen && (
-//                               <div className="absolute z-0 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-//                                 <div
-//                                   className="p-2 cursor-pointer hover:bg-gray-100"
-//                                   onClick={() => {
-//                                     setSelectedPouchOpening('');
-//                                     setIsPouchOpeningOpen(false);
-//                                   }}
-//                                 >
-//                                   Select pouch opening
-//                                 </div>
-//                                 {pouchOpeningOptions.map((option) => (
-//                                   <div
-//                                     key={option.value}
-//                                     className="p-2 cursor-pointer hover:bg-gray-100"
-//                                     onClick={() => {
-//                                       setSelectedPouchOpening(option.value);
-//                                       setIsPouchOpeningOpen(false);
-//                                     }}
-//                                   >
-//                                     {option.label}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             )}
-//                           </div>
-//                         </div>
-//                       )}
-//                     </div>
-
-//                     {multiSelectOptions.length > 0 && (
-//                       <div>
-//                         <label className="block text-gray-700 font-medium mb-2">Additional Options</label>
-//                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//                           {multiSelectOptions.map((process) => (
-//                             <label
-//                               key={process.id}
-//                               className="flex items-center space-x-3 text-gray-700"
-//                             >
-//                               <input
-//                                 type="checkbox"
-//                                 value={process.id}
-//                                 checked={selectedMultiProcesses.includes(process.id)}
-//                                 onChange={() => handleMultiProcessChange(process.id)}
-//                                 className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
-//                               />
-//                               <span>{process.name}</span>
-//                             </label>
-//                           ))}
-//                         </div>
-//                       </div>
-//                     )}
-//                   </div>
-//                 </motion.div>
-//               )}
-//             </div>
-//           </motion.div>
-//         </motion.div>
-
-//         <motion.div className="lg:w-1/4" variants={itemVariants}>
-//           <div className="sticky top-16">
-//             <div className="bg-gray-50 rounded-xl p-6 mb-6">
-//               <motion.div
-//                 className="flex justify-center"
-//                 whileHover={{ scale: 1.05 }}
-//                 transition={{ duration: 0.3 }}
-//               >
-//                 <div className="relative h-40 w-48">
-//                   {selectedCategory && categories.length > 0 ? (
-//                     <Image
-//                       src={categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL}
-//                       alt={categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouch Image'}
-//                       layout="fill"
-//                       objectFit="contain"
-//                       className="rounded-lg"
-//                       onError={(e) => {
-//                         e.target.src = DEFAULT_IMAGE_URL;
-//                       }}
-//                     />
-//                   ) : (
-//                     <div className="h-full w-full bg-gray-200 rounded-lg flex items-center justify-center">
-//                       <span className="text-gray-500 text-sm">Select a category</span>
-//                     </div>
-//                   )}
-//                 </div>
-//               </motion.div>
-//               <div className="mt-6 text-center text-gray-600 text-sm">
-//                 <p>
-//                   {selectedWidth && selectedLength
-//                     ? `${selectedWidth.label} x ${selectedLength.label}`
-//                     : 'Not selected'}
-//                 </p>
-//                 <p>
-//                   {selectedMaterial?.label || 'Not selected'} •{' '}
-//                   {selectedMandatoryProcess?.label || 'Not selected'}
-//                 </p>
-//                 <p>
-//                   Category: {categories.find((cat) => cat.id === selectedCategory)?.name || 'Not selected'}
-//                 </p>
-//               </div>
-//             </div>
-
-//             <motion.div
-//               className="bg-white rounded-xl shadow-lg p-6 border border-gray-100"
-//               whileHover={{ y: -5 }}
-//               transition={{ duration: 0.3 }}
-//             >
-//               <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Quotation</h3>
-//               <div className="mb-4 text-center text-gray-600 text-sm">
-//                 <p>{jobName || 'Your Custom Pouch'}</p>
-//               </div>
-//               <hr className="my-4 border-gray-200" />
-
-//               <div className="space-y-3">
-//                 <div className="flex justify-between">
-//                   <span className="text-gray-600">Total Quantity</span>
-//                   <span className="font-medium">{totalQuantity || 0} pcs</span>
-//                 </div>
-//                 {costData && (
-//                   <div className="flex justify-between font-bold text-lg text-gray-800">
-//                     <span>Total</span>
-//                     <span>₹{Number(costData.total_cost).toFixed(2)}</span>
-//                   </div>
-//                 )}
-//               </div>
-
-//               <div className="mt-8 space-y-4">
-//                 {isQuotationGenerated ? (
-//                   <motion.button
-//                     className="w-full py-3 px-4 font-medium rounded-lg bg-[#103b60] text-white hover:bg-[#0a2b47] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#103b60]"
-//                     whileHover={{ scale: 1.02 }}
-//                     whileTap={{ scale: 0.98 }}
-//                     onClick={handleAddToCart}
-//                   >
-//                     Add to Cart
-//                   </motion.button>
-//                 ) : (
-//                   <motion.button
-//                     className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
-//                       }`}
-//                     whileHover={{ scale: isQuotationLoading ? 1 : 1.02 }}
-//                     whileTap={{ scale: isQuotationLoading ? 1 : 0.98 }}
-//                     onClick={handleRequestQuotation}
-//                     disabled={isQuotationLoading}
-//                   >
-//                     {isQuotationLoading ? 'Generating...' : 'Request Quotation'}
-//                   </motion.button>
-//                 )}
-//               </div>
-//             </motion.div>
-//           </div>
-//         </motion.div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Configuration;
 
 
 
@@ -4321,7 +1436,7 @@ export default Configuration;
 //   // Login to get a fresh token on every page refresh
 //   const loginForThirdParty = useCallback(async (retries = 3) => {
 //     setToken(null); // Clear existing token in state
-
+  
 //     for (let attempt = 1; attempt <= retries; attempt++) {
 //       try {
 //         // Ideally, move this to a secure backend API
@@ -4336,7 +1451,7 @@ export default Configuration;
 //             ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
 //           }),
 //         });
-
+  
 //         const result = await response.json();
 //         if (result.status && result.data?.token) {
 //           const newToken = result.data.token;
@@ -4516,19 +1631,19 @@ export default Configuration;
 
 //   useEffect(() => {
 //     let isMounted = true;
-
+  
 //     const initialize = async () => {
 //       setLoading(true);
 //       setError(null);
 //       setIsAuthLoading(true);
-
+  
 //       if (!user) {
 //         router.push('/login');
 //         setIsAuthLoading(false);
 //         setLoading(false);
 //         return;
 //       }
-
+  
 //       // Fetch a new token on every page refresh
 //       const authToken = await loginForThirdParty();
 //       if (!authToken && isMounted) {
@@ -4537,7 +1652,7 @@ export default Configuration;
 //         setLoading(false);
 //         return;
 //       }
-
+  
 //       if (isMounted) {
 //         const [productSuccess, categorySuccess] = await Promise.all([
 //           fetchProductData(authToken),
@@ -4547,15 +1662,15 @@ export default Configuration;
 //           setError('Failed to load product or category data.');
 //         }
 //       }
-
+  
 //       if (isMounted) {
 //         setIsAuthLoading(false);
 //         setLoading(false);
 //       }
 //     };
-
+  
 //     initialize();
-
+  
 //     return () => {
 //       isMounted = false;
 //     };
@@ -4606,17 +1721,17 @@ export default Configuration;
 //   const handleRequestQuotation = async () => {
 //     setIsQuotationLoading(true);
 //     setError(null);
-
+  
 //     try {
 //       // Always fetch a fresh token for critical actions
 //       const authToken = await loginForThirdParty();
 //       if (!authToken) throw new Error('Authentication token is missing.');
-
+  
 //       if (!jobName) throw new Error('Project name is required');
 //       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
 //       if (!selectedMaterial) throw new Error('Material is required');
 //       if (!selectedMandatoryProcess) throw new Error('Mandatory process is required');
-
+  
 //       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
 //       const normalizedCategoryName = categoryName?.trim().toLowerCase();
 //       const optionalProcessIds = [
@@ -4625,7 +1740,7 @@ export default Configuration;
 //         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
 //         ...selectedMultiProcesses,
 //       ].filter(Boolean);
-
+  
 //       const payload = {
 //         formData: {
 //           job_name: jobName || 'Untitled Project',
@@ -4652,7 +1767,7 @@ export default Configuration;
 //         printingTypeId: '8',
 //         customerId: '26176',
 //       };
-
+  
 //       const response = await fetch(
 //         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
 //         {
@@ -4665,7 +1780,7 @@ export default Configuration;
 //           body: JSON.stringify(payload),
 //         }
 //       );
-
+  
 //       const result = await response.json();
 //       if (result.status && result.data?.costing_data?.length > 0) {
 //         setCostData(result.data.costing_data[0]);
@@ -5564,7 +2679,7 @@ export default Configuration;
 // };
 
 // export default Configuration;
-
+  
 
 
 

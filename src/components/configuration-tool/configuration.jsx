@@ -624,23 +624,6 @@ const Configuration = () => {
     [optionalProcesses, selectedSeal, radiusSealId]
   );
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Selected Category ID:', selectedCategory);
-    console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
-    console.log('Normalized Category Name:', normalizedCategoryName);
-    console.log('Pouch Opening Options:', pouchOpeningOptions);
-    console.log('Gusset Options:', gussetOptions);
-    if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
-      console.warn('Warning: "Radius Seal" not found in optionalProcesses');
-    }
-    if (!multiSelectOptions.some((p) => p.name === 'Round Corner') && selectedSeal === radiusSealId) {
-      console.warn('Warning: "Round Corner" not found in optionalProcesses when Radius Seal is selected');
-    }
-    if (normalizedCategoryName === 'stand up pouch' && pouchOpeningOptions.length > 0) {
-      console.warn('Warning: Pouch Opening options should not be defined for Stand Up Pouch category');
-    }
-  }
-
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-6">
       <div className="h-10 bg-gray-200 rounded w-3/4 mx-auto"></div>

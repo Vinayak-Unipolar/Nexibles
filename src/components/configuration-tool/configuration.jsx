@@ -687,7 +687,7 @@ const Configuration = () => {
       <div className="flex flex-col lg:flex-row justify-center mx-auto gap-8">
         <div className="lg:w-2/3">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div className="p-8">
+            <div className="p-6">
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
@@ -806,7 +806,7 @@ const Configuration = () => {
                     <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Width
-                        <span className="text-xs text-gray-500 ml-1">
+                        <span className="text-xs text-red-400 ml-1">
                           (Min : {product.minimum_width || 'N/A'} mm - Max : {product.maximum_width || 'N/A'} mm)
                         </span>
                       </label>
@@ -863,7 +863,7 @@ const Configuration = () => {
                     <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Length
-                        <span className="text-xs text-gray-500 ml-1">
+                        <span className="text-xs text-red-400 ml-1">
                           (Min : {product.minimum_length || 'N/A'} mm - Max : {product.maximum_length || 'N/A'} mm)
                         </span>
                       </label>

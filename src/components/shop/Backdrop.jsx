@@ -29,9 +29,9 @@ export default function Backdrop() {
               className="object-fill"
             />
             {/* Title Overlay */}
-            <div className="absolute top-12 left-0 right-0 flex justify-center items-start pt-4 z-10">
+            <div className="absolute top-14 left-0 right-0 flex justify-center items-start pt-4 z-10">
               <div className="py-2 px-4 text-center">
-                <h1 className="text-xs md:text-[5.5vw] text-white">
+                <h1 className="text-xs md:text-[5vw] text-white">
                   <span className="font-[200] tracking-wider">SHOP</span>{" "}
                   <span className="font-[1000]">NEXICLASSIC</span>{" "}
                   <span className="font-[200] tracking-wider">POUCHES</span>

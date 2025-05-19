@@ -193,32 +193,32 @@ const Configuration = () => {
 
           const materials = Array.isArray(targetProduct.pouch_media)
             ? targetProduct.pouch_media.map((m) => ({
-                value: m.id,
-                label: m.media_title,
-                widths: m.media_widths ? m.media_widths.split(',') : [],
-              }))
+              value: m.id,
+              label: m.media_title,
+              widths: m.media_widths ? m.media_widths.split(',') : [],
+            }))
             : [];
           setMaterialOptions(materials);
           setSelectedMaterial(materials[0] || null);
 
           const mandatory = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
-                .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
-                .map((p) => ({
-                  value: p.id,
-                  label: p.process_name,
-                }))
+              .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
+              .map((p) => ({
+                value: p.id,
+                label: p.process_name,
+              }))
             : [];
           setMandatoryProcesses(mandatory);
           setSelectedMandatoryProcess(mandatory[0] || null);
 
           const optional = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
-                .filter((p) => p.optional && !p.mandatory_any_one)
-                .map((p) => ({
-                  id: p.id,
-                  name: p.process_name,
-                }))
+              .filter((p) => p.optional && !p.mandatory_any_one)
+              .map((p) => ({
+                id: p.id,
+                name: p.process_name,
+              }))
             : [];
           setOptionalProcesses(optional);
 
@@ -590,8 +590,8 @@ const Configuration = () => {
     () =>
       normalizedCategoryName !== 'stand up pouch'
         ? optionalProcesses
-            .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
-            .map((p) => ({ value: p.id, label: p.name }))
+          .filter((p) => ['Pouch Opening Top', 'Pouch Opening Bottom'].includes(p.name))
+          .map((p) => ({ value: p.id, label: p.name }))
         : [],
     [normalizedCategoryName, optionalProcesses]
   );
@@ -609,23 +609,6 @@ const Configuration = () => {
         .map((p) => ({ id: p.id, name: p.name })),
     [optionalProcesses, selectedSeal, radiusSealId]
   );
-
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Selected Category ID:', selectedCategory);
-    console.log('Category Name:', categories.find((cat) => cat.id === selectedCategory)?.name || '');
-    console.log('Normalized Category Name:', normalizedCategoryName);
-    console.log('Pouch Opening Options:', pouchOpeningOptions);
-    console.log('Gusset Options:', gussetOptions);
-    if (!sealOptions.some((s) => s.label === 'Radius Seal')) {
-      console.warn('Warning: "Radius Seal" not found in optionalProcesses');
-    }
-    if (!multiSelectOptions.some((p) => p.name === 'Round Corner') && selectedSeal === radiusSealId) {
-      console.warn('Warning: "Round Corner" not found in optionalProcesses when Radius Seal is selected');
-    }
-    if (normalizedCategoryName === 'stand up pouch' && pouchOpeningOptions.length > 0) {
-      console.warn('Warning: Pouch Opening options should not be defined for Stand Up Pouch category');
-    }
-  }
 
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-6">
@@ -728,6 +711,24 @@ const Configuration = () => {
                   Pouch Specifications
                 </h2>
                 <div className="bg-gray-50 p-6 rounded-xl">
+                  {/* Display Min/Max Width and Length */}
+                  {/* {product && (
+                    <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">Size Constraints for {categories.find((cat) => cat.id === selectedCategory)?.name || 'Selected Category'}</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Width Range:</span> {product.minimum_width || 'N/A'} mm - {product.maximum_width || 'N/A'} mm
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Length Range:</span> {product.minimum_length || 'N/A'} mm - {product.maximum_length || 'N/A'} mm
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )} */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Category</label>
@@ -803,7 +804,12 @@ const Configuration = () => {
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Width</label>
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Width
+                        <span className="text-xs text-gray-500 ml-1">
+                          (Min : {product.minimum_width || 'N/A'} mm - Max : {product.maximum_width || 'N/A'} mm)
+                        </span>
+                      </label>
                       <div className="relative">
                         <button
                           type="button"
@@ -832,25 +838,35 @@ const Configuration = () => {
                             >
                               Select width
                             </div>
-                            {sizeOptions.widths?.map((width, idx) => (
-                              <div
-                                key={idx}
-                                className="p-2 cursor-pointer hover:bg-gray-100"
-                                onClick={() => {
-                                  setSelectedWidth(width);
-                                  setIsWidthOpen(false);
-                                }}
-                              >
-                                {width.label}
-                              </div>
-                            ))}
+                            {sizeOptions.widths
+                              .filter(
+                                (width, index, self) =>
+                                  index === self.findIndex((w) => w.value === width.value)
+                              )
+                              .map((width, idx) => (
+                                <div
+                                  key={idx}
+                                  className="p-2 cursor-pointer hover:bg-gray-100"
+                                  onClick={() => {
+                                    setSelectedWidth(width);
+                                    setIsWidthOpen(false);
+                                  }}
+                                >
+                                  {width.label}
+                                </div>
+                              ))}
                           </div>
                         )}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Length (mm)</label>
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Length
+                        <span className="text-xs text-gray-500 ml-1">
+                          (Min : {product.minimum_length || 'N/A'} mm - Max : {product.maximum_length || 'N/A'} mm)
+                        </span>
+                      </label>
                       <input
                         type="number"
                         placeholder={`Enter length (${product?.minimum_length || '0'}-${product?.maximum_length || '0'} mm)`}

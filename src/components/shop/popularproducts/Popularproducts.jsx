@@ -53,7 +53,7 @@ export default function PopularProducts() {
   };
 
   return (
-    <div className="py-8 bg-white md:py-12 lg:py-16">
+    <div className="py-2 bg-white md:py-4">
       <div className="container px-4 mx-auto">
         <h2 className="md:text-3xl text-2xl font-bold text-center text-[#333] mb-8 md:mb-12 ">
           Explore Custom Pouches

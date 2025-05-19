@@ -141,12 +141,6 @@ export default function Login() {
               setTimeout(checkGtag, 100);
             } else {
               console.warn('Google gtag is not defined after timeout. Conversion not tracked.');
-              // Fallback: Log to server
-              fetch(`${APIURL}/api/track-failure`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'gtag', eventId }),
-              }).catch((err) => console.error('Failed to log tracking failure:', err));
             }
           };
           checkGtag();
@@ -168,12 +162,6 @@ export default function Login() {
           fbq('track', 'Subscribe', { eventID: eventId });
         } else {
           console.warn('Facebook fbq is not defined. Conversion not tracked.');
-          // Fallback: Log to server
-          fetch(`${APIURL}/api/track-failure`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'fbq', eventId }),
-          }).catch((err) => console.error('Failed to log tracking failure:', err));
         }
 
         console.log('Conversion event tracked with ID:', eventId);

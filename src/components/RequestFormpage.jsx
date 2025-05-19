@@ -25,7 +25,7 @@ function RequestFormPage() {
     packageBuyingHistory: "",
     projectDescription: "",
     requestSampleKit: false,
-    gst_in: "", 
+    gst_in: "",
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -552,40 +552,92 @@ function RequestFormPage() {
       setSubmitStatus(`Failed: ${error.message}`);
     }
   };
-
 const handleSubmit = (e) => {
   e.preventDefault();
   if (formData.requestSampleKit && !termsAccepted) {
     setSubmitStatus("Please accept the Terms and Conditions.");
     return;
   }
-  
-   const now = new Date();
+
+  // Generate event ID
+  const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const year = now.getFullYear();
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
   const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
-  
-  // Format: Quote_ddmmyyyyminutessseconds
   const eventId = `Quote_${day}${month}${year}${minutes}${seconds}${milliseconds}`;
-  
-  // Track conversions on both platforms with the same event ID
-  // Google Ads conversion tracking
-  gtag('event', 'conversion', {
-    'send_to': 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
-    'transaction_id': eventId,
-    'event_callback': function() {
-      console.log('Google conversion tracked successfully');
-    }
+
+  // Function to wait for gtag to load (up to 10 seconds)
+  const waitForGtag = (callback, timeout = 10000) => {
+    console.log('Checking for gtag...');
+    const start = Date.now();
+    const checkGtag = () => {
+      if (typeof window.gtag === 'function') {
+        console.log('gtag found, executing callback');
+        callback();
+      } else if (Date.now() - start < timeout) {
+        console.log('gtag not found, retrying... (elapsed: ' + (Date.now() - start) + 'ms)');
+        setTimeout(checkGtag, 100);
+      } else {
+        console.warn('Google gtag is not defined after timeout. Conversion not tracked. Possible ad blocker interference.');
+        // Fallback: Log the event to your server for manual tracking
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/log-conversion`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'API-Key': process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify({
+            event: 'conversion',
+            send_to: 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
+            transaction_id: eventId,
+            timestamp: new Date().toISOString(),
+          }),
+        })
+          .then(() => console.log('Fallback conversion logged to server'))
+          .catch((err) => console.error('Failed to log fallback conversion:', err));
+      }
+    };
+    checkGtag();
+  };
+
+  // Function to wait for fbq to load (up to 10 seconds)
+  const waitForFbq = (callback, timeout = 10000) => {
+    console.log('Checking for fbq...');
+    const start = Date.now();
+    const checkFbq = () => {
+      if (typeof window.fbq === 'function') {
+        console.log('fbq found, executing callback');
+        callback();
+      } else if (Date.now() - start < timeout) {
+        console.log('fbq not found, retrying...');
+        setTimeout(checkFbq, 100);
+      } else {
+        console.warn('Facebook fbq is not defined after timeout. Conversion not tracked.');
+      }
+    };
+    checkFbq();
+  };
+
+  // Track Google Ads Conversion
+  waitForGtag(() => {
+    window.gtag('event', 'conversion', {
+      send_to: 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
+      transaction_id: eventId,
+      event_callback: () => {
+        console.log('Google conversion tracked successfully');
+      },
+    });
   });
-  
-  // Meta/Facebook conversion tracking
-  fbq('trackCustom', 'RequestQuote', {
-    eventID: eventId
+
+  // Track Meta/Facebook Conversion
+  waitForFbq(() => {
+    window.fbq('trackCustom', 'RequestQuote', { eventID: eventId });
+    console.log('Facebook conversion tracked successfully');
   });
-  
+
   console.log('Quote conversion event tracked with ID:', eventId);
 
   const emailData = {
@@ -618,12 +670,12 @@ const handleSubmit = (e) => {
       visiting_card: null,
       additional_comments: formData.projectDescription,
       category: formData.category,
-      gst_in: formData.gst_in || ""
+      gst_in: formData.gst_in || "",
     };
 
     console.log("Submitting leadData:", leadData);
 
-    // First save the lead data
+    // Save the lead data and send email
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
       method: "POST",
       headers: {
@@ -632,31 +684,29 @@ const handleSubmit = (e) => {
       },
       body: JSON.stringify(leadData),
     })
-      .then((response) => {
+      .then(async (response) => {
+        const data = await response.json();
         if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.message || "Network response was not ok");
-          });
+          throw new Error(data.message || "Network response was not ok");
         }
-        return response.json();
+        return data;
       })
-      .then((data) => {
-        return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
+      .then(() =>
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "API-Key": process.env.NEXT_PUBLIC_API_KEY,
           },
           body: JSON.stringify(emailData),
-        });
-      })
-      .then((emailResponse) => {
+        })
+      )
+      .then(async (emailResponse) => {
+        const emailData = await emailResponse.json();
         if (!emailResponse.ok) {
-          return emailResponse.json().then((emailError) => {
-            throw new Error(emailError.error || "Failed to send email");
-          });
+          throw new Error(emailData.error || "Failed to send email");
         }
-        return emailResponse.json();
+        return emailData;
       })
       .then(() => {
         setSubmitStatus("Form submitted successfully!");

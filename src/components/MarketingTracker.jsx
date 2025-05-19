@@ -34,7 +34,7 @@ function MarketingTracker({ metaPixelId }) {
       });
       const result = await response.json();
       if (response.ok) {
-        console.log('Meta event sent:', result);
+        //console.log('Meta event sent:', result);
       } else {
         console.error('Meta event error:', result);
       }

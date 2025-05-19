@@ -12,6 +12,7 @@ import { store, persistor } from '../redux/store/store';
 import ServerLayout from './server-layout';
 import Whatsapp from '@/components/Whatsapp';
 import SettingsButton from '@/components/SettingsButton'; 
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 export default function RootLayout({ children }) {
   return (
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
             <TextInputProvider>
               <div className="relative min-h-screen">
                 {children}
+                      <GoogleAnalytics />
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

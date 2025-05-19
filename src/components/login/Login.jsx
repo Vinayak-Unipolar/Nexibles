@@ -132,6 +132,9 @@ function Login() {
                     console.warn('Meta Pixel not initialized');
                 }
 
+                //google tag conversion
+                
+
                 // Reset user details
                 setUserDetails({
                     customerId: "",

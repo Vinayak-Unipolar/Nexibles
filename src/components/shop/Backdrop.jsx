@@ -26,7 +26,7 @@ export default function Backdrop() {
               src={`${process.env.NEXT_PUBLIC_CDN_URL}/NexiClassic_Banner.webp`}
               alt="Backdrop"
               fill
-              className="object-contain"
+              className="object-fill"
             />
             {/* Title Overlay */}
             <div className="absolute top-12 left-0 right-0 flex justify-center items-start pt-4 z-10">

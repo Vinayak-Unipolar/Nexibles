@@ -53,7 +53,7 @@ export default function PopularProducts() {
   };
 
   return (
-    <div className="py-8 bg-white md:py-12 lg:py-16">
+    <div className="py-2 bg-white md:py-4">
       <div className="container px-4 mx-auto">
         <h2 className="md:text-3xl text-2xl font-bold text-center text-[#333] mb-8 md:mb-12 ">
           Explore Custom Pouches
@@ -88,13 +88,13 @@ export default function PopularProducts() {
                       <div className="flex justify-center items-center gap-2 flex-wrap">
                         <Link
                           href={`/category/${category.cat_url}`}
-                          className="px-4 py-1.5 text-xs font-medium rounded border border-black hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
+                          className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
                         >
                           Details
                         </Link>
                         <button
                           onClick={() => handleOpenModal(category.name)}
-                          className="px-4 py-1.5 text-xs font-medium rounded border border-black bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
+                          className="px-4 py-1.5 text-xs font-medium rounded bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
                         >
                           Get Quote
                         </button>

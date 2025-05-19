@@ -295,7 +295,7 @@ function RequestFormPage() {
           throw new Error("Failed to fetch categories");
         }
         const data = await response.json();
-        console.log("Fetched categories:", data);
+        //console.log("Fetched categories:", data);
         if (Array.isArray(data.data)) {
           setCategories(data.data);
         } else {

@@ -251,7 +251,6 @@ const Configuration = () => {
     }
   }, []);
 
-
   const fetchGussetData = useCallback(async (authToken, productId, retries = 3) => {
     if (!authToken || !productId) {
       setError('Authentication token or product ID is missing.');
@@ -758,6 +757,24 @@ const Configuration = () => {
                   Pouch Specifications
                 </h2>
                 <div className="bg-gray-50 p-6 rounded-xl">
+                  {/* Display Min/Max Width and Length */}
+                  {/* {product && (
+                    <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">Size Constraints for {categories.find((cat) => cat.id === selectedCategory)?.name || 'Selected Category'}</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Width Range:</span> {product.minimum_width || 'N/A'} mm - {product.maximum_width || 'N/A'} mm
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Length Range:</span> {product.minimum_length || 'N/A'} mm - {product.maximum_length || 'N/A'} mm
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )} */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-gray-700 font-medium mb-2">Category</label>
@@ -833,7 +850,12 @@ const Configuration = () => {
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Width</label>
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Width
+                        <span className="text-sm text-gray-500 ml-1">
+                          (Min : {product.minimum_width || 'N/A'} mm - Max : {product.maximum_width || 'N/A'} mm)
+                        </span>
+                      </label>
                       <div className="relative">
                         <button
                           type="button"
@@ -885,7 +907,12 @@ const Configuration = () => {
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Length (mm)</label>
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Length
+                        <span className="text-sm text-gray-500 ml-1">
+                          (Min : {product.minimum_length || 'N/A'} mm - Max : {product.maximum_length || 'N/A'} mm)
+                        </span>
+                      </label>
                       <input
                         type="number"
                         placeholder={`Enter length (${product?.minimum_length || '0'}-${product?.maximum_length || '0'} mm)`}

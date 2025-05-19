@@ -134,7 +134,7 @@ const Home = () => {
           );
           setData(filterCategory);
         } else {
-          console.error('Failed to fetch categories:', data.error);
+          console.errorzz('Failed to fetch categories:', data.error);
         }
       } catch (error) {
         console.error('Error fetching data:', error);

@@ -209,7 +209,7 @@ export default function StatsAndTestimonials() {
         transition={{ duration: 0.6 }}
       >
         <motion.h2
-          className="text-center font-bold text-[1.5rem] sm:text-2xl md:text-4xl lg:text-4xl leading-tight tracking-tight mt-8 mb-4 sm:mt-10 sm:mb-6 text-black"
+          className="text-center font-bold md:text-3xl text-2xl leading-tight tracking-tight mt-8 mb-4 sm:mt-10 sm:mb-6 text-black"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}

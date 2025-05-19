@@ -71,7 +71,7 @@ function MarketingTracker({ metaPixelId }) {
         setTimeout(() => tryGtag(attempts - 1, delay), delay);
         return false;
       }
-      console.log(`Sending conversion: ${sendTo}`);
+      //console.log(`Sending conversion: ${sendTo}`);
       window.gtag('event', 'conversion', {
         send_to: sendTo,
         event_callback: () => {
@@ -113,7 +113,7 @@ function MarketingTracker({ metaPixelId }) {
       window.fbq('init', metaPixelId);
       window.fbq('track', 'PageView');
       // Uncomment to trigger Meta Purchase event on mount
-      // sendMetaPurchaseEvent();
+      sendMetaPurchaseEvent();
     }
 
     // Google Tag Initialization

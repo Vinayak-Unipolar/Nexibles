@@ -580,8 +580,10 @@ const handleSubmit = (e) => {
     return;
   }
   
+  //meta tag conversion
   const eventID = `Quote_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   fbq('trackCustom', 'RequestQuote', { eventID });
+//google tag conversion
 
   const emailData = {
     clientName: `${formData.firstName} ${formData.lastName}`.trim(),

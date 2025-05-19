@@ -144,7 +144,7 @@ const Shop = () => {
             Trusted by 1500+ Brands
           </h2>
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-100/20 to-purple-100/20 rounded-xl" />
+            <div className="absolute inset-0  rounded-xl" />
             <div className="relative">
               <BrandLogosSection />
             </div>

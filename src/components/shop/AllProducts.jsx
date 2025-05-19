@@ -72,13 +72,13 @@ export default function NexiblesProducts() {
           - On phone (below md): 2 columns per row
           - On md and above: 4 fixed columns (220px each)
         */}
-        <div className="grid grid-cols-2 md:grid-cols-[repeat(4,220px)] gap-2 justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-[repeat(4,220px)] gap-6 justify-center">
           {!loading ? (
             <AnimatePresence>
               {products.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  className="border border-gray-200 rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
+                  className="rounded-xl p-4 flex flex-col hover:bg-[#ECE0CC] transition-colors duration-200"
                   custom={index}
                   initial="hidden"
                   animate="visible"

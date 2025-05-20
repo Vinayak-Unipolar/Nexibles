@@ -119,7 +119,6 @@ export default function PCCardDetails({ productDetails }) {
       toast.warning(`Quantity must be at least ${minimumQuantity}`);
       return;
     }
-
     const unitPrice = productPrice || productDetails.product.price;
     const totalPrice = unitPrice * qtyToUse;
 
@@ -136,6 +135,15 @@ export default function PCCardDetails({ productDetails }) {
       skuCount: selectedSKU,
       material: productDetails.product.material,
     };
+
+    const eventId = `cart_${productDetails.product.id}`;
+    fbq('track', 'AddToCart', {
+      content_ids: [productDetails.product.id],
+      content_type: 'product',
+      value: totalPrice,
+      currency: 'INR',
+      eventID: eventId
+    });
 
     dispatch(addToCart(productToAdd));
     const existingItem = cartItems.find(item => item.id === productToAdd.id);

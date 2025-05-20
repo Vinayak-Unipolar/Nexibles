@@ -3,7 +3,6 @@
 import React, { useEffect, useCallback } from 'react';
 
 function MarketingTracker({ metaPixelId }) {
-  // Meta Pixel: Send Purchase Event (Optional)
   const sendMetaPurchaseEvent = async () => {
     const eventData = {
       event_name: 'Purchase',
@@ -34,7 +33,7 @@ function MarketingTracker({ metaPixelId }) {
       });
       const result = await response.json();
       if (response.ok) {
-        console.log('Meta event sent:', result);
+        //console.log('Meta event sent:', result);
       } else {
         console.error('Meta event error:', result);
       }
@@ -75,7 +74,7 @@ function MarketingTracker({ metaPixelId }) {
       window.gtag('event', 'conversion', {
         send_to: sendTo,
         event_callback: () => {
-          console.log(`Conversion sent successfully: ${sendTo}`);
+          //console.log(`Conversion sent successfully: ${sendTo}`);
           if (typeof url !== 'undefined') {
             window.location = url;
           }

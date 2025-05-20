@@ -2,6 +2,7 @@
 'use client';
 
 import './globals.css';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion'; 
 import { AuthProvider } from '@/utils/authContext';
 import { ToastContainer } from 'react-toastify';

@@ -939,7 +939,7 @@ const handleSubmit = (e) => {
                   value={formData.projectDescription}
                   onChange={handleChange}
                   placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                  className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
+                  className="w-full h-20 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                 ></textarea>
               </div>
 
@@ -973,14 +973,13 @@ const handleSubmit = (e) => {
                   <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                     <div>
                       <label className="block text-sm font-medium text-black sm:text-md">
-                        Order Quantity (optional)
+                        Order Quantity 
                       </label>
                       <select
                         name="orderQuantity"
                         value={formData.orderQuantity}
                         onChange={handleChange}
                         className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                        required
                       >
                         <option value="" className="text-gray-900">
                           Please select...
@@ -998,14 +997,13 @@ const handleSubmit = (e) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-black sm:text-md">
-                        Package Buying History (optional)
+                        Package Buying History 
                       </label>
                       <select
                         name="packageBuyingHistory"
                         value={formData.packageBuyingHistory}
                         onChange={handleChange}
                         className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                        required
                       >
                         <option value="" className="text-gray-900">
                           Please select...
@@ -1167,12 +1165,16 @@ const handleSubmit = (e) => {
                       </span>
                       <span className="text-md font-semibold text-black">
                         I agree to the{" "}
-                        <Link
-                          href="/terms-conditions"
-                          className="underline text-blue-600 hover:text-blue-800"
-                        >
-                          Terms and Conditions
+                        <Link href="/terms-conditions" legacyBehavior>
+                          <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline text-blue-600 hover:text-blue-800"
+                          >
+                            Terms and Conditions
+                          </a>
                         </Link>
+
                       </span>
                     </label>
                   </div>

@@ -987,7 +987,7 @@ const handleSubmit = (e) => {
                     value={formData.projectDescription}
                     onChange={handleChange}
                     placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                    className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
+                    className="w-full h-20 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
                   ></textarea>
                 </div>
 
@@ -1214,12 +1214,16 @@ const handleSubmit = (e) => {
                         </span>
                         <span className="text-md font-semibold text-black">
                           I agree to the{" "}
-                          <Link
-                            href="/terms-conditions"
-                            className="underline text-blue-600 hover:text-blue-800"
-                          >
-                            Terms and Conditions
+                         <Link href="/terms-conditions" legacyBehavior>
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline text-blue-600 hover:text-blue-800"
+                            >
+                              Terms and Conditions
+                            </a>
                           </Link>
+
                         </span>
                       </label>
                     </div>

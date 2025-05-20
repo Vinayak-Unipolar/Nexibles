@@ -219,7 +219,7 @@
   dependencies:
     "@floating-ui/utils" "^0.2.9"
 
-"@floating-ui/dom@^1.0.1":
+"@floating-ui/dom@^1.0.1", "@floating-ui/dom@^1.6.13":
   version "1.6.13"
   resolved "https://registry.npmjs.org/@floating-ui/dom/-/dom-1.6.13.tgz"
   integrity sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==
@@ -1327,7 +1327,7 @@ cssesc@^3.0.0:
   resolved "https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
-csstype@^3.0.2:
+csstype@^3.0.10, csstype@^3.0.2, csstype@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
@@ -2238,6 +2238,11 @@ glsl-noise@^0.0.0:
   version "0.0.0"
   resolved "https://registry.npmjs.org/glsl-noise/-/glsl-noise-0.0.0.tgz"
   integrity sha512-b/ZCF6amfAUb7dJM/MxRs7AetQEahYzJ8PtgfrmEdtw6uyGOr+ZSGtgjFm6mfsBkxJ4d2W7kg+Nlqzqvn3Bc0w==
+
+goober@^2.1.16:
+  version "2.1.16"
+  resolved "https://registry.npmjs.org/goober/-/goober-2.1.16.tgz"
+  integrity sha512-erjk19y1U33+XAMe1VTvIONHYoSqE4iS7BYUZfHaqeohLmnC0FdxEh7rQU+6MZ4OajItzjZFSRtVANrQwNq6/g==
 
 gopd@^1.0.1, gopd@^1.2.0:
   version "1.2.0"
@@ -3442,6 +3447,13 @@ potpack@^1.0.1:
   resolved "https://registry.npmjs.org/potpack/-/potpack-1.0.2.tgz"
   integrity sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ==
 
+preline@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/preline/-/preline-3.0.1.tgz"
+  integrity sha512-rwtpdYZPCJZaJ+kGDCegmId/xrxx4IZMo+l+YCTaqis/ponVyVMimQ6TxTYjHgdOTpIbI5A9xXMYROXT4Jbbbg==
+  dependencies:
+    "@floating-ui/dom" "^1.6.13"
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
@@ -3617,12 +3629,15 @@ react-composer@^5.0.3:
   dependencies:
     prop-types "^15.6.0"
 
-react-dom@^0.14.7:
-  version "0.14.10"
-  resolved "https://registry.npmjs.org/react-dom/-/react-dom-0.14.10.tgz"
-  integrity sha512-kDs8SWFb8Sry4NAplhpJbZEeAnTPir/m+s9s+lkdqA2a89BzmWGnEgGG/CfmhULjv1ogc4oHrjMfAvFNruT3jQ==
+react-devtools-core@^6.1.1:
+  version "6.1.2"
+  resolved "https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-6.1.2.tgz"
+  integrity sha512-ldFwzufLletzCikNJVYaxlxMLu7swJ3T2VrGfzXlMsVhZhPDKXA38DEROidaYZVgMAmQnIjymrmqto5pyfrwPA==
+  dependencies:
+    shell-quote "^1.6.1"
+    ws "^7"
 
-react-dom@^18.3.1:
+react-dom@*, react-dom@^0.14.0, "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", react-dom@^18, react-dom@^18.0.0, react-dom@^18.2.0, react-dom@^18.3.1, react-dom@>=16.13, react-dom@>=16.6.0, react-dom@>=16.8, react-dom@>=18, "react-dom@>=18 <19", react-dom@>=18.0.0:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz"
   integrity sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==
@@ -3648,6 +3663,14 @@ react-gradient-color-picker@^0.1.3:
     react "^0.14.7"
     react-colors-picker "^2.3.0"
     react-dom "^0.14.7"
+
+react-hot-toast@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/react-hot-toast/-/react-hot-toast-2.5.2.tgz"
+  integrity sha512-Tun3BbCxzmXXM7C+NI4qiv6lT0uwGh4oAfeJyNOjYUejTsm35mK9iCaYLGv8cBz9L5YxZLx/2ii7zsIwPtPUdw==
+  dependencies:
+    csstype "^3.1.3"
+    goober "^2.1.16"
 
 react-icons@^4.12.0:
   version "4.12.0"
@@ -3787,7 +3810,7 @@ react-tinymce@^0.4.0:
   dependencies:
     lodash "^3.9.3"
 
-react-toastify@^10.0.3:
+react-toastify@^10.0.6:
   version "10.0.6"
   resolved "https://registry.npmjs.org/react-toastify/-/react-toastify-10.0.6.tgz"
   integrity sha512-yYjp+omCDf9lhZcrZHKbSq7YMuK0zcYkDFTzfRFgTXkTFHZ1ToxwAonzA4JI5CxA91JpjFLmwEsZEgfYfOqI1A==
@@ -3814,7 +3837,14 @@ react-zoom-pan-pinch@^3.7.0:
   resolved "https://registry.npmjs.org/react-zoom-pan-pinch/-/react-zoom-pan-pinch-3.7.0.tgz"
   integrity sha512-UmReVZ0TxlKzxSbYiAj+LeGRW8s8LraAFTXRAxzMYnNRgGPsxCudwZKVkjvGmjtx7SW/hZamt69NUmGf4xrkXA==
 
-react@^0.14.7:
+react@*, react@^0.14.0, "react@^0.14.0 || ^15.0.0", "react@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18 || ^19", react@^18, react@^18.0, "react@^18.0 || ^19", react@^18.0.0, react@^18.2.0, react@^18.3.1, react@^19.0.0, "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=0.13.1, react@>=0.14.0, react@>=16.13, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=17.0, react@>=18, "react@>=18 <19", react@>=18.0, react@>=18.0.0, "react@16.8.0  || >=17.0.0 || >=18.0.0":
+  version "18.3.1"
+  resolved "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
+  integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
+  dependencies:
+    loose-envify "^1.1.0"
+
+react@^0.14.10, react@^0.14.7:
   version "0.14.10"
   resolved "https://registry.npmjs.org/react/-/react-0.14.10.tgz"
   integrity sha512-yxMw5aorZG4qsLVBfjae4wGFvd5708DhcxaXLJ3IOTgr1TCs8k9+ZheGgLGr5OfwWMhSahNbGvvoEDzrxVWouA==

@@ -495,15 +495,20 @@ function Login() {
 
               <div className="mt-6 text-xs text-center text-gray-500">
                 <p>
-                  By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
-                  <Link href="#" className="text-[#4F1E9B] hover:underline">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="#" className="text-[#4F1E9B] hover:underline">
-                    Privacy Policy
+                  By {isLogin ? 'logging in' : 'registering'}, you agree to our{' '}
+                  <Link href="/terms-conditions" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer" className="text-[#4F1E9B] hover:underline">
+                      Terms & Conditions
+                    </a>
+                  </Link>{' '}
+                  and{' '}
+                  <Link href="/privacy-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer" className="text-[#4F1E9B] hover:underline">
+                      Privacy Policy
+                    </a>
                   </Link>
                 </p>
+
               </div>
             </motion.div>
           </div>

@@ -1,111 +1,154 @@
 "use client";
-import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useAuth } from '@/utils/authContext';
-import { useRouter } from 'next/navigation';
-import Loader from '../comman/Loader';
-import { toast } from 'react-toastify';
-import ForgotPassword from './ForgotPassword';
-import { motion } from 'framer-motion';
+import Link from "next/link";
+import React, { useState, useEffect, useRef } from "react";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "@/utils/authContext";
+import { useRouter } from "next/navigation";
+import Loader from "../comman/Loader";
+import { toast } from "react-toastify";
+import ForgotPassword from "./ForgotPassword";
+import { motion } from "framer-motion";
+import ReCAPTCHA from "react-google-recaptcha";
 
-export default function Login() {
+function Login() {
+  const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const router = useRouter();
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const recaptchaRef = useRef(null);
+
+  const executeCaptcha = async () => {
+    if (recaptchaRef.current) {
+      try {
+        // Reset the reCAPTCHA before executing to ensure a fresh token
+        recaptchaRef.current.reset();
+        const token = await recaptchaRef.current.executeAsync();
+        setCaptchaToken(token);
+        return token; // Return the token for immediate use
+      } catch (error) {
+        console.error("reCAPTCHA execution error:", error);
+        toast.error("Failed to verify CAPTCHA. Please try again.");
+        return null;
+      }
+    }
+    return null;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // Execute CAPTCHA and wait for the token
+    const token = await executeCaptcha();
+    if (!token) {
+      toast.error("Please complete the CAPTCHA verification.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch(`${APIURL}/api/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-type": "application/json",
         },
         body: JSON.stringify({
           emailAddress: email,
           password: password,
+          captchaToken: token,
         }),
       });
       const data = await response.json();
-      if (data.status === 'success') {
+      if (data.status === "success") {
         const token = data.token;
         login(data.data);
-        toast.success('Login Successful');
-        router.back();
-        localStorage.setItem('token', token);
+        toast.success("Login Successful");
+        router.push("/");
+        localStorage.setItem("token", token);
       } else {
-        toast.error('Invalid Email or Password');
+        toast.error("Invalid Email or Password");
       }
     } catch (error) {
-      console.error('Login Error:', error);
-      toast.error('An error occurred during login');
+      console.log("Invalid Request", error);
+      toast.error("An error occurred during login");
     } finally {
       setLoading(false);
+      setCaptchaToken(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
     }
   };
 
   const [userDetails, setUserDetails] = useState({
-    customerId: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    cName: '',
-    gender: '',
-    houseno: '',
-    floor: '',
-    address: '',
-    address2: '',
-    landmark: '',
-    city: '',
-    prov: '',
-    zip: '',
-    country: '',
-    phone: '',
-    emailAddress: '',
-    mobile: '',
-    mobile2: '',
-    company: '',
-    title: '',
-    workPhone: '',
-    dateOfBirth: '',
-    anniversary: '',
-    newsletter: '',
-    ipaddress: '',
-    subsms: '',
-    addedDate: '',
-    addedBy: '',
-    refby: '',
-    datasource: '',
-    occupation: '',
-    designation: '',
-    contactpref: '',
-    pref: '',
-    activatedon: '',
-    securecode: '',
-    active: '',
-    password: '',
-    profImage: '',
+    customerId: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    cName: "",
+    gender: "",
+    houseno: "",
+    floor: "",
+    address: "",
+    address2: "",
+    landmark: "",
+    city: "",
+    prov: "",
+    zip: "",
+    country: "",
+    phone: "",
+    emailAddress: "",
+    mobile: "",
+    mobile2: "",
+    company: "",
+    title: "",
+    workPhone: "",
+    dateOfBirth: "",
+    anniversary: "",
+    newsletter: "",
+    ipaddress: "",
+    subsms: "",
+    addedDate: "",
+    addedBy: "",
+    refby: "",
+    datasource: "",
+    occupation: "",
+    designation: "",
+    contactpref: "",
+    pref: "",
+    activatedon: "",
+    securecode: "",
+    active: "",
+    password: "",
+    profImage: "",
   });
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
+    const token = await executeCaptcha();
+    if (!token) {
+      toast.error("Please complete the CAPTCHA verification.");
+      return;
+    }
+
     try {
       const response = await fetch(`${APIURL}/api/login/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userDetails),
+        body: JSON.stringify({
+          ...userDetails,
+          captchaToken: token,
+        }),
       });
 
       const data = await response.json();
@@ -117,94 +160,30 @@ export default function Login() {
           throw new Error(data.message || "Network response was not ok");
         }
       } else {
-        // Generate event ID
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");
         const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, "0");
         const minutes = String(now.getMinutes()).padStart(2, "0");
         const seconds = String(now.getSeconds()).padStart(2, "0");
         const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
+
         const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
 
-        const waitForGtag = (callback, timeout = 10000) => {
-          //console.log("Checking for gtag...");
-          const start = Date.now();
-          const checkGtag = () => {
-            if (typeof window.gtag === "function") {
-              //console.log("gtag found, executing callback");
-              callback();
-            } else if (Date.now() - start < timeout) {
-              //console.log("gtag not found, retrying... (elapsed: " + (Date.now() - start) + "ms)");
-              setTimeout(checkGtag, 100);
-            } else {
-              //console.warn("Google gtag is not defined after timeout. Conversion not tracked. Possible ad blocker interference.");
-            }
-          };
-          checkGtag();
-        };
-
-        const waitForFbq = (callback, timeout = 10000) => {
-          //console.log("Checking for fbq...");
-          const start = Date.now();
-          const checkFbq = () => {
-            if (typeof window.fbq === "function") {
-              //console.log("fbq found, executing callback");
-              callback();
-            } else if (Date.now() - start < timeout) {
-              //console.log("fbq not found, retrying...");
-              setTimeout(checkFbq, 100);
-            } else {
-              //console.warn("Facebook fbq is not defined after timeout. Conversion not tracked.");
-            }
-          };
-          checkFbq();
-        };
-
-        // Track Google Ads Conversion
-        waitForGtag(() => {
-          window.gtag("event", "conversion", {
-            send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
-            transaction_id: eventId,
-            event_callback: () => {
-              //console.log("Google conversion tracked successfully");
-            },
-          });
-        });
-
-        // Track Meta/Facebook Conversion
-        waitForFbq(() => {
-          window.fbq("track", "Subscribe", { eventID: eventId });
-          //console.log("Facebook conversion tracked successfully");
-        });
-
-        // console.log("Conversion event tracked with ID:", eventId);
-
-        // Automatically log in the user after successful registration
-        const loginResponse = await fetch(`${APIURL}/api/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        gtag("event", "conversion", {
+          send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
+          event_callback: function () {
+            console.log("Google conversion tracked successfully");
           },
-          body: JSON.stringify({
-            emailAddress: userDetails.emailAddress,
-            password: userDetails.password,
-          }),
+          transaction_id: eventId,
         });
 
-        const loginData = await loginResponse.json();
+        fbq("track", "Subscribe", {
+          eventID: eventId,
+        });
 
-        if (loginData.status === "success") {
-          const token = loginData.token;
-          login(loginData.data); // Update auth context
-          localStorage.setItem("token", token); // Store token in localStorage
-          toast.success("Registered and Logged In Successfully!");
-          router.back();
-        } else {
-          throw new Error("Automatic login failed after registration");
-        }
-
-        // Reset user details
+        console.log("Conversion event tracked with ID:", eventId);
         setUserDetails({
           customerId: "",
           firstName: "",
@@ -247,12 +226,17 @@ export default function Login() {
           password: "",
           profImage: "",
         });
+        setIsLogin(true);
+        toast.success("Registered Successfully! Please Login");
       }
     } catch (error) {
-      console.error("Registration Error:", error.message);
+      console.error("Error:", error.message);
       toast.error(error.message || "An error occurred during registration");
     } finally {
-      setLoading(false);
+      setCaptchaToken(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
     }
   };
 
@@ -260,18 +244,22 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
-  const togglePasswordVisibilityRegister = () => {
-    setShowPasswordRegister(!showPasswordRegister);
-  };
+  const togglePasswordVisibilityRegister = () => setShowPasswordRegister(!showPasswordRegister);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setCaptchaToken(null);
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset();
+    }
   };
 
-  // useEffect(() => {
-  //   // Debug gtag status on mount
-  //   console.log('gtag status on mount:', typeof window.gtag);
-  // }, []);
+  const handleCaptchaChange = (token) => {
+    console.log("reCAPTCHA token:", token); // Debug token generation
+    setCaptchaToken(token);
+  };
+
+  useEffect(() => {}, [userDetails]);
 
   return (
     <>
@@ -279,7 +267,6 @@ export default function Login() {
       <div className="flex items-center justify-center p-4 bg-white md:mt-24 my-12">
         <div className="w-full max-w-4xl overflow-hidden">
           <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
-            {/* Image Section - Hidden on mobile */}
             <motion.div
               className="hidden md:block md:w-1/2"
               initial={{ opacity: 0, x: -50 }}
@@ -295,7 +282,6 @@ export default function Login() {
               </div>
             </motion.div>
 
-            {/* Form Section */}
             <motion.div
               className="w-full p-6 overflow-y-auto bg-white md:p-8 md:w-1/2"
               initial={{ opacity: 0, x: 50 }}
@@ -304,8 +290,12 @@ export default function Login() {
             >
               {isLogin ? (
                 <>
-                  <h2 className="mb-4 mt-8 text-2xl font-bold text-center text-gray-900 md:text-3xl">Welcome back!</h2>
-                  <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Enter to get unlimited access to data & information.</p>
+                  <h2 className="mb-4 mt-8 text-2xl font-bold text-center text-gray-900 md:text-3xl">
+                    Welcome back!
+                  </h2>
+                  <p className="mb-6 text-sm text-center text-gray-600 md:text-base">
+                    Enter to get unlimited access to data & information.
+                  </p>
 
                   <form onSubmit={handleLogin} className="flex flex-col space-y-4">
                     <div className="relative">
@@ -323,7 +313,7 @@ export default function Login() {
                     <div className="relative">
                       <FaLock className="absolute text-gray-500 transform -translate-y-1/2 top-1/2 left-4" />
                       <input
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPassword ? "text" : "password"}
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
                         placeholder="Enter your password"
@@ -347,6 +337,20 @@ export default function Login() {
                       </div>
                     </div>
 
+                    <div className="flex justify-center">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LfyUSgrAAAAAFuAQCsbx09bMkZBF48ppurtz_5_"
+                        size="invisible"
+                        onChange={handleCaptchaChange}
+                        onError={(error) => console.log("reCAPTCHA Error:", error)}
+                        onExpired={() => {
+                          console.log("reCAPTCHA Expired");
+                          setCaptchaToken(null);
+                        }}
+                      />
+                    </div>
+
                     <button
                       type="submit"
                       className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50"
@@ -356,7 +360,7 @@ export default function Login() {
 
                     <div className="mt-4 text-center">
                       <p className="text-sm text-gray-600">
-                        {`Don't have an account?`}{' '}
+                        {`Don't have an account?`}{" "}
                         <span
                           onClick={toggleForm}
                           className="text-[#4F1E9B] cursor-pointer font-medium hover:underline"
@@ -369,8 +373,12 @@ export default function Login() {
                 </>
               ) : (
                 <>
-                  <h2 className="mb-4 text-2xl font-bold text-center text-gray-900 md:text-3xl">Create an account</h2>
-                  <p className="mb-6 text-sm text-center text-gray-600 md:text-base">Join us today and get access to all features</p>
+                  <h2 className="mb-4 text-2xl font-bold text-center text-gray-900 md:text-3xl">
+                    Create an account
+                  </h2>
+                  <p className="mb-6 text-sm text-center text-gray-600 md:text-base">
+                    Join us today and get access to all features
+                  </p>
 
                   <form onSubmit={handleRegister} className="space-y-4">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -421,7 +429,7 @@ export default function Login() {
                           Password*
                         </label>
                         <input
-                          type={showPasswordRegister ? 'text' : 'password'}
+                          type={showPasswordRegister ? "text" : "password"}
                           id="password"
                           required
                           className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg focus:border-[#103b60] focus:outline-none pr-10"
@@ -449,6 +457,20 @@ export default function Login() {
                       </label>
                     </div>
 
+                    <div className="flex justify-center">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LfyUSgrAAAAAFuAQCsbx09bMkZBF48ppurtz_5_"
+                        size="invisible"
+                        onChange={handleCaptchaChange}
+                        onError={(error) => console.log("reCAPTCHA Error:", error)}
+                        onExpired={() => {
+                          console.log("reCAPTCHA Expired");
+                          setCaptchaToken(null);
+                        }}
+                      />
+                    </div>
+
                     <button
                       type="submit"
                       className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50"
@@ -458,7 +480,7 @@ export default function Login() {
 
                     <div className="text-center">
                       <p className="text-sm text-gray-600">
-                        Already have an account?{' '}
+                        Already have an account?{" "}
                         <span
                           onClick={toggleForm}
                           className="text-[#4F1E9B] cursor-pointer font-medium hover:underline"
@@ -473,11 +495,11 @@ export default function Login() {
 
               <div className="mt-6 text-xs text-center text-gray-500">
                 <p>
-                  By {isLogin ? 'logging in' : 'registering'}, you agree to our{' '}
+                  By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
                   <Link href="#" className="text-[#4F1E9B] hover:underline">
                     Terms of Service
-                  </Link>{' '}
-                  and{' '}
+                  </Link>{" "}
+                  and{" "}
                   <Link href="#" className="text-[#4F1E9B] hover:underline">
                     Privacy Policy
                   </Link>
@@ -491,3 +513,5 @@ export default function Login() {
     </>
   );
 }
+
+export default Login;

@@ -96,6 +96,8 @@ const Navbar = () => {
     { name: "Pouches", path: "/all-category" },
     { name: "Industries", path: "/all-industry" },
     { name: "About Us", path: "/about" },
+    { name: "Contact Us", path: "/contact" },
+    { name: "Request For Sample Kit", path: "/request-sample-kit" },
   ];
 
   const logoVariants = {

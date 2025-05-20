@@ -87,7 +87,8 @@ export default function PopularProducts() {
                     <div className="flex justify-center space-x-2">
                       <div className="flex justify-center items-center gap-2 flex-wrap">
                         <Link
-                          href={`/category/${category.cat_url}`}
+                          // href={`/category/${category.cat_url}`}
+                         href={`/${category.cat_url}`}
                           className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
                         >
                           Details

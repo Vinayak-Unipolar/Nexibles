@@ -160,7 +160,7 @@ const StandUpPouches = () => {
       {/* Hero Section */}
       <section className="py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-center gap-14 items-center">
+          <div className="flex flex-col md:flex-row justify-center ml-20 items-center">
             <motion.div
               className="flex flex-col justify-center"
               initial="hidden"
@@ -168,7 +168,7 @@ const StandUpPouches = () => {
               variants={staggerChildren}
             >
               <motion.h1
-                className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight text-black"
+                className="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight text-black"
                 variants={fadeInUp}
               >
                 Stand Up Pouches

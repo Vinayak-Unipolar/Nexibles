@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +7,7 @@ const Whatsapp = () => {
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-
+  
   // Auto-show tooltip after 3 seconds to improve UX
   useEffect(() => {
     const timer = setTimeout(() => {

@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect, useState, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCartItems, removeCoupon } from '../../redux/store/cartSlice'; 
+import { updateCartItems, removeCoupon } from '../../redux/store/cartSlice';
 import Navbar from '@/components/shop/Navbar';
 import Footer from '@/components/shop/Footer';
 import OrderPlaced from '@/components/shipping/OrderPlaced';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
-import SearchParamsHandler from '../../components/Search'; 
+import SearchParamsHandler from '../../components/Search';
 const Orderplaced = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [defaultAddress, setDefaultAddress] = useState();
@@ -16,6 +16,7 @@ const Orderplaced = () => {
   const dispatch = useDispatch();
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
+const [purchaseTracked, setPurchaseTracked] = useState(false);
 
   const fetchOrderDetails = async () => {
     try {
@@ -23,12 +24,12 @@ const Orderplaced = () => {
 
       const customerId = user?.result?.customerId || user?.customerId;
       const authToken = typeof window !== "undefined" ? localStorage.getItem('token') : null;
-       const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
+      const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
 
-       if (!orderNo) {
-         router.push('/');
-         return;
-       }
+      if (!orderNo) {
+        router.push('/');
+        return;
+      }
 
       const response = await fetch(`${APIURL}/api/getorderdetails/${customerId}`, {
         method: 'GET',
@@ -44,9 +45,24 @@ const Orderplaced = () => {
 
         if (relevantOrder.length > 0) {
           setOrderDetails(relevantOrder);
-          dispatch(updateCartItems([])); 
+
+          if (!purchaseTracked && searchParams.get('status') === 'success') {
+            const orderTotal = parseFloat(relevantOrder[0].invamt) || 0;
+            const productIds = [relevantOrder[0].product_id];
+            const eventId = `purchase-${relevantOrder[0].orderNo}`;
+            fbq('track', 'Purchase', {
+              value: orderTotal,
+              currency: 'INR',
+              content_ids: productIds,
+              content_type: 'product',
+              eventID: eventId
+            });
+            setPurchaseTracked(true);
+          }
+
+          dispatch(updateCartItems([]));
           dispatch(removeCoupon());
-        } 
+        }
       } else {
         console.error("Failed to fetch order details:", data.message);
         router.push('/');

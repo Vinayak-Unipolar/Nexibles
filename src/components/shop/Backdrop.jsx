@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 
 export default function Backdrop() {
   return (
-    <div className="h-[20vh] md:h-[400px] mt-[4rem] overflow-hidden relative">
+    <div className="h-[20vh] md:h-[400px] mt-[2rem] overflow-hidden relative">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
@@ -23,19 +23,18 @@ export default function Backdrop() {
         <SwiperSlide>
           <div className="relative h-full">
             <Image
-              src={`${process.env.NEXT_PUBLIC_CDN_URL}/Types_of_pouch.webp`}
+              src={`${process.env.NEXT_PUBLIC_CDN_URL}/NexiClassic_Banner.webp`}
               alt="Backdrop"
               fill
-              className="object-cover"
+              className="object-fill"
             />
             {/* Title Overlay */}
-            <div className="absolute bottom-[10%] left-[1%] md:bottom-[10%] md:left-[2%] z-10">
-              <div className="border-b border-t border-gray-800 py-2 px-4">
-                <h1 className="text-xs md:text-5xl font-medium text-[#231f20]">
-                  TYPES OF
-                </h1>
-                <h1 className="text-sm md:text-6xl font-[1000] text-[#231f20] mt-2">
-                  POUCHES
+            <div className="absolute top-14 left-0 right-0 flex justify-center items-start pt-4 z-10">
+              <div className="py-2 px-4 text-center">
+                <h1 className="text-xs md:text-[5vw] text-white">
+                  <span className="font-[200] tracking-wider">SHOP</span>{" "}
+                  <span className="font-[1000]">NEXICLASSIC</span>{" "}
+                  <span className="font-[200] tracking-wider">POUCHES</span>
                 </h1>
               </div>
             </div>
@@ -58,7 +57,7 @@ export default function Backdrop() {
         @media (max-width: 768px) {
           .swiper-button-next,
           .swiper-button-prev {
-            display: none ;
+            display: none;
           }
         }
       `}</style>

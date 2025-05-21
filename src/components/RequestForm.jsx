@@ -717,7 +717,7 @@ const handleSubmit = (e) => {
         return emailResponse.json();
       })
       .then(() => {
-        setSubmitStatus("Form submitted successfully!");
+        toast.success("Form submitted successfully!");
         setFormData({
           firstName: "",
           lastName: "",
@@ -748,7 +748,7 @@ const handleSubmit = (e) => {
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
-        setSubmitStatus(`Failed to submit form: ${error.message}`);
+        toast.error(`Failed to submit form: ${error.message}`);
       });
   }
 };

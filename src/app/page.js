@@ -30,7 +30,7 @@ const Modal = ({ isOpen, onClose }) => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) {
-      showToast({
+      toast.success({
         type: 'error',
         title: 'Missing Email',
         message: 'Please enter a valid email.',
@@ -47,7 +47,7 @@ const Modal = ({ isOpen, onClose }) => {
         body: JSON.stringify({ email, origin: 'nexibles' }),
       });
       if (response.ok) {
-        showToast({
+        toast.successt({
           type: 'success',
           title: 'Subscription Successful',
           message: 'You’ve successfully subscribed!',
@@ -56,14 +56,14 @@ const Modal = ({ isOpen, onClose }) => {
         setEmail('');
         onClose();
       } else {
-        showToast({
+        toast.error({
           type: 'error',
           title: 'Subscription Failed',
           message: 'Please try again later.',
         });
       }
     } catch (error) {
-      showToast({
+      toast.error({
         type: 'error',
         title: 'Error Occurred',
         message: 'Something went wrong. Please try again.',

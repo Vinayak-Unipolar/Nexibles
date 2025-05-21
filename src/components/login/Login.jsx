@@ -129,33 +129,33 @@ function Login() {
     }
   };
 
-  const sendVerificationEmail = async (emailAddress, customerId = null) => {
-    try {
-      const apiUrl = userDetails.baseUrl || APIURL;
-      const response = await fetch(`${apiUrl}/api/send-verification-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          emailAddress,
-          customerId, // Optional, include if provided by registration response
-          captchaToken: captchaToken, // Reuse existing CAPTCHA token if needed
-        }),
-      });
+  // const sendVerificationEmail = async (emailAddress, customerId = null) => {
+  //   try {
+  //     const apiUrl = userDetails.baseUrl || APIURL;
+  //     const response = await fetch(`${apiUrl}/api/send-verification-email`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         emailAddress,
+  //         customerId, // Optional, include if provided by registration response
+  //         captchaToken: captchaToken, // Reuse existing CAPTCHA token if needed
+  //       }),
+  //     });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to send verification email");
-      }
-      toast.success("Verification email sent! Please check your inbox.");
-    } catch (error) {
-      console.error("Error sending verification email:", error.message);
-      // toast.warn(
-      //   "Registration successful, but failed to send verification email. Please contact support."
-      // );
-    }
-  };
+  //     const data = await response.json();
+  //     if (!response.ok) {
+  //       throw new Error(data.message || "Failed to send verification email");
+  //     }
+  //     toast.success("Verification email sent! Please check your inbox.");
+  //   } catch (error) {
+  //     console.error("Error sending verification email:", error.message);
+  //     // toast.warn(
+  //     //   "Registration successful, but failed to send verification email. Please contact support."
+  //     // );
+  //   }
+  // };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -182,16 +182,13 @@ function Login() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        if (data.status === "error" && data.message.includes("is already exist")) {
-          toast.error("Email already exists. Please use a different email.");
-        } else {
-          throw new Error(data.message || "Network response was not ok");
-        }
-      } else {
-        // Trigger verification email
-        await sendVerificationEmail(userDetails.emailAddress, data.customerId || null);
-
+      if (response.ok) {
+  if (data.status === "error" && data.message.includes("is already exist")) {
+    toast.error("Email already exists. Please use a different email.");
+  } else {
+    throw new Error(data.message || "Network response was not ok");
+  }
+}else {
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -265,6 +262,7 @@ function Login() {
     } catch (error) {
       console.error("Error:", error.message);
       toast.error(error.message || "An error occurred during registration");
+      
     } finally {
       setLoading(false);
       setCaptchaToken(null);

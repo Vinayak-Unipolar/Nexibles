@@ -179,7 +179,21 @@ const HomeContactForm = () => {
               Village, Navi Mumbai, Taloja Bypass Road, Palava,
               Maharashtra - 421306
             </address>
-            <p className="not-italic text-[#103b60] mb-4">+91 9821045101</p>
+            <div className="flex items-center gap-4 py-3">
+              <a 
+                href="tel:+919821045101" 
+                className="not-italic text-[#103b60] hover:text-blue-700 transition-colors"
+              >
+                +91 9821045101
+              </a>
+              <span className="text-gray-400">|</span>
+              <a 
+                href="mailto:customercare@artnext.in" 
+                className="not-italic text-[#103b60] hover:text-blue-700 transition-colors"
+              >
+                customercare@artnext.in
+              </a>
+            </div>
             <div>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7539.035794150817!2d73.1067997935791!3d19.1287944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c11f3bffffff%3A0x1ce9d9c9096061b9!2sNexibles!5e0!3m2!1sen!2sin!4v1747731813096!5m2!1sen!2sin"

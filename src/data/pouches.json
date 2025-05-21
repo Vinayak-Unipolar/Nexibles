@@ -1,0 +1,434 @@
+{
+  "categories": {
+"shape-pouch": {
+      "hero": {
+        "title": "Shape Pouches",
+        "subtitle": "Unique Designs for Maximum Impact",
+        "description": "Shape pouches can be die-cut into custom forms, enhancing brand identity and shelf impact.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for shape pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/shape-pouch.webp",
+            "alt": "Custom shape pouch",
+            "width": 130,
+            "height": 210
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "Shape Pouch Features",
+        "features": [
+          "Custom die-cut shapes",
+          "Excellent shelf appeal",
+          "Highly customizable for brand identity",
+          "Available with zippers, spouts, and more"
+        ],
+        "description": "Ideal for promotional items, kids’ snacks, and unique branding experiences.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/shape-pouch-feature.webp",
+          "alt": "Shape pouch features",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "20%", "left": "60%", "label": "Custom shape cut" },
+          { "top": "55%", "left": "50%", "label": "Flexible features" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of Shape Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },
+      "center-seal": {
+      "hero": {
+        "title": "Center Seal Pouches",
+        "subtitle": "Strong Sealing for Optimal Freshness",
+        "description": "Popular for snacks and powdered goods, center seal pouches offer maximum protection and branding space.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for center seal pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/center-seal-pouch.webp",
+            "alt": "Center seal pouch",
+            "width": 130,
+            "height": 210
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "Center Seal Pouch Features",
+        "features": [
+          "Central back seal for strength",
+          "Optional tear notch and zipper",
+          "Printable across the entire surface",
+          "Good for powders, snacks, and more"
+        ],
+        "description": "A reliable and cost-effective packaging solution.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/center-seal-pouch-feature.webp",
+          "alt": "Center seal pouch with features",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "20%", "left": "55%", "label": "Optional zipper" },
+          { "top": "40%", "left": "50%", "label": "Center seal strength" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of Center Seal Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },
+    "quad-seal-pouch": {
+      "hero": {
+        "title": "Quad Seal Pouches",
+        "subtitle": "Reinforced Structure for Bulk Packaging",
+        "description": "Quad seal pouches offer four-side sealing for improved strength and aesthetics. Ideal for large volumes and heavy products.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for quad seal pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/quad-seal-pouch.webp",
+            "alt": "Quad seal pouch",
+            "width": 130,
+            "height": 210
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "Quad Seal Pouch Features",
+        "features": [
+          "Four side panels for maximum strength",
+          "Large branding surface",
+          "Good for heavy or bulk products",
+          "Improved shelf presence"
+        ],
+        "description": "Perfect for pet food, grains, and premium products.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/quad-seal-pouch-feature.webp",
+          "alt": "Quad seal feature highlights",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "20%", "left": "55%", "label": "Reinforced edges" },
+          { "top": "50%", "left": "50%", "label": "Branding area" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of Quad Seal Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },
+    "center-seal-side-gusset": {
+      "hero": {
+        "title": "Center Seal Side Gusset Pouches",
+        "subtitle": "Efficient Packaging with Expandable Gussets",
+        "description": "Designed for maximum space utilization and excellent shelf appeal.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for center seal side gusset pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/center-seal-gusset.webp",
+            "alt": "Side gusset pouch",
+            "width": 130,
+            "height": 210
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "Side Gusset Pouch Features",
+        "features": [
+          "Expandable side gussets",
+          "Strong center back seal",
+          "Ideal for coffee, grains, and powders",
+          "Large printable area"
+        ],
+        "description": "A blend of capacity, strength, and branding flexibility.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/side-gusset-feature.webp",
+          "alt": "Side gusset pouch diagram",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "30%", "left": "60%", "label": "Expandable gusset" },
+          { "top": "70%", "left": "45%", "label": "Center back seal" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of Center Seal Side Gusset Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },    
+    "spout-pouch": {
+      "hero": {
+        "title": "Spout Pouches",
+        "subtitle": "Convenient Liquid Packaging with Leak-Proof Spouts",
+        "description": "Ideal for liquid products like juices, sauces, and gels. Spout pouches offer convenience, portability, and excellent product protection.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for spout pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/spout-pouch.webp",
+            "alt": "Spout pouch for liquid packaging",
+            "width": 130,
+            "height": 210
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative triangle pattern background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "Spout Pouch Features",
+        "features": [
+          "Leak-proof spout for liquid packaging",
+          "Customizable design and printing",
+          "Durable materials for transport safety",
+          "Reclosable for repeated use",
+          "Eco-friendly materials available"
+        ],
+        "description": "Perfect for beverages, oils, and semi-liquid products.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/spout-pouch-features.webp",
+          "alt": "Spout pouch feature diagram",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "10%", "left": "60%", "label": "Leak-proof spout" },
+          { "top": "40%", "left": "50%", "label": "Custom branding" },
+          { "top": "70%", "left": "55%", "label": "Durable material" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of Spout Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },
+    "stand-up-pouch": {
+      "hero": {
+        "title": "Stand Up Pouches",
+        "subtitle": "Custom Printed, Food-Grade, Retail-Ready Packaging",
+        "description": "Premium pouches for brands seeking high-performance, customizable packaging. Perfect for snacks, powders, and more.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for stand up pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/130x210+80%20SUP.webp",
+            "alt": "Stand up pouch with hang holes and zipper closure",
+            "width": 130,
+            "height": 210
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative triangle pattern background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "Stand Up Pouch Features",
+        "features": [
+          "Self-standing bottom gusset for optimal shelf display",
+          "High-barrier materials to protect against moisture, oxygen & UV",
+          "Zipper closure for resealability and extended freshness",
+          "Heat-sealable design for tamper evidence",
+          "Custom printing for full-color branding",
+          "Windows, spouts, tear notches, and euro slots"
+        ],
+        "description": "Suitable for dry and liquid products, with eco-friendly and recyclable options.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/160x240+90%20SUP.webp",
+          "alt": "Stand up pouch with feature pointers for hang holes, zipper, and more",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "5%", "left": "50%", "label": "Hang holes for display" },
+          { "top": "15%", "left": "65%", "label": "Zipper closure for resealability" },
+          { "top": "40%", "left": "45%", "label": "Custom printing for branding" },
+          { "top": "30%", "left": "35%", "label": "High-barrier materials for protection" },
+          { "top": "85%", "left": "50%", "label": "Self-standing bottom gusset" },
+          { "top": "60%", "left": "65%", "label": "Eco-friendly and recyclable options" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of Standup Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },
+    "3-side-seal-pouch": {
+      "hero": {
+        "title": "3 Side Seal Pouches",
+        "subtitle": "Compact, Versatile, and Customizable Packaging",
+        "description": "Ideal for single-serve products, samples, and more. Lightweight and durable.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for 3 side seal pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/3-side-seal-pouch.webp",
+            "alt": "3 side seal pouch with tear notches",
+            "width": 120,
+            "height": 200
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative triangle pattern background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "3 Side Seal Pouch Features",
+        "features": [
+          "Compact design for easy storage",
+          "Tear notches for easy opening",
+          "Custom printing for brand visibility",
+          "High-barrier materials for product protection",
+          "Lightweight and cost-effective",
+          "Eco-friendly options available"
+        ],
+        "description": "Perfect for snacks, cosmetics, and small products.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/3-side-seal-pouch-image.webp",
+          "alt": "3 side seal pouch with feature pointers",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "10%", "left": "55%", "label": "Tear notches" },
+          { "top": "20%", "left": "60%", "label": "Custom printing" },
+          { "top": "50%", "left": "40%", "label": "High-barrier materials" },
+          { "top": "70%", "left": "50%", "label": "Lightweight design" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of 3 Side Seal Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    },
+    "2-side-seal-pouch": {
+      "hero": {
+        "title": "2 Side Seal Pouches",
+        "subtitle": "Simple and Effective Packaging Solutions",
+        "description": "Designed for minimalistic packaging needs with high durability.",
+        "cta": {
+          "text": "Get a Quote",
+          "href": "/request-quote",
+          "ariaLabel": "Request a quote for 2 side seal pouches"
+        },
+        "images": {
+          "main": {
+            "src": "https://cdn.nexibles.com/product/95x80%202SS.webp",
+            "alt": "2 side seal pouch for minimalistic packaging",
+            "width": 110,
+            "height": 190
+          },
+          "background": {
+            "src": "/Triangle.webp",
+            "alt": "Decorative triangle pattern background",
+            "width": 600,
+            "height": 400
+          }
+        }
+      },
+      "featuresSection": {
+        "title": "2 Side Seal Pouch Features",
+        "features": [
+          "Simple and cost-effective design",
+          "High-strength sealing for durability",
+          "Customizable sizes and printing",
+          "Ideal for small products and samples",
+          "Recyclable materials available"
+        ],
+        "description": "Great for lightweight products with a focus on simplicity.",
+        "image": {
+          "src": "https://cdn.nexibles.com/product/95x80%202SS.webp",
+          "alt": "2 side seal pouch with feature pointers",
+          "width": 500,
+          "height": 300
+        },
+        "pointerPositions": [
+          { "top": "15%", "left": "50%", "label": "High-strength sealing" },
+          { "top": "25%", "left": "60%", "label": "Customizable printing" },
+          { "top": "60%", "left": "45%", "label": "Recyclable materials" }
+        ]
+      },
+      "productsSection": {
+        "title": "NexiClassic range of 2 Side Seal Pouches"
+      },
+      "brandsSection": {
+        "title": "Trusted by 1500+ Brands"
+      }
+    }
+  }
+}

@@ -783,13 +783,14 @@ const MyOrderHistory = () => {
                                                             <p><span className="font-semibold text-gray-700">Sku Count:</span> {order.skuCount}</p>
                                                             <p><span className="font-semibold text-gray-700">Material:</span> {order.material}</p>
                                                             <p><span className="font-semibold text-gray-700">Product Price (per item):</span> ₹{order.price}</p>
+                                                            <p><span className="font-semibold text-gray-700">SubTotal:</span> ₹{order.price * order.quantity}</p>
                                                             <p><span className="font-semibold text-gray-700">GST (18%):</span> ₹{order.tax}</p>
                                                              <p><span className="font-semibold text-gray-700">Shipping Fee:</span> ₹{order.orderCharge}</p>
                                                             <p><span className="font-semibold text-gray-700">Total:</span> ₹{order.invamt}</p>
                                                             {hasDiscount ? (
                                                                 <>
                                                                     <p><span className="font-semibold text-gray-700">Discount:</span> {order.discountPercentage}% (₹{order.discountAmount})</p>
-                                                                    <p className="text-green-600 font-semibold">Discounted Price: ₹{displayPrice}</p>
+                                                                    {/* <p className="text-green-600 font-semibold">Discounted Price: ₹{displayPrice}</p> */}
                                                                 </>
                                                             ) : (
                                                                 <p><span className="font-semibold text-gray-700">Total Price:</span> ₹{displayPrice}</p>

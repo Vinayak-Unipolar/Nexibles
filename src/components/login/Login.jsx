@@ -12,7 +12,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 function Login() {
   const token = process.env.NEXT_PUBLIC_API_KEY;
-  const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -24,65 +24,6 @@ function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [captchaToken, setCaptchaToken] = useState(null);
   const recaptchaRef = useRef(null);
-
-  const executeCaptcha = async () => {
-    if (recaptchaRef.current) {
-      try {
-        recaptchaRef.current.reset();
-        const token = await recaptchaRef.current.executeAsync();
-        setCaptchaToken(token);
-        return token;
-      } catch (error) {
-        console.error("reCAPTCHA execution error:", error);
-        toast.error("Failed to verify CAPTCHA. Please try again.");
-        return null;
-      }
-    }
-    return null;
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const token = await executeCaptcha();
-    if (!token) {
-      toast.error("Please complete the CAPTCHA verification.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch(`${APIURL}/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          emailAddress: email,
-          password: password,
-          captchaToken: token,
-        }),
-      });
-      const data = await response.json();
-      if (data.status === "success") {
-        const token = data.token;
-        login(data.data);
-        toast.success("Login Successful");
-        router.push("/");
-        localStorage.setItem("token", token);
-      } else {
-        toast.error("Invalid Email or Password");
-      }
-    } catch (error) {
-      console.log("Invalid Request", error);
-      toast.error("An error occurred during login");
-    } finally {
-      setLoading(false);
-      setCaptchaToken(null);
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
-    }
-  };
 
   const [userDetails, setUserDetails] = useState({
     customerId: "",
@@ -125,7 +66,96 @@ function Login() {
     active: "",
     password: "",
     profImage: "",
+    baseUrl: "https://nexiblesapp.barecms.com",
   });
+
+  const executeCaptcha = async () => {
+    if (recaptchaRef.current) {
+      try {
+        recaptchaRef.current.reset();
+        const token = await recaptchaRef.current.executeAsync();
+        setCaptchaToken(token);
+        return token;
+      } catch (error) {
+        console.error("reCAPTCHA execution error:", error);
+        toast.error("Failed to verify CAPTCHA. Please try again.");
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const token = await executeCaptcha();
+    if (!token) {
+      toast.error("Please complete the CAPTCHA verification.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(`${APIURL}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          emailAddress: email,
+          password: password,
+          captchaToken: token,
+        }),
+      });
+      const data = await response.json();
+      if (data.status === "success") {
+        const token = data.token;
+        login(data.data);
+        toast.success("Login Successful");
+        router.push("/");
+        localStorage.setItem("token", token);
+      } else {
+        toast.error("Invalid Email or Password");
+      }
+    } catch (error) {
+      console.error("Invalid Request", error);
+      toast.error("An error occurred during login");
+    } finally {
+      setLoading(false);
+      setCaptchaToken(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
+    }
+  };
+
+  // const sendVerificationEmail = async (emailAddress, customerId = null) => {
+  //   try {
+  //     const apiUrl = userDetails.baseUrl || APIURL;
+  //     const response = await fetch(`${apiUrl}/api/send-verification-email`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         emailAddress,
+  //         customerId, // Optional, include if provided by registration response
+  //         captchaToken: captchaToken, // Reuse existing CAPTCHA token if needed
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+  //     if (!response.ok) {
+  //       throw new Error(data.message || "Failed to send verification email");
+  //     }
+  //     toast.success("Verification email sent! Please check your inbox.");
+  //   } catch (error) {
+  //     console.error("Error sending verification email:", error.message);
+  //     // toast.warn(
+  //     //   "Registration successful, but failed to send verification email. Please contact support."
+  //     // );
+  //   }
+  // };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -136,8 +166,10 @@ function Login() {
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await fetch(`${APIURL}/api/login/create`, {
+      const apiUrl = userDetails.baseUrl || APIURL;
+      const response = await fetch(`${apiUrl}/api/login/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -150,13 +182,13 @@ function Login() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        if (data.status === "error" && data.message.includes("is already exist")) {
-          toast.error("Email already exists. Please use a different email.");
-        } else {
-          throw new Error(data.message || "Network response was not ok");
-        }
-      } else {
+      if (response.ok) {
+  if (data.status === "error" && data.message.includes("is already exist")) {
+    toast.error("Email already exists. Please use a different email.");
+  } else {
+    throw new Error(data.message || "Network response was not ok");
+  }
+}else {
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -222,14 +254,17 @@ function Login() {
           active: "",
           password: "",
           profImage: "",
+          baseUrl: "https://nexiblesapp.barecms.com",
         });
         setIsLogin(true);
-        toast.success("Registered Successfully! Please Login");
+        toast.success("Registered Successfully! Please check your email to verify your account.");
       }
     } catch (error) {
       console.error("Error:", error.message);
       toast.error(error.message || "An error occurred during registration");
+      
     } finally {
+      setLoading(false);
       setCaptchaToken(null);
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
@@ -252,7 +287,7 @@ function Login() {
   };
 
   const handleCaptchaChange = (token) => {
-    console.log("reCAPTCHA token:", token); // Debug token generation
+    console.log("reCAPTCHA token:", token);
     setCaptchaToken(token);
   };
 
@@ -280,7 +315,7 @@ function Login() {
             </motion.div>
 
             <motion.div
-              className="w-full p-6 overflow-y-auto bg-white md:p-8 md:w-1/2"
+              className="w-full p-6 overflow-y-auto overflow-hidden bg-white md:p-8 md:w-1/2"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
@@ -492,20 +527,19 @@ function Login() {
 
               <div className="mt-6 text-xs text-center text-gray-500">
                 <p>
-                  By {isLogin ? 'logging in' : 'registering'}, you agree to our{' '}
+                  By {isLogin ? "logging in" : "registering"}, you agree to our{" "}
                   <Link href="/terms-conditions" legacyBehavior>
                     <a target="_blank" rel="noopener noreferrer" className="text-[#4F1E9B] hover:underline">
                       Terms & Conditions
                     </a>
-                  </Link>{' '}
-                  and{' '}
+                  </Link>{" "}
+                  and{" "}
                   <Link href="/privacy-policy" legacyBehavior>
                     <a target="_blank" rel="noopener noreferrer" className="text-[#4F1E9B] hover:underline">
                       Privacy Policy
                     </a>
                   </Link>
                 </p>
-
               </div>
             </motion.div>
           </div>

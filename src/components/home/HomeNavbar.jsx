@@ -82,7 +82,7 @@ const HomeNavbar = () => {
                   )}
                 </li>
                 <li className="mb-6"><Link href="/about">About Nexibles</Link></li>
-                <li className="mb-6"><Link href="/contact">Contact Us</Link></li>
+                <li className="mb-6"><Link href="/contact-us">Contact Us</Link></li>
                 <li><Link href="/signin">Sign in</Link></li>
               </ul>
             </div>

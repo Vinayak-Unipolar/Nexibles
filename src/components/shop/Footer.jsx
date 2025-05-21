@@ -218,6 +218,7 @@ const Footer = () => {
                   Company
                 </motion.li>
                 <motion.li custom={1} variants={itemVariants}><Link href="/about">About</Link></motion.li>
+                <motion.li custom={1} variants={itemVariants}><Link href="/contact-us">Contact Us</Link></motion.li>
                 {/* <motion.li custom={2} variants={itemVariants}><Link href="/infrastructure">Infrastructure</Link></motion.li> */}
                 <motion.li custom={3} variants={itemVariants}><Link href="/all-industry">Industries</Link></motion.li>
                 <motion.li custom={3} variants={itemVariants}><Link href="/shop">Nexi Classic</Link></motion.li>
@@ -232,14 +233,31 @@ const Footer = () => {
                 <motion.li className="mb-4 font-bold uppercase" custom={0} variants={titleVariants}>
                   Customer Service
                 </motion.li>
-                <motion.li custom={1} variants={itemVariants}><Link href="/my-dashboard">My Account</Link></motion.li>
-                <motion.li custom={2} variants={itemVariants}><Link href="/privacy-policy">Privacy Policy</Link></motion.li>
-                <motion.li custom={3} variants={itemVariants}><Link href="/shipping-policy">Shipping Policy</Link></motion.li>
-                <motion.li custom={4} variants={itemVariants}><Link href="/return-and-refund-policy">Returns & Refund</Link></motion.li>
-                <motion.li custom={5} variants={itemVariants}><Link href="/terms-conditions">Terms & Conditions</Link></motion.li>
+                <motion.li custom={1} variants={itemVariants}>
+                  <Link href="/my-dashboard">My Account</Link>
+                </motion.li>
+                <motion.li custom={2} variants={itemVariants}>
+                  <Link href="/privacy-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                  </Link>
+                </motion.li>
+                <motion.li custom={3} variants={itemVariants}>
+                  <Link href="/shipping-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Shipping Policy</a>
+                  </Link>
+                </motion.li>
+                <motion.li custom={4} variants={itemVariants}>
+                  <Link href="/return-and-refund-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Returns & Refund</a>
+                  </Link>
+                </motion.li>
+                <motion.li custom={5} variants={itemVariants}>
+                  <Link href="/terms-conditions" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+                  </Link>
+                </motion.li>
               </motion.ul>
             </div>
-
           </div>
         </div>
       </footer>

@@ -1,6 +1,8 @@
-"use client";
+// RootLayout.jsx
+'use client';
 
 import './globals.css';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion'; 
 import { AuthProvider } from '@/utils/authContext';
 import { ToastContainer } from 'react-toastify';
@@ -15,6 +17,18 @@ import SettingsButton from '@/components/SettingsButton';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 export default function RootLayout({ children }) {
+  // Optional: If you're seeing multiple toast containers,
+  // ensure there's only one by checking for existing containers
+  useEffect(() => {
+    // Remove any duplicate toast containers that might exist
+    const toastContainers = document.querySelectorAll('.Toastify');
+    if (toastContainers.length > 1) {
+      for (let i = 1; i < toastContainers.length; i++) {
+        toastContainers[i].remove();
+      }
+    }
+  }, []);
+
   return (
     <ServerLayout>
       <Provider store={store}>

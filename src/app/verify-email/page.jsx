@@ -24,8 +24,7 @@ function VerifyEmail() {
       return;
     }
 
-    if (success) return; // Skip if already verified
-
+    if (success) return; 
     let isMounted = true;
 
     const verifyEmail = async () => {

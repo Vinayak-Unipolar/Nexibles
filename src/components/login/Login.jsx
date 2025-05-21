@@ -154,7 +154,7 @@ function Login() {
 
       if (!response.ok) {
         if (data.status === "error" && data.message.includes("is already exist")) {
-          toast.error("Email already exists. Please use a different email.");
+          toast.error("This email is already registered. Please log in or use a different email.");
         } else {
           throw new Error(data.message || "Network response was not ok");
         }
@@ -267,7 +267,14 @@ function Login() {
     <>
       {loading && <Loader btnLoad={false} />}
       <div className="flex items-center justify-center p-4 bg-white md:mt-24 my-12">
-        <div className="w-full max-w-4xl overflow-hidden">
+        <style>
+          {`
+            .overflow-y-auto::-webkit-scrollbar {
+              display: none;
+            }
+          `}
+        </style>
+        <div className="w-full max-w-4xl">
           <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
             <motion.div
               className="hidden md:block md:w-1/2"

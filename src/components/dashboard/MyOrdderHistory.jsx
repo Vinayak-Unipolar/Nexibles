@@ -41,7 +41,7 @@
 //                     throw new Error('Failed to fetch order history');
 //                 }
 //                 const data = await response.json();
-    
+
 //                 const filteredOrders = data.orderDetails.filter(order => order.origin === "Nexibles");
 //                 const sortedOrders = filteredOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
 //                 setOrders(sortedOrders);
@@ -50,7 +50,7 @@
 //                     downloadedState[order.orderNo] = false;
 //                 });
 //                 setKeylineDownloaded(downloadedState);
-    
+
 //             } catch (error) {
 //                 console.error('Error fetching order history:', error);
 //                 toast.error('Failed to fetch order history. Please try again.');
@@ -508,10 +508,10 @@ const MyOrderHistory = () => {
     const fetchOrderHistory = async () => {
         try {
             if (!user) return [];
-            
+
             let customerID = user?.result?.customerId || user?.customerId;
             const token = typeof window !== "undefined" ? localStorage.getItem('token') : null;
-            
+
             const response = await fetch(`${APIURL}/api/getorderdetails/${customerID}`, {
                 method: 'GET',
                 headers: {
@@ -519,15 +519,15 @@ const MyOrderHistory = () => {
                     'API-Key': `irrv211vui9kuwn11efsb4xd4zdkuq`
                 }
             });
-            
+
             if (!response.ok) {
                 throw new Error('Failed to fetch order history');
             }
-            
+
             const data = await response.json();
             const filteredOrders = data.orderDetails.filter(order => order.origin === "Nexibles");
             const sortedOrders = filteredOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
-            
+
             setOrders(sortedOrders);
             return sortedOrders;
         } catch (error) {
@@ -540,7 +540,7 @@ const MyOrderHistory = () => {
     const fetchOrderFiles = async () => {
         try {
             if (!customerId) return;
-            
+
             const token = localStorage.getItem('token');
             const response = await fetch(`${APIURL}/api/orderFile/byCustomer/${customerId}`, {
                 method: 'GET',
@@ -562,7 +562,7 @@ const MyOrderHistory = () => {
                     acc[orderId].push(file);
                     return acc;
                 }, {});
-                
+
                 setOrderFiles(filesByOrder);
                 const initialSkuUploads = {};
                 Object.keys(filesByOrder).forEach(orderNo => {
@@ -575,7 +575,7 @@ const MyOrderHistory = () => {
                         }));
                     });
                 });
-                
+
                 setSkuUploads(initialSkuUploads);
                 return filesByOrder;
             }
@@ -719,7 +719,7 @@ const MyOrderHistory = () => {
         for (let i = 1; i <= skuCount; i++) {
             skus.push({
                 sku_no: `SKU${i}`,
-                sku_name: `SKU Name ${i}`, 
+                sku_name: `SKU Name ${i}`,
             });
         }
         return skus;
@@ -782,10 +782,12 @@ const MyOrderHistory = () => {
                                                             <p><span className="font-semibold text-gray-700">Quantity:</span> {order.quantity}</p>
                                                             <p><span className="font-semibold text-gray-700">Sku Count:</span> {order.skuCount}</p>
                                                             <p><span className="font-semibold text-gray-700">Material:</span> {order.material}</p>
-
+                                                            <p><span className="font-semibold text-gray-700">Product Price (per item):</span> ₹{order.price}</p>
+                                                            <p><span className="font-semibold text-gray-700">GST (18%):</span> ₹{order.tax}</p>
+                                                             <p><span className="font-semibold text-gray-700">Shipping Fee:</span> ₹{order.orderCharge}</p>
+                                                            <p><span className="font-semibold text-gray-700">Total:</span> ₹{order.invamt}</p>
                                                             {hasDiscount ? (
                                                                 <>
-                                                                    <p><span className="font-semibold text-gray-700">Original Price:</span> ₹{order.price}</p>
                                                                     <p><span className="font-semibold text-gray-700">Discount:</span> {order.discountPercentage}% (₹{order.discountAmount})</p>
                                                                     <p className="text-green-600 font-semibold">Discounted Price: ₹{displayPrice}</p>
                                                                 </>

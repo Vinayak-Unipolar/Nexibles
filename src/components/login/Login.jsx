@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
 function Login() {
-  const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -99,7 +98,7 @@ function Login() {
       const response = await fetch(`${APIURL}/api/login`, {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           emailAddress: email,
@@ -109,16 +108,15 @@ function Login() {
       });
       const data = await response.json();
       if (data.status === "success") {
-        const token = data.token;
         login(data.data);
         toast.success("Login Successful");
         router.push("/");
-        localStorage.setItem("token", token);
+        localStorage.setItem("token", data.token);
       } else {
         toast.error("Invalid Email or Password");
       }
     } catch (error) {
-      console.error("Invalid Request", error);
+      console.error("Login error:", error);
       toast.error("An error occurred during login");
     } finally {
       setLoading(false);
@@ -126,34 +124,6 @@ function Login() {
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
       }
-    }
-  };
-
-  const sendVerificationEmail = async (emailAddress, customerId = null) => {
-    try {
-      const apiUrl = userDetails.baseUrl || APIURL;
-      const response = await fetch(`${apiUrl}/api/send-verification-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          emailAddress,
-          customerId, // Optional, include if provided by registration response
-          captchaToken: captchaToken, // Reuse existing CAPTCHA token if needed
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to send verification email");
-      }
-      toast.success("Verification email sent! Please check your inbox.");
-    } catch (error) {
-      console.error("Error sending verification email:", error.message);
-      // toast.warn(
-      //   "Registration successful, but failed to send verification email. Please contact support."
-      // );
     }
   };
 
@@ -189,9 +159,7 @@ function Login() {
           throw new Error(data.message || "Network response was not ok");
         }
       } else {
-        // Trigger verification email
-        await sendVerificationEmail(userDetails.emailAddress, data.customerId || null);
-
+        // Backend sends verification email automatically
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -263,7 +231,7 @@ function Login() {
         toast.success("Registered Successfully! Please check your email to verify your account.");
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Registration error:", error.message);
       toast.error(error.message || "An error occurred during registration");
     } finally {
       setLoading(false);

@@ -30,7 +30,7 @@ const Modal = ({ isOpen, onClose }) => {
   const handleSubscribe = async (e) => {
   e.preventDefault();
   if (!email) {
-    showToast({
+    toast.error({
       type: 'error',
       title: 'Missing Email',
       message: 'Please enter a valid email.',
@@ -59,7 +59,7 @@ const Modal = ({ isOpen, onClose }) => {
     });
 
     if (response.ok) {
-      showToast({
+      toast.success({
         type: 'success',
         title: 'Subscription Successful',
         message: 'You’ve successfully subscribed!',
@@ -68,14 +68,14 @@ const Modal = ({ isOpen, onClose }) => {
       setEmail('');
       onClose();
     } else {
-      showToast({
+      toast.error({
         type: 'error',
         title: 'Subscription Failed',
         message: 'Please try again later.',
       });
     }
   } catch (error) {
-    showToast({
+    toast.error({
       type: 'error',
       title: 'Error Occurred',
       message: 'Something went wrong. Please try again.',
@@ -166,14 +166,14 @@ const Home = () => {
           );
           setData(filterCategory);
         } else {
-          showToast({
+          toast.error({
             type: 'error',
             title: 'Fetch Failed',
             message: data?.error || 'Unable to fetch category data.',
           });
         }
       } catch (error) {
-        showToast({
+        toast.error({
           type: 'error',
           title: 'Fetch Error',
           message: 'Something went wrong while fetching categories.',

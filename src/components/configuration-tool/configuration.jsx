@@ -10,7 +10,6 @@ import Loader from '../comman/Loader';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Configuration = () => {
-  const { user } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -44,21 +43,23 @@ const Configuration = () => {
   const [isWidthOpen, setIsWidthOpen] = useState(false);
   const [isLengthOpen, setIsLengthOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
-  const [lengthError, setlengthError] =useState(false);
-  const [lengthInput, setlengthInput] =useState(false); 
+  const [lengthError, setLengthError] = useState(false);
+  const [lengthInput, setLengthInput] = useState(false);
   const [isMandatoryProcessOpen, setIsMandatoryProcessOpen] = useState(false);
   const [isQuantityOpen, setIsQuantityOpen] = useState(false);
   const [isSealOpen, setIsSealOpen] = useState(false);
   const [isHangHoleOpen, setIsHangHoleOpen] = useState(false);
   const [isPouchOpeningOpen, setIsPouchOpeningOpen] = useState(false);
   const [isSkuQuantityOpen, setIsSkuQuantityOpen] = useState(Array(quantity).fill(false));
-
+  const { user, logout } = useAuth();
   const NEXI_CDN_URL = process.env.NEXT_NEXIBLES_CDN_URL || "https://cdn.nexibles.com";
   const DEFAULT_IMAGE_URL = `${NEXI_CDN_URL}/category/default-image.jpg`;
-
+  // console.log(user?.result?.emailAddress);
+  // console.log(user?.result?.customerId);
+  // console.log(user);
   const loginForThirdParty = useCallback(async (retries = 3) => {
     setToken(null); // Clear existing token in state
-  
+
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
         const response = await fetch('https://nexiblesapp.barecms.com/proxy?r=user/authenticate', {
@@ -72,7 +73,7 @@ const Configuration = () => {
             ipaddress: process.env.NEXT_PUBLIC_IP_ADDRESS || '58.84.60.235',
           }),
         });
-  
+
         const result = await response.json();
         if (result.status && result.data?.token) {
           const newToken = result.data.token;
@@ -115,7 +116,7 @@ const Configuration = () => {
         if (data.status && Array.isArray(data.data)) {
           const uniqueCategories = [];
           const seenNames = new Set();
-          
+
           data.data.forEach((product) => {
             const productName = product.product_name?.trim();
             if (productName && !seenNames.has(productName.toLowerCase())) {
@@ -131,7 +132,6 @@ const Configuration = () => {
 
           setCategories(uniqueCategories);
           if (uniqueCategories.length > 0) {
-            // Set selectedCategory to the category with id '122' if it exists, otherwise first category
             const defaultCategory = uniqueCategories.find(cat => cat.id === '122') || uniqueCategories[0];
             setSelectedCategory(defaultCategory.id);
           }
@@ -150,7 +150,6 @@ const Configuration = () => {
     }
   }, []);
 
-  // Fetch product data based on categoryId
   const fetchProductData = useCallback(async (authToken, categoryId, retries = 3) => {
     if (!authToken) {
       setError('Authentication token is missing.');
@@ -171,7 +170,6 @@ const Configuration = () => {
 
         const data = await response.json();
         if (data.status && Array.isArray(data.data)) {
-          // Find product matching the categoryId
           const targetProduct = data.data.find((p) => p.id === categoryId);
           if (!targetProduct) throw new Error(`Product with ID ${categoryId} not found`);
 
@@ -239,11 +237,11 @@ const Configuration = () => {
 
           const zippers = Array.isArray(targetProduct.pouch_postpress)
             ? targetProduct.pouch_postpress
-                .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
-                .map((p) => ({
-                  value: p.id,
-                  label: p.process_name,
-                }))
+              .filter((p) => p.mandatory_any_one && p.process_name !== 'Aplix Zipper')
+              .map((p) => ({
+                value: p.id,
+                label: p.process_name,
+              }))
             : [];
           setZipperOptions(zippers);
 
@@ -263,25 +261,23 @@ const Configuration = () => {
   }, []);
 
   useEffect(() => {
-  if (!user) {
-    toast.warning('You need to be logged in to customize .', {
-      toastId: 'login-warning',
-    });
-    router.push('/login');
-    setIsAuthLoading(false);
-    setLoading(false);
-  }
-}, [user, router]);
+    if (!user) {
+      toast.warning('You need to be logged in to customize .', {
+        toastId: 'login-warning',
+      });
+      router.push('/login');
+      setIsAuthLoading(false);
+      setLoading(false);
+    }
+  }, [user, router]);
 
   useEffect(() => {
     let isMounted = true;
-  
+
     const initialize = async () => {
       setLoading(true);
       setError(null);
       setIsAuthLoading(true);
-  
-      // Fetch a new token on every page refresh
       const authToken = await loginForThirdParty();
       if (!authToken && isMounted) {
         setError('Authentication failed.');
@@ -289,31 +285,29 @@ const Configuration = () => {
         setLoading(false);
         return;
       }
-  
+
       if (isMounted) {
-        // Fetch categories first to set selectedCategory
         const categorySuccess = await fetchCategoryData(authToken);
         if (!categorySuccess) {
           window.location.reload();
           return;
         }
 
-        // Fetch product data using default ID '122' initially
         const productSuccess = await fetchProductData(authToken, '122');
         if (!productSuccess) {
           window.location.reload();
           return;
         }
       }
-  
+
       if (isMounted) {
         setIsAuthLoading(false);
         setLoading(false);
       }
     };
-  
+
     initialize();
-  
+
     return () => {
       isMounted = false;
     };
@@ -360,19 +354,38 @@ const Configuration = () => {
   };
 
   const totalQuantity = selectedQuantities.reduce((a, b) => a + b, 0);
+  const handleLengthInputChange = (value) => {
+    setLengthInput(value);
+    setLengthError('');
 
+    if (!value) return;
+
+    const numValue = parseInt(value);
+    if (isNaN(numValue) || numValue <= 0) {
+      setLengthError('Please enter a valid positive number');
+      return;
+    }
+
+    if (product) {
+      const minLength = parseInt(product.minimum_length);
+      const maxLength = parseInt(product.maximum_length);
+      if (numValue < minLength || numValue > maxLength) {
+        setLengthError(`Length must be between ${minLength} mm and ${maxLength} mm`);
+      }
+    }
+  };
   const handleRequestQuotation = async () => {
     setIsQuotationLoading(true);
     setError(null);
-  
+
     try {
       const authToken = await loginForThirdParty();
       if (!authToken) throw new Error('Authentication token is missing.');
-  
+
       if (!jobName) throw new Error('Project name is required');
       if (!selectedWidth || !selectedLength) throw new Error('Width and length are required');
       if (!selectedMaterial) throw new Error('Material is required');
-  
+
       const categoryName = categories.find((cat) => cat.id === selectedCategory)?.name;
       const normalizedCategoryName = categoryName?.trim().toLowerCase();
       const optionalProcessIds = [
@@ -381,8 +394,8 @@ const Configuration = () => {
         normalizedCategoryName !== 'stand up pouch' ? selectedPouchOpening : null,
         ...selectedMultiProcesses,
       ].filter(Boolean);
-  
-      const payload = {
+
+      const payloadForCost = {
         formData: {
           job_name: jobName || 'Untitled Project',
           quantity_one: totalQuantity.toString(),
@@ -404,12 +417,13 @@ const Configuration = () => {
           optional_process: optionalProcessIds,
           type: 'basic',
         },
-        productId: selectedCategory || '122', // Fallback to '122' if selectedCategory is empty
+        productId: selectedCategory || '122',
         printingTypeId: '8',
         customerId: '26176',
       };
-  
-      const response = await fetch(
+
+      // Step 1: Generate cost using the third-party API
+      const costResponse = await fetch(
         'https://nexiblesapp.barecms.com/proxy?r=flexible-pouch/save-requirement&press_id=82',
         {
           method: 'POST',
@@ -418,29 +432,77 @@ const Configuration = () => {
             Authorization: `Bearer ${authToken}`,
             Environment: 'frontdesk',
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payloadForCost),
         }
       );
-  
-      const result = await response.json();
-      if (result.status && result.data?.costing_data?.length > 0) {
-        setCostData(result.data.costing_data[0]);
+
+      const costResult = await costResponse.json();
+      if (costResult.status && costResult.data?.costing_data?.length > 0) {
+        setCostData(costResult.data.costing_data[0]);
         setIsQuotationGenerated(true);
+
+        // Step 2: Prepare payload for saving to your API
+        const additionalOptions = {};
+        multiSelectOptions.forEach((option) => {
+          if (selectedMultiProcesses.includes(option.id)) {
+            additionalOptions[option.name.toLowerCase().replace(' ', '_')] = true;
+          } else {
+            additionalOptions[option.name.toLowerCase().replace(' ', '_')] = false;
+          }
+        });
+
+        const payloadForSave = {
+          customerID: user?.result?.customerId, 
+          project_name: jobName || 'Untitled Project',
+          email: user?.result?.emailAddress, 
+          category: categoryName,
+          width: selectedWidth?.value || 0,
+          length: selectedLength?.value || 0,
+          material: selectedMaterial?.label || 'Not specified',
+          mandatory_process: selectedMandatoryProcess?.label || 'Not specified',
+          number_of_skus: quantity || 0,
+          skus: designNames.map((design, index) => ({
+            design_name: design || `Design ${index + 1}`,
+            quantity: selectedQuantities[index] || 500,
+          })),
+          seal_type: sealOptions.find((opt) => opt.value === selectedSeal)?.label || 'None',
+          hang_hole: hangHoleOptions.find((opt) => opt.value === selectedHangHole)?.label || 'None',
+          pouch_opening: pouchOpeningOptions.find((opt) => opt.value === selectedPouchOpening)?.label || 'None',
+          additional_options: additionalOptions,
+          total_quantity: totalQuantity || 0,
+          total_cost: Number(costResult.data.costing_data[0].total_cost) || 0,
+        };
+
+        // Step 3: Save the configuration to your API
+        const saveResponse = await fetch('https://nexiblesapp.barecms.com/api/configuration', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(payloadForSave),
+        });
+
+        const saveResult = await saveResponse.json();
+        if (saveResult.status) {
+          toast.success('Configuration and cost saved successfully!');
+        } else {
+          throw new Error(saveResult.message || 'Failed to save configuration.');
+        }
       } else {
-        throw new Error(result.message || 'Failed to generate quotation.');
+        throw new Error(costResult.message || 'Failed to generate quotation.');
       }
     } catch (err) {
-      console.error('Quotation error:', err);
+      console.error('Error:', err);
       const errorMessage = err.message.includes('token')
         ? 'Authentication token is invalid or expired. Please try again.'
         : err.message;
       setError(errorMessage);
-      toast.error(`Failed to generate quotation: ${errorMessage}`);
+      toast.error(`Failed to process request: ${errorMessage}`);
     } finally {
       setIsQuotationLoading(false);
     }
   };
-
   const handleAddToCart = () => {
     if (!costData || !product) {
       toast.error('Cannot add to cart: Missing cost or product data');
@@ -1273,9 +1335,8 @@ const Configuration = () => {
                   </button>
                 ) : (
                   <button
-                    className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
-                      isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
-                    }`}
+                    className={`w-full py-3 px-4 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${isQuotationLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'
+                      }`}
                     onClick={handleRequestQuotation}
                     disabled={isQuotationLoading}
                   >

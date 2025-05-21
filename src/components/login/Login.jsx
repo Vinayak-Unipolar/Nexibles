@@ -28,11 +28,10 @@ function Login() {
   const executeCaptcha = async () => {
     if (recaptchaRef.current) {
       try {
-        // Reset the reCAPTCHA before executing to ensure a fresh token
         recaptchaRef.current.reset();
         const token = await recaptchaRef.current.executeAsync();
         setCaptchaToken(token);
-        return token; // Return the token for immediate use
+        return token;
       } catch (error) {
         console.error("reCAPTCHA execution error:", error);
         toast.error("Failed to verify CAPTCHA. Please try again.");
@@ -44,8 +43,6 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Execute CAPTCHA and wait for the token
     const token = await executeCaptcha();
     if (!token) {
       toast.error("Please complete the CAPTCHA verification.");
@@ -174,7 +171,7 @@ function Login() {
         gtag("event", "conversion", {
           send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
           event_callback: function () {
-            console.log("Google conversion tracked successfully");
+            //console.log("Google conversion tracked successfully");
           },
           transaction_id: eventId,
         });
@@ -183,7 +180,7 @@ function Login() {
           eventID: eventId,
         });
 
-        console.log("Conversion event tracked with ID:", eventId);
+        //console.log("Conversion event tracked with ID:", eventId);
         setUserDetails({
           customerId: "",
           firstName: "",

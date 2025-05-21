@@ -28,48 +28,60 @@ const Modal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email) {
+  e.preventDefault();
+  if (!email) {
+    showToast({
+      type: 'error',
+      title: 'Missing Email',
+      message: 'Please enter a valid email.',
+    });
+    return;
+  }
+
+  try {
+    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipData = await ipResponse.json();
+    const ipAddress = ipData.ip;
+    const createdAt = new Date().toISOString().slice(0, 19);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'API-Key': token,
+      },
+      body: JSON.stringify({
+        email,
+        origin: 'Nexibles',
+        ip_address: ipAddress,
+        created_at: createdAt,
+      }),
+    });
+
+    if (response.ok) {
+      showToast({
+        type: 'success',
+        title: 'Subscription Successful',
+        message: 'You’ve successfully subscribed!',
+      });
+      trackSignUpForm();
+      setEmail('');
+      onClose();
+    } else {
       showToast({
         type: 'error',
-        title: 'Missing Email',
-        message: 'Please enter a valid email.',
-      });
-      return;
-    }
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          'API-Key': token,
-        },
-        body: JSON.stringify({ email, origin: 'nexibles' }),
-      });
-      if (response.ok) {
-        showToast({
-          type: 'success',
-          title: 'Subscription Successful',
-          message: 'You’ve successfully subscribed!',
-        });
-        trackSignUpForm();
-        setEmail('');
-        onClose();
-      } else {
-        showToast({
-          type: 'error',
-          title: 'Subscription Failed',
-          message: 'Please try again later.',
-        });
-      }
-    } catch (error) {
-      showToast({
-        type: 'error',
-        title: 'Error Occurred',
-        message: 'Something went wrong. Please try again.',
+        title: 'Subscription Failed',
+        message: 'Please try again later.',
       });
     }
-  };
+  } catch (error) {
+    showToast({
+      type: 'error',
+      title: 'Error Occurred',
+      message: 'Something went wrong. Please try again.',
+    });
+  }
+};
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

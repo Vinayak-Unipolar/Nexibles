@@ -35,12 +35,16 @@ function VerifyEmail() {
       return;
     }
 
+<<<<<<< HEAD
     // Skip if already verified
     if (success) {
       console.log("Verification already successful, skipping API call");
       return;
     }
 
+=======
+    if (success) return; 
+>>>>>>> 7353c9952919c8b112f21453ed2daa3b33f3a6dd
     let isMounted = true;
 
     const verifyEmail = async () => {

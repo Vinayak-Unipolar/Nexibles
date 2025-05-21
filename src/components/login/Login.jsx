@@ -65,7 +65,7 @@ function Login() {
     active: "",
     password: "",
     profImage: "",
-    baseUrl: "https://nexiblesapp.barecms.com",
+    baseUrl: "https://nexiblesweb.barecms.com",
   });
 
   const executeCaptcha = async () => {
@@ -107,10 +107,15 @@ function Login() {
         }),
       });
       const data = await response.json();
+
+      if (data.status === "error") {
+        toast.error(data.message);
+      }
       if (data.status === "success") {
         login(data.data);
         toast.success("Login Successful");
         router.push("/");
+<<<<<<< HEAD
         localStorage.setItem("token", data.token);
       } else {
         toast.error("Invalid Email or Password");
@@ -118,6 +123,13 @@ function Login() {
     } catch (error) {
       console.error("Login error:", error);
       toast.error("An error occurred during login");
+=======
+        localStorage.setItem("token", token);
+      }
+    } catch (error) {
+      console.error("Invalid Request", error);
+      //toast.error(error.message);
+>>>>>>> 7353c9952919c8b112f21453ed2daa3b33f3a6dd
     } finally {
       setLoading(false);
       setCaptchaToken(null);
@@ -138,7 +150,7 @@ function Login() {
 
     setLoading(true);
     try {
-      const apiUrl = userDetails.baseUrl || APIURL;
+      const apiUrl = APIURL;
       const response = await fetch(`${apiUrl}/api/login/create`, {
         method: "POST",
         headers: {
@@ -152,6 +164,7 @@ function Login() {
 
       const data = await response.json();
 
+<<<<<<< HEAD
       if (!response.ok) {
         if (data.status === "error" && data.message.includes("is already exist")) {
           toast.error("This email is already registered. Please log in or use a different email.");
@@ -160,6 +173,9 @@ function Login() {
         }
       } else {
         // Backend sends verification email automatically
+=======
+      if (response.ok && data.status === "success") {
+>>>>>>> 7353c9952919c8b112f21453ed2daa3b33f3a6dd
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -168,22 +184,16 @@ function Login() {
         const minutes = String(now.getMinutes()).padStart(2, "0");
         const seconds = String(now.getSeconds()).padStart(2, "0");
         const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
-
         const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
 
         gtag("event", "conversion", {
           send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
-          event_callback: function () {
-            console.log("Google conversion tracked successfully");
-          },
           transaction_id: eventId,
         });
 
         fbq("track", "Subscribe", {
           eventID: eventId,
         });
-
-        console.log("Conversion event tracked with ID:", eventId);
         setUserDetails({
           customerId: "",
           firstName: "",
@@ -225,14 +235,20 @@ function Login() {
           active: "",
           password: "",
           profImage: "",
-          baseUrl: "https://nexiblesapp.barecms.com",
+          baseUrl: "https://nexiblesweb.barecms.com",
         });
         setIsLogin(true);
         toast.success("Registered Successfully! Please check your email to verify your account.");
+      } else {
+        const errorMessage = data.message && data.message.includes("is already exist")
+          ? "Email already exists. Please use a different email."
+          : data.message || "An error occurred during registration";
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error("Registration error:", error.message);
       toast.error(error.message || "An error occurred during registration");
+
     } finally {
       setLoading(false);
       setCaptchaToken(null);
@@ -261,7 +277,7 @@ function Login() {
     setCaptchaToken(token);
   };
 
-  useEffect(() => {}, [userDetails]);
+  useEffect(() => { }, [userDetails]);
 
   return (
     <>

@@ -661,7 +661,7 @@ function RequestSampleKit() {
           return emailResponse.json();
         })
         .then(() => {
-          setSubmitStatus("Form submitted successfully!");
+          toast.success("Form submitted successfully!");
           setFormData({
             firstName: "",
             lastName: "",
@@ -692,7 +692,7 @@ function RequestSampleKit() {
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
-          setSubmitStatus(`Failed to submit form: ${error.message}`);
+          toast.error(`Failed to submit form: ${error.message}`);
         });
     }
   };

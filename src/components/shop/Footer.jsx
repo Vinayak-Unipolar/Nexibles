@@ -21,31 +21,43 @@ const Footer = () => {
   });
 
   const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email) {
-      toast.error("Please enter a valid email.");
-      return;
+  e.preventDefault();
+  if (!email) {
+    toast.error("Please enter a valid email.");
+    return;
+  }
+
+  try {
+    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipData = await ipResponse.json();
+    const ipAddress = ipData.ip;
+    const createdAt = new Date().toISOString().slice(0, 19);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "API-Key": token,
+      },
+      body: JSON.stringify({
+        email,
+        origin: "Nexibles",
+        ip_address: ipAddress,
+        created_at: createdAt,
+      }),
+    });
+
+    if (response.ok) {
+      setMessage("Successfully subscribed!");
+      toast.success("Successfully subscribed!");
+      setEmail("");
+    } else {
+      setMessage("Subscription failed. Please try again.");
     }
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "API-Key": token,
-        },
-        body: JSON.stringify({ email, origin: "nexibles" }),
-      });
-      if (response.ok) {
-        setMessage("Successfully subscribed!");
-        toast.success("Successfully subscribed!");
-        setEmail("");
-      } else {
-        setMessage("Subscription failed. Please try again.");
-      }
-    } catch (error) {
-      setMessage("An error occurred. Please try again later.");
-    }
-  };
+  } catch (error) {
+    setMessage("An error occurred. Please try again later.");
+  }
+};
 
   const titleVariants = {
     hidden: { opacity: 0, x: -100 },

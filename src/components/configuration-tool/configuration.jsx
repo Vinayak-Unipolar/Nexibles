@@ -538,7 +538,7 @@ const Configuration = () => {
       id: product.id,
       name: jobName || product.title || 'Custom Pouch',
       category: categories.find((cat) => cat.id === selectedCategory)?.name || 'Pouches',
-      image: categories.find((cat) => cat.id === selectedCategory)?.bg_Img || DEFAULT_IMAGE_URL,
+      image: categories.find((cat) => cat.id === selectedCategory)?.bg_Img ,
       price: unitPrice,
       quantity: totalQuantity,
       totalPrice: totalPrice,

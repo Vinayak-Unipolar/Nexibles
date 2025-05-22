@@ -116,8 +116,8 @@ function Login() {
         const token = data.token;
         login(data.data);
         toast.success("Login Successful");
-        router.push("/");
         localStorage.setItem("token", token);
+        router.back();
       }
     } catch (error) {
       console.error("Invalid Request", error);
@@ -254,7 +254,7 @@ function Login() {
   };
 
   const handleCaptchaChange = (token) => {
-    console.log("reCAPTCHA token:", token);
+    //console.log("reCAPTCHA token:", token);
     setCaptchaToken(token);
   };
 

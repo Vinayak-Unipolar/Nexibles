@@ -7,24 +7,22 @@ import Footer from "@/components/shop/Footer";
 import { useAuth } from "@/utils/authContext";
 import { toast } from "react-toastify";
 
-// Enhanced RequestQuoteHistory component with modified design
-const RequestQuoteHistory = ({ email }) => {
-  const [quoteHistory, setQuoteHistory] = useState([]);
+// ConfigurationHistory component to fetch and display configuration data
+const ConfigurationHistory = ({ customerID }) => {
+  const [configurations, setConfigurations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useAuth();
 
   useEffect(() => {
-    const fetchQuoteHistory = async (retries = 3, delay = 1000) => {
-      const userEmail = user?.result?.emailAddress;
-      if (!userEmail) {
-        console.error("User email is not available.");
-        setError("User email is not available. Please log in again.");
+    const fetchConfigurations = async (retries = 3, delay = 1000) => {
+      if (!customerID) {
+        console.error("Customer ID is not available.");
+        setError("Customer ID is not available. Please log in again.");
         setLoading(false);
         return;
       }
 
-      console.log("Fetching quote history for email:", userEmail);
+      console.log("Fetching configurations for customer ID:", customerID);
 
       const token = localStorage.getItem("token");
       if (!token) {
@@ -37,10 +35,10 @@ const RequestQuoteHistory = ({ email }) => {
       for (let i = 0; i < retries; i++) {
         try {
           setLoading(true);
-          console.log(`Attempt ${i + 1}/${retries} to fetch quote history...`);
+          console.log(`Attempt ${i + 1}/${retries} to fetch configurations...`);
 
           const response = await fetch(
-            `https://nexiblesapp.barecms.com/api/leads/email?email=${encodeURIComponent(userEmail)}`,
+            `https://nexiblesapp.barecms.com/api/configuration/${customerID}`,
             {
               method: "GET",
               headers: {
@@ -56,25 +54,31 @@ const RequestQuoteHistory = ({ email }) => {
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             const errorMessage =
-              errorData.message || `Failed to fetch quote history: ${response.status}`;
+              errorData.message || `Failed to fetch configurations: ${response.status}`;
             throw new Error(errorMessage);
           }
 
           const data = await response.json();
           console.log("API response data:", data);
 
-          if (data.status === "success" && Array.isArray(data.data)) {
-            setQuoteHistory(data.data);
+          if (data.status === 200 && Array.isArray(data.data)) {
+            // Parse skus and additional_options for each configuration
+            const parsedData = data.data.map((config) => ({
+              ...config,
+              skus: JSON.parse(config.skus),
+              additional_options: JSON.parse(config.additional_options),
+            }));
+            setConfigurations(parsedData);
             setLoading(false);
             return;
           } else {
-            throw new Error("No quote history found or invalid response format");
+            throw new Error("No configurations found or invalid response format");
           }
         } catch (err) {
           console.error(`Attempt ${i + 1} failed:`, err.message);
           if (i === retries - 1) {
-            setError(err.message || "Failed to fetch quote history");
-            toast.error("Failed to load quote history");
+            setError(err.message || "Failed to fetch configurations");
+            toast.error("Failed to load configurations");
           } else {
             console.warn(`Retrying fetch (${i + 1}/${retries})...`);
             await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
@@ -87,15 +91,15 @@ const RequestQuoteHistory = ({ email }) => {
       }
     };
 
-    fetchQuoteHistory();
-  }, [email, user]);
+    fetchConfigurations();
+  }, [customerID]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-[#103b60]"></div>
-          <p className="text-gray-600 font-medium">Loading your quote history...</p>
+          <p className="text-gray-600 font-medium">Loading your configurations...</p>
         </div>
       </div>
     );
@@ -104,8 +108,8 @@ const RequestQuoteHistory = ({ email }) => {
   if (error) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Request Quote History</h2>
+        <div className="bg-white p-6">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Configuration History</h2>
           <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -114,7 +118,7 @@ const RequestQuoteHistory = ({ email }) => {
                 </svg>
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-medium text-red-800">Error Loading Quote History</h3>
+                <h3 className="text-lg font-medium text-red-800">Error Loading Configurations</h3>
                 <p className="text-red-700 mt-1">{error}</p>
               </div>
             </div>
@@ -124,21 +128,21 @@ const RequestQuoteHistory = ({ email }) => {
     );
   }
 
-  if (quoteHistory.length === 0) {
+  if (configurations.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Request Quote History</h2>
+        <div className="bg-white p-6">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Configuration History</h2>
           <div className="text-center py-16">
             <div className="mx-auto h-24 w-24 text-gray-300 mb-6">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-full h-full">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No Quote Requests Found</h3>
-            <p className="text-gray-600 mb-6">You haven't requested any quotes yet. Start by requesting a quote to see your history here.</p>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">No Configurations Found</h3>
+            <p className="text-gray-600 mb-6">You haven't created any configurations yet. Start by creating a configuration to see your history here.</p>
             <button className="bg-[#103b60] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#0d2d4a] transition-colors duration-200">
-              Request a Quote
+              Create a Configuration
             </button>
           </div>
         </div>
@@ -150,20 +154,20 @@ const RequestQuoteHistory = ({ email }) => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="bg-white  p-6">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">Request Quote History</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Configuration History</h2>
           <div className="bg-[#103b60] text-white px-4 py-2 rounded-full text-sm font-medium">
-            {quoteHistory.length} {quoteHistory.length === 1 ? 'Quote' : 'Quotes'}
+            {configurations.length} {configurations.length === 1 ? 'Configuration' : 'Configurations'}
           </div>
         </div>
         
         <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
-          {quoteHistory.map((quote) => (
+          {configurations.map((config) => (
             <div
-              key={quote.id}
+              key={config.id}
               className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
             >
               {/* Header */}
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-3 border-b border-gray-200">
+              <div className=" px-6 py-3 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
                   <div className="h-8 w-8 bg-[#103b60] rounded-full flex items-center justify-center">
                     <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -171,9 +175,9 @@ const RequestQuoteHistory = ({ email }) => {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Quote Request</p>
+                    <p className="text-sm font-medium text-gray-900">{config.project_name}</p>
                     <p className="text-xs text-gray-500">
-                      {new Date(quote.created_at).toLocaleDateString('en-US', {
+                      {new Date(config.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'
@@ -194,7 +198,7 @@ const RequestQuoteHistory = ({ email }) => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Email</p>
-                      <p className="text-sm text-gray-900 break-all">{quote.email || "N/A"}</p>
+                      <p className="text-sm text-gray-900 break-all">{config.email || "N/A"}</p>
                     </div>
                   </div>
 
@@ -205,8 +209,8 @@ const RequestQuoteHistory = ({ email }) => {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Product</p>
-                      <p className="text-sm text-gray-900">{quote.category || quote.city || "N/A"}</p>
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Category</p>
+                      <p className="text-sm text-gray-900">{config.category || "N/A"}</p>
                     </div>
                   </div>
 
@@ -217,8 +221,8 @@ const RequestQuoteHistory = ({ email }) => {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Company</p>
-                      <p className="text-sm text-gray-900">{quote.company_name || "N/A"}</p>
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Material</p>
+                      <p className="text-sm text-gray-900">{config.material || "N/A"}</p>
                     </div>
                   </div>
 
@@ -229,33 +233,65 @@ const RequestQuoteHistory = ({ email }) => {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Industry</p>
-                      <p className="text-sm text-gray-900">{quote.industry_sector || "N/A"}</p>
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Dimensions</p>
+                      <p className="text-sm text-gray-900">{`${config.width} x ${config.length} mm`}</p>
                     </div>
                   </div>
 
-                  {quote.additional_comments && (
-                    <div className="flex items-start space-x-3">
-                      <div className="flex-shrink-0 h-5 w-5 text-gray-400 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                        </svg>
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Comments</p>
-                        <p className="text-sm text-gray-900 line-clamp-3">{quote.additional_comments}</p>
-                      </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 h-5 w-5 text-gray-400 mt-0.5">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                      </svg>
                     </div>
-                  )}
-                </div>
-              </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">SKUs</p>
+                      <p className="text-sm text-gray-900">
+                        {config.skus.map(sku => `${sku.design_name} (${sku.quantity})`).join(", ")}
+                      </p>
+                    </div>
+                  </div>
 
-              {/* Footer */}
-              <div className="bg-gray-50 px-6 py-2 border-t border-gray-200">
-                <div className="flex items-center">
-                  <span className="text-xs text-gray-500">
-                    Source: {quote.enquiry_source || "Direct"}
-                  </span>
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 h-5 w-5 text-gray-400 mt-0.5">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Additional Options</p>
+                      <p className="text-sm text-gray-900">
+                        {Object.entries(config.additional_options)
+                          .filter(([_, value]) => value)
+                          .map(([key]) => key.replace("_", " ").replace(/\b\w/g, c => c.toUpperCase()))
+                          .join(", ") || "None"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 h-5 w-5 text-gray-400 mt-0.5">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Total Quantity</p>
+                      <p className="text-sm text-gray-900">{config.total_quantity}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 h-5 w-5 text-gray-400 mt-0.5">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm0 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm0 6c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Total Cost</p>
+                      <p className="text-sm text-gray-900">₹{config.total_cost.toFixed(2)}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -266,7 +302,7 @@ const RequestQuoteHistory = ({ email }) => {
   );
 };
 
-const QuoteHistoryPage = () => {
+const ConfigurationPage = () => {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -274,7 +310,7 @@ const QuoteHistoryPage = () => {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div className="flex-grow flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4 sm:px-6 lg:px-8">
+        <div className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-xl p-12 text-center max-w-md w-full">
             <div className="mx-auto h-20 w-20 text-gray-300 mb-6">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-full h-full">
@@ -285,7 +321,7 @@ const QuoteHistoryPage = () => {
               Authentication Required
             </h2>
             <p className="text-gray-600 mb-8 text-base leading-relaxed">
-              Please login to access your quote request history and manage your account.
+              Please login to access your configuration history and manage your account.
             </p>
             <button
               onClick={() => router.push("/login")}
@@ -300,6 +336,9 @@ const QuoteHistoryPage = () => {
     );
   }
 
+  // Assuming customerID is available in user object; adjust based on actual structure
+  const customerID = user?.result?.customerId ; // Fallback to CUST12345 if not available
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -307,12 +346,12 @@ const QuoteHistoryPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:flex lg:gap-8">
             <div className="lg:w-80 lg:flex-shrink-0 mb-8 lg:mb-0">
-              <div className="bg-white sticky top-8">
+              <div className="bg-white sticky top-12">
                 <MyAccount />
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <RequestQuoteHistory email={user.email} />
+              <ConfigurationHistory customerID={customerID} />
             </div>
           </div>
         </div>
@@ -322,4 +361,4 @@ const QuoteHistoryPage = () => {
   );
 };
 
-export default QuoteHistoryPage;
+export default ConfigurationPage;

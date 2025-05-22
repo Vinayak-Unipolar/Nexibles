@@ -66,7 +66,7 @@ function Login() {
     active: "",
     password: "",
     profImage: "",
-    baseUrl: "https://nexiblesweb.barecms.com",
+    baseUrl: "https://nexibles.com",
   });
 
   const executeCaptcha = async () => {
@@ -216,7 +216,7 @@ function Login() {
           active: "",
           password: "",
           profImage: "",
-          baseUrl: "https://nexiblesweb.barecms.com",
+          baseUrl: "https://nexibles.com",
         });
         setIsLogin(true);
         toast.success("Registered Successfully! Please check your email to verify your account.");

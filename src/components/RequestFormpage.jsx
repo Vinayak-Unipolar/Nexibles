@@ -733,7 +733,7 @@ const handleSubmit = (e) => {
     <div className="py-4 sm:py-8 bg-[#ece0cc] min-h-screen">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 p-4 bg-white rounded-lg shadow-md">
             <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
               Request A Free Quote
             </h2>
@@ -1198,7 +1198,7 @@ const handleSubmit = (e) => {
               </button>
             </form>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
+          <div className="p-6 lg:col-span-1">
             <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
               {`Let's Build Your Packaging Breakthrough`}
             </h3>

@@ -136,7 +136,7 @@ const RequestQuoteHistory = ({ email }) => {
               </svg>
             </div>
             <h3 className="text-xl font-medium text-gray-900 mb-2">No Quote Requests Found</h3>
-            <p className="text-gray-600 mb-6">You haven't requested any quotes yet. Start by requesting a quote to see your history here.</p>
+            <p className="text-gray-600 mb-6">You have not requested any quotes yet. Start by requesting a quote to see your history here.</p>
             <button className="bg-[#103b60] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#0d2d4a] transition-colors duration-200">
               Request a Quote
             </button>

@@ -705,7 +705,7 @@ function RequestSampleKit() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg shadow-md">
             <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
-              Request A Free Quote
+              Request A Free Quote - Sample Kit
             </h2>
 
             {submitStatus && (

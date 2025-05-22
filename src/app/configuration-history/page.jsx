@@ -8,7 +8,7 @@ import { useAuth } from "@/utils/authContext";
 import { toast } from "react-toastify";
 import { Link } from "next/link";
 import { NavLink } from "react-router-dom";
-// ConfigurationHistory component to fetch and display configuration data
+
 const ConfigurationHistory = ({ customerID }) => {
   const [configurations, setConfigurations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -140,7 +140,7 @@ const ConfigurationHistory = ({ customerID }) => {
               </svg>
             </div>
             <h3 className="text-xl font-medium text-gray-900 mb-2">No Configurations Found</h3>
-            <p className="text-gray-600 mb-6">You haven't created any configurations yet. Start by creating a configuration to see your history here.</p>
+            <p className="text-gray-600 mb-6">{`You haven't created any configurations yet. Start by creating a configuration to see your history here.`}</p>
             
           </div>
         </div>

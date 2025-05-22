@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
 import LoadingScreen from './loading-screen/page';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '@/components/shop/Footer';
@@ -14,8 +13,13 @@ import ProductSections from '@/components/shop/ProductSections';
 import NexiblesInstagramSection from '@/components/home/NexiblesInstagramSection';
 import Industries from '@/components/home/Industries';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
-import MarketingTracker, { trackQuoteForm, trackSignUpForm, trackWhatsAppChat } from '@/components/MarketingTracker';
+import MarketingTracker, {
+  trackQuoteForm,
+  trackSignUpForm,
+  trackWhatsAppChat,
+} from '@/components/MarketingTracker';
 import BrandLogosSection from '@/components/instagramandlogos/BrandLogosSection';
+import { showToast } from '@/components/toastify/CustomToast';
 
 const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
@@ -24,32 +28,60 @@ const Modal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email) {
-      toast.error('Please enter a valid email.');
-      return;
-    }
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          'API-Key': token,
-        },
-        body: JSON.stringify({ email: email, origin: 'nexibles' }),
+  e.preventDefault();
+  if (!email) {
+    toast.error({
+      type: 'error',
+      title: 'Missing Email',
+      message: 'Please enter a valid email.',
+    });
+    return;
+  }
+
+  try {
+    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipData = await ipResponse.json();
+    const ipAddress = ipData.ip;
+    const createdAt = new Date().toISOString().slice(0, 19);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'API-Key': token,
+      },
+      body: JSON.stringify({
+        email,
+        origin: 'Nexibles',
+        ip_address: ipAddress,
+        created_at: createdAt,
+      }),
+    });
+
+    if (response.ok) {
+      toast.success({
+        type: 'success',
+        title: 'Subscription Successful',
+        message: 'You’ve successfully subscribed!',
       });
-      if (response.ok) {
-        toast.success('Successfully subscribed!');
-        trackSignUpForm();
-        setEmail('');
-        onClose();
-      } else {
-        toast.error('Subscription failed. Please try again.');
-      }
-    } catch (error) {
-      toast.error('An error occurred. Please try again later.');
+      trackSignUpForm();
+      setEmail('');
+      onClose();
+    } else {
+      toast.error({
+        type: 'error',
+        title: 'Subscription Failed',
+        message: 'Please try again later.',
+      });
     }
-  };
+  } catch (error) {
+    toast.error({
+      type: 'error',
+      title: 'Error Occurred',
+      message: 'Something went wrong. Please try again.',
+    });
+  }
+};
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -134,13 +166,23 @@ const Home = () => {
           );
           setData(filterCategory);
         } else {
-          console.error('Failed to fetch categories:', data.error);
+          toast.error({
+            type: 'error',
+            title: 'Fetch Failed',
+            message: data?.error || 'Unable to fetch category data.',
+          });
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        toast.error({
+          type: 'error',
+          title: 'Fetch Error',
+          message: 'Something went wrong while fetching categories.',
+        });
       }
     };
+
     fetchData();
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -152,21 +194,22 @@ const Home = () => {
     <div className="min-h-screen">
       <GoogleAnalytics />
       <MarketingTracker metaPixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
-      <ToastContainer position="top-right" autoClose={3000} />
       <Modal isOpen={showModal} onClose={closeModal} />
       <Navbar />
       <HeaderSection />
       <Industries />
       <Popularproducts />
       <StatsAndTestimonials />
+
       <section className="py-10 bg-white">
-              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="md:text-3xl text-2xl font-bold text-black mb-8 tracking-tight text-center">
-                  Trusted by 1500+ Brands
-                </h2>
-                <BrandLogosSection />
-              </div>
-            </section>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="md:text-3xl text-2xl font-bold text-black mb-8 tracking-tight text-center">
+            Trusted by 1500+ Brands
+          </h2>
+          <BrandLogosSection />
+        </div>
+      </section>
+
       <AdvantageItem />
       <ProductSections />
       <NexiblesInstagramSection />

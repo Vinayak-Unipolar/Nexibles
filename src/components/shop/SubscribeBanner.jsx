@@ -8,34 +8,46 @@ export default function SubscribeBanner() {
   const token = 'irrv211vui9kuwn11efsb4xd4zdkuq';
 
   const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error('Please enter a valid email.');
-      return;
+  e.preventDefault();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast.error('Please enter a valid email.');
+    return;
+  }
+
+  try {
+    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipData = await ipResponse.json();
+    const ipAddress = ipData.ip;
+    const createdAt = new Date().toISOString().slice(0, 19);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'API-Key': token,
+      },
+      body: JSON.stringify({
+        email,
+        origin: 'Nexibles',
+        ip_address: ipAddress,
+        created_at: createdAt,
+      }),
+    });
+
+    if (response.ok) {
+      setMessage('Successfully subscribed!');
+      toast.success('Successfully subscribed!');
+      setEmail('');
+    } else {
+      const errorData = await response.json();
+      setMessage(errorData.msg || 'Subscription failed. Please try again.');
+      toast.error(errorData.msg || 'Subscription failed. Please try again.');
     }
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'API-Key': token,
-        },
-        body: JSON.stringify({ email, origin: 'nexibles' }),
-      });
-      if (response.ok) {
-        setMessage('Successfully subscribed!');
-        toast.success('Successfully subscribed!');
-        setEmail('');
-      } else {
-        const errorData = await response.json();
-        setMessage(errorData.msg || 'Subscription failed. Please try again.');
-        toast.error(errorData.msg || 'Subscription failed. Please try again.');
-      }
-    } catch (error) {
-      setMessage('An error occurred. Please try again later.');
-      toast.error('An error occurred. Please try again later.');
-    }
-  };
+  } catch (error) {
+    setMessage('An error occurred. Please try again later.');
+    toast.error('An error occurred. Please try again later.');
+  }
+};
 
   return (
     <section className="mx-auto  m-4 px-4 w-full ">

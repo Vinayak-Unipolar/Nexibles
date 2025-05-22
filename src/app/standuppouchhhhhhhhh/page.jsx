@@ -1,10 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaCheck, FaCoffee, FaHeartbeat, FaSpa, FaPaw, FaLeaf } from 'react-icons/fa';
-import { MdExpandMore } from 'react-icons/md';
+import { FaCheck } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import Footer from '@/components/shop/Footer';
 import Navbar from '@/components/shop/Navbar';
@@ -18,12 +17,21 @@ const StandUpPouches = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const token = process.env.NEXT_PUBLIC_API_KEY;
 
+  const shouldReduceMotion = useReducedMotion();
+
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!APIURL || !token) {
+        setError('Configuration error: API URL or token is missing.');
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setError(null);
       try {
@@ -49,10 +57,12 @@ const StandUpPouches = () => {
     fetchProducts();
   }, [APIURL, token]);
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-  };
+  const fadeInUp = shouldReduceMotion
+    ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+      };
 
   const staggerChildren = {
     hidden: { opacity: 0 },
@@ -82,22 +92,62 @@ const StandUpPouches = () => {
     { top: '60%', left: '65%', label: features[5] },
   ];
 
-  const waveAnimation = {
-    scale: [1, 1.5, 1],
-    opacity: [0.5, 0, 0],
-    transition: {
-      repeat: Infinity,
-      duration: 1.5,
-      ease: 'easeOut',
-    },
-  };
+  const waveAnimation = shouldReduceMotion
+    ? {}
+    : {
+        scale: [1, 1.5, 1],
+        opacity: [0.5, 0, 0],
+        transition: {
+          repeat: Infinity,
+          duration: 1.5,
+          ease: 'easeOut',
+        },
+      };
+
+  // Animation for the main container (scale only)
+  const containerAnimation = shouldReduceMotion
+    ? {
+        initial: { opacity: 0, scale: 0.8 },
+        animate: { opacity: 1, scale: 1 },
+        hovered: { scale: 1.05 },
+      }
+    : {
+        initial: { opacity: 0, scale: 0.8 },
+        animate: { opacity: 1, scale: 1, transition: { duration: 0.8 } },
+        hovered: {
+          scale: 1.05,
+          transition: { duration: 0.5, ease: 'easeInOut' },
+        },
+      };
+
+  // Animation for the triangle background (rotation)
+  const triangleAnimation = shouldReduceMotion
+    ? { rotate: 0 }
+    : {
+        rotate: isHovered ? 45 : 0,
+        transition: { duration: 0.5, ease: 'easeInOut' },
+      };
+
+  if (loading) {
+    return (
+      <main className="bg-white text-black min-h-screen flex items-center justify-center">
+        <Loader />
+      </main>
+    );
+  }
 
   if (error) {
     return (
       <main className="bg-white text-black min-h-screen">
         <Navbar />
-        <div className="container mx-auto px-4 py-16 flex items-center justify-center">
-          <p className="text-red-500 text-lg">{error}</p>
+        <div className="container mx-auto px-4 py-16 flex flex-col items-center justify-center">
+          <p className="text-red-500 text-lg mb-4">{error}</p>
+          <button
+            onClick={() => fetchProducts()}
+            className="bg-yellow-400 text-black font-bold py-2 px-4 rounded-full hover:scale-105 transition-transform duration-300"
+          >
+            Retry
+          </button>
         </div>
         <Footer />
       </main>
@@ -110,7 +160,7 @@ const StandUpPouches = () => {
       {/* Hero Section */}
       <section className="py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-center gap-14 items-center">
+          <div className="flex flex-col md:flex-row justify-center ml-20 items-center">
             <motion.div
               className="flex flex-col justify-center"
               initial="hidden"
@@ -118,7 +168,7 @@ const StandUpPouches = () => {
               variants={staggerChildren}
             >
               <motion.h1
-                className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight text-black"
+                className="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight text-black"
                 variants={fadeInUp}
               >
                 Stand Up Pouches
@@ -139,6 +189,7 @@ const StandUpPouches = () => {
                 <Link
                   href="/request-quote"
                   className="mt-8 inline-block bg-yellow-400 text-black font-bold py-3 px-8 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg"
+                  aria-label="Request a quote for stand up pouches"
                 >
                   Get a Quote
                 </Link>
@@ -146,18 +197,43 @@ const StandUpPouches = () => {
             </motion.div>
             <motion.div
               className="relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.05 }}
+              variants={containerAnimation}
+              initial="initial"
+              animate="animate"
+              whileHover="hovered"
+              onHoverStart={() => setIsHovered(true)}
+              onHoverEnd={() => setIsHovered(false)}
             >
-              <Image
-                alt="Stand up pouch packaging display"
-                className="rounded-lg"
-                height={400}
-                src="https://cdn.nexibles.com/product/130x210+80%20SUP.webp"
-                width={600}
-              />
+              <div className="relative" style={{ padding: '20px' }}>
+                <motion.div
+                  className="absolute inset-0 w-full h-full p-10"
+                  aria-hidden="true"
+                  animate={triangleAnimation}
+                >
+                  <Image
+                    alt="Decorative triangle pattern background"
+                    className="rounded-lg w-full h-full object-cover"
+                    src="/Triangle.webp"
+                    width={600}
+                    height={400}
+                    layout="responsive"
+                    loading="lazy"
+                    quality={75}
+                  />
+                </motion.div>
+                <div className="relative z-10">
+                  <Image
+                    alt="Stand up pouch with hang holes and zipper closure"
+                    className="rounded-lg w-full h-full"
+                    src="https://cdn.nexibles.com/product/130x210+80%20SUP.webp"
+                    width={130}
+                    height={210}
+                    layout="responsive"
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -175,36 +251,40 @@ const StandUpPouches = () => {
               viewport={{ once: true }}
             >
               <Image
-                alt="Stand up pouch with feature pointers"
+                alt="Stand up pouch with feature pointers for hang holes, zipper, and more"
                 className="md:ml-20"
-                height={300}
                 src="https://cdn.nexibles.com/product/160x240+90%20SUP.webp"
                 width={500}
+                height={300}
+                layout="responsive"
+                loading="lazy"
               />
               {pointerPositions.map((pointer, index) => (
                 <div
                   key={index}
-                  className="absolute group"
+                  className="absolute group focus:outline-none"
                   style={{ top: pointer.top, left: pointer.left }}
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.classList.toggle('group-hover')}
                 >
                   <div className="relative flex items-center justify-center">
                     <span className="flex items-center justify-center w-4 h-4 border-[6px] border-white rounded-full bg-transparent">
                       <span className="w-1.5 h-1.5 bg-transparent rounded-full" />
                     </span>
                     <motion.div
-                      className="absolute w-4 h-4 border border-white rounded-full group-hover:opacity-100 opacity-0"
+                      className="absolute w-4 h-4 border border-white rounded-full group-hover:opacity-100 opacity-0 group-focus:opacity-100"
                       animate={waveAnimation}
                     />
                     <motion.div
-                      className="absolute w-6 h-6 border border-white rounded-full group-hover:opacity-100 opacity-0"
+                      className="absolute w-6 h-6 border border-white rounded-full group-hover:opacity-100 opacity-0 group-focus:opacity-100"
                       animate={{ ...waveAnimation, transition: { ...waveAnimation.transition, delay: 0.3 } }}
                     />
                     <motion.div
-                      className="absolute w-8 h-8 border border-white rounded-full group-hover:opacity-100 opacity-0"
+                      className="absolute w-8 h-8 border border-white rounded-full group-hover:opacity-100 opacity-0 group-focus:opacity-100"
                       animate={{ ...waveAnimation, transition: { ...waveAnimation.transition, delay: 0.6 } }}
                     />
                   </div>
-                  <div className="absolute left-full ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-10 w-48">
+                  <div className="absolute left-full ml-2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-10 w-48">
                     <span className="text-sm text-black">{pointer.label}</span>
                   </div>
                 </div>
@@ -259,7 +339,7 @@ const StandUpPouches = () => {
       </section>
 
       {/* Product List */}
-      <section className="py-10 bg-white">
+      <section className="py-10  bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 tracking-tight text-center">
             NexiClassic range of Standup Pouches
@@ -268,14 +348,14 @@ const StandUpPouches = () => {
         </div>
       </section>
 
-       <section className="py-10 bg-white">
+      <section className="py-10 bg-white">
         <div>
           <StatsAndTestimonials />
         </div>
       </section>
 
       {/* Trusted Brands */}
-      <section className="py-10 bg-white">
+      <section className="bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 tracking-tight text-center">
             Trusted by 1500+ Brands
@@ -291,13 +371,6 @@ const StandUpPouches = () => {
 };
 
 export default StandUpPouches;
-
-
-
-
-
-
-
 
 
 

@@ -21,31 +21,43 @@ const Footer = () => {
   });
 
   const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email) {
-      toast.error("Please enter a valid email.");
-      return;
+  e.preventDefault();
+  if (!email) {
+    toast.error("Please enter a valid email.");
+    return;
+  }
+
+  try {
+    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipData = await ipResponse.json();
+    const ipAddress = ipData.ip;
+    const createdAt = new Date().toISOString().slice(0, 19);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "API-Key": token,
+      },
+      body: JSON.stringify({
+        email,
+        origin: "Nexibles",
+        ip_address: ipAddress,
+        created_at: createdAt,
+      }),
+    });
+
+    if (response.ok) {
+      setMessage("Successfully subscribed!");
+      toast.success("Successfully subscribed!");
+      setEmail("");
+    } else {
+      setMessage("Subscription failed. Please try again.");
     }
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "API-Key": token,
-        },
-        body: JSON.stringify({ email, origin: "nexibles" }),
-      });
-      if (response.ok) {
-        setMessage("Successfully subscribed!");
-        toast.success("Successfully subscribed!");
-        setEmail("");
-      } else {
-        setMessage("Subscription failed. Please try again.");
-      }
-    } catch (error) {
-      setMessage("An error occurred. Please try again later.");
-    }
-  };
+  } catch (error) {
+    setMessage("An error occurred. Please try again later.");
+  }
+};
 
   const titleVariants = {
     hidden: { opacity: 0, x: -100 },
@@ -218,6 +230,7 @@ const Footer = () => {
                   Company
                 </motion.li>
                 <motion.li custom={1} variants={itemVariants}><Link href="/about">About</Link></motion.li>
+                <motion.li custom={1} variants={itemVariants}><Link href="/contact-us">Contact Us</Link></motion.li>
                 {/* <motion.li custom={2} variants={itemVariants}><Link href="/infrastructure">Infrastructure</Link></motion.li> */}
                 <motion.li custom={3} variants={itemVariants}><Link href="/all-industry">Industries</Link></motion.li>
                 <motion.li custom={3} variants={itemVariants}><Link href="/shop">Nexi Classic</Link></motion.li>
@@ -232,14 +245,31 @@ const Footer = () => {
                 <motion.li className="mb-4 font-bold uppercase" custom={0} variants={titleVariants}>
                   Customer Service
                 </motion.li>
-                <motion.li custom={1} variants={itemVariants}><Link href="/my-dashboard">My Account</Link></motion.li>
-                <motion.li custom={2} variants={itemVariants}><Link href="/privacy-policy">Privacy Policy</Link></motion.li>
-                <motion.li custom={3} variants={itemVariants}><Link href="/shipping-policy">Shipping Policy</Link></motion.li>
-                <motion.li custom={4} variants={itemVariants}><Link href="/return-and-refund-policy">Returns & Refund</Link></motion.li>
-                <motion.li custom={5} variants={itemVariants}><Link href="/terms-conditions">Terms & Conditions</Link></motion.li>
+                <motion.li custom={1} variants={itemVariants}>
+                  <Link href="/my-dashboard">My Account</Link>
+                </motion.li>
+                <motion.li custom={2} variants={itemVariants}>
+                  <Link href="/privacy-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                  </Link>
+                </motion.li>
+                <motion.li custom={3} variants={itemVariants}>
+                  <Link href="/shipping-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Shipping Policy</a>
+                  </Link>
+                </motion.li>
+                <motion.li custom={4} variants={itemVariants}>
+                  <Link href="/return-and-refund-policy" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Returns & Refund</a>
+                  </Link>
+                </motion.li>
+                <motion.li custom={5} variants={itemVariants}>
+                  <Link href="/terms-conditions" legacyBehavior>
+                    <a target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+                  </Link>
+                </motion.li>
               </motion.ul>
             </div>
-
           </div>
         </div>
       </footer>

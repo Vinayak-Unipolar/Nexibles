@@ -355,12 +355,12 @@ const pageCss = `
 const Page = ({ params }) => {
   const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+const APIURL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     const fetchPageData = async () => {
       setLoading(true);
       try {
-        const res = await fetch("https://nexiblesapp.barecms.com/api/pages");
+        const res = await fetch(`${APIURL}/api/pages`);
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }

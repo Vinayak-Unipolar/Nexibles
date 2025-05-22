@@ -6,7 +6,8 @@ import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import { useAuth } from "@/utils/authContext";
 import { toast } from "react-toastify";
-
+import { Link } from "next/link";
+import { NavLink } from "react-router-dom";
 // ConfigurationHistory component to fetch and display configuration data
 const ConfigurationHistory = ({ customerID }) => {
   const [configurations, setConfigurations] = useState([]);
@@ -62,7 +63,6 @@ const ConfigurationHistory = ({ customerID }) => {
           console.log("API response data:", data);
 
           if (data.status === 200 && Array.isArray(data.data)) {
-            // Parse skus and additional_options for each configuration
             const parsedData = data.data.map((config) => ({
               ...config,
               skus: JSON.parse(config.skus),
@@ -78,7 +78,7 @@ const ConfigurationHistory = ({ customerID }) => {
           console.error(`Attempt ${i + 1} failed:`, err.message);
           if (i === retries - 1) {
             setError(err.message || "Failed to fetch configurations");
-            toast.error("Failed to load configurations");
+            //toast.error("Failed to load configurations");
           } else {
             console.warn(`Retrying fetch (${i + 1}/${retries})...`);
             await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
@@ -105,28 +105,28 @@ const ConfigurationHistory = ({ customerID }) => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white p-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Configuration History</h2>
-          <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-lg font-medium text-red-800">Error Loading Configurations</h3>
-                <p className="text-red-700 mt-1">{error}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="max-w-4xl mx-auto px-4 py-8">
+  //       <div className="bg-white p-6">
+  //         <h2 className="text-3xl font-bold text-gray-900 mb-6">Configuration History</h2>
+  //         <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
+  //           <div className="flex items-center">
+  //             <div className="flex-shrink-0">
+  //               <svg className="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  //                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  //               </svg>
+  //             </div>
+  //             <div className="ml-3">
+  //               <h3 className="text-lg font-medium text-red-800">Error Loading Configurations</h3>
+  //               <p className="text-red-700 mt-1">{error}</p>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (configurations.length === 0) {
     return (
@@ -141,9 +141,7 @@ const ConfigurationHistory = ({ customerID }) => {
             </div>
             <h3 className="text-xl font-medium text-gray-900 mb-2">No Configurations Found</h3>
             <p className="text-gray-600 mb-6">You haven't created any configurations yet. Start by creating a configuration to see your history here.</p>
-            <button className="bg-[#103b60] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#0d2d4a] transition-colors duration-200">
-              Create a Configuration
-            </button>
+            
           </div>
         </div>
       </div>
@@ -159,7 +157,7 @@ const ConfigurationHistory = ({ customerID }) => {
             {configurations.length} {configurations.length === 1 ? 'Configuration' : 'Configurations'}
           </div>
         </div>
-        
+
         <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
           {configurations.map((config) => (
             <div
@@ -337,7 +335,7 @@ const ConfigurationPage = () => {
   }
 
   // Assuming customerID is available in user object; adjust based on actual structure
-  const customerID = user?.result?.customerId ; // Fallback to CUST12345 if not available
+  const customerID = user?.result?.customerId; // Fallback to CUST12345 if not available
 
   return (
     <div className="min-h-screen">

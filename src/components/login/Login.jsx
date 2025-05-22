@@ -117,7 +117,7 @@ function Login() {
         login(data.data);
         toast.success("Login Successful");
         localStorage.setItem("token", token);
-        router.back();
+        router.push("/");
       }
     } catch (error) {
       console.error("Invalid Request", error);

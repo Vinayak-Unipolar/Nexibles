@@ -327,7 +327,7 @@ function MyDetails() {
                     field="emailAddress"
                     type="email"
                     onChange={handleInputChangeRef.current}
-                    isEditing={isEditing}
+                    isEditing={false} // Force email to be non-editable
                   />
                   <EditableInput
                     label="Mobile"

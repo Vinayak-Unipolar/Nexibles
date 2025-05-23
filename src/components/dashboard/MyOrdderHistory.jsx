@@ -790,7 +790,6 @@ const MyOrderHistory = () => {
                                                             {hasDiscount ? (
                                                                 <>
                                                                     <p><span className="font-semibold text-gray-700">Discount:</span> {order.discountPercentage}% (₹{order.discountAmount})</p>
-                                                                    {/* <p className="text-green-600 font-semibold">Discounted Price: ₹{displayPrice}</p> */}
                                                                 </>
                                                             ) : (
                                                                 <p><span className="font-semibold text-gray-700">Total Price:</span> ₹{displayPrice}</p>
@@ -809,8 +808,6 @@ const MyOrderHistory = () => {
                                                                 <FiDownload className="mr-2" size={16} />
                                                                 Keyline
                                                             </button>
-
-                                                            {/* Always show file upload section regardless of keyline download status */}
                                                             <div className="space-y-4">
                                                                 <div className="flex flex-col gap-3">
                                                                     {skus.map((sku, index) => {
@@ -845,8 +842,6 @@ const MyOrderHistory = () => {
                                                                         );
                                                                     })}
                                                                 </div>
-
-                                                                {/* Always show uploaded files section if files exist */}
                                                                 {orderFiles[orderNo] && orderFiles[orderNo].length > 0 && (
                                                                     <div className="mt-4 text-sm">
                                                                         <h3 className="mb-2 font-semibold text-gray-700">Uploaded Files:</h3>

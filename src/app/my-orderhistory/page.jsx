@@ -53,9 +53,7 @@ const Page = () => {
     };
 
     fetchRelatedProducts();
-  }, [cartItems, user, APIURL]); // Added user and APIURL as dependencies
-
-  // Conditional return after all hooks are defined
+  }, [cartItems, user, APIURL]); 
   if (!user) {
     return null;
   }

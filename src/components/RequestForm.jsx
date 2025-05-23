@@ -767,7 +767,7 @@ const handleSubmit = (e) => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            className="relative w-full h-full max-h-full sm:max-w-4xl sm:h-auto bg-[#ece0cc] sm:rounded-lg sm:shadow-lg overflow-y-auto"
+            className="relative w-full h-full max-h-full sm:max-w-4xl sm:h-auto bg-white sm:rounded-lg sm:shadow-lg overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button

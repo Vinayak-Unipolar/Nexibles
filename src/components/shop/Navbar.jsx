@@ -44,17 +44,17 @@ const Navbar = () => {
     const handleResize = () => {
       const width = window.innerWidth;
       const isIPadPro = (width >= 1024 && width <= 1366);
-      
+
       setScreenSize({
         width,
         isMobile: width < 768,
         isTablet: width >= 768 && width < 1024,
         isIPadPro
       });
-      
+
       if (width >= 1200) {
-        setToggleStates((prev) => ({ 
-          ...prev, 
+        setToggleStates((prev) => ({
+          ...prev,
           isMenuOpen: false,
           showPersonDropdown: false
         }));
@@ -74,7 +74,7 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     // Initialize on mount
     handleResize();
 
@@ -149,7 +149,7 @@ const Navbar = () => {
       transition: { duration: 0.6, delay: 0.2, ease: "easeOut" },
     },
   };
-  
+
   const isActive = (path) => {
     if (path === "/") {
       return pathname === path;
@@ -317,7 +317,7 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
-            
+
             <motion.div
               custom={0}
               initial="hidden"
@@ -419,7 +419,7 @@ const Navbar = () => {
                   </Link>
                 </motion.div>
               ))}
-              
+
               <motion.div
                 className="mt-4 sm:mt-6"
                 custom={8}
@@ -432,7 +432,7 @@ const Navbar = () => {
                   className="flex items-center text-base sm:text-lg font-medium text-gray-600"
                   onClick={() => handleToggle("isMenuOpen")}
                 >
-                  <IoPersonOutline className="mr-2" size={20} /> 
+                  <IoPersonOutline className="mr-2" size={20} />
                   {user ? "My Account" : "Sign In"}
                 </Link>
               </motion.div>

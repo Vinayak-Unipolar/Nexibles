@@ -703,9 +703,9 @@ function RequestSampleKit() {
     <div className="py-4 sm:py-8 bg-[#ece0cc] min-h-screen mt-16">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-lg shadow-md">
             <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
-              Request A Free Quote
+              Request A Free Quote - Sample Kit
             </h2>
 
             {submitStatus && (
@@ -720,7 +720,7 @@ function RequestSampleKit() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="">
               <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-1">
                 <div>
                   <label className="block text-sm font-medium text-black sm:text-md">
@@ -1166,7 +1166,7 @@ function RequestSampleKit() {
               </button>
             </form>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-1">
+          <div className="p-6 bg-[#ece0cc] lg:col-span-1">
             <h3 className="pb-2 mb-4 text-xl font-bold text-gray-800 border-b-2 border-orange-500">
               {`Let's Build Your Packaging Breakthrough`}
             </h3>

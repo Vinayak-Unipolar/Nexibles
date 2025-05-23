@@ -10,7 +10,7 @@ import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
-function Login() {
+function  Login() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -115,21 +115,11 @@ function Login() {
         login(data.data);
         toast.success("Login Successful");
         router.push("/");
-<<<<<<< HEAD
-        localStorage.setItem("token", data.token);
-      } else {
-        toast.error("Invalid Email or Password");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("An error occurred during login");
-=======
         localStorage.setItem("token", token);
       }
     } catch (error) {
       console.error("Invalid Request", error);
       //toast.error(error.message);
->>>>>>> 7353c9952919c8b112f21453ed2daa3b33f3a6dd
     } finally {
       setLoading(false);
       setCaptchaToken(null);
@@ -164,18 +154,7 @@ function Login() {
 
       const data = await response.json();
 
-<<<<<<< HEAD
-      if (!response.ok) {
-        if (data.status === "error" && data.message.includes("is already exist")) {
-          toast.error("This email is already registered. Please log in or use a different email.");
-        } else {
-          throw new Error(data.message || "Network response was not ok");
-        }
-      } else {
-        // Backend sends verification email automatically
-=======
       if (response.ok && data.status === "success") {
->>>>>>> 7353c9952919c8b112f21453ed2daa3b33f3a6dd
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");

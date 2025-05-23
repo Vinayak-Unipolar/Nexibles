@@ -36,18 +36,12 @@ function Page() {
   }, [APIURL]);
 
   useEffect(() => {
-    // Check if window width is at or above Tailwind's md breakpoint (768px)
     const handleResize = () => {
       setIsMdOrAbove(window.innerWidth >= 768);
     };
-
-    // Initial check
     handleResize();
-
-    // Add resize listener
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -115,7 +109,7 @@ function Page() {
             {industries.map((industry) => (
               <Link
                 key={industry.id}
-                href={`/industries/${industry.name.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`/industries/${industry.url.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <motion.div
                   variants={{

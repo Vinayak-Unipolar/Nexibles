@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import LoadingScreen from './loading-screen/page';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,63 +24,74 @@ const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const token = process.env.NEXT_PUBLIC_API_KEY;
 
+  // Auto-close modal after 5 seconds
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const autoCloseTimer = setTimeout(() => {
+      onClose();
+    }, 5000); // 5 seconds
+
+    return () => clearTimeout(autoCloseTimer); // Cleanup timer on unmount or manual close
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleSubscribe = async (e) => {
-  e.preventDefault();
-  if (!email) {
-    toast.error({
-      type: 'error',
-      title: 'Missing Email',
-      message: 'Please enter a valid email.',
-    });
-    return;
-  }
-
-  try {
-    const ipResponse = await fetch("https://api.ipify.org?format=json");
-    const ipData = await ipResponse.json();
-    const ipAddress = ipData.ip;
-    const createdAt = new Date().toISOString().slice(0, 19);
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'API-Key': token,
-      },
-      body: JSON.stringify({
-        email,
-        origin: 'Nexibles',
-        ip_address: ipAddress,
-        created_at: createdAt,
-      }),
-    });
-
-    if (response.ok) {
-      toast.success({
-        type: 'success',
-        title: 'Subscription Successful',
-        message: 'You’ve successfully subscribed!',
-      });
-      trackSignUpForm();
-      setEmail('');
-      onClose();
-    } else {
-      toast.error({
+    e.preventDefault();
+    if (!email) {
+      showToast({
         type: 'error',
-        title: 'Subscription Failed',
-        message: 'Please try again later.',
+        title: 'Missing Email',
+        message: 'Please enter a valid email.',
+      });
+      return;
+    }
+
+    try {
+      const ipResponse = await fetch("https://api.ipify.org?format=json");
+      const ipData = await ipResponse.json();
+      const ipAddress = ipData.ip;
+      const createdAt = new Date().toISOString().slice(0, 19);
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'API-Key': token,
+        },
+        body: JSON.stringify({
+          email,
+          origin: 'Nexibles',
+          ip_address: ipAddress,
+          created_at: createdAt,
+        }),
+      });
+
+      if (response.ok) {
+        showToast({
+          type: 'success',
+          title: 'Subscription Successful',
+          message: 'You’ve successfully subscribed!',
+        });
+        trackSignUpForm();
+        setEmail('');
+        onClose();
+      } else {
+        showToast({
+          type: 'error',
+          title: 'Subscription Failed',
+          message: 'Please try again later.',
+        });
+      }
+    } catch (error) {
+      showToast({
+        type: 'error',
+        title: 'Error Occurred',
+        message: 'Something went wrong. Please try again.',
       });
     }
-  } catch (error) {
-    toast.error({
-      type: 'error',
-      title: 'Error Occurred',
-      message: 'Something went wrong. Please try again.',
-    });
-  }
-};
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -166,14 +176,14 @@ const Home = () => {
           );
           setData(filterCategory);
         } else {
-          toast.error({
+          showToast({
             type: 'error',
             title: 'Fetch Failed',
             message: data?.error || 'Unable to fetch category data.',
           });
         }
       } catch (error) {
-        toast.error({
+        showToast({
           type: 'error',
           title: 'Fetch Error',
           message: 'Something went wrong while fetching categories.',
@@ -200,7 +210,6 @@ const Home = () => {
       <Industries />
       <Popularproducts />
       <StatsAndTestimonials />
-
       <section className="py-10 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="md:text-3xl text-2xl font-bold text-black mb-8 tracking-tight text-center">
@@ -209,7 +218,6 @@ const Home = () => {
           <BrandLogosSection />
         </div>
       </section>
-
       <AdvantageItem />
       <ProductSections />
       <NexiblesInstagramSection />

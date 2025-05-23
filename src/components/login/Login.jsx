@@ -66,7 +66,7 @@ function Login() {
     active: "",
     password: "",
     profImage: "",
-    baseUrl: "https://nexiblesweb.barecms.com",
+    baseUrl: "https://nexibles.com",
   });
 
   const executeCaptcha = async () => {
@@ -117,7 +117,7 @@ function Login() {
         login(data.data);
         toast.success("Login Successful");
         localStorage.setItem("token", token);
-        router.back();
+        router.push("/");
       }
     } catch (error) {
       console.error("Invalid Request", error);
@@ -216,7 +216,7 @@ function Login() {
           active: "",
           password: "",
           profImage: "",
-          baseUrl: "https://nexiblesweb.barecms.com",
+          baseUrl: "https://nexibles.com",
         });
         setIsLogin(true);
         toast.success("Registered Successfully! Please check your email to verify your account.");

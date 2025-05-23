@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../utils/authContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import Loader from '../comman/Loader';
 
 // Separate Input Component to prevent re-renders
 const EditableInput = ({ label, value, field, type = "text", placeholder, onChange, isEditing }) => {
@@ -197,9 +198,7 @@ function MyDetails() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl font-medium text-gray-600">Loading...</div>
-      </div>
+      <Loader />
     );
   }
 

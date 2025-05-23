@@ -25,7 +25,7 @@ function Page() {
   return (
     <div>
       <Navbar />
-      <div className="bg-white md:mt-16 md:flex containers ">
+      <div className="bg-white md:mt-16 md:flex containers">
         <div className="w-full md:w-1/3">
           <MyAccount />
         </div>

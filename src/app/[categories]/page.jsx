@@ -66,9 +66,9 @@ const ProductCategory = () => {
   const fadeInUp = shouldReduceMotion
     ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
     : {
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-      };
+      hidden: { opacity: 0, y: 50 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+    };
 
   const staggerChildren = {
     hidden: { opacity: 0 },
@@ -83,36 +83,36 @@ const ProductCategory = () => {
   const waveAnimation = shouldReduceMotion
     ? {}
     : {
-        scale: [1, 1.5, 1],
-        opacity: [0.5, 0, 0],
-        transition: {
-          repeat: Infinity,
-          duration: 1.5,
-          ease: 'easeOut',
-        },
-      };
+      scale: [1, 1.5, 1],
+      opacity: [0.5, 0, 0],
+      transition: {
+        repeat: Infinity,
+        duration: 1.5,
+        ease: 'easeOut',
+      },
+    };
 
   const containerAnimation = shouldReduceMotion
     ? {
-        initial: { opacity: 0, scale: 0.8 },
-        animate: { opacity: 1, scale: 1 },
-        hovered: { scale: 1.05 },
-      }
+      initial: { opacity: 0, scale: 0.8 },
+      animate: { opacity: 1, scale: 1 },
+      hovered: { scale: 1.05 },
+    }
     : {
-        initial: { opacity: 0, scale: 0.8 },
-        animate: { opacity: 1, scale: 1, transition: { duration: 0.8 } },
-        hovered: {
-          scale: 1.05,
-          transition: { duration: 0.5, ease: 'easeInOut' },
-        },
-      };
+      initial: { opacity: 0, scale: 0.8 },
+      animate: { opacity: 1, scale: 1, transition: { duration: 0.8 } },
+      hovered: {
+        scale: 1.05,
+        transition: { duration: 0.5, ease: 'easeInOut' },
+      },
+    };
 
   const triangleAnimation = shouldReduceMotion
     ? { rotate: 0 }
     : {
-        rotate: isHovered ? 45 : 0,
-        transition: { duration: 0.5, ease: 'easeInOut' },
-      };
+      rotate: isHovered ? 45 : 0,
+      transition: { duration: 0.5, ease: 'easeInOut' },
+    };
 
   if (!content) {
     return (
@@ -332,15 +332,16 @@ const ProductCategory = () => {
         </div>
       </section>
 
-      {/* Product List */}
-      <section className="py-10 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 tracking-tight text-center">
-            {content.productsSection.title}
-          </h2>
-          <Card product={products} isLoading={loading} />
-        </div>
-      </section>
+      {products.length > 0 && (
+        <section className="py-10 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 tracking-tight text-center">
+              {content.productsSection.title}
+            </h2>
+            <Card product={products} isLoading={loading} />
+          </div>
+        </section>
+      )}
 
       <section className="py-10 bg-white">
         <div>

@@ -10,7 +10,7 @@ import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
-function Login() {
+function  Login() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

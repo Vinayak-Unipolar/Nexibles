@@ -141,7 +141,7 @@ const ConfigurationHistory = ({ customerID }) => {
             </div>
             <h3 className="text-xl font-medium text-gray-900 mb-2">No Configurations Found</h3>
             <p className="text-gray-600 mb-6">{`You haven't created any configurations yet. Start by creating a configuration to see your history here.`}</p>
-            
+
           </div>
         </div>
       </div>
@@ -150,7 +150,7 @@ const ConfigurationHistory = ({ customerID }) => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="bg-white  p-6">
+      <div className="bg-white p-6">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-gray-900">Configuration History</h2>
           <div className="bg-[#103b60] text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -334,28 +334,21 @@ const ConfigurationPage = () => {
     );
   }
 
-  // Assuming customerID is available in user object; adjust based on actual structure
-  const customerID = user?.result?.customerId; // Fallback to CUST12345 if not available
+  const customerID = user?.result?.customerId;
 
   return (
-    <div className="min-h-screen">
+    <div>
       <Navbar />
-      <div className="pt-12 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:flex lg:gap-8">
-            <div className="lg:w-80 lg:flex-shrink-0 mb-8 lg:mb-0">
-              <div className="bg-white sticky top-12">
-                <MyAccount />
-              </div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <ConfigurationHistory customerID={customerID} />
-            </div>
-          </div>
+      <div className="bg-white md:mt-16 md:flex containers">
+        <div className="w-full md:w-1/3">
+          <MyAccount />
+        </div>
+        <div className="w-full md:w-full">
+          <ConfigurationHistory customerID={customerID} />
         </div>
       </div>
       <Footer />
-    </div>
+    </div >
   );
 };
 

@@ -251,14 +251,14 @@ const pageCss = `
   padding: 0.75rem 2rem;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
-  color: #1e3a8a;
+  color: #000000;
   background-color: #ffd13e;
   border: none;
   cursor: pointer;
 }
 .page-content .button:hover {
   background-color: #e5bc37;
-  color: #103b60;
+  color: #000000;
 }
 .page-content .cta-section {
   background-color: #ffffff;

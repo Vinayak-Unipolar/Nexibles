@@ -114,7 +114,7 @@ const Footer = () => {
         `}
       </Script>
       <noscript>
-        <img 
+        <img  
           height="1" 
           width="1" 
           style={{ display: "none" }}

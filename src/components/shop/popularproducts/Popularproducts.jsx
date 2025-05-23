@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import RequestForm from "../../RequestForm";
@@ -55,7 +55,7 @@ export default function PopularProducts() {
   return (
     <div className="py-2 bg-white md:py-4">
       <div className="container px-4 mx-auto">
-        <h2 className="md:text-3xl text-2xl font-bold text-center text-[#333] mb-8 md:mb-12 ">
+        <h2 className="md:text-3xl text-2xl font-bold text-center text-[#333] mb-8 md:mb-12">
           Explore Custom Pouches
         </h2>
 
@@ -64,42 +64,44 @@ export default function PopularProducts() {
             categories.map((category) => (
               <div
                 key={category.id}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center w-full transition-all duration-300 hover:shadow-lg rounded-lg p-4 cursor-pointer"
+                onClick={() => window.location.href = `/${category.cat_url}`}
               >
-                <div className="flex flex-col items-center w-full transition-all duration-300 hover:shadow-lg rounded-lg p-4">
-                  <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
-                    <Image
-                      src={
-                        category.bg_Img
-                          ? `${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`
-                          : "/placeholder.png"
-                      }
-                      alt={category.name}
-                      width={300}
-                      height={300}
-                      className="object-contain transition-transform duration-300 hover:scale-105 max-h-full max-w-full"
-                    />
-                  </div>
-                  <div className="mt-3 text-center w-full">
-                    <p className="text-xs sm:text-sm md:text-sm font-bold tracking-wider text-black mb-2 sm:mb-3 md:mb-4">
-                      {category.name}
-                    </p>
-                    <div className="flex justify-center space-x-2">
-                      <div className="flex justify-center items-center gap-2 flex-wrap">
-                        <Link
-                          // href={`/category/${category.cat_url}`}
-                         href={`/${category.cat_url}`}
-                          className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
-                        >
-                          Details
-                        </Link>
-                        <button
-                          onClick={() => handleOpenModal(category.name)}
-                          className="px-4 py-1.5 text-xs font-medium rounded bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
-                        >
-                          Get Quote
-                        </button>
-                      </div>
+                <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={
+                      category.bg_Img
+                        ? `${process.env.NEXT_PUBLIC_CDN_URL}/category/${category.bg_Img}`
+                        : "/placeholder.png"
+                    }
+                    alt={category.name}
+                    width={300}
+                    height={300}
+                    className="object-contain transition-transform duration-300 hover:scale-105 max-h-full max-w-full"
+                  />
+                </div>
+                <div className="mt-3 text-center w-full">
+                  <p className="text-xs sm:text-sm md:text-sm font-bold tracking-wider text-black mb-2 sm:mb-3 md:mb-4">
+                    {category.name}
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <div className="flex justify-center items-center gap-2 flex-wrap">
+                      <Link
+                        href={`/${category.cat_url}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
+                      >
+                        Details
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenModal(category.name);
+                        }}
+                        className="px-4 py-1.5 text-xs font-medium rounded bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap"
+                      >
+                        Get Quote
+                      </button>
                     </div>
                   </div>
                 </div>

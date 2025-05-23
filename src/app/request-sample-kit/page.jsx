@@ -909,7 +909,7 @@ function RequestSampleKit() {
                   value={formData.projectDescription}
                   onChange={handleChange}
                   placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                  className="w-full h-24 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none sm:h-32"
+                  className="w-full h-20 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                 ></textarea>
               </div>
 

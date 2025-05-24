@@ -13,11 +13,11 @@ const Page = ({ params }) => {
     const fetchPageData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages`);
+        const res = await fetch(`https://nexiblesapp.barecms.com/api/pages`);
         const data = await res.json();
 
         const page = data.data.find(
-          (p) => slugify(p.url) === params.slug
+          (p) => slugify(p.title) === params.slug
         );
         setPageData(page);
       } catch (error) {
@@ -30,8 +30,8 @@ const Page = ({ params }) => {
     fetchPageData();
   }, [params.slug]);
 
-  const slugify = (url) =>
-    url.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+  const slugify = (title) =>
+    title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
   console.log("uRL", params.slug);
 
   if (loading) {

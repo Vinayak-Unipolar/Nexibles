@@ -973,7 +973,7 @@ const handleSubmit = (e) => {
                   <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                     <div>
                       <label className="block text-sm font-medium text-black sm:text-md">
-                        Order Quantity 
+                        Order Quantity
                       </label>
                       <select
                         name="orderQuantity"
@@ -997,7 +997,7 @@ const handleSubmit = (e) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-black sm:text-md">
-                        Package Buying History 
+                        Package Buying History
                       </label>
                       <select
                         name="packageBuyingHistory"

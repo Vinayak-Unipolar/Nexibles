@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 function VerifyEmail() {
-  const APIURL = process.env.NEXT_PUBLIC_API_URL;
+  const APIURL = process.env.NEXT_PUBLIC_API_URL || "https://nexiblesapp.barecms.com"; // Fallback API URL
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -15,10 +15,21 @@ function VerifyEmail() {
   const token = searchParams.get("token");
 
   useEffect(() => {
-    console.log("useEffect triggered with token:", token, "APIURL:", APIURL);
+    // Log initial state for debugging
+    console.log("VerifyEmail useEffect triggered", {
+      token,
+      APIURL,
+      searchParams: searchParams.toString(),
+    });
 
-    if (!token) {
-      setError("Invalid or missing verification token.");
+    // Validate token
+    if (!token || typeof token !== "string" || token.length < 10) {
+      console.log("Token validation failed:", {
+        token,
+        type: typeof token,
+        length: token?.length,
+      });
+      setError("Invalid or missing verification token. Please request a new link.");
       setLoading(false);
       toast.error("Invalid or missing verification token.", { toastId: "verify-error" });
       return;
@@ -30,33 +41,52 @@ function VerifyEmail() {
     const verifyEmail = async () => {
       setError(null);
       setSuccess(false);
+      const url = `${APIURL}/api/login/verify-email?token=${token}`;
+      console.log("Sending request to:", url);
 
       try {
-        const response = await fetch(`${APIURL}/api/login/verify-email?token=${token}`, {
+        const response = await fetch(url, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         });
 
+        console.log("Response received:", {
+          status: response.status,
+          headers: Object.fromEntries(response.headers),
+        });
+
+        // Check for non-JSON response
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
           const text = await response.text();
-          console.error("Non-JSON response:", text, "Status:", response.status);
+          console.error("Non-JSON response:", text);
           throw new Error("Server returned an unexpected response. Please try again later.");
         }
 
         const data = await response.json();
-        console.log("Verification response:", data, "Status:", response.status);
+        console.log("Verification response:", data);
 
         if (isMounted) {
           if (response.ok && data.status === "success") {
+            console.log("Verification successful, setting success state");
             setSuccess(true);
             toast.success("Email verified successfully! You can now log in.", {
               toastId: "verify-success",
             });
           } else {
-            throw new Error(data.message || "Failed to verify email.");
+            let errorMessage = data.message || "Failed to verify email.";
+            if (response.status === 400) {
+              errorMessage = "Invalid verification token. Please request a new link.";
+            } else if (response.status === 401) {
+              errorMessage = "Unauthorized request. Please check your token.";
+            } else if (response.status === 404) {
+              errorMessage = "Verification link not found. Please request a new link.";
+            } else if (response.status >= 500) {
+              errorMessage = "Server error. Please try again later or contact support.";
+            }
+            throw new Error(errorMessage);
           }
         }
       } catch (err) {
@@ -69,6 +99,7 @@ function VerifyEmail() {
         }
       } finally {
         if (isMounted) {
+          console.log("Setting loading to false");
           setLoading(false);
         }
       }
@@ -77,6 +108,7 @@ function VerifyEmail() {
     verifyEmail();
 
     return () => {
+      console.log("Cleaning up, setting isMounted to false");
       isMounted = false;
     };
   }, [token, APIURL, success]);
@@ -84,9 +116,10 @@ function VerifyEmail() {
   // Redirect to login page after successful verification
   useEffect(() => {
     if (success) {
+      console.log("Redirecting to /login due to successful verification");
       const timer = setTimeout(() => {
         router.push("/login");
-      }, 3000); // Redirect after 3 seconds to allow user to see success message
+      }, 3000); // Redirect after 3 seconds
       return () => clearTimeout(timer);
     }
   }, [success, router]);

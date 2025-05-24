@@ -10,8 +10,7 @@ import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
-function Login() {
-  const token = process.env.NEXT_PUBLIC_API_KEY;
+function  Login() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -99,7 +98,7 @@ function Login() {
       const response = await fetch(`${APIURL}/api/login`, {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           emailAddress: email,
@@ -113,7 +112,6 @@ function Login() {
         toast.error(data.message);
       }
       if (data.status === "success") {
-        const token = data.token;
         login(data.data);
         toast.success("Login Successful");
         localStorage.setItem("token", token);
@@ -227,7 +225,7 @@ function Login() {
         toast.error(errorMessage);
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Registration error:", error.message);
       toast.error(error.message || "An error occurred during registration");
 
     } finally {
@@ -264,7 +262,14 @@ function Login() {
     <>
       {loading && <Loader btnLoad={false} />}
       <div className="flex items-center justify-center p-4 bg-white md:mt-24 my-12">
-        <div className="w-full max-w-4xl overflow-hidden">
+        <style>
+          {`
+            .overflow-y-auto::-webkit-scrollbar {
+              display: none;
+            }
+          `}
+        </style>
+        <div className="w-full max-w-4xl">
           <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
             <motion.div
               className="hidden md:block md:w-1/2"

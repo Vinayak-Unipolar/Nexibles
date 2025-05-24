@@ -12,7 +12,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/shape-pouch.webp",
+            "src": "https://cdn.nexibles.com/category/Pouch%20Types_Shape%20Pouch.webp",
             "alt": "Custom shape pouch",
             "width": 130,
             "height": 210
@@ -35,7 +35,7 @@
         ],
         "description": "Ideal for promotional items, kids’ snacks, and unique branding experiences.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/shape-pouch-feature.webp",
+          "src": "https://cdn.nexibles.com/category/Pouch%20Types_Shape%20Pouch.webp",
           "alt": "Shape pouch features",
           "width": 500,
           "height": 300
@@ -64,7 +64,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/center-seal-pouch.webp",
+            "src": "https://cdn.nexibles.com/product/170x280%20CS.webp",
             "alt": "Center seal pouch",
             "width": 130,
             "height": 210
@@ -87,7 +87,7 @@
         ],
         "description": "A reliable and cost-effective packaging solution.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/center-seal-pouch-feature.webp",
+          "src": "https://cdn.nexibles.com/product/170x280%20CS.webp",
           "alt": "Center seal pouch with features",
           "width": 500,
           "height": 300
@@ -104,7 +104,7 @@
         "title": "Trusted by 1500+ Brands"
       }
     },
-    "quad-seal-pouch": {
+    "quad-seal": {
       "hero": {
         "title": "Quad Seal Pouches",
         "subtitle": "Reinforced Structure for Bulk Packaging",
@@ -116,9 +116,9 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/quad-seal-pouch.webp",
+            "src": "https://cdn.nexibles.com/category/Pouch%20Types_QS.webp",
             "alt": "Quad seal pouch",
-            "width": 130,
+            "width": 120,
             "height": 210
           },
           "background": {
@@ -139,7 +139,7 @@
         ],
         "description": "Perfect for pet food, grains, and premium products.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/quad-seal-pouch-feature.webp",
+          "src": "https://cdn.nexibles.com/category/Pouch%20Types_QS.webp",
           "alt": "Quad seal feature highlights",
           "width": 500,
           "height": 300
@@ -168,7 +168,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/center-seal-gusset.webp",
+            "src": "https://cdn.nexibles.com/product/80x150+50+50%20CSSG.webp",
             "alt": "Side gusset pouch",
             "width": 130,
             "height": 210
@@ -191,7 +191,7 @@
         ],
         "description": "A blend of capacity, strength, and branding flexibility.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/side-gusset-feature.webp",
+          "src": "https://cdn.nexibles.com/product/250X450+60+60%20CSSG.webp",
           "alt": "Side gusset pouch diagram",
           "width": 500,
           "height": 300
@@ -220,16 +220,16 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/spout-pouch.webp",
+            "src": "https://cdn.nexibles.com/category/Pouch%20Types_Spout%20Pouch.webp",
             "alt": "Spout pouch for liquid packaging",
-            "width": 130,
-            "height": 210
+            "width": 100,
+            "height": 100
           },
           "background": {
             "src": "/Triangle.webp",
             "alt": "Decorative triangle pattern background",
-            "width": 600,
-            "height": 400
+            "width": 100,
+            "height": 100
           }
         }
       },
@@ -244,13 +244,13 @@
         ],
         "description": "Perfect for beverages, oils, and semi-liquid products.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/spout-pouch-features.webp",
+          "src": "https://cdn.nexibles.com/category/Pouch%20Types_Spout%20Pouch.webp",
           "alt": "Spout pouch feature diagram",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "10%", "left": "60%", "label": "Leak-proof spout" },
+          { "top": "10%", "left": "50%", "label": "Leak-proof spout" },
           { "top": "40%", "left": "50%", "label": "Custom branding" },
           { "top": "70%", "left": "55%", "label": "Durable material" }
         ]
@@ -332,7 +332,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/3-side-seal-pouch.webp",
+            "src": "https://cdn.nexibles.com/product/125x175%203SS.webp",
             "alt": "3 side seal pouch with tear notches",
             "width": 120,
             "height": 200
@@ -357,7 +357,7 @@
         ],
         "description": "Perfect for snacks, cosmetics, and small products.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/3-side-seal-pouch-image.webp",
+          "src": "https://cdn.nexibles.com/product/125x175%203SS.webp",
           "alt": "3 side seal pouch with feature pointers",
           "width": 500,
           "height": 300

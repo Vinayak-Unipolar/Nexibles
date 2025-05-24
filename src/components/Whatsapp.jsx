@@ -10,7 +10,7 @@ const gtag_report_conversion = (url) => {
   }
   //console.log("Sending Google Ads conversion event");
   window.gtag('event', 'conversion', {
-    'send_to': 'AW-17014026366',
+    'send_to': 'AW-17014026366/6bz-COPv-MYaEP7g9bA_',
     'event_callback': () => {
       //console.log("Google Ads conversion tracking successful");
     }
@@ -22,7 +22,7 @@ const Whatsapp = () => {
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  
+
   // Auto-show tooltip after 3 seconds to improve UX
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,19 +38,32 @@ const Whatsapp = () => {
       clearTimeout(hideTimer);
     };
   }, []);
+  const getGclid = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('gclid') || '';
+  };
 
-  // Handle click animation effect, conversion tracking, and WhatsApp redirection in a new tab
-  const handleClick = () => {
+  const handleClick = async () => {
     setClicked(true);
+    const conversionPromise = new Promise((resolve) => {
+      gtag('event', 'conversion', {
+        'send_to': 'AW-17014026366/6bz-COPv-MYaEP7g9bA_',
+        'event_callback': resolve
+      });
+      console.log("Google Ads conversion tracking successful");
+    });
+
+    await Promise.race([
+      conversionPromise,
+      new Promise(resolve => setTimeout(resolve, 500))
+    ]);
+
+    const gclid = getGclid();
+    const messageWithGclid = gclid ? `Hi Nexibles GCLID:${gclid}` : "Hi Nexibles";
+    const whatsappUrl = `https://wa.me/919821045101?text=${encodeURIComponent(messageWithGclid)}`;
+
+    window.open(whatsappUrl, "_blank");
     setTimeout(() => setClicked(false), 700);
-
-    // Google Ads conversion tracking
-    //console.log("Attempting Google Ads conversion tracking for WhatsApp click");
-    gtag_report_conversion("https://wa.me/919821045101");
-
-    // Open WhatsApp in a new tab
-    //console.log("Opening WhatsApp in a new tab: https://wa.me/919821045101");
-    window.open("https://wa.me/919821045101", "_blank", "noopener,noreferrer");
   };
 
   // Generate random particles for the burst effect
@@ -245,15 +258,15 @@ const Whatsapp = () => {
         animate={{
           boxShadow: hovered
             ? [
-                "0 0 0 0 rgba(37, 211, 102, 0)",
-                "0 0 0 20px rgba(37, 211, 102, 0.1)",
-                "0 0 0 40px rgba(37, 211, 102, 0)",
-              ]
+              "0 0 0 0 rgba(37, 211, 102, 0)",
+              "0 0 0 20px rgba(37, 211, 102, 0.1)",
+              "0 0 0 40px rgba(37, 211, 102, 0)",
+            ]
             : [
-                "0 0 0 0 rgba(37, 211, 102, 0)",
-                "0 0 0 15px rgba(37, 211, 102, 0.1)",
-                "0 0 0 30px rgba(37, 211, 102, 0)",
-              ],
+              "0 0 0 0 rgba(37, 211, 102, 0)",
+              "0 0 0 15px rgba(37, 211, 102, 0.1)",
+              "0 0 0 30px rgba(37, 211, 102, 0)",
+            ],
         }}
         transition={{
           duration: hovered ? 1.5 : 3,

@@ -27,7 +27,7 @@ function RequestSampleKit() {
     packageBuyingHistory: "",
     projectDescription: "",
     requestSampleKit: true, // Changed to true to pre-select the toggle
-    gst_in: "", 
+    gst_in: "",
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -561,7 +561,7 @@ function RequestSampleKit() {
       setSubmitStatus("Please accept the Terms and Conditions.");
       return;
     }
-    
+
     const now = new Date();
     const day = String(now.getDate()).padStart(2, '0');
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -569,10 +569,10 @@ function RequestSampleKit() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
-    
+
     // Format: Quote_ddmmyyyyminutessseconds
     const eventId = `Quote_${day}${month}${year}${minutes}${seconds}${milliseconds}`;
-    
+
     // Track conversions on both platforms with the same event ID
     // Google Ads conversion tracking
     gtag('event', 'conversion', {
@@ -582,12 +582,12 @@ function RequestSampleKit() {
         console.log('Google conversion tracked successfully');
       }
     });
-    
+
     // Meta/Facebook conversion tracking
     fbq('trackCustom', 'RequestQuote', {
       eventID: eventId
     });
-    
+
     console.log('Quote conversion event tracked with ID:', eventId);
 
     const emailData = {
@@ -912,7 +912,7 @@ function RequestSampleKit() {
                   className="w-full h-20 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
                 ></textarea>
               </div>
-              
+
               <div className="flex items-center gap-4 mt-6 mb-4">
                 <span className="text-lg font-semibold">Request Sample Kit</span>
                 <button

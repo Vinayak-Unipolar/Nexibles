@@ -44,8 +44,8 @@ const MyOrderHistory = () => {
                     setChecklistExist(checklistState);
                 }
             } catch (error) {
-                console.error("Error loading data:", error);
-                toast.error("Failed to load order data. Please try again.");
+                // console.error("Error loading data:", error);
+                // toast.error("Failed to load order data. Please try again.");
             } finally {
                 setLoading(false);
             }

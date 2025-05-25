@@ -581,14 +581,13 @@
 //     );
 // };
 
-// export default MyOrderHistory;
-'use client'; // Required for client-side interactivity in App Router
+// export default MyOrderHistory;'use client'; // Required for client-side interactivity in Next.js App Router
 
 import React, { useState, useEffect } from 'react';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import { useAuth } from '@/utils/authContext';
 import { toast } from 'react-toastify';
-import Link from 'next/link'; // Use Next.js Link
+import Link from 'next/link';
 import Loader from '../../components/comman/Loader';
 
 const MyOrderHistory = () => {
@@ -598,8 +597,19 @@ const MyOrderHistory = () => {
   const { user } = useAuth();
   const customerId = user?.result?.customerId;
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedFilter, setSelectedFilter] = useState('past 3 months');
   const itemsPerPage = 2;
   const [loading, setLoading] = useState(true);
+
+  const currentYear = new Date().getFullYear();
+  const earliestYear = 2017;
+  const filterOptions = [
+    'past 3 months',
+    ...Array.from(
+      { length: currentYear - earliestYear + 1 },
+      (_, index) => currentYear - index
+    ).map(String),
+  ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -616,7 +626,7 @@ const MyOrderHistory = () => {
     };
 
     loadData();
-  }, [user, customerId]);
+  }, [user, customerId, selectedFilter]);
 
   const fetchOrderHistory = async () => {
     try {
@@ -639,8 +649,29 @@ const MyOrderHistory = () => {
 
       const data = await response.json();
       const filteredOrders = data.orderDetails.filter((order) => order.origin === 'Nexibles');
-      const sortedOrders = filteredOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
 
+      // Apply filter based on selected year or range
+      const currentYear = new Date().getFullYear();
+      let filteredByDate = filteredOrders;
+
+      if (selectedFilter === 'past 3 months') {
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        filteredByDate = filteredOrders.filter(
+          (order) => new Date(order.orderDate) >= threeMonthsAgo
+        );
+      } else if (selectedFilter === 'Archived Orders') {
+        filteredByDate = filteredOrders.filter((order) => new Date(order.orderDate).getFullYear() < 2017);
+      } else {
+        const filterYear = parseInt(selectedFilter);
+        if (!isNaN(filterYear)) {
+          filteredByDate = filteredOrders.filter(
+            (order) => new Date(order.orderDate).getFullYear() === filterYear
+          );
+        }
+      }
+
+      const sortedOrders = filteredByDate.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
       setOrders(sortedOrders);
       return sortedOrders;
     } catch (error) {
@@ -648,6 +679,11 @@ const MyOrderHistory = () => {
       toast.error('Failed to fetch order history. Please try again.');
       return [];
     }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const groupOrdersByOrderNo = () => {
@@ -680,10 +716,56 @@ const MyOrderHistory = () => {
     }
   };
 
+  const handleFilterChange = (e) => {
+    setSelectedFilter(e.target.value);
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
+
   return (
     <div className="min-h-screen">
       <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-12">
-        <div className="space-y-8">
+        {/* Header Section with Filter */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Your Orders</h1>
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <select
+                value={selectedFilter}
+                onChange={handleFilterChange}
+                className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {filterOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </div>
+            <span className="text-sm text-gray-600">
+              {Object.keys(groupedOrders).length} orders placed in{' '}
+              {selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}
+            </span>
+          </div>
+        </div>
+
+        {/* Orders List */}
+        <div className="space-y-6">
           {loading ? (
             <p className="text-center text-lg text-gray-600">
               <Loader />
@@ -693,52 +775,139 @@ const MyOrderHistory = () => {
           ) : (
             <>
               {currentOrders.map(([orderNo, orderGroup]) => (
-                <div key={orderNo} className="bg-white border border-gray-200 rounded-xl shadow-lg">
-                  <div className="p-6 sm:p-8">
-                    <h2 className="mb-6 text-xl font-semibold text-gray-900 sm:text-2xl">Order #{orderNo}</h2>
+                <div
+                  key={orderNo}
+                  className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
+                >
+                  {/* Order Header */}
+                  <div className="border-b border-gray-200 px-6 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold">Order Placed</span>
+                        <br />
+                        {formatDate(orderGroup[0].orderDate)}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold">Total</span>
+                        <br />
+                        ₹{orderGroup[0].invamt}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold">Ship To</span>
+                        <br />
+                        <span className="text-blue-600 hover:underline cursor-pointer">
+                          {orderGroup[0].firstName} {orderGroup[0].lastName}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold">Order #</span>{' '}
+                        <span className="text-blue-600 hover:underline cursor-pointer">
+                          {orderNo}
+                        </span>
+                      </p>
+                      <Link
+                        href={`/order/${orderNo}`}
+                        className="text-sm text-blue-600 hover:underline"
+                      >
+                        View order details
+                      </Link>{' '}
+                      {/* |{' '}
+                      <Link
+                        href={`/invoice/${orderNo}`}
+                        className="text-sm text-blue-600 hover:underline"
+                      >
+                        Invoice
+                      </Link> */}
+                    </div>
+                  </div>
 
+                  {/* Order Body */}
+                  <div className="p-6">
                     {orderGroup.map((order) => (
                       <div
                         key={order.id}
-                        className="flex flex-col gap-6 py-6 border-t border-gray-200 lg:flex-row first:border-t-0"
+                        className="flex flex-col sm:flex-row gap-6 mb-6 last:mb-0"
                       >
-                        <div className="flex-shrink-0 w-full lg:w-80">
+                        {/* Product Image */}
+                        <div className="flex-shrink-0 w-full sm:w-40">
                           <img
                             src={`${CDN_URL}/product/${order.image}`}
                             alt={order.product_name}
-                            className="object-contain w-full h-64 rounded-lg lg:h-48"
+                            className="object-contain w-full h-32 rounded-md"
                             onError={(e) => (e.target.src = '/placeholder-image.jpg')}
                           />
                         </div>
 
-                        <div className="flex-grow space-y-4">
-                          <h3 className="text-xl font-semibold text-gray-900 sm:text-2xl">{order.product_name}</h3>
-                          <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
-                            <p>
-                              <span className="font-semibold text-gray-700">Sku Count:</span> {order.skuCount}
+                        {/* Product Details */}
+                        <div className="flex-grow space-y-3">
+                          <h3 className="text-lg font-medium text-gray-900 hover:text-blue-600">
+                            <Link href={`/order/${orderNo}`}>
+                              {order.product_name}
+                            </Link>
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-semibold">Material:</span> {order.material}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-semibold">Quantity:</span> {order.quantity}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-semibold">SKU Count:</span> {order.skuCount}
+                          </p>
+                          {order.discountAmount && parseFloat(order.discountAmount) > 0 && (
+                            <p className="text-sm text-gray-600">
+                              <span className="font-semibold">Discount:</span>{' '}
+                              {order.discountPercentage}% (₹{order.discountAmount})
                             </p>
-                          </div>
+                          )}
                           <Link
                             href={`/order/${orderNo}`}
-                            className="inline-flex items-center px-4 py-2 bg-[#103b60] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm font-medium cursor-pointer shadow-sm hover:shadow-md"
+                            className="inline-block mt-2 px-4 py-2 bg-[#103b60] text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
                           >
-                            View Details
+                            View your item
                           </Link>
                         </div>
+
+                        {/* Action Buttons */}
+                        {/* <div className="flex flex-col space-y-2 w-full sm:w-48">
+                          <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Track package
+                          </button>
+                          <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Return or replace items
+                          </button>
+                          <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Leave seller feedback
+                          </button>
+                          <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Leave delivery feedback
+                          </button>
+                          <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Write a product review
+                          </button>
+                        </div> */}
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
 
+              {/* Pagination */}
               {Object.keys(groupedOrders).length > 0 && (
                 <div className="flex items-center justify-center mt-8 space-x-4">
                   <button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
-                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm ${
-                      currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-[#103b60] text-white'
-                    }`}
+                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm ${currentPage === 1
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
                   >
                     <FiChevronLeft className="mr-2" size={16} />
                     Previous
@@ -749,11 +918,10 @@ const MyOrderHistory = () => {
                   <button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
-                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm ${
-                      currentPage === totalPages
+                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm ${currentPage === totalPages
                         ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                        : 'bg-[#103b60] text-white'
-                    }`}
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
                   >
                     Next
                     <FiChevronRight className="ml-2" size={16} />

@@ -390,7 +390,7 @@ const OrderDetails = () => {
                                                     <img
                                                         src={`${CDN_URL}/product/${order.image}`}
                                                         alt={order.product_name}
-                                                        className="object-contain w-full h-64 rounded-lg lg:h-48"
+                                                        className="object-contain w-full h-48 rounded-lg lg:h-48"
                                                         onError={(e) => (e.target.src = '/placeholder-image.jpg')}
                                                     />
                                                 </div>
@@ -399,9 +399,11 @@ const OrderDetails = () => {
                                                     <h3 className="text-xl font-semibold text-gray-900 sm:text-2xl">{order.product_name}</h3>
 
                                                     <div className="space-y-6 md:flex md:space-x-6 md:space-y-0">
+                                                        {/* Address and Customer Details Column */}
+
+
                                                         {/* Order Details Column */}
                                                         <div className="flex-1 space-y-4">
-                                                            {/* <h4 className="text-lg font-semibold text-gray-800">Order Details</h4> */}
                                                             <div className="grid grid-cols-1 gap-3 text-sm">
                                                                 <p>
                                                                     <span className="font-semibold text-gray-700">Order Date:</span>{' '}
@@ -422,7 +424,7 @@ const OrderDetails = () => {
                                                                 <p>
                                                                     <span className="font-semibold text-gray-700">Material:</span> {order.material}
                                                                 </p>
-                                                                <div className="space-y-2 border-t pt-2">
+                                                                {/* <div className="space-y-2 border-t pt-2">
                                                                     <p>
                                                                         <span className="font-semibold text-gray-700">Product Price (per item):</span> ₹{order.price}
                                                                     </p>
@@ -448,6 +450,24 @@ const OrderDetails = () => {
                                                                             <span className="font-semibold text-gray-700">Total Price:</span> ₹{displayPrice} (No discount applied)
                                                                         </p>
                                                                     )}
+                                                                </div> */}
+                                                                <div className="grid grid-cols-1 gap-3 text-sm">
+                                                                    <div>
+                                                                        <p className="font-semibold text-gray-700">Shipping Address:</p>
+                                                                        <p>
+                                                                            {order?.company || ' '}, {order?.street || ' '}, {order?.city || ''},{' '}
+                                                                            {order?.state || ''} {order?.zipcode || ''}, {order?.country || ''}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="font-semibold text-gray-700">Customer Details:</p>
+                                                                        <p>
+                                                                            <p>First Name: {order?.firstName || ' '}</p>
+                                                                            <p>Last Name: {order?.lastName || ' '}</p>
+                                                                            <p>Email: {order?.eMail || ''}</p>
+                                                                            <p>Mobile: {order?.mobile || ''}</p>
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
                                                                 {order.product_config_id && (
                                                                     <p>
@@ -457,47 +477,49 @@ const OrderDetails = () => {
                                                                 )}
                                                             </div>
                                                         </div>
-
-                                                        {/* Address and Customer Details Column */}
-                                                        <div className="flex-1 space-y-4  text-sm">
-                                                            <div>
-                                                                <p className="font-semibold text-gray-700">Shipping Address:</p>
+                                                        <div className="flex-1 space-y-4 text-sm">
+                                                            <p>
+                                                                <span className="font-semibold text-gray-700">Product Price (per item):</span> ₹{order.price}
+                                                            </p>
+                                                            <p>
+                                                                <span className="font-semibold text-gray-700">Subtotal ({order.quantity} items):</span> ₹{(order.price * order.quantity)} <span className="text-gray-500 text-xs"></span>
+                                                            </p>
+                                                            <p>
+                                                                <span className="font-semibold text-gray-700">GST (18%):</span> + ₹{order.tax}
+                                                            </p>
+                                                            <p>
+                                                                <span className="font-semibold text-gray-700">Shipping Fee:</span> + ₹{order.orderCharge}
+                                                            </p>
+                                                            {hasDiscount && (
                                                                 <p>
-                                                                    {order?.company || ' '}, {order?.street || ' '}, {order?.city || ''},{' '}
-                                                                    {order?.state || ''} {order?.zipcode || ''}, {order?.country || ''}
+                                                                    <span className="font-semibold text-gray-700">Discount ({order.discountPercentage}%):</span> − ₹{order.discountAmount}
                                                                 </p>
-                                                            </div>
-                                                            <div>
-                                                                <p className="font-semibold text-gray-700">Customer Details:</p>
-                                                                <p>
-                                                                    <p>First Name: {order?.firstName || ' '}</p>
-                                                                    <p>Last Name: {order?.lastName || ' '}</p>
-                                                                    <p>Email: {order?.eMail || ''}</p>
-                                                                    <p>Mobile: {order?.mobile || ''}</p>
+                                                            )}
+                                                            <p className="font-bold text-gray-800">
+                                                                <span className="font-semibold">Total:</span> ₹{order.invamt}
+                                                            </p>
+                                                            {!hasDiscount && (
+                                                                <p className="text-gray-600 text-sm italic">
+                                                                    <span className="font-semibold text-gray-700">Total Price:</span> ₹{displayPrice} (No discount applied)
                                                                 </p>
-                                                            </div>
+                                                            )}
                                                         </div>
                                                     </div>
+
                                                     {/* Separator */}
                                                     <hr className="my-6 border-gray-200" />
 
                                                     <div className="space-y-4">
-                                                        {/* <h4 className="text-lg font-semibold text-gray-800">Keyline & SKU Upload</h4> */}
-
-                                                        {/* Main container - responsive layout */}
                                                         <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-0">
                                                             {/* Left side - Keyline section */}
                                                             <div className="flex-shrink-0 lg:pr-6 lg:border-r lg:border-gray-300">
-                                                                {/* Keyline Section Label */}
-                                                                <h5 className="text-md font-medium text-gray-700 mb-3">
-                                                                    Keyline
-                                                                </h5>
+                                                                <h5 className="text-md font-medium text-gray-700 mb-3">Keyline</h5>
                                                                 <button
                                                                     className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium shadow-sm transition-colors w-full lg:w-auto justify-center lg:justify-start ${checklistExist[orderNo] === 1
-                                                                            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                                                            : keylineLoading[orderNo]
-                                                                                ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                                                                : 'bg-[#103b60] text-white hover:bg-[#252b3d] hover:shadow-md'
+                                                                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                                                        : keylineLoading[orderNo]
+                                                                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                                                                            : 'bg-[#103b60] text-white hover:bg-[#252b3d] hover:shadow-md'
                                                                         }`}
                                                                     onClick={() => handleKeylineDownload(orderNo, order.product_id)}
                                                                     disabled={checklistExist[orderNo] === 1 || keylineLoading[orderNo]}
@@ -514,11 +536,7 @@ const OrderDetails = () => {
                                                             {/* Right side - SKU section */}
                                                             {checklistExist[orderNo] === 1 && (
                                                                 <div className="flex-1 lg:pl-6">
-                                                                    {/* SKU Section Label */}
-                                                                    <h5 className="text-md font-medium text-gray-700 mb-3">
-                                                                        SKU
-                                                                    </h5>
-
+                                                                    <h5 className="text-md font-medium text-gray-700 mb-3">SKU</h5>
                                                                     <div className="space-y-4">
                                                                         <div className="flex flex-col gap-3">
                                                                             {skus.map((sku) => {
@@ -528,7 +546,6 @@ const OrderDetails = () => {
 
                                                                                 return (
                                                                                     <div key={sku.sku_no} className="flex flex-col sm:flex-row sm:items-center gap-3">
-                                                                                        {/* SKU Name Input */}
                                                                                         <input
                                                                                             type="text"
                                                                                             value={skuNames[`${orderNo}_${sku.sku_no}`] || sku.sku_name}
@@ -536,13 +553,11 @@ const OrderDetails = () => {
                                                                                             className="w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                                                             placeholder="Enter SKU Name"
                                                                                         />
-
-                                                                                        {/* Upload Button */}
                                                                                         <label
                                                                                             htmlFor={`upload_${orderNo}_${sku.sku_no}`}
                                                                                             className={`inline-flex items-center justify-center px-4 py-2 bg-[#30384E] text-white rounded-md hover:bg-[#252b3d] transition-colors text-sm font-medium cursor-pointer shadow-sm hover:shadow-md w-full sm:w-auto ${uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded
-                                                                                                    ? 'opacity-50 cursor-not-allowed'
-                                                                                                    : ''
+                                                                                                ? 'opacity-50 cursor-not-allowed'
+                                                                                                : ''
                                                                                                 }`}
                                                                                         >
                                                                                             <MdOutlineFileUpload className="mr-2" size={16} />
@@ -561,8 +576,6 @@ const OrderDetails = () => {
                                                                                                         : 'Upload Files'}
                                                                                             </span>
                                                                                         </label>
-
-                                                                                        {/* Hidden File Input */}
                                                                                         <input
                                                                                             type="file"
                                                                                             id={`upload_${orderNo}_${sku.sku_no}`}
@@ -572,13 +585,11 @@ const OrderDetails = () => {
                                                                                             multiple
                                                                                             disabled={uploadingOrder === `${orderNo}_${sku.sku_no}` || isUploaded}
                                                                                         />
-
-                                                                                        {/* Submit Button */}
                                                                                         {hasSelectedFiles && (
                                                                                             <button
                                                                                                 className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium shadow-sm transition-colors w-full sm:w-auto justify-center ${uploadingOrder === `${orderNo}_${sku.sku_no}`
-                                                                                                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                                                                                        : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
+                                                                                                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                                                                                                    : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
                                                                                                     }`}
                                                                                                 onClick={() => handleSubmitUpload(orderNo, sku.sku_no)}
                                                                                                 disabled={uploadingOrder === `${orderNo}_${sku.sku_no}`}

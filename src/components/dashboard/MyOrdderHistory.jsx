@@ -725,14 +725,14 @@ const MyOrderHistory = () => {
     <div className="min-h-screen">
       <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 sm:py-12">
         {/* Header Section with Filter */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
           <h1 className="text-2xl font-bold text-gray-900">Your Orders</h1>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <div className="relative w-full sm:w-auto">
               <select
                 value={selectedFilter}
                 onChange={handleFilterChange}
-                className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full sm:w-auto appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {filterOptions.map((option) => (
                   <option key={option} value={option}>
@@ -757,13 +757,12 @@ const MyOrderHistory = () => {
                 </svg>
               </div>
             </div>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 text-left sm:text-center">
               {Object.keys(groupedOrders).length} orders placed in{' '}
               {selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}
             </span>
           </div>
         </div>
-
         {/* Orders List */}
         <div className="space-y-6">
           {loading ? (
@@ -868,7 +867,7 @@ const MyOrderHistory = () => {
                           )}
                           <Link
                             href={`/order/${orderNo}`}
-                            className="inline-block mt-2 px-4 py-2 bg-[#103b60] text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+                            className="inline-block mt-2 px-4 py-2 bg-[#103b60] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition-colors"
                           >
                             View your item
                           </Link>
@@ -905,8 +904,8 @@ const MyOrderHistory = () => {
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
                     className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm ${currentPage === 1
-                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
                       }`}
                   >
                     <FiChevronLeft className="mr-2" size={16} />
@@ -919,8 +918,8 @@ const MyOrderHistory = () => {
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
                     className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm ${currentPage === totalPages
-                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
                       }`}
                   >
                     Next

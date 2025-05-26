@@ -37,44 +37,45 @@ export default function ShippingAddress({
   }, [defaultAddress, addresses, selectedAddress, setSelectedAddress]);
 
   const handleAddressSelection = (address) => {
-    console.log("Selected address:", address);
+    //console.log("Selected address:", address);
     setSelectedAddress(address);
   };
 
-  // Function to render all non-empty fields in a consistent format
   const renderAddressFields = (address) => {
     const fields = [
-      { key: "title", label: "Company Name" },
-      { key: "houseno", label: "House No" },
-      { key: "floor", label: "Floor" },
-      { key: "address", label: "Address" },
-      { key: "address2", label: "Address 2" },
-      { key: "city", label: "City" },
-      { key: "state", label: "State" },
-      { key: "zip", label: "Zip" },
-      { key: "country", label: "Country" },
-      { key: "phone", label: "Phone" },
-      { key: "mobile", label: "Mobile" },
-      { key: "addressType", label: "Address Type" },
-      { key: "company", label: "Company" },
-      { key: "location", label: "Location" },
-      { key: "serviceArea", label: "Service Area" },
-      { key: "gstin", label: "GSTIN" },
-      { key: "latlong", label: "LatLong" },
-      { key: "street_no", label: "Street No" },
-      { key: "addedon", label: "Added On", format: (value) => new Date(value).toLocaleString("en-GB", {
-        day: "2-digit", month: "2-digit", year: "numeric",
-        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-      })}
+      // { key: "title" },
+      { key: "houseno" },
+      { key: "floor" },
+      { key: "address" },
+      { key: "address2" },
+      { key: "city" },
+      { key: "state" },
+      { key: "zip" },
+      { key: "country" },
+      // { key: "phone" },
+      // { key: "mobile" },
+      // { key: "addressType" },
+      // { key: "company" },
+      { key: "location" },
+      { key: "serviceArea" },
+      { key: "gstin" },
+      { key: "latlong" },
+      { key: "street_no" },
+      // { key: "addedon", format: (value) => new Date(value).toLocaleString("en-GB", {
+      //   day: "2-digit", month: "2-digit", year: "numeric",
+      //   hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+      // })}
     ];
 
-    return fields
+    const values = fields
       .filter(({ key }) => address[key] && address[key] !== "")
-      .map(({ key, label, format }) => (
-        <p key={key} className="text-gray-700">
-          <span className="font-semibold">{label}:</span> {format ? format(address[key]) : address[key]}
-        </p>
-      ));
+      .map(({ key, format }) => format ? format(address[key]) : address[key]);
+
+    return (
+      <p className="text-gray-700">
+        {values.join(', ')}
+      </p>
+    );
   };
 
   return (
@@ -92,11 +93,10 @@ export default function ShippingAddress({
               {addresses.map((address) => (
                 <label
                   key={address.id}
-                  className={`block border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                    selectedAddress?.id === address.id
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-300 hover:border-blue-300 hover:bg-gray-50"
-                  }`}
+                  className={`block border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${selectedAddress?.id === address.id
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-300 hover:border-blue-300 hover:bg-gray-50 "
+                    }`}
                 >
                   <div className="flex items-start space-x-3">
                     <input
@@ -108,9 +108,11 @@ export default function ShippingAddress({
                       className="mt-1 h-5 w-5 text-blue-500"
                     />
                     <div className="flex-1">
-                      <p className="text-gray-900 font-semibold">
-                        {address.address}, {address.city}, {address.state}, {address.zip}
+                     <div>
+                       <p className="text-gray-900 font-semibold">
+                        {address.title || address.company}, {address.addressType}
                       </p>
+                     </div>
                       {renderAddressFields(address)}
                     </div>
                   </div>
@@ -118,7 +120,7 @@ export default function ShippingAddress({
               ))}
             </div>
           </div>
-          {selectedAddress && (
+          {/* {selectedAddress && (
             <div className="flex justify-between mt-4 mb-4">
               <div className="flex flex-col">
                 <p className="text-gray-900 text-2xl font-bold">
@@ -130,7 +132,7 @@ export default function ShippingAddress({
                 <p className="text-gray-900 underline uppercase text-sm font-bold cursor-pointer">change address</p>
               </Link>
             </div>
-          )}
+          )} */}
           <hr className="border border-gray-300" />
           <div className="mt-4 flex items-start justify-between">
             <div className="flex flex-col">

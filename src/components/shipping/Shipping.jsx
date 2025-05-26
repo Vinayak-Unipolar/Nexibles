@@ -549,6 +549,8 @@ export default function Shipping({ defaultAddress, addresses }) {
     }
   };
 
+  // In Shipping.js
+  // In Shipping.js
   const CheckShippingCost = async (zipcode, items) => {
     if (!zipcode) {
       return;
@@ -600,7 +602,7 @@ export default function Shipping({ defaultAddress, addresses }) {
 
         setDeliveryEstimate({
           days: shippingDays,
-          date: formattedDeliveryDate
+          date: formattedDeliveryDate,
         });
 
         const newTotal = (totalAfterDiscount + shippingFee + calculatedGst).toFixed(2);
@@ -611,6 +613,10 @@ export default function Shipping({ defaultAddress, addresses }) {
         setDeliveryEstimate({ days: "", date: "" });
         const newTotal = (totalAfterDiscount + calculatedGst).toFixed(2);
         setTotalPrice(newTotal);
+        // Show toast warning only once
+        toast.warning(data.message || "Shipment is not available. Please use another address.", {
+          toastId: 'shipping-unavailable', // Use a unique toastId to prevent duplicates
+        });
       }
     } catch (err) {
       console.error('Error fetching shipping cost:', err.message);
@@ -621,9 +627,13 @@ export default function Shipping({ defaultAddress, addresses }) {
       const calculatedGst = totalAfterDiscount * GST_RATE;
       const newTotal = (totalAfterDiscount + calculatedGst).toFixed(2);
       setTotalPrice(newTotal);
+      // Only show toast if not already shown in the else block
+      toast.warning("Shipment is not available due to an error. Please use another address.", {
+        toastId: 'shipping-unavailable', // Use the same toastId to prevent duplicates
+      });
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -749,33 +759,33 @@ export default function Shipping({ defaultAddress, addresses }) {
     const correctedItems = await validateAndCorrectWeights(cartItems);
 
     return correctedItems.map((product) => {
-        const selectedOptions = product.selectedOptions || {};
-        const flattenedOptions = Object.keys(selectedOptions).reduce((acc, optionKey) => {
-            const option = selectedOptions[optionKey];
-            return { ...acc, [`${optionKey}OptionName`]: option.optionName, [`${optionKey}Price`]: option.price };
-        }, {});
+      const selectedOptions = product.selectedOptions || {};
+      const flattenedOptions = Object.keys(selectedOptions).reduce((acc, optionKey) => {
+        const option = selectedOptions[optionKey];
+        return { ...acc, [`${optionKey}OptionName`]: option.optionName, [`${optionKey}Price`]: option.price };
+      }, {});
 
-        const optionKeys = Object.keys(selectedOptions);
-        const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
-        const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
+      const optionKeys = Object.keys(selectedOptions);
+      const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
+      const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
 
-        return {
-            id: product.id,
-            name: product.name,
-            price: parseFloat(product.price || 0).toFixed(2),
-            quantity: product.quantity || product.totalQuantity || 1,
-            payment_status: "pending",
-            discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
-            discountPercentage: parseFloat(product.discountPercentage || 0).toFixed(2),
-            discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
-            product_option_id: productOptionId,
-            product_config_id: productConfigId,
-            origin: "Nexibles",
-            skuCount: product.skuCount,
-            material: product.material || "",
-        };
+      return {
+        id: product.id,
+        name: product.name,
+        price: parseFloat(product.price || 0).toFixed(2),
+        quantity: product.quantity || product.totalQuantity || 1,
+        payment_status: "pending",
+        discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
+        discountPercentage: parseFloat(product.discountPercentage || 0).toFixed(2),
+        discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
+        product_option_id: productOptionId,
+        product_config_id: productConfigId,
+        origin: "Nexibles",
+        skuCount: product.skuCount,
+        material: product.material || "",
+      };
     });
-};
+  };
 
   const createOrder = async () => {
     if (isProcessingOrder) return false;
@@ -928,6 +938,7 @@ export default function Shipping({ defaultAddress, addresses }) {
           makePayment={makePayment}
           loading2={loading2}
           isProcessingOrder={isProcessingOrder}
+          isDeliveryAvailable={isDeliveryAvailable}
         />
         <CartItems cartItems={cartItems} />
       </div>

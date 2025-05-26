@@ -9,9 +9,8 @@ export default function PaymentMethod({
   makePayment,
   loading2,
   isProcessingOrder,
-  isDeliveryAvailable, // Add isDeliveryAvailable as a prop
+  isDeliveryAvailable,
 }) {
-  // Check if defaultAddress is null, undefined, or empty
   const isDefaultAddressSaved = !!defaultAddress && Object.keys(defaultAddress).length > 0;
 
   return (

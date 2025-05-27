@@ -73,54 +73,64 @@ const Industries = () => {
     return displayItems;
   }, [industries, visibleCount]);
 
-  // Custom arrow components
-  const NextArrow = ({ onClick }) => (
-    <motion.button
-      onClick={onClick}
-      className="absolute right-0 z-10 p-2 -mr-3 transition-all transform -translate-y-1/2 bg-white rounded-full shadow-md top-1/2 bg-opacity-80 hover:bg-opacity-100"
-      aria-label="Next"
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={buttonVariants}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-5 h-5"
-      >
-        <polyline points="9 18 15 12 9 6" />
-      </svg>
-    </motion.button>
-  );
+   // Arrow variants for Framer Motion animations
+  const arrowVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.4, delay: 0.4, ease: "easeOut" } },
+  };
 
-  const PrevArrow = ({ onClick }) => (
-    <motion.button
-      onClick={onClick}
-      className="absolute left-0 z-10 p-2 -ml-3 transition-all transform -translate-y-1/2 bg-white rounded-full shadow-md top-1/2 bg-opacity-80 hover:bg-opacity-100"
-      aria-label="Previous"
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={buttonVariants}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-5 h-5"
-      >
-        <polyline points="15 18 9 12 15 6" />
-      </svg>
-    </motion.button>
-  );
+  // Custom arrow components
+  const PrevArrow = ({ onClick }) => {
+      return (
+        <motion.button
+          onClick={onClick}
+          className="absolute -left-2 md:-left-3 top-1/2 transform -translate-y-1/2 z-10 p-1 transition-all"
+          aria-label="Previous testimonial"
+          initial="hidden"
+          animate="visible"
+          variants={arrowVariants}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </motion.button>
+      );
+    };
+  
+    const NextArrow = ({ onClick }) => {
+      return (
+        <motion.button
+          onClick={onClick}
+          className="absolute -right-2 md:-right-3 top-1/2 transform -translate-y-1/2 z-10 p-1 transition-all"
+          aria-label="Next testimonial"
+          initial="hidden"
+          animate="visible"
+          variants={arrowVariants}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            inin viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </motion.button>
+      );
+    };
 
   // Slider settings
   const sliderSettings = {
@@ -169,7 +179,8 @@ const Industries = () => {
   };
 
   return (
-    <div ref={sectionRef} className="bg-white py-8 px-4 max-w-[1400px] mx-auto sm:px-6 lg:px-8 mt-[-16vh] md:mt-0">
+    <div ref={sectionRef} 
+    className="bg-white pt-8 pb-4 px-4 max-w-[1400px] mx-auto sm:px-6 lg:px-8 mt-[-16vh] md:mt-0">
       {loading && <div className="py-4 text-center">Loading industries...</div>}
       {error && <div className="py-4 text-center text-red-500">{error}</div>}
       {!loading && !error && (
@@ -182,7 +193,7 @@ const Industries = () => {
           >
             Explore Industries
           </motion.div>
-          <div className="relative mx-auto mt-6 md:mt-6" style={{ maxWidth: "100%" }}>
+          <div className="relative mx-auto mt-6 md:mt-4" style={{ maxWidth: "100%" }}>
             <Slider ref={setSliderRef} {...sliderSettings}>
               {circularItems.map((category, index) => (
                 <motion.div

@@ -437,7 +437,6 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             </div>
-
             <motion.div
               className="px-4 sm:px-6 py-4 sm:py-6 bg-[#30384E] text-white"
               initial="hidden"

@@ -13,7 +13,7 @@ const Page = ({ params }) => {
     const fetchPageData = async () => {
       setLoading(true);
       try {
-        const res = await fetch("https://nexiblesapp.barecms.com/api/pages");
+        const res = await fetch(`https://nexiblesapp.barecms.com/api/pages`);
         const data = await res.json();
 
         const page = data.data.find(
@@ -32,6 +32,7 @@ const Page = ({ params }) => {
 
   const slugify = (title) =>
     title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+  console.log("title", params.slug);
 
   if (loading) {
     return <Loader />;
@@ -51,8 +52,6 @@ const Page = ({ params }) => {
     <div>
       <Navbar />
       <div className="mx-auto mt-16">
-        {/* <h1 className="text-4xl font-bold mb-6">{pageData.title}</h1> */}
-        {/* <p>{pageData.metadescription}</p> */}
         <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
       </div>
       <Footer />

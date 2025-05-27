@@ -24,14 +24,14 @@ const ProductFeatureItem = ({ title, image, description }) => {
       <div className="relative w-full h-full perspective-[1000px]">
         {/* Front Side with Image and Title */}
         <animated.div
-          className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-white shadow-md"
+          className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-white"
           style={{
             opacity,
             transform,
             backfaceVisibility: 'hidden',
           }}
         >
-          <div className="relative w-20 h-20 mb-3 md:w-32 md:h-32">
+          <div className="relative w-20 h-20 mb-3 md:w-56 md:h-56">
             <Image
               src={image}
               alt={title}
@@ -41,7 +41,7 @@ const ProductFeatureItem = ({ title, image, description }) => {
           </div>
           <h3 className="text-lg md:text-xl font-semibold text-center text-gray-900">{title}</h3>
         </animated.div>
-        
+
         {/* Back Side with Description */}
         <animated.div
           className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-[#103b60] shadow-md p-4"
@@ -61,33 +61,33 @@ const ProductFeatureItem = ({ title, image, description }) => {
 
 const ProductFeatures = () => {
   const features = [
-    { 
-      title: "Superior Lamination", 
+    {
+      title: "Superior Lamination",
       image: `${PUBLIC_CDN_URL}/product_features/Superior_Lamination.webp`,
       description: "Available in both solventless & solvent-based lamination to suit your product requirements."
     },
-    { 
-      title: "Add Ons", 
+    {
+      title: "Add Ons",
       image: `${PUBLIC_CDN_URL}/product_features/Add_Ons.webp`,
       description: "Enhance functionality with options such as Euro holes, Hang holes, D pouches, Round corners, Tear Notches, & more."
     },
-    { 
-      title: "Digital Printing", 
+    {
+      title: "Digital Printing",
       image: `${PUBLIC_CDN_URL}/product_features/Digital_Printing.webp`,
       description: "High-quality digital printing on a range of popular substrates, including food-grade polymer & paper."
     },
-    { 
-      title: "Premium Finishes", 
+    {
+      title: "Premium Finishes",
       image: `${PUBLIC_CDN_URL}/product_features/Premium_Finishes.webp`,
       description: "Choose from glossy, matte, or soft-touch finishes for a premium look & feel."
     },
-    { 
-      title: "Sealing", 
+    {
+      title: "Sealing",
       image: `${PUBLIC_CDN_URL}/product_features/Sealing.webp`,
       description: "Precision heat sealing for pouches of various sizes, including radius & K-seal formats."
     },
-    { 
-      title: "Substrates", 
+    {
+      title: "Substrates",
       image: `${PUBLIC_CDN_URL}/product_features/Substrates.webp`,
       description: "All substrates used are food-grade, available in both polymer & paper-based materials."
     },

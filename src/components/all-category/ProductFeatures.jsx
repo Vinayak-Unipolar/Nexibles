@@ -22,7 +22,6 @@ const ProductFeatureItem = ({ title, image, description }) => {
       onMouseLeave={() => setIsFlipped(false)}
     >
       <div className="relative w-full h-full">
-        {/* Front Side with Image and Title */}
         <animated.div
           className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-white"
           style={{
@@ -41,8 +40,6 @@ const ProductFeatureItem = ({ title, image, description }) => {
           </div>
           <h3 className="text-base md:text-lg font-semibold text-center text-gray-900 px-2">{title}</h3>
         </animated.div>
-
-        {/* Back Side with Description */}
         <animated.div
           className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-[#103b60] shadow-md p-6"
           style={{

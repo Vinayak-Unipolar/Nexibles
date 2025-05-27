@@ -474,7 +474,7 @@ const Configuration = () => {
         };
 
         // Step 3: Save the configuration to your API
-        const saveResponse = await fetch('https://nexiblesapp.barecms.com/api/configuration', {
+        const saveResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/configuration`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

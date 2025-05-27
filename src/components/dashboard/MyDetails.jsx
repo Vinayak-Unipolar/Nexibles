@@ -96,7 +96,7 @@ function MyDetails() {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://nexiblesapp.barecms.com/api/customer/${user.result.customerId}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/customer/${user.result.customerId}`,
           {
             method: 'GET',
             headers: {
@@ -141,7 +141,7 @@ function MyDetails() {
       setSaveLoading(true);
 
       const response = await fetch(
-        `https://nexiblesapp.barecms.com/api/customer/${user.result.customerId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/customer/${user.result.customerId}`,
         {
           method: 'PATCH',
           headers: {

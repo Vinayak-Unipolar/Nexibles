@@ -9,6 +9,7 @@ import Loader from '@/components/comman/Loader'
 import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials'
 import PopularProducts from '@/components/shop/popularproducts/Popularproducts'
 import BrandLogosSection from '@/components/instagramandlogos/BrandLogosSection'
+import ProductFeatures from '@/components/all-category/ProductFeatures'
 
 const Page = () => {
 
@@ -22,18 +23,19 @@ const Page = () => {
           <FavoriteCategory />
         </div> */}
         <div className="md:w-full bg-white">
-             <PopularProducts />
+          <PopularProducts />
         </div>
       </div>
+      <ProductFeatures />
       <StatsAndTestimonials />
       <section className="py-10 bg-white">
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                      <h2 className="text-4xl font-bold text-gray-800 mb-8 tracking-tight text-center">
-                        Trusted by 1500+ Brands
-                      </h2>
-                      <BrandLogosSection />
-                    </div>
-                  </section>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-gray-800 mb-8 tracking-tight text-center">
+            Trusted by 1500+ Brands
+          </h2>
+          <BrandLogosSection />
+        </div>
+      </section>
       <Footer />
     </div>
   )

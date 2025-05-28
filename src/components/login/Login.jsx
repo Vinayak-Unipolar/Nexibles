@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
 function  Login() {
-  const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");

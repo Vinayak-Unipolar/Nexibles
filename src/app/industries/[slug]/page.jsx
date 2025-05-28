@@ -432,7 +432,7 @@ const Page = ({ params }) => {
         <style>{pageCss}</style>
         <div className="container">
           {/* <h1 className="hero-title">{pageData.title}</h1>
-          <p className="hero-text-base">{pageData.metadescription}</p> */}S
+          <p className="hero-text-base">{pageData.metadescription}</p> */}
           <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(pageData.content) }} />
         </div>
       </div>

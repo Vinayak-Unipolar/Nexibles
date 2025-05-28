@@ -218,7 +218,7 @@ const ProductCategory = () => {
                 >
                   <Image
                     alt={content.hero.images.background.alt}
-                    className="rounded-lg w-full h-full object-fit"
+                    className="rounded-lg p-10 w-full h-full object-fit"
                     src={Triangle}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -230,7 +230,7 @@ const ProductCategory = () => {
                 <div className="relative mt-10 z-10 w-full h-full flex items-center justify-center p-4 sm:p-6">
                   <Image
                     alt={content.hero.images.main.alt}
-                    className="rounded-lg w-full h-full object-contain"
+                    className="rounded-lg w-full h-full p-10 object-contain"
                     src={content.hero.images.main.src}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"

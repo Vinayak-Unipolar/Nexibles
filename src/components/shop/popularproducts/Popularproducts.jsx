@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import RequestForm from "../../RequestForm";
-
+import { FaLongArrowAltRight } from "react-icons/fa";
 export default function PopularProducts() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +55,9 @@ export default function PopularProducts() {
   return (
     <div className="py-1 bg-white md:py-0">
       <div className="container px-4 mx-auto">
-        <h2 className="md:text-3xl text-2xl font-bold text-center text-[#333] mb-8 md:mb-6 md:mt-0">
+        <h2 className="md:text-3xl text-2xl font-bold text-center text-[#333] mb-8 md:mb-6 md:mt-4">
           Explore Custom Pouches
-        </h2> 
+        </h2>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           {!loading ? (
@@ -128,6 +128,14 @@ export default function PopularProducts() {
                 </div>
               ))
           )}
+        </div>
+        <div className="flex justify-center my-6"> {/* Right section with button */}
+          <Link href="/all-category" className="items-center">
+            <button className="flex items-center gap-2 md:px-6 md:py-1 md:text-lg text-xs text-black bg-[#ffd13e] rounded-full hover:bg-[#e6bc35] transition-all">
+              Show More
+              <FaLongArrowAltRight />
+            </button>
+          </Link>
         </div>
       </div>
 

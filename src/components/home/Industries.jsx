@@ -154,7 +154,7 @@ const Industries = () => {
           >
             Explore Industries
           </div>
-          <div className="relative mt-6 md:mt-4" style={{ maxWidth: "100%" }}>
+          <div className="relative md:mt-4" style={{ maxWidth: "100%" }}>
             <Slider ref={setSliderRef} {...sliderSettings}>
               {circularItems.map((category, index) => (
                 <div
@@ -190,7 +190,7 @@ const Industries = () => {
           </div>
           <div className="flex-1 flex justify-center"> {/* Right section with button */}
             <Link href="/all-industry">
-              <button className="flex items-center gap-2 md:px-6 md:py-1 md:text-lg text-xs text-black bg-[#ffd13e] rounded-full hover:bg-[#e6bc35] transition-all">
+              <button className="flex items-center gap-2 md:px-6 md:py-1 p-2 md:text-lg text-xs text-black bg-[#ffd13e] rounded-full hover:bg-[#e6bc35] transition-all">
                 Show More
                 <FaLongArrowAltRight />
               </button>

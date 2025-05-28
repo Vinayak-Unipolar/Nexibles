@@ -39,7 +39,7 @@ const ConfigurationHistory = ({ customerID }) => {
           console.log(`Attempt ${i + 1}/${retries} to fetch configurations...`);
 
           const response = await fetch(
-            `https://nexiblesapp.barecms.com/api/configuration/${customerID}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/configuration/${customerID}`,
             {
               method: "GET",
               headers: {

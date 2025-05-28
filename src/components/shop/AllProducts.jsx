@@ -92,7 +92,7 @@ export default function NexiblesProducts() {
                       <img
                         src={
                           product.image
-                            ? `https://nexiblesapp.barecms.com/uploads/${product.image}`
+                            ? `${process.env.NEXT_PUBLIC_API_URL}/uploads/${product.image}`
                             : '/placeholder.png'
                         }
                         alt={product.name}

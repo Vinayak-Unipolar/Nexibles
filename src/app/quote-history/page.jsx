@@ -40,7 +40,7 @@ const RequestQuoteHistory = ({ email }) => {
           console.log(`Attempt ${i + 1}/${retries} to fetch quote history...`);
 
           const response = await fetch(
-            `https://nexiblesapp.barecms.com/api/leads/email?email=${encodeURIComponent(userEmail)}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/leads/email?email=${encodeURIComponent(userEmail)}`,
             {
               method: "GET",
               headers: {

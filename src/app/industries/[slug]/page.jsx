@@ -386,14 +386,14 @@ const Page = ({ params }) => {
     const fetchPageData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${APIURL}/api/pages`);
+        const res = await fetch(`https://nexiblesapp.barecms.com/api/pages`);
         const data = await res.json();
         if (data.status !== "success" || !Array.isArray(data.data)) {
           throw new Error("Invalid pages data format");
         }
 
         const page = data.data.find(
-          (p) => p.url === `/${params.slug}`
+          (p) => slugify(p.title) === params.slug
         );
         if (!page) {
           throw new Error("Page not found");
@@ -409,7 +409,11 @@ const Page = ({ params }) => {
     };
 
     fetchPageData();
-  }, [params.slug, APIURL]);
+  }, [params.slug]);
+
+  const slugify = (title) =>
+    title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+  console.log("title", params.slug);
 
   if (loading) {
     return <Loader />;

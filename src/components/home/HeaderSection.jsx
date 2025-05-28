@@ -217,7 +217,7 @@ const HeaderSection = () => {
                           variants={buttonVariants}
                         >
                           <a
-                            href="/shop"
+                            href="/all-category"
                             className="bg-[#ffd13e] hover:bg-yellow-500 text-black font-extrabold md:py-3 md:px-8 py-2 px-8 rounded-full md:text-xl text-sm transition-colors"
                           >
                             Explore Pouches
@@ -254,7 +254,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handlePrev}
-        className="absolute left-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute left-1 md:left-3 top-[40%] md:top-1/2 transform -translate-y-1/2 z-10 p-1 md:p-2 transition-all"
         aria-label="Previous slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
@@ -264,11 +264,11 @@ const HeaderSection = () => {
           xmlns="http://www.w3.org/2000/svg "
           viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
+          stroke="white"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="w-5 h-5"
+          className="w-4 h-4 md:w-5 md:h-5"
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>
@@ -276,7 +276,7 @@ const HeaderSection = () => {
 
       <motion.button
         onClick={handleNext}
-        className="absolute right-4 md:top-1/2 top-[40%] transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute right-1 md:right-3 top-[40%] md:top-1/2 transform -translate-y-1/2 z-10 p-1 md:p-2 transition-all"
         aria-label="Next slide"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
@@ -286,11 +286,11 @@ const HeaderSection = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
+          stroke="white"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="w-5 h-5"
+          className="w-4 h-4 md:w-5 md:h-5"
         >
           <polyline points="9 18 15 12 9 6" />
         </svg>

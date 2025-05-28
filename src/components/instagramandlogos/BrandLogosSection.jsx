@@ -12,7 +12,7 @@ export default function BrandLogosSection() {
     async function fetchBrands() {
       try {
         setIsLoading(true);
-        const res = await fetch("https://nexiblesapp.barecms.com/api/clients", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clients`, {
           headers: {
             "Cache-Control": "no-cache",
             Pragma: "no-cache",

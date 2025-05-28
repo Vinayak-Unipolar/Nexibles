@@ -474,7 +474,7 @@ const Configuration = () => {
         };
 
         // Step 3: Save the configuration to your API
-        const saveResponse = await fetch('https://nexiblesapp.barecms.com/api/configuration', {
+        const saveResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/configuration`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -664,8 +664,8 @@ const Configuration = () => {
       </Head>
 
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Pouch Configuration Tool</h1>
-        <p className="text-lg text-gray-600">Design your perfect packaging solution</p>
+        <h1 className="md:text-4xl text-md font-bold text-gray-800 mb-2">Pouch Configuration Tool</h1>
+        <p className="md:text-lg text-sm text-gray-600">Design your perfect packaging solution</p>
       </div>
 
       <div className="flex flex-col lg:flex-row justify-center mx-auto gap-8">
@@ -673,7 +673,7 @@ const Configuration = () => {
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="p-6">
               <div className="mb-8">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                <h2 className="md:text-2xl text-md font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
                   Project Details
                 </h2>

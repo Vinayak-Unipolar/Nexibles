@@ -93,7 +93,7 @@ export default function StatsAndTestimonials() {
     return (
       <motion.button
         onClick={onClick}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute -left-4 md:left-1 top-1/2 transform -translate-y-1/2 z-10 p-1 transition-all"
         aria-label="Previous testimonial"
         initial="hidden"
         animate="visible"
@@ -103,8 +103,8 @@ export default function StatsAndTestimonials() {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
+          stroke="black"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
           className="w-5 h-5"
@@ -119,7 +119,7 @@ export default function StatsAndTestimonials() {
     return (
       <motion.button
         onClick={onClick}
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-30 hover:bg-opacity-50 rounded-full p-2 shadow-md transition-all"
+        className="absolute -right-4 md:right-1 top-1/2 transform -translate-y-1/2 z-10 p-1 transition-all"
         aria-label="Next testimonial"
         initial="hidden"
         animate="visible"
@@ -129,8 +129,8 @@ export default function StatsAndTestimonials() {
           xmlns="http://www.w3.org/2000/svg"
           inin viewBox="0 0 24 24"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
+          stroke="black"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
           className="w-5 h-5"
@@ -200,16 +200,16 @@ export default function StatsAndTestimonials() {
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full md:mt-2">
       {/* Testimonials Section */}
       <motion.div
-        className="w-full bg-[#ffd13e] md:py-12 px-4 md:px-8"
+        className="w-full bg-[#ffd13e] md:py-2 px-4 md:px-8"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         <motion.h2
-          className="text-center font-bold md:text-3xl text-2xl leading-tight tracking-tight mt-8 mb-4 sm:mt-10 sm:mb-6 text-black"
+          className="text-center font-bold md:text-3xl text-2xl leading-tight tracking-tight mt-8 sm:mt-6 text-black"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
@@ -218,7 +218,7 @@ export default function StatsAndTestimonials() {
         </motion.h2>
 
 
-        <div className="relative px-4 mx-auto mb-16 max-w-7xl md:px-0">
+        <div className="relative px-4 mx-auto mb-4 max-w-7xl md:px-0">
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
               <p>Loading testimonials...</p>

@@ -468,25 +468,25 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
 
     try {
       const leadData = {
-  full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-  email: formData.email,
-  alternate_email: null,
-  phone: formData.phone,
-  company_name: formData.companyName,
-  website_url: formData.companyWebsite,
-  industry_sector: formData.industry,
-  city: formData.city,
-  state: formData.state,
-  country: formData.country,
-  products_interested_in: formData.projectDescription,
-  enquiry_source: "Nexibles Website",
-  referred_by: null,
-  lead_assigned_to: null,
-  visiting_card: null,
-  additional_comments: formData.projectDescription,
-  category: formData.category,
-  gst_in: formData.gst_in || ""
-};
+        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        alternate_email: null,
+        phone: formData.phone,
+        company_name: formData.companyName,
+        website_url: formData.companyWebsite,
+        industry_sector: formData.industry,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        products_interested_in: formData.projectDescription,
+        enquiry_source: "Nexibles Website",
+        referred_by: null,
+        lead_assigned_to: null,
+        visiting_card: null,
+        additional_comments: formData.projectDescription,
+        category: formData.category,
+        gst_in: formData.gst_in,
+      };
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
         clientEmail: formData.email,
@@ -573,185 +573,191 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     }
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (formData.requestSampleKit && !termsAccepted) {
-    setSubmitStatus("Please accept the Terms and Conditions.");
-    return;
-  }
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
-  const eventId = `Request_Quote_${day}${month}${year}${minutes}${seconds}${milliseconds}`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (loading) return; // Prevent multiple submissions
+    if (formData.requestSampleKit && !termsAccepted) {
+      setSubmitStatus("Please accept the Terms and Conditions.");
+      return;
+    }
 
-  // Function to wait for gtag to load (up to 10 seconds)
-  const waitForGtag = (callback, timeout = 10000) => {
-    //console.log('Checking for gtag...');
-    const start = Date.now();
-    const checkGtag = () => {
-      if (typeof window.gtag === 'function') {
-        //console.log('gtag found, executing callback');
-        callback();
-      } else if (Date.now() - start < timeout) {
-        //console.log('gtag not found, retrying... (elapsed: ' + (Date.now() - start) + 'ms)');
-        setTimeout(checkGtag, 100);
-      } else {
-        //console.warn('Google gtag is not defined after timeout. Conversion not tracked. Possible ad blocker interference.');
-      }
-    };
-    checkGtag();
-  };
+    setLoading(true); // Set loading to true at the start of submission
 
-  // Function to wait for fbq to load (up to 10 seconds)
-  const waitForFbq = (callback, timeout = 10000) => {
-    //console.log('Checking for fbq...');
-    const start = Date.now();
-    const checkFbq = () => {
-      if (typeof window.fbq === 'function') {
-        //console.log('fbq found, executing callback');
-        callback();
-      } else if (Date.now() - start < timeout) {
-        //console.log('fbq not found, retrying...');
-        setTimeout(checkFbq, 100);
-      } else {
-        //console.warn('Facebook fbq is not defined after timeout. Conversion not tracked.');
-      }
-    };
-    checkFbq();
-  };
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+    const eventId = `Request_Quote_${day}${month}${year}${minutes}${seconds}${milliseconds}`;
 
-  // Track Google Ads Conversion
-  waitForGtag(() => {
-    window.gtag('event', 'conversion', {
-      send_to: 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
-      transaction_id: eventId,
-      event_callback: () => {
-        //console.log('Google conversion tracked successfully');
-      },
-    });
-  });
-
-  // Track Meta/Facebook Conversion
-  waitForFbq(() => {
-    window.fbq('trackCustom', 'RequestQuote', { eventID: eventId });
-    //console.log('Facebook conversion tracked successfully');
-  });
-
-  //console.log('Quote conversion event tracked with ID:', eventId);
-
-  const emailData = {
-    clientName: `${formData.firstName} ${formData.lastName}`.trim(),
-    clientEmail: formData.email,
-    phone: formData.phone,
-    message: `
-      ${formData.projectDescription || "Not provided"}
-    `,
-  };
-
-  if (formData.requestSampleKit) {
-    makePayment(e);
-  } else {
-    const leadData = {
-      full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: formData.email,
-      alternate_email: null,
-      phone: formData.phone,
-      company_name: formData.companyName,
-      website_url: formData.companyWebsite,
-      industry_sector: formData.industry,
-      city: formData.city,
-      state: formData.state,
-      country: formData.country,
-      products_interested_in: formData.projectDescription,
-      enquiry_source: "Nexibles Website",
-      referred_by: null,
-      lead_assigned_to: null,
-      visiting_card: null,
-      additional_comments: formData.projectDescription,
-      category: formData.category,
-      gst_in: formData.gst_in || ""
-    };
-
-    //console.log("Submitting leadData:", leadData);
-
-    // First save the lead data
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-      },
-      body: JSON.stringify(leadData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.message || "Network response was not ok");
-          });
+    // Function to wait for gtag to load (up to 10 seconds)
+    const waitForGtag = (callback, timeout = 10000) => {
+      //console.log('Checking for gtag...');
+      const start = Date.now();
+      const checkGtag = () => {
+        if (typeof window.gtag === 'function') {
+          //console.log('gtag found, executing callback');
+          callback();
+        } else if (Date.now() - start < timeout) {
+          //console.log('gtag not found, retrying... (elapsed: ' + (Date.now() - start) + 'ms)');
+          setTimeout(checkGtag, 100);
+        } else {
+          //console.warn('Google gtag is not defined after timeout. Conversion not tracked. Possible ad blocker interference.');
         }
-        return response.json();
-      })
-      .then((data) => {
-        //console.log("Lead submission response:", data);
+      };
+      checkGtag();
+    };
 
-        // After saving lead data, send the email notification
-        return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "API-Key": process.env.NEXT_PUBLIC_API_KEY,
-          },
-          body: JSON.stringify(emailData),
-        });
-      })
-      .then((emailResponse) => {
-        if (!emailResponse.ok) {
-          return emailResponse.json().then((emailError) => {
-            throw new Error(emailError.error || "Failed to send email");
-          });
+    // Function to wait for fbq to load (up to 10 seconds)
+    const waitForFbq = (callback, timeout = 10000) => {
+      //console.log('Checking for fbq...');
+      const start = Date.now();
+      const checkFbq = () => {
+        if (typeof window.fbq === 'function') {
+          //console.log('fbq found, executing callback');
+          callback();
+        } else if (Date.now() - start < timeout) {
+          //console.log('fbq not found, retrying...');
+          setTimeout(checkFbq, 100);
+        } else {
+          //console.warn('Facebook fbq is not defined after timeout. Conversion not tracked.');
         }
-        return emailResponse.json();
-      })
-      .then(() => {
-        toast.success("Form submitted successfully!");
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          companyName: "",
-          languagePreference: "",
-          industry: "",
-          category: "",
-          companyWebsite: "",
-          streetAddress: "",
-          addressLine2: "",
-          city: "",
-          state: "",
-          zipPostalCode: "",
-          country: "",
-          gst_in: "",
-          orderQuantity: "",
-          packageBuyingHistory: "",
-          projectDescription: "",
-          requestSampleKit: false,
-        });
-        setTermsAccepted(false);
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-        toast.error(`Failed to submit form: ${error.message}`);
+      };
+      checkFbq();
+    };
+
+    // Track Google Ads Conversion
+    waitForGtag(() => {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
+        transaction_id: eventId,
+        event_callback: () => {
+          //console.log('Google conversion tracked successfully');
+        },
       });
-  }
-};
+    });
+
+    // Track Meta/Facebook Conversion
+    waitForFbq(() => {
+      window.fbq('trackCustom', 'RequestQuote', { eventID: eventId });
+      //console.log('Facebook conversion tracked successfully');
+    });
+
+    //console.log('Quote conversion event tracked with ID:', eventId);
+
+    const emailData = {
+      clientName: `${formData.firstName} ${formData.lastName}`.trim(),
+      clientEmail: formData.email,
+      phone: formData.phone,
+      message: `
+        ${formData.projectDescription || "Not provided"}
+      `,
+    };
+
+    if (formData.requestSampleKit) {
+      makePayment(e);
+    } else {
+      const leadData = {
+        full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        alternate_email: null,
+        phone: formData.phone,
+        company_name: formData.companyName,
+        website_url: formData.companyWebsite,
+        industry_sector: formData.industry,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        products_interested_in: formData.projectDescription,
+        enquiry_source: "Nexibles Website",
+        referred_by: null,
+        lead_assigned_to: null,
+        visiting_card: null,
+        additional_comments: formData.projectDescription,
+        category: formData.category,
+        gst_in: formData.gst_in,
+      };
+
+      //console.log("Submitting leadData:", leadData);
+
+      // First save the lead data
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+        body: JSON.stringify(leadData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((errorData) => {
+              throw new Error(errorData.message || "Network response was not ok");
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          //console.log("Lead submission response:", data);
+
+          // After saving lead data, send the email notification
+          return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/send-email`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "API-Key": process.env.NEXT_PUBLIC_API_KEY,
+            },
+            body: JSON.stringify(emailData),
+          });
+        })
+        .then((emailResponse) => {
+          if (!emailResponse.ok) {
+            return emailResponse.json().then((emailError) => {
+              throw new Error(emailError.error || "Failed to send email");
+            });
+          }
+          return emailResponse.json();
+        })
+        .then(() => {
+          toast.success("Form submitted successfully!");
+          setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            companyName: "",
+            languagePreference: "",
+            industry: "",
+            category: "",
+            companyWebsite: "",
+            streetAddress: "",
+            addressLine2: "",
+            city: "",
+            state: "",
+            zipPostalCode: "",
+            country: "",
+            gst_in: "",
+            orderQuantity: "",
+            packageBuyingHistory: "",
+            projectDescription: "",
+            requestSampleKit: false,
+          });
+          setTermsAccepted(false);
+          setLoading(false); // Reset loading state on success
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+          toast.error(`Failed to submit form: ${error.message}`);
+          setLoading(false); // Reset loading state on error
+        });
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -878,7 +884,7 @@ const handleSubmit = (e) => {
                     </label>
                     <select
                       name="languagePreference"
-                      value={formData.LlanguagPreference}
+                      value={formData.languagePreference}
                       onChange={handleChange}
                       className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
                       required
@@ -1004,20 +1010,19 @@ const handleSubmit = (e) => {
                     className={`relative inline-flex items-center h-7 w-14 rounded-full shadow-inner transition-colors duration-300 focus:outline-none ring-2 ring-offset-1 ${
                       formData.requestSampleKit ? "bg-red-500 ring-red-300" : "bg-gray-300 ring-gray-200"
                     }`}
-                  >
+                    >
                     <span
-                      className={`inline-block w-6 h-6 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
+                      className={`inline-block w-6 h-6 transform rounded-full bg-indigo-50 shadow-md transition-all duration-300 ease-in-out ${
                         formData.requestSampleKit ? "translate-x-7" : "translate-x-1"
                       }`}
                     />
                   </button>
                 </div>
 
-
                 {formData.requestSampleKit && (
                   <>
                     <h3 className="pb-2 mb-4 text-sm font-semibold text-black border-b-2 border-black sm:text-xl">
-                      Packaging Information
+                    Packaging Information
                     </h3>
                     <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                       <div>
@@ -1030,7 +1035,7 @@ const handleSubmit = (e) => {
                           onChange={handleChange}
                           className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
                         >
-                          <option value="" className="text-gray-900">
+                          <option value="0" className="text-gray-900">
                             Please select...
                           </option>
                           {orderQuantities.map((quantity) => (
@@ -1125,15 +1130,16 @@ const handleSubmit = (e) => {
                     <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                       <div>
                         <label className="block text-sm font-medium text-black sm:text-md">
-                          GSTIN
+                          GSTIN *
                         </label>
                         <input
-                          type="text"
+                          type="gst_in"
                           name="gst_in"
                           value={formData.gst_in || ""}
                           onChange={handleChange}
-                          placeholder="Enter GSTIN (optional)"
+                          placeholder="Enter GSTIN "
                           className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                          required
                         />
                       </div>
                       <div>
@@ -1214,7 +1220,7 @@ const handleSubmit = (e) => {
                         </span>
                         <span className="text-md font-semibold text-black">
                           I agree to the{" "}
-                         <Link href="/terms-conditions" legacyBehavior>
+                          <Link href="/terms-conditions" legacyBehavior>
                             <a
                               target="_blank"
                               rel="noopener noreferrer"
@@ -1223,7 +1229,6 @@ const handleSubmit = (e) => {
                               Terms and Conditions
                             </a>
                           </Link>
-
                         </span>
                       </label>
                     </div>
@@ -1242,7 +1247,7 @@ const handleSubmit = (e) => {
                   }`}
                 >
                   {loading
-                    ? "Processing..."
+                    ? "Submitting..."
                     : formData.requestSampleKit
                     ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
                     : "Submit"}

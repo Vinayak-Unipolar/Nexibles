@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../../utils/authContext';
+import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Loader from '../comman/Loader';
@@ -72,6 +72,7 @@ const EditableSelect = ({ label, value, field, options, onChange, isEditing }) =
 
 function MyDetails() {
   const { user } = useAuth();
+  console.log('User in MyDetails:', user?.customerId);
   const router = useRouter();
   const [customerData, setCustomerData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,7 +81,6 @@ function MyDetails() {
   const [editData, setEditData] = useState({});
   const [saveLoading, setSaveLoading] = useState(false);
 
-  // Stable reference for input change handler
   const handleInputChangeRef = useRef((field, value) => {
     setEditData(prev => ({
       ...prev,
@@ -88,44 +88,49 @@ function MyDetails() {
     }));
   });
 
-  // Fetch customer data when component mounts
-  useEffect(() => {
+ useEffect(() => {
+    //console.log('User:', user);
+    //console.log('Token:', localStorage.getItem('token'));
+    //console.log('Customer ID:', user);
     const fetchCustomerData = async () => {
-      if (!user?.result?.customerId) return;
-
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/customer/${user.result.customerId}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch customer data');
+        if (!user?.customerId) {
+            console.log('No customerId found, skipping fetch');
+            return;
         }
+        try {
+            setLoading(true);
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/customer/${user.customerId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
 
-        const result = await response.json();
-        if (result.status === 'success') {
-          setCustomerData(result.data);
-          setEditData(result.data);
-          console.log(result.data.firstName);
-        } else {
-          throw new Error('API response was not successful');
+            if (!response.ok) {
+                throw new Error('Failed to fetch customer data');
+            }
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                setCustomerData(result.data);
+                setEditData(result.data);
+                console.log('Customer Data:', result.data);
+            } else {
+                throw new Error('API response was not successful');
+            }
+        } catch (err) {
+            setError(err.message);
+            toast.error('Failed to load customer data. Please try again.');
+        } finally {
+            setLoading(false);
         }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
     };
 
     fetchCustomerData();
-  }, [user?.result?.customerId]);
+}, [user?.result?.customerId]);
 
   // Handle edit mode toggle
   const handleEditToggle = () => {
@@ -196,11 +201,11 @@ function MyDetails() {
     );
   }
 
-  if (loading) {
-    return (
-      <Loader />
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Loader />
+  //   );
+  // }
 
   const displayData = isEditing ? editData : customerData || {};
   const {

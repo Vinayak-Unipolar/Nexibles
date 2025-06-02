@@ -676,7 +676,7 @@ const MyOrderHistory = () => {
       return sortedOrders;
     } catch (error) {
       console.error('Error fetching order history:', error);
-      toast.error('Failed to fetch order history. Please try again.');
+      //toast.error('Failed to fetch order history. Please try again.');
       return [];
     }
   };

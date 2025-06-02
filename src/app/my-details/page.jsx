@@ -11,16 +11,16 @@ function Page() {
   const { user } = useAuth();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.push('/login');
-  //   }
-  // }, [user, router]);
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]);
 
-  // // Move conditional return after all hooks are called
-  // if (!user) {
-  //   return null;
-  // }
+  // Move conditional return after all hooks are called
+  if (!user) {
+    return null;
+  }
 
   return (
     <div>

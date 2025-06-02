@@ -236,7 +236,7 @@ function RequestSampleKit() {
 
   const languages = ["Hindi", "English", "Marathi", "Gujarati", "Kannada"];
 
-  const industries = [
+ const industries = [
     "Beverages",
     "Bread and other Bakery",
     "Candy and other Confection",
@@ -249,6 +249,7 @@ function RequestSampleKit() {
     "Frozen Foods",
     "Fruits and Vegetables",
     "Grains, Rice, and Pasta",
+    "Garment",
     "Health and Beauty",
     "Lawn and Garden",
     "Marketing Agency",

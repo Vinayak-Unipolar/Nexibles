@@ -247,6 +247,7 @@ function RequestFormPage() {
     "Frozen Foods",
     "Fruits and Vegetables",
     "Grains, Rice, and Pasta",
+    "Garment",
     "Health and Beauty",
     "Lawn and Garden",
     "Marketing Agency",

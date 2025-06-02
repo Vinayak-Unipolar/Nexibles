@@ -249,6 +249,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     "Frozen Foods",
     "Fruits and Vegetables",
     "Grains, Rice, and Pasta",
+    "Garment",
     "Health and Beauty",
     "Lawn and Garden",
     "Marketing Agency",

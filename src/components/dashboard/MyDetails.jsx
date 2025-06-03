@@ -93,10 +93,6 @@ function MyDetails() {
     //console.log('Token:', localStorage.getItem('token'));
     //console.log('Customer ID:', user);
     const fetchCustomerData = async () => {
-        if (!user?.customerId) {
-            console.log('No customerId found, skipping fetch');
-            return;
-        }
         try {
             setLoading(true);
             const response = await fetch(

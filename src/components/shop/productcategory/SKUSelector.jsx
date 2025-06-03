@@ -159,7 +159,7 @@ export default function SKUSelector({
                 className="mt-2 text-center md:text-left"
                 variants={itemVariants}
             >
-                <motion.button
+                {/* <motion.button
                     onClick={handleShare}
                     className="inline-flex items-center gap-2 text-sm text-black hover:text-[#252b3d] transition-all duration-200"
                     whileHover={{ scale: 1.05 }}
@@ -172,7 +172,7 @@ export default function SKUSelector({
                         <IoShareSocial size={35} className='p-2 border border-gray-300 rounded-lg' />
                     </motion.div>
                     Share Product
-                </motion.button>
+                </motion.button> */}
             </motion.div>
         </motion.div>
     );

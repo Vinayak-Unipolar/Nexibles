@@ -109,7 +109,7 @@ const ReviewSection = ({ productDetails }) => {
         <h2 className="mb-2 font-bold text-gray-900 text-md sm:text-2xl sm:mb-0">Customer Review</h2>
       </div>
 
-      <div className="flex flex-col gap-6 mb-8 md:flex-row">
+      <div className="flex flex-col gap-6 mb-8 ">
         <div className="w-full md:w-1/3">
           <div className="flex flex-col items-center">
             <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl">
@@ -125,7 +125,7 @@ const ReviewSection = ({ productDetails }) => {
           </div>
         </div>
 
-        <div className="w-full md:w-2/3">
+        <div className="w-full md:w-1/3">
           {[5, 4, 3, 2, 1].map(star => (
             <div key={star} className="flex items-center mb-2 text-sm sm:text-base">
               <span className=" sm:w-8">{star} ★</span>
@@ -144,7 +144,7 @@ const ReviewSection = ({ productDetails }) => {
       </div>
 
       <div className="flex flex-col gap-6 lg:flex-row">
-        <div className="w-full lg:w-1/2">
+        {/* <div className="w-full lg:w-1/2">
           <h3 className="mb-4 text-xl font-bold sm:text-2xl">Leave A Comment</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -198,7 +198,7 @@ const ReviewSection = ({ productDetails }) => {
               </p>
             )}
           </form>
-        </div>
+        </div> */}
 
         <div className="w-full lg:w-1/2">
           <div className="space-y-4">

@@ -196,15 +196,15 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  // const closeModal = () => {
+  //   setShowModal(false);
+  // };
 
   return (
     <div className="min-h-screen">
       <GoogleAnalytics />
       <MarketingTracker metaPixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
-      <Modal isOpen={showModal} onClose={closeModal} />
+      {/* <Modal isOpen={showModal} onClose={closeModal} /> */}
       <Navbar />
       <HeaderSection />
       <Industries />

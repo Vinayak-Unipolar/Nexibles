@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
-import jwtDecode from 'jwt-decode'; // Import jwt-decode library
+import {jwtDecode} from 'jwt-decode'; // Import jwt-decode library
 
 const AuthContext = createContext();
 
@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Error decoding token:', error.message);
-            //localStorage.removeItem('token');
-            //setUser(null);
-           //toast.error('Invalid token');
+            localStorage.removeItem('token');
+            setUser(null);
+           toast.error('Invalid token');
         }
     };
 

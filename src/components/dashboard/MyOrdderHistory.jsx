@@ -798,7 +798,7 @@ const MyOrderHistory = () => {
                       <p className="text-sm text-gray-600">
                         <span className="font-semibold">Ship To</span>
                         <br />
-                        <span className="text-blue-600 hover:underline cursor-pointer">
+                        <span className="text-[#103b60] font-medium hover:underline cursor-pointer">
                           {orderGroup[0].firstName} {orderGroup[0].lastName}
                         </span>
                       </p>
@@ -806,20 +806,20 @@ const MyOrderHistory = () => {
                     <div className="space-y-1">
                       <p className="text-sm text-gray-600">
                         <span className="font-semibold">Order #</span>{' '}
-                        <span className="text-blue-600 hover:underline cursor-pointer">
+                        <span className="text-[#103b60] font-medium hover:underline cursor-pointer">
                           {orderNo}
                         </span>
                       </p>
                       <Link
                         href={`/order/${orderNo}`}
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-[#103b60] font-medium hover:underline"
                       >
                         View order details
                       </Link>{' '}
                       {/* |{' '}
                       <Link
                         href={`/invoice/${orderNo}`}
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-[#103b60] font-medium hover:underline"
                       >
                         Invoice
                       </Link> */}
@@ -845,7 +845,7 @@ const MyOrderHistory = () => {
 
                         {/* Product Details */}
                         <div className="flex-grow space-y-3">
-                          <h3 className="text-lg font-medium text-gray-900 hover:text-blue-600">
+                          <h3 className="text-lg font-medium text-gray-900 hover:text-[#103b60] font-medium">
                             <Link href={`/order/${orderNo}`}>
                               {order.product_name}
                             </Link>
@@ -859,17 +859,17 @@ const MyOrderHistory = () => {
                           <p className="text-sm text-gray-600">
                             <span className="font-semibold">SKU Count:</span> {order.skuCount}
                           </p>
-                          {order.discountAmount && parseFloat(order.discountAmount) > 0 && (
+                          {/* {order.discountAmount && parseFloat(order.discountAmount) > 0 && (
                             <p className="text-sm text-gray-600">
                               <span className="font-semibold">Discount:</span>{' '}
                               {order.discountPercentage}% (₹{order.discountAmount})
                             </p>
-                          )}
+                          )} */}
                           <Link
                             href={`/order/${orderNo}`}
                             className="inline-block mt-2 px-4 py-2 bg-[#103b60] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition-colors"
                           >
-                            View your item
+                            View Order
                           </Link>
                         </div>
 

@@ -560,9 +560,9 @@ function MyDetails() {
     );
   }
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   const displayData = isEditing ? editData : customerData || {};
   const {

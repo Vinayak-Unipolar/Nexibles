@@ -130,7 +130,7 @@ function MyDetails() {
     };
 
     fetchCustomerData();
-}, [user?.result?.customerId]);
+}, [user?.customerId]);
 
   // Handle edit mode toggle
   const handleEditToggle = () => {
@@ -146,7 +146,7 @@ function MyDetails() {
       setSaveLoading(true);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/customer/${user.result.customerId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/customer/${user.customerId}`,
         {
           method: 'PATCH',
           headers: {
@@ -339,6 +339,7 @@ function MyDetails() {
                     value={mobile}
                     field="mobile"
                     type="tel"
+                    maxLength={10}
                     onChange={handleInputChangeRef.current}
                     isEditing={isEditing}
                   />

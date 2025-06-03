@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
-import jwtDecode from 'jwt-decode'; // Import jwt-decode library
+import {jwtDecode} from 'jwt-decode'; // Import jwt-decode library
 
 const AuthContext = createContext();
 

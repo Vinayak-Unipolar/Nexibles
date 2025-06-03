@@ -18,9 +18,9 @@ function Page() {
   }, [user, router]);
 
   // Move conditional return after all hooks are called
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
     <div>

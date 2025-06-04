@@ -15,23 +15,22 @@ const ProductFeatureItem = ({ title, image, description }) => {
 
   return (
     <div
-      className="flex flex-col items-center h-52 md:h-72 w-full"
+      className="w-full h-40 md:h-72"
       role="listitem"
       tabIndex={0}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
     >
-      <div className="relative w-full h-full perspective-[1000px]">
-        {/* Front Side with Image and Title */}
+      <div className="relative w-full h-full">
         <animated.div
-          className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-white shadow-md"
+          className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-white"
           style={{
             opacity,
             transform,
             backfaceVisibility: 'hidden',
           }}
         >
-          <div className="relative w-20 h-20 mb-3 md:w-32 md:h-32">
+          <div className="relative w-40 h-64 mb-4 md:w-80 md:h-80">
             <Image
               src={image}
               alt={title}
@@ -39,20 +38,18 @@ const ProductFeatureItem = ({ title, image, description }) => {
               objectFit="contain"
             />
           </div>
-          <h3 className="text-lg md:text-xl font-semibold text-center text-gray-900">{title}</h3>
+          <h3 className="text-base md:text-lg font-semibold text-center text-gray-900 px-2">{title}</h3>
         </animated.div>
-        
-        {/* Back Side with Description */}
         <animated.div
-          className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-[#103b60] shadow-md p-4"
+          className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-[#103b60] shadow-md p-6"
           style={{
             opacity: isFlipped ? 1 : 0,
             transform: transform.to(t => `${t} rotateY(180deg)`),
             backfaceVisibility: 'hidden',
           }}
         >
-          <h3 className="text-lg md:text-xl font-semibold text-center text-[#ffd13e] mb-2">{title}</h3>
-          <p className="text-sm md:text-base text-[#ffd13e] text-center">{description}</p>
+          <h3 className="text-base md:text-lg font-semibold text-center text-[#ffd13e] mb-3">{title}</h3>
+          <p className="text-xs md:text-sm text-[#ffd13e] text-center leading-relaxed">{description}</p>
         </animated.div>
       </div>
     </div>
@@ -61,45 +58,45 @@ const ProductFeatureItem = ({ title, image, description }) => {
 
 const ProductFeatures = () => {
   const features = [
-    { 
-      title: "Superior Lamination", 
-      image: `${PUBLIC_CDN_URL}/product_features/Superior_Lamination.webp`,
-      description: "Available in both solventless & solvent-based lamination to suit your product requirements."
-    },
-    { 
-      title: "Add Ons", 
-      image: `${PUBLIC_CDN_URL}/product_features/Add_Ons.webp`,
-      description: "Enhance functionality with options such as Euro holes, Hang holes, D pouches, Round corners, Tear Notches, & more."
-    },
-    { 
-      title: "Digital Printing", 
+    {
+      title: "Digital Printing",
       image: `${PUBLIC_CDN_URL}/product_features/Digital_Printing.webp`,
       description: "High-quality digital printing on a range of popular substrates, including food-grade polymer & paper."
     },
-    { 
-      title: "Premium Finishes", 
+    {
+      title: "Add Ons",
+      image: `${PUBLIC_CDN_URL}/product_features/Add_Ons.webp`,
+      description: "Enhance functionality with options such as Euro holes, Hang holes, D pouches, Round corners, Tear Notches, & more."
+    },
+    {
+      title: "Superior Lamination",
+      image: `${PUBLIC_CDN_URL}/product_features/Superior_Lamination.webp`,
+      description: "Available in both solventless & solvent-based lamination to suit your product requirements."
+    },
+    {
+      title: "Premium Finishes",
       image: `${PUBLIC_CDN_URL}/product_features/Premium_Finishes.webp`,
       description: "Choose from glossy, matte, or soft-touch finishes for a premium look & feel."
     },
-    { 
-      title: "Sealing", 
+    {
+      title: "Sealing",
       image: `${PUBLIC_CDN_URL}/product_features/Sealing.webp`,
       description: "Precision heat sealing for pouches of various sizes, including radius & K-seal formats."
     },
-    { 
-      title: "Substrates", 
+    {
+      title: "Substrates",
       image: `${PUBLIC_CDN_URL}/product_features/Substrates.webp`,
       description: "All substrates used are food-grade, available in both polymer & paper-based materials."
     },
   ];
 
   return (
-    <div className="px-4 py-2 mt-10 md:px-16 bg-white">
-      <h2 className="mb-8 text-2xl font-semibold text-center md:text-3xl">
-        Key Product Features
-      </h2>
-      <div className="flex justify-center">
-        <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+    <section className="w-full bg-white">
+      <div className="px-4 py-12 md:px-8 lg:px-16">
+        <h2 className="mb-12 text-2xl font-semibold text-center md:text-3xl text-gray-900">
+          Key Product Features
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <ProductFeatureItem
               key={index}
@@ -110,7 +107,7 @@ const ProductFeatures = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

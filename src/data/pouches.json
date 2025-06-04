@@ -1,6 +1,6 @@
 {
   "categories": {
-"shape-pouch": {
+    "shape-pouch": {
       "hero": {
         "title": "Shape Pouches",
         "subtitle": "Unique Designs for Maximum Impact",
@@ -12,7 +12,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/category/Pouch%20Types_Shape%20Pouch.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/Shape_Pouch_Image_1.webp",
             "alt": "Custom shape pouch",
             "width": 130,
             "height": 210
@@ -35,14 +35,22 @@
         ],
         "description": "Ideal for promotional items, kids’ snacks, and unique branding experiences.",
         "image": {
-          "src": "https://cdn.nexibles.com/category/Pouch%20Types_Shape%20Pouch.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/Shape_Pouch_Image_2.webp",
           "alt": "Shape pouch features",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "20%", "left": "60%", "label": "Custom shape cut" },
-          { "top": "55%", "left": "50%", "label": "Flexible features" }
+          {
+            "top": "35%",
+            "left": "60%",
+            "label": "Custom shape cut"
+          },
+          {
+            "top": "55%",
+            "left": "50%",
+            "label": "Flexible features"
+          }
         ]
       },
       "productsSection": {
@@ -52,7 +60,7 @@
         "title": "Trusted by 1500+ Brands"
       }
     },
-      "center-seal": {
+    "center-seal": {
       "hero": {
         "title": "Center Seal Pouches",
         "subtitle": "Strong Sealing for Optimal Freshness",
@@ -64,7 +72,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/170x280%20CS.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/CS_Picture_1.webp",
             "alt": "Center seal pouch",
             "width": 130,
             "height": 210
@@ -87,14 +95,22 @@
         ],
         "description": "A reliable and cost-effective packaging solution.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/170x280%20CS.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/CS_Picture_2.webp",
           "alt": "Center seal pouch with features",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "20%", "left": "55%", "label": "Optional zipper" },
-          { "top": "40%", "left": "50%", "label": "Center seal strength" }
+          {
+            "top": "20%",
+            "left": "55%",
+            "label": "Optional zipper"
+          },
+          {
+            "top": "40%",
+            "left": "50%",
+            "label": "Center seal strength"
+          }
         ]
       },
       "productsSection": {
@@ -116,7 +132,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/category/Pouch%20Types_QS.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/QS_Picture_1.webp",
             "alt": "Quad seal pouch",
             "width": 120,
             "height": 210
@@ -139,14 +155,22 @@
         ],
         "description": "Perfect for pet food, grains, and premium products.",
         "image": {
-          "src": "https://cdn.nexibles.com/category/Pouch%20Types_QS.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/QS_Picture_2.webp",
           "alt": "Quad seal feature highlights",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "20%", "left": "55%", "label": "Reinforced edges" },
-          { "top": "50%", "left": "50%", "label": "Branding area" }
+          {
+            "top": "20%",
+            "left": "55%",
+            "label": "Reinforced edges"
+          },
+          {
+            "top": "50%",
+            "left": "50%",
+            "label": "Branding area"
+          }
         ]
       },
       "productsSection": {
@@ -168,7 +192,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/80x150+50+50%20CSSG.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/CSSG_Picture_1.webp",
             "alt": "Side gusset pouch",
             "width": 130,
             "height": 210
@@ -191,14 +215,22 @@
         ],
         "description": "A blend of capacity, strength, and branding flexibility.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/250X450+60+60%20CSSG.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/CSSG_Picture_2.webp",
           "alt": "Side gusset pouch diagram",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "30%", "left": "60%", "label": "Expandable gusset" },
-          { "top": "70%", "left": "45%", "label": "Center back seal" }
+          {
+            "top": "30%",
+            "left": "60%",
+            "label": "Expandable gusset"
+          },
+          {
+            "top": "70%",
+            "left": "45%",
+            "label": "Center back seal"
+          }
         ]
       },
       "productsSection": {
@@ -207,7 +239,7 @@
       "brandsSection": {
         "title": "Trusted by 1500+ Brands"
       }
-    },    
+    },
     "spout-pouch": {
       "hero": {
         "title": "Spout Pouches",
@@ -220,7 +252,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/category/Pouch%20Types_Spout%20Pouch.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/Spout_Pouch_Picture_1.webp",
             "alt": "Spout pouch for liquid packaging",
             "width": 100,
             "height": 100
@@ -244,15 +276,27 @@
         ],
         "description": "Perfect for beverages, oils, and semi-liquid products.",
         "image": {
-          "src": "https://cdn.nexibles.com/category/Pouch%20Types_Spout%20Pouch.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/Spout_Pouch_Picture_2.webp",
           "alt": "Spout pouch feature diagram",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "10%", "left": "50%", "label": "Leak-proof spout" },
-          { "top": "40%", "left": "50%", "label": "Custom branding" },
-          { "top": "70%", "left": "55%", "label": "Durable material" }
+          {
+            "top": "20%",
+            "left": "46%",
+            "label": "Leak-proof spout"
+          },
+          {
+            "top": "40%",
+            "left": "50%",
+            "label": "Custom branding"
+          },
+          {
+            "top": "70%",
+            "left": "55%",
+            "label": "Durable material"
+          }
         ]
       },
       "productsSection": {
@@ -274,7 +318,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/130x210+80%20SUP.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/SUP_Picture_1.webp",
             "alt": "Stand up pouch with hang holes and zipper closure",
             "width": 130,
             "height": 210
@@ -299,18 +343,42 @@
         ],
         "description": "Suitable for dry and liquid products, with eco-friendly and recyclable options.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/160x240+90%20SUP.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/SUP_Picture_2.webp",
           "alt": "Stand up pouch with feature pointers for hang holes, zipper, and more",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "5%", "left": "50%", "label": "Hang holes for display" },
-          { "top": "15%", "left": "65%", "label": "Zipper closure for resealability" },
-          { "top": "40%", "left": "45%", "label": "Custom printing for branding" },
-          { "top": "30%", "left": "35%", "label": "High-barrier materials for protection" },
-          { "top": "85%", "left": "50%", "label": "Self-standing bottom gusset" },
-          { "top": "60%", "left": "65%", "label": "Eco-friendly and recyclable options" }
+          {
+            "top": "20%",
+            "left": "50%",
+            "label": "Hang holes for display"
+          },
+          {
+            "top": "25%",
+            "left": "65%",
+            "label": "Zipper closure for resealability"
+          },
+          {
+            "top": "40%",
+            "left": "45%",
+            "label": "Custom printing for branding"
+          },
+          {
+            "top": "30%",
+            "left": "35%",
+            "label": "High-barrier materials for protection"
+          },
+          {
+            "top": "80%",
+            "left": "50%",
+            "label": "Self-standing bottom gusset"
+          },
+          {
+            "top": "60%",
+            "left": "65%",
+            "label": "Eco-friendly and recyclable options"
+          }
         ]
       },
       "productsSection": {
@@ -332,7 +400,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/125x175%203SS.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/3SS_Picture_1.webp",
             "alt": "3 side seal pouch with tear notches",
             "width": 120,
             "height": 200
@@ -357,16 +425,32 @@
         ],
         "description": "Perfect for snacks, cosmetics, and small products.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/125x175%203SS.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/3SS_Picture_2.webp",
           "alt": "3 side seal pouch with feature pointers",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "10%", "left": "55%", "label": "Tear notches" },
-          { "top": "20%", "left": "60%", "label": "Custom printing" },
-          { "top": "50%", "left": "40%", "label": "High-barrier materials" },
-          { "top": "70%", "left": "50%", "label": "Lightweight design" }
+          {
+            "top": "20%",
+            "left": "20%",
+            "label": "Tear notches"
+          },
+          {
+            "top": "20%",
+            "left": "60%",
+            "label": "Custom printing"
+          },
+          {
+            "top": "50%",
+            "left": "40%",
+            "label": "High-barrier materials"
+          },
+          {
+            "top": "70%",
+            "left": "50%",
+            "label": "Lightweight design"
+          }
         ]
       },
       "productsSection": {
@@ -388,7 +472,7 @@
         },
         "images": {
           "main": {
-            "src": "https://cdn.nexibles.com/product/95x80%202SS.webp",
+            "src": "https://cdn.nexibles.com/Individual-pouch-pages/2SS_Picture_1.webp",
             "alt": "2 side seal pouch for minimalistic packaging",
             "width": 110,
             "height": 190
@@ -412,15 +496,27 @@
         ],
         "description": "Great for lightweight products with a focus on simplicity.",
         "image": {
-          "src": "https://cdn.nexibles.com/product/95x80%202SS.webp",
+          "src": "https://cdn.nexibles.com/Individual-pouch-pages/2SS_Picture_2.webp",
           "alt": "2 side seal pouch with feature pointers",
           "width": 500,
           "height": 300
         },
         "pointerPositions": [
-          { "top": "15%", "left": "50%", "label": "High-strength sealing" },
-          { "top": "25%", "left": "60%", "label": "Customizable printing" },
-          { "top": "60%", "left": "45%", "label": "Recyclable materials" }
+          {
+            "top": "25%",
+            "left": "20%",
+            "label": "High-strength sealing"
+          },
+          {
+            "top": "25%",
+            "left": "60%",
+            "label": "Customizable printing"
+          },
+          {
+            "top": "60%",
+            "left": "45%",
+            "label": "Recyclable materials"
+          }
         ]
       },
       "productsSection": {

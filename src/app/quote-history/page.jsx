@@ -6,6 +6,7 @@ import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import { useAuth } from "@/utils/authContext";
 import { toast } from "react-toastify";
+import Link from 'next/link';
 
 // Enhanced RequestQuoteHistory component with modified design
 const RequestQuoteHistory = ({ email }) => {
@@ -40,7 +41,7 @@ const RequestQuoteHistory = ({ email }) => {
           console.log(`Attempt ${i + 1}/${retries} to fetch quote history...`);
 
           const response = await fetch(
-            `https://nexiblesapp.barecms.com/api/leads/email?email=${encodeURIComponent(userEmail)}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/leads/email?email=${encodeURIComponent(userEmail)}`,
             {
               method: "GET",
               headers: {
@@ -51,7 +52,7 @@ const RequestQuoteHistory = ({ email }) => {
             }
           );
 
-          console.log("Response status:", response.status);
+          //console.log("Response status:", response.status);
 
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -74,7 +75,7 @@ const RequestQuoteHistory = ({ email }) => {
           console.error(`Attempt ${i + 1} failed:`, err.message);
           if (i === retries - 1) {
             setError(err.message || "Failed to fetch quote history");
-            toast.error("Failed to load quote history");
+            //toast.error("Failed to load quote history");
           } else {
             console.warn(`Retrying fetch (${i + 1}/${retries})...`);
             await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
@@ -137,9 +138,11 @@ const RequestQuoteHistory = ({ email }) => {
             </div>
             <h3 className="text-xl font-medium text-gray-900 mb-2">No Quote Requests Found</h3>
             <p className="text-gray-600 mb-6">You have not requested any quotes yet. Start by requesting a quote to see your history here.</p>
-            <button className="bg-[#103b60] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#0d2d4a] transition-colors duration-200">
-              Request a Quote
-            </button>
+            <div className="bg-[#103b60] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#0d2d4a] transition-colors duration-200">
+              <Link href="/request-quote" >
+                Request a Quote
+              </Link>
+            </div>
           </div>
         </div>
       </div>

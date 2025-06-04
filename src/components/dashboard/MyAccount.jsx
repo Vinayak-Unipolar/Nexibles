@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { FiUser, FiShoppingBag, FiMapPin, FiGift, FiHelpCircle, FiMenu, FiSettings, FiFileText } from "react-icons/fi";
 import { useAuth } from '@/utils/authContext';
- 
+import { HiMenuAlt1 } from "react-icons/hi";
 export default function MyAccount() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -106,9 +106,9 @@ export default function MyAccount() {
           {/* Mobile menu toggle button */}
           <button
             onClick={toggleMobileMenu}
-            className="fixed bottom-4 left-4 bg-[#103b60] text-white p-4 rounded-full shadow-lg z-50"
+            className="fixed bottom-4 left-4 bg-[#ffd13e] text-black p-4 rounded-full shadow-lg z-50"
           >
-            <FiMenu size={24} />
+           <HiMenuAlt1 size={24} />
           </button>
  
           {/* Bottom drawer menu */}

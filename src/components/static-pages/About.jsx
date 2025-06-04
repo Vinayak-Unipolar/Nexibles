@@ -2,16 +2,19 @@ import React from 'react'
 
 const About = () => {
   return (
-    <div className="p-4 sm:p-6 md:p-10 mt-12 sm:mt-8 md:mt-10 flex flex-col gap-4 items-center bg-[#fafafa]">
+    <div className="p-4 md:p-10 mt-12 md:mt-10 flex flex-col gap-4 items-center bg-[#fafafa]">
       <h1 className="text-2xl sm:text-3xl md:text-4xl text-black font-extrabold text-center">About Us</h1>
       <h3 className="text-xl sm:text-2xl md:text-3xl text-black font-extrabold text-center">
-        {`Revolutionizing Flexible Packaging with Innovation`}</h3>
-      <p className="text-black text-xs sm:text-sm md:text-base text-center mt-3 leading-relaxed">{`At Nexibles, we are redefining the future of flexible packaging with cutting-edge digital printing solutions. Under our`}<br />
-        {`brand "NEXt generation flexIBLES", we bring creativity, speed, and efficiency to packaging, eliminating traditional`}<br />
-        {`constraints like high MOQs and plate costs. `}<br />{`
-       With a deep understanding of plastics and flexible packaging, our team delivers premium-quality pouches, shrink`}<br />
-        {`sleeves, roll stock, and labels tailored to diverse market needs. Our partnership with HP Indigo Technology enables`}<br />
-        {`high-impact, sustainable, and cost-effective printing solutions that help brands stand out.`}</p>
+        {`At Nexibles, we are redefining the future of flexible packaging.`}</h3>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center leading-relaxed">{`Born from a vision to break free from the traditional limitations of packaging production, Nexibles stands for `} <span className='font-bold'>Next-Generation Flexibles</span> {`— built for speed, creativity, and limitless possibilities.`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center leading-relaxed">{`We believe packaging is not just a product; it’s the first impression of your brand. That’s why we have reimagined the way packaging is created, ordered, and delivered. With no minimum order constraints, no plate or cylinder costs, and the ability to produce multiple SKUs seamlessly, we empower brands of every size to move faster and dream bigger.`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center leading-relaxed">{`Our expertise spans across high-quality pouches, shrink sleeves, roll stocks, and labels — crafted using advanced digital technologies on a wide range of sustainable and premium substrates. Every pack we produce reflects our commitment to precision, performance, and planet-conscious innovation.`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center leading-relaxed">{`From startups launching their first products to established brands scaling new heights, Nexibles provides smart, agile solutions that match the speed of modern business.`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center leading-relaxed">{`At the heart of Nexibles is a simple promise:`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center mt-1 md:mt-0 leading-relaxed font-bold">{`We make packaging an enabler, not a barrier.`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center leading-relaxed">{`When you partner with Nexibles, you don’t just get packaging — you get a platform to scale, differentiate, and win.`}</p>
+      <p className="text-black text-xs sm:text-sm md:text-base text-center mt-1 md:mt-0 leading-relaxed font-bold">{`Welcome to the future of packaging. Welcome to Nexibles.`}</p>
+
       <div className="grid grid-cols-3 gap-2 mt-2">
         <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Factory.webp`} alt="Factory" className="w-full max-h-72 object-contain" />
         <img src={`${process.env.NEXT_PUBLIC_CDN_URL}/Factory Facade.webp`} alt="Factory Facade" className="w-full h-auto max-h-72 object-contain" />

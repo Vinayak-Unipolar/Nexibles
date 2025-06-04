@@ -236,7 +236,7 @@ function RequestSampleKit() {
 
   const languages = ["Hindi", "English", "Marathi", "Gujarati", "Kannada"];
 
-  const industries = [
+ const industries = [
     "Beverages",
     "Bread and other Bakery",
     "Candy and other Confection",
@@ -249,6 +249,7 @@ function RequestSampleKit() {
     "Frozen Foods",
     "Fruits and Vegetables",
     "Grains, Rice, and Pasta",
+    "Garment",
     "Health and Beauty",
     "Lawn and Garden",
     "Marketing Agency",
@@ -466,7 +467,7 @@ function RequestSampleKit() {
         visiting_card: null,
         additional_comments: formData.projectDescription,
         category: formData.category,
-        gst_in: formData.gst_in || "",
+        gst_in: formData.gst_in,
       };
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -557,10 +558,13 @@ function RequestSampleKit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (loading) return; // Prevent multiple submissions
     if (formData.requestSampleKit && !termsAccepted) {
       setSubmitStatus("Please accept the Terms and Conditions.");
       return;
     }
+
+    setLoading(true); // Set loading to true at the start of submission
 
     const now = new Date();
     const day = String(now.getDate()).padStart(2, '0');
@@ -575,18 +579,22 @@ function RequestSampleKit() {
 
     // Track conversions on both platforms with the same event ID
     // Google Ads conversion tracking
-    gtag('event', 'conversion', {
-      'send_to': 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
-      'transaction_id': eventId,
-      'event_callback': function() {
-        console.log('Google conversion tracked successfully');
-      }
-    });
+    if (typeof window !== "undefined" && typeof window.gtag === 'function') {
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-17014026366/T9rTCODv-MYaEP7g9bA_',
+        'transaction_id': eventId,
+        'event_callback': function() {
+          console.log('Google conversion tracked successfully');
+        }
+      });
+    }
 
     // Meta/Facebook conversion tracking
-    fbq('trackCustom', 'RequestQuote', {
-      eventID: eventId
-    });
+    if (typeof window !== "undefined" && typeof window.fbq === 'function') {
+      window.fbq('trackCustom', 'RequestQuote', {
+        eventID: eventId
+      });
+    }
 
     console.log('Quote conversion event tracked with ID:', eventId);
 
@@ -620,7 +628,7 @@ function RequestSampleKit() {
         visiting_card: null,
         additional_comments: formData.projectDescription,
         category: formData.category,
-        gst_in: formData.gst_in || "",
+        gst_in: formData.gst_in,
       };
 
       console.log("Submitting leadData:", leadData);
@@ -685,6 +693,7 @@ function RequestSampleKit() {
             requestSampleKit: true, // Changed to true to maintain pre-selection
           });
           setTermsAccepted(false);
+          setLoading(false); // Reset loading state on success
           window.scrollTo({
             top: 0,
             behavior: "smooth",
@@ -693,6 +702,7 @@ function RequestSampleKit() {
         .catch((error) => {
           console.error("Error submitting form:", error);
           toast.error(`Failed to submit form: ${error.message}`);
+          setLoading(false); // Reset loading state on error
         });
     }
   };
@@ -950,7 +960,6 @@ function RequestSampleKit() {
                         value={formData.orderQuantity}
                         onChange={handleChange}
                         className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                        required
                       >
                         <option value="" className="text-gray-900">
                           Please select...
@@ -975,7 +984,6 @@ function RequestSampleKit() {
                         value={formData.packageBuyingHistory}
                         onChange={handleChange}
                         className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                        required
                       >
                         <option value="" className="text-gray-900">
                           Please select...
@@ -1048,16 +1056,16 @@ function RequestSampleKit() {
                   <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
                     <div>
                       <label className="block text-sm font-medium text-black sm:text-md">
-                        GSTIN
+                        GSTIN *
                       </label>
                       <input
                         type="text"
                         name="gst_in"
-                        value={formData.gst_in || ""}
+                        value={formData.gst_in}
                         onChange={handleChange}
-                        placeholder="Enter GSTIN (optional)"
+                        placeholder="Enter GSTIN"
                         className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                      />
+                        required                    />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-black sm:text-md">
@@ -1159,7 +1167,7 @@ function RequestSampleKit() {
                 }`}
               >
                 {loading
-                  ? "Processing..."
+                  ? "Submitting..."
                   : formData.requestSampleKit
                   ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
                   : "Submit"}

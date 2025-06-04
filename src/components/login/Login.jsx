@@ -10,8 +10,8 @@ import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
-function  Login() {
-  const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
+function Login() {
+  const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -87,8 +87,8 @@ function  Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const token = await executeCaptcha();
-    if (!token) {
+    const captchaToken = await executeCaptcha();
+    if (!captchaToken) {
       toast.error("Please complete the CAPTCHA verification.");
       return;
     }
@@ -103,23 +103,24 @@ function  Login() {
         body: JSON.stringify({
           emailAddress: email,
           password: password,
-          captchaToken: token,
+          captchaToken: captchaToken,
         }),
       });
       const data = await response.json();
+      console.log('Login API response:', data);
 
       if (data.status === "error") {
         toast.error(data.message);
+        return;
       }
       if (data.status === "success") {
-        login(data.data);
-        toast.success("Login Successful");
-        localStorage.setItem("token", token);
+        const { data: user, token } = data; // Destructure correctly
+        login(user, token); // This handles localStorage and toast
         router.push("/");
       }
     } catch (error) {
       console.error("Invalid Request", error);
-      //toast.error(error.message);
+      toast.error("An error occurred during login");
     } finally {
       setLoading(false);
       setCaptchaToken(null);

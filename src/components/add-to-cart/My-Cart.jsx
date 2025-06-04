@@ -426,7 +426,7 @@ export default function MyCart() {
     },
     [cartItems]
   );
-  
+
   const removeCartItem = (index) => {
     dispatch(removeFromCart(index));
     if (appliedCoupon) {
@@ -611,7 +611,6 @@ export default function MyCart() {
                       <div className="w-full bg-white overflow-x-auto">
                         <table className="min-w-full text-sm md:text-base table-auto border border-gray-300">
                           <tbody>
-                            {/* Combine width and length into a single "Dimension" row */}
                             {item.selectedOptions.width && item.selectedOptions.length && (
                               <tr className="border-b">
                                 <td className="p-1 text-sm capitalize">Dimension</td>
@@ -620,7 +619,6 @@ export default function MyCart() {
                                 </td>
                               </tr>
                             )}
-                            {/* Render other selected options, excluding width and length */}
                             {Object.entries(item.selectedOptions).map(([key, option]) =>
                               key !== "width" && key !== "length" ? (
                                 <tr key={key} className="border-b">
@@ -646,8 +644,7 @@ export default function MyCart() {
                             <tr className="bg-gray-50">
                               <td className="p-1">SKU</td>
                               {item.skuCount}
-                              </tr>
-                            
+                            </tr>
                             <tr className="bg-gray-50 font-semibold">
                               <td className="p-1">Quantity</td>
                               <td className="p-1" colSpan="2">{item.quantity}</td>
@@ -666,7 +663,11 @@ export default function MyCart() {
                           Material: {item.material}
                         </li>
                         <li className="mt-1 text-sm list-none">
-                          Price: ₹ {item.price} / Sku: {item.skuCount}</li>
+                          Price: ₹ {item.price}
+                        </li>
+                        <li className="mt-1 text-sm list-none">
+                          Sku: {item.skuCount}
+                        </li>
                         {/* <li className="mt-1 list-none">
 
                         </li> */}

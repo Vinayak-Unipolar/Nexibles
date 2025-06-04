@@ -108,7 +108,7 @@ export default function PopularProducts() {
               </div>
             ))
           ) : (
-            Array(6)
+            Array(8)
               .fill(null)
               .map((_, index) => (
                 <div
@@ -129,14 +129,14 @@ export default function PopularProducts() {
               ))
           )}
         </div>
-        <div className="flex justify-center md:my-6 my-2"> {/* Right section with button */}
+        {/* <div className="flex justify-center md:my-6 my-2">
           <Link href="/all-category" className="items-center">
             <button className="flex items-center gap-2 md:px-6 p-2 md:py-1 md:text-lg text-xs text-black bg-[#ffd13e] rounded-full hover:bg-[#e6bc35] transition-all">
               Show More
               <FaLongArrowAltRight />
             </button>
           </Link>
-        </div>
+        </div> */}
       </div>
 
       <RequestForm

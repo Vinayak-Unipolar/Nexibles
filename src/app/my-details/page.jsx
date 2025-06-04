@@ -17,7 +17,7 @@ function Page() {
   //   }
   // }, [user, router]);
 
-  // // Move conditional return after all hooks are called
+  // Move conditional return after all hooks are called
   // if (!user) {
   //   return null;
   // }

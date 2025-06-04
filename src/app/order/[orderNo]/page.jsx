@@ -513,7 +513,11 @@ const OrderDetails = () => {
                                                         <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-0">
                                                             {/* Left side - Keyline section */}
                                                             <div className="flex-shrink-0 lg:pr-6 lg:border-r lg:border-gray-300">
-                                                                <h5 className="text-md font-medium text-gray-700 mb-3">Keyline</h5>
+                                                                <div className='mb-4'>
+                                                                    <h5 className="text-md font-medium text-gray-700 ">Keyline </h5>
+                                                                    <span className='text-xs '>(Download keyline to upload your design)</span>
+                                                                </div>
+
                                                                 <button
                                                                     className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium shadow-sm transition-colors w-full lg:w-auto justify-center lg:justify-start ${checklistExist[orderNo] === 1
                                                                         ? 'bg-gray-200 text-gray-500 cursor-not-allowed'

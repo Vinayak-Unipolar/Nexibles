@@ -161,9 +161,8 @@ const Navbar = () => {
     <>
       <nav
         ref={navbarRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          hasScrolled ? "bg-white shadow-xl" : "bg-white"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${hasScrolled ? "bg-white shadow-xl" : "bg-white"
+          }`}
       >
         <div className="flex items-center justify-between h-16 px-4 mx-auto relative">
           <motion.div
@@ -196,11 +195,10 @@ const Navbar = () => {
               >
                 <Link
                   href={item.path}
-                  className={`text-sm font-medium transition-colors duration-200 ${
-                    isActive(item.path)
+                  className={`text-sm font-medium transition-colors duration-200 ${isActive(item.path)
                       ? "text-black font-semibold border-b-2 border-black pb-1"
                       : "text-gray-600 hover:text-black"
-                  }`}
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -327,7 +325,7 @@ const Navbar = () => {
             >
               <Link
                 href="/request-quote"
-                className="inline-block px-4 py-2 text-sm font-medium rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
+                className="inline-block px-1 py-1 text-sm rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
               >
                 Request a Quote
               </Link>
@@ -408,11 +406,10 @@ const Navbar = () => {
                 >
                   <Link
                     href={item.path}
-                    className={`block py-2.5 sm:py-3 text-base sm:text-lg font-medium ${
-                      isActive(item.path)
+                    className={`block py-2.5 sm:py-3 text-base sm:text-lg font-medium ${isActive(item.path)
                         ? "text-black font-semibold"
                         : "text-gray-600"
-                    }`}
+                      }`}
                     onClick={() => handleToggle("isMenuOpen")}
                   >
                     {item.name}
@@ -420,21 +417,36 @@ const Navbar = () => {
                 </motion.div>
               ))}
 
+              {/* Authentication Links for Mobile */}
               <motion.div
-                className="mt-4 sm:mt-6"
+                className="mt-2 sm:mt-6"
                 custom={8}
                 initial="hidden"
                 animate="visible"
                 variants={mobileLinkVariants}
               >
-                <Link
-                  href="/login"
-                  className="flex items-center text-base sm:text-lg font-medium text-gray-600"
-                  onClick={() => handleToggle("isMenuOpen")}
-                >
-                  <IoPersonOutline className="mr-2" size={20} />
-                  {user ? "My Account" : "Sign In"}
-                </Link>
+                {user ? (
+                  <>
+                    <Link
+                      href="/my-dashboard"
+                      className="flex items-center text-base sm:text-lg font-medium text-gray-600 mb-2"
+                      onClick={() => handleToggle("isMenuOpen")}
+                    >
+                      <IoPersonOutline className="mr-2" size={20} />
+                      My Account
+                    </Link>
+                    
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center text-base sm:text-lg font-medium text-gray-600"
+                    onClick={() => handleToggle("isMenuOpen")}
+                  >
+                    <IoPersonOutline className="mr-2" size={20} />
+                    Sign In
+                  </Link>
+                )}
               </motion.div>
             </div>
             <motion.div

@@ -736,7 +736,7 @@ function RequestFormPage() {
     <div className="py-4 sm:py-8 bg-[#ece0cc] min-h-screen">
       <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2 p-4 bg-white rounded-lg shadow-md">
+          <div className="lg:col-span-2 p-8 bg-white rounded-lg shadow-md">
             <h2 className="pb-2 mb-4 text-xl font-semibold text-black border-b-2 border-black sm:text-2xl">
               Request A Free Quote
             </h2>

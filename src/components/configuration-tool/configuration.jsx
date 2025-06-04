@@ -262,10 +262,8 @@ const Configuration = () => {
 
   useEffect(() => {
     if (!user) {
-      toast.warning('You need to be logged in to customize .', {
-        toastId: 'login-warning',
-      });
-      router.push('/login');
+      localStorage.setItem('config', 'true');
+      router.push('/login?from=configuration');
       setIsAuthLoading(false);
       setLoading(false);
     }

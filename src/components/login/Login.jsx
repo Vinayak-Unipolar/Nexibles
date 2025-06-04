@@ -18,6 +18,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState("");
+  const [showConfigMessage, setShowConfigMessage] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
@@ -67,6 +68,13 @@ function Login() {
     profImage: "",
     baseUrl: "https://nexibles.com",
   });
+
+  useEffect(() => {
+    if (localStorage.getItem('config') === 'true') {
+      setShowConfigMessage(true);
+      localStorage.removeItem('config');
+    }
+  }, []);
 
   const executeCaptcha = async () => {
     if (recaptchaRef.current) {
@@ -262,7 +270,7 @@ function Login() {
   return (
     <>
       {loading && <Loader btnLoad={false} />}
-      <div className="flex items-center justify-center p-4 bg-white md:mt-24 my-12">
+      <div className="flex items-center justify-center p-4 bg-white md:mt-20 my-12">
         <style>
           {`
             .overflow-y-auto::-webkit-scrollbar {
@@ -271,6 +279,17 @@ function Login() {
           `}
         </style>
         <div className="w-full max-w-4xl">
+          {showConfigMessage && (
+            <>
+              <p className=" text-sm text-center font-semibold text-black md:text-4xl">
+                Register First, Then Build & Price Your Own Pouch
+              </p>
+              <p className=" text-sm text-center font-semibold text-black md:text-xl">
+                It's free, takes 60 seconds, and unlocks instant princing for every size.
+              </p>
+            </>
+
+          )}
           <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
             <motion.div
               className="hidden md:block md:w-1/2"
@@ -298,6 +317,7 @@ function Login() {
                   <h2 className="mb-4 mt-8 text-2xl font-bold text-center text-gray-900 md:text-3xl">
                     Welcome back!
                   </h2>
+
                   <p className="mb-6 text-sm text-center text-gray-600 md:text-base">
                     Enter to get unlimited access to data & information.
                   </p>

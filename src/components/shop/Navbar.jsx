@@ -325,7 +325,7 @@ const Navbar = () => {
             >
               <Link
                 href="/request-quote"
-                className="inline-block px-4 py-2 text-sm font-medium rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
+                className="inline-block px-1 py-1 text-sm rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
               >
                 Request a Quote
               </Link>

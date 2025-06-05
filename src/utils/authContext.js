@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Error decoding token:', error.message);
-            //localStorage.removeItem('token');
-            //setUser(null);
-           //toast.error('Invalid token');
+            localStorage.removeItem('token');
+            setUser(null);
+           toast.error('Invalid token');
         }
     };
 

@@ -108,7 +108,7 @@ export default function PopularProducts() {
               </div>
             ))
           ) : (
-            Array(6)
+            Array(8)
               .fill(null)
               .map((_, index) => (
                 <div

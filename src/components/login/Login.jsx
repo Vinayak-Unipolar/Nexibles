@@ -10,7 +10,7 @@ import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
-function  Login() {
+function Login() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +18,7 @@ function  Login() {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState("");
+  const [showConfigMessage, setShowConfigMessage] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
@@ -68,6 +69,13 @@ function  Login() {
     baseUrl: "https://nexibles.com",
   });
 
+  useEffect(() => {
+    if (localStorage.getItem('config') === 'true') {
+      setShowConfigMessage(true);
+      localStorage.removeItem('config');
+    }
+  }, []);
+
   const executeCaptcha = async () => {
     if (recaptchaRef.current) {
       try {
@@ -87,8 +95,8 @@ function  Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const token = await executeCaptcha();
-    if (!token) {
+    const captchaToken = await executeCaptcha();
+    if (!captchaToken) {
       toast.error("Please complete the CAPTCHA verification.");
       return;
     }
@@ -103,23 +111,24 @@ function  Login() {
         body: JSON.stringify({
           emailAddress: email,
           password: password,
-          captchaToken: token,
+          captchaToken: captchaToken,
         }),
       });
       const data = await response.json();
+      console.log('Login API response:', data);
 
       if (data.status === "error") {
         toast.error(data.message);
+        return;
       }
       if (data.status === "success") {
-        login(data.data);
-        toast.success("Login Successful");
-        localStorage.setItem("token", token);
+        const { data: user, token } = data; // Destructure correctly
+        login(user, token); // This handles localStorage and toast
         router.push("/");
       }
     } catch (error) {
       console.error("Invalid Request", error);
-      //toast.error(error.message);
+      toast.error("An error occurred during login");
     } finally {
       setLoading(false);
       setCaptchaToken(null);
@@ -261,7 +270,7 @@ function  Login() {
   return (
     <>
       {loading && <Loader btnLoad={false} />}
-      <div className="flex items-center justify-center p-4 bg-white md:mt-24 my-12">
+      <div className="flex items-center justify-center p-4 bg-white md:mt-20 my-12">
         <style>
           {`
             .overflow-y-auto::-webkit-scrollbar {
@@ -270,6 +279,17 @@ function  Login() {
           `}
         </style>
         <div className="w-full max-w-4xl">
+          {showConfigMessage && (
+            <>
+              <p className=" text-sm text-center font-semibold text-black md:text-4xl">
+                Register First, Then Build & Price Your Own Pouch
+              </p>
+              <p className="text-sm text-center font-semibold text-black md:text-xl">
+                It&apos;s free, takes 60 seconds, and unlocks instant pricing for every size.
+              </p>
+            </>
+
+          )}
           <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
             <motion.div
               className="hidden md:block md:w-1/2"
@@ -297,6 +317,7 @@ function  Login() {
                   <h2 className="mb-4 mt-8 text-2xl font-bold text-center text-gray-900 md:text-3xl">
                     Welcome back!
                   </h2>
+
                   <p className="mb-6 text-sm text-center text-gray-600 md:text-base">
                     Enter to get unlimited access to data & information.
                   </p>

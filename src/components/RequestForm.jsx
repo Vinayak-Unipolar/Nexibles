@@ -28,6 +28,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
     projectDescription: "",
     requestSampleKit: false,
     gst_in: "",
+    pancard: "",
   });
 
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -325,24 +326,30 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    // Handle checkbox and other inputs
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
 
     if (name === "gst_in") {
-      const formattedValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const formattedValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 15);
       setFormData((prevData) => ({
         ...prevData,
         [name]: formattedValue,
       }));
-    } else {
+    }
+
+    if (name === "pancard") {
+      const formattedValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
       setFormData((prevData) => ({
         ...prevData,
-        [name]: type === "checkbox" ? checked : value,
+        [name]: formattedValue,
       }));
     }
 
+    // Validate email
     if (name === "email") {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value) && value.length > 0) {
@@ -352,7 +359,6 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
       }
     }
   };
-
   useEffect(() => {
     if (formData.requestSampleKit) {
       setFormData((prev) => ({
@@ -412,6 +418,8 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
         ipAddress: "",
         confirm_status: "0",
         origin: "Nexibles",
+        pancard: formData.pancard,
+        gst_in: formData.gst_in,
         orderDetails: await getRequestFormOrderDetails(),
       };
 
@@ -487,6 +495,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
         additional_comments: formData.projectDescription,
         category: formData.category,
         gst_in: formData.gst_in,
+        pancard: formData.pancard,
       };
       const emailData = {
         clientName: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -679,6 +688,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
         additional_comments: formData.projectDescription,
         category: formData.category,
         gst_in: formData.gst_in,
+        pancard: formData.pancard,
       };
 
       //console.log("Submitting leadData:", leadData);
@@ -740,6 +750,7 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
             zipPostalCode: "",
             country: "",
             gst_in: "",
+            pancard: "",
             orderQuantity: "",
             packageBuyingHistory: "",
             projectDescription: "",
@@ -986,17 +997,17 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-black sm:text-md">
-                    Describe Your Project
-                  </label>
-                  <textarea
-                    name="projectDescription"
-                    value={formData.projectDescription}
-                    onChange={handleChange}
-                    placeholder="Examples: pouch type and size, fill weight, preferred finish, and material type."
-                    className="w-full h-20 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                  ></textarea>
-                </div>
+                <label className="block text-sm font-medium text-black sm:text-md">
+                  Type of pouch and product you are looking to pack (to help us send the most relevant samples).
+                </label>
+                <textarea
+                  name="projectDescription"
+                  value={formData.projectDescription}
+                  onChange={handleChange}
+                  placeholder="Example: Grammage, preferred finish and material type."
+                  className="w-full h-20 p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none "
+                ></textarea>
+              </div>
 
                 <div className="flex items-center gap-4 mt-6 mb-4">
                   <span className="text-lg font-semibold">Request Sample Kit</span>
@@ -1075,101 +1086,109 @@ function RequestForm({ isOpen, onClose, initialCategory = "" }) {
                         </select>
                       </div>
                     </div>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-black sm:text-md">
-                        Address *
-                      </label>
-                      <input
-                        type="text"
-                        name="streetAddress"
-                        value={formData.streetAddress}
-                        onChange={handleChange}
-                        placeholder="Street Address"
-                        className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                        required
-                      />
-                      <input
-                        type="text"
-                        name="addressLine2"
-                        value={formData.addressLine2}
-                        onChange={handleChange}
-                        placeholder="Address Line 2"
-                        className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                      />
-                      <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-3">
-                        <input
-                          type="text"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          placeholder="City"
-                          className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
-                        />
-                        <input
-                          type="text"
-                          name="state"
-                          value={formData.state}
-                          onChange={handleChange}
-                          placeholder="State"
-                          className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
-                        />
-                        <input
-                          type="text"
-                          name="zipPostalCode"
-                          value={formData.zipPostalCode}
-                          onChange={handleChange}
-                          placeholder="ZIP / Postal Code"
-                          className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
-                          maxLength={6}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-sm font-medium text-black sm:text-md">
-                          GSTIN *
-                        </label>
-                        <input
-                          type="gst_in"
-                          name="gst_in"
-                          value={formData.gst_in || ""}
-                          onChange={handleChange}
-                          placeholder="Enter GSTIN "
-                          className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-black sm:text-md">
-                          Country *
-                        </label>
-                        <select
-                          name="country"
-                          value={formData.country}
-                          onChange={handleChange}
-                          className="w-full p-2 mt-1 text-black bg-transparent border border-black rounded-md focus:outline-none"
-                          required
+                     <div className="mb-4">
+                  <label className="block text-sm font-medium text-black sm:text-md">
+                    Address *
+                  </label>
+                  <input
+                    type="text"
+                    name="streetAddress"
+                    value={formData.streetAddress}
+                    onChange={handleChange}
+                    placeholder="Street Address"
+                    className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="addressLine2"
+                    value={formData.addressLine2}
+                    onChange={handleChange}
+                    placeholder="Address Line 2"
+                    className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                  />
+                  <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-4">
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      placeholder="City"
+                      className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      placeholder="State"
+                      className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="zipPostalCode"
+                      value={formData.zipPostalCode}
+                      onChange={handleChange}
+                      placeholder="ZIP / Postal Code"
+                      className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                      maxLength={6}
+                    />
+                    <select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      className="w-full p-2 text-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required
+                    >
+                      <option value="" className="text-gray-900">
+                        Country
+                      </option>
+                      {countries.map((country) => (
+                        <option
+                          key={country}
+                          value={country}
+                          className="text-gray-900"
                         >
-                          <option value="" className="text-gray-900">
-                            Please select...
-                          </option>
-                          {countries.map((country) => (
-                            <option
-                              key={country}
-                              value={country}
-                              className="text-gray-900"
-                            >
-                              {country}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
+                <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      GSTIN
+                    </label>
+                    <input
+                      type="text"
+                      name="gst_in"
+                      value={formData.gst_in}
+                      onChange={handleChange}
+                      placeholder="Enter GSTIN"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required={!formData.pancard} // Required only if PAN card is empty
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-black sm:text-md">
+                      PAN Card
+                    </label>
+                    <input
+                      type="text"
+                      name="pancard"
+                      value={formData.pancard}
+                      onChange={handleChange}
+                      placeholder="Enter PAN Card"
+                      className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                      required={!formData.gst_in} // Required only if GSTIN is empty
+                    />
+                  </div>
+                </div>
                     {total && (
                       <div className="mb-4 rounded-md">
                         <p className="text-sm font-medium text-gray-800">

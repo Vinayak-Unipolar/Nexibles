@@ -260,7 +260,7 @@ const Configuration = () => {
     }
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     if (!user) {
       localStorage.setItem('config', 'true');
       router.push('/login?from=configuration');

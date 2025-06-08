@@ -278,6 +278,7 @@ function Login() {
             }
           `}
         </style>
+        
         <div className="w-full max-w-4xl">
           {showConfigMessage && (
             <>

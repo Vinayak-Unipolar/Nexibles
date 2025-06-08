@@ -284,8 +284,8 @@ function Login() {
               <p className=" text-sm text-center font-semibold text-black md:text-4xl">
                 Register First, Then Build & Price Your Own Pouch
               </p>
-              <p className=" text-sm text-center font-semibold text-black md:text-xl">
-                It's free, takes 60 seconds, and unlocks instant princing for every size.
+              <p className="text-sm text-center font-semibold text-black md:text-xl">
+                It&apos;s free, takes 60 seconds, and unlocks instant pricing for every size.
               </p>
             </>
 

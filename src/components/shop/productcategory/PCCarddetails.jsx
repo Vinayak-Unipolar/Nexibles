@@ -233,9 +233,9 @@ export default function PCCardDetails({ productDetails }) {
   return (
     <div className="h-auto min-h-screen bg-white">
       <div className="px-4 mx-auto md:px-6 lg:px-8 containers max-w-7xl">
-        <div className="flex flex-col pt-6 md:flex-row md:gap-12 md:pt-10">
+        <div className="flex flex-col pt-2 md:flex-row md:gap-12 ">
           {/* Product Images Section */}
-          <div className="w-full h-[45vh] md:w-1/2 md:h-[60vh] mb-8 md:mb-0 md:sticky top-[15%]">
+          <div className="w-full md:w-1/3  mb-8 md:mb-0 md:sticky top-[15%]">
             <ProductImages
               productImages={productImages}
               defaultImage={
@@ -247,7 +247,7 @@ export default function PCCardDetails({ productDetails }) {
           </div>
 
           {/* Product Details Section */}
-          <div className="w-full md:w-1/2 md:pl-4">
+          <div className="w-full md:w-2/3 md:pl-4">
             <ProductDetails
               productDetails={productDetails}
               debouncedDecrease={debouncedDecrease}

@@ -7,7 +7,7 @@ export async function GET(request) {
   const fullUrl = searchParams.get('url');
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
-  const MERCHANT_ID = process.env.PAYMENT_MERCHANT_ID;
+  const MERCHANT_ID = "PGTESTPAYUAT86";
 
   if (!transactionId) {
     return NextResponse.json(
@@ -16,7 +16,7 @@ export async function GET(request) {
     );
   }
   try {
-    const statusUrl = `${APIURL}/api/status/${transactionId}/${MERCHANT_ID}`;
+    const statusUrl = `https://nexiblesapp.barecms.com/api/status/${transactionId}/${MERCHANT_ID}`;
     const response = await axios.get(statusUrl);
     if (response.data?.data?.data?.state === 'COMPLETED') {
       return NextResponse.redirect(`${fullUrl}/order-placed?status=success`);

@@ -173,7 +173,7 @@ const ProductDetails = ({
                     onClick={() => setSelectedMaterial(material)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                       selectedMaterial === material
-                        ? 'bg-blue-950 text-white'
+                        ? 'bg-[#103b60] text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -192,7 +192,7 @@ const ProductDetails = ({
                       onClick={() => setSelectedFinish(finish)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                         selectedFinish === finish
-                          ? 'bg-blue-950 text-white'
+                          ? 'bg-[#103b60] text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -210,7 +210,7 @@ const ProductDetails = ({
                       onClick={() => setSelectedPrintType(printType)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                         selectedPrintType === printType
-                          ? 'bg-blue-950 text-white'
+                          ? 'bg-[#103b60] text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -229,7 +229,7 @@ const ProductDetails = ({
                     onClick={() => setSelectedSize(size)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                       selectedSize === size
-                        ? 'bg-blue-950 text-white'
+                        ? 'bg-[#103b60] text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >

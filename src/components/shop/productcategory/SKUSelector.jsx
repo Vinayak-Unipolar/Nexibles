@@ -127,7 +127,7 @@ export default function SKUSelector({
                             </motion.button>
                             <motion.button
                                 onClick={handleBuyNow}
-                                className="flex items-center justify-center w-full h-10 gap-2 px-4 py-2 text-xs font-medium text-white transition-all duration-200 bg-[#ffd13e] rounded-md shadow-sm "
+                                className="flex items-center justify-center w-full h-10 gap-2 px-4 py-2 text-xs font-medium text-black transition-all duration-200 bg-[#ffd13e] hover:bg-yellow-500 rounded-md shadow-sm "
                                 variants={buttonVariants}
                                 whileHover="hover"
                                 whileTap="tap"

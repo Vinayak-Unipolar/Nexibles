@@ -148,7 +148,7 @@ export default function PCCardDetails({ productDetails }) {
     dispatch(addToCart(productToAdd));
     const existingItem = cartItems.find(item => item.id === productToAdd.id);
     setCartItemCount(existingItem ? cartItems.length : cartItems.length + 1);
-    toast.success('Product added to cart successfully');
+    toast.success('Product added to cart');
   };
 
   const handleIncreaseQuantity = useCallback(() => {

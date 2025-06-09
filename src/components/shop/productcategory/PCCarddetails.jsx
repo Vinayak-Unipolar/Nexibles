@@ -260,6 +260,7 @@ export default function PCCardDetails({ productDetails }) {
               handleQuantityInputChange={handleQuantityInputChange}
               priceAfterCalculation={priceAfterCalculation}
               minimumQuantity={minimumQuantity}
+              size={productDetails.product.size}
             />
 
             <div className="mt-8">

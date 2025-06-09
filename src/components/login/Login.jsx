@@ -278,10 +278,11 @@ function Login() {
                 Register First, Then Build & Price Your Own Pouch
               </p>
               <p className="text-sm text-center font-semibold text-black md:text-xl">
-                It's free, takes 60 seconds, and unlocks instant pricing for every size.
+                It&apos;s free, takes just 60 seconds, and provides instant pricing for all sizes.
               </p>
             </>
           )}
+
           <div className="flex flex-col md:flex-row h-auto md:h-[580px]">
             <motion.div
               className="hidden md:block md:w-1/2"

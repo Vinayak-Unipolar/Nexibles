@@ -8,6 +8,7 @@ import OrderPlaced from '@/components/shipping/OrderPlaced';
 import { useAuth } from '@/utils/authContext';
 import { useRouter } from 'next/navigation';
 import SearchParamsHandler from '../../components/Search';
+
 const Orderplaced = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [defaultAddress, setDefaultAddress] = useState();
@@ -16,14 +17,10 @@ const Orderplaced = () => {
   const dispatch = useDispatch();
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
-const [purchaseTracked, setPurchaseTracked] = useState(false);
+  const [purchaseTracked, setPurchaseTracked] = useState(false);
 
   const fetchOrderDetails = async () => {
     try {
-      if (!user) return;
-
-      const customerId = user?.result?.customerId || user?.customerId;
-      const authToken = typeof window !== "undefined" ? localStorage.getItem('token') : null;
       const orderNo = typeof window !== "undefined" ? localStorage.getItem('orderNo') : null;
 
       if (!orderNo) {
@@ -31,38 +28,53 @@ const [purchaseTracked, setPurchaseTracked] = useState(false);
         return;
       }
 
-      const response = await fetch(`${APIURL}/api/getorderdetails/${customerId}`, {
+      const response = await fetch(`${APIURL}/api/ordermaster/${orderNo}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${authToken}`
+          'Content-Type': 'application/json',
+          'API-Key': token,
         }
       });
 
       const data = await response.json();
 
-      if (data.status === "success") {
-        const relevantOrder = data.orderDetails.filter(order => order.orderNo === orderNo);
+      if (data.status === "success" && data.data) {
+        setOrderDetails(data.data);
 
-        if (relevantOrder.length > 0) {
-          setOrderDetails(relevantOrder);
+        // Set address from order data
+        const orderData = data.data[0];
+        setDefaultAddress({
+          data: {
+            title: orderData.company || '',
+            address: orderData.address || orderData.street || '',
+            city: orderData.city || '',
+            state: orderData.state || '',
+            zip: orderData.zipcode || '',
+            country: orderData.country || ''
+          }
+        });
 
-          if (!purchaseTracked && searchParams.get('status') === 'success') {
-            const orderTotal = parseFloat(relevantOrder[0].invamt) || 0;
-            const productIds = [relevantOrder[0].product_id];
-            const eventId = `purchase-${relevantOrder[0].orderNo}`;
-            fbq('track', 'Purchase', {
-              value: orderTotal,
-              currency: 'INR',
-              content_ids: productIds,
-              content_type: 'product',
-              eventID: eventId
-            });
+        if (!purchaseTracked && typeof window !== "undefined") {
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.get('status') === 'success') {
+            const orderTotal = parseFloat(data.data[0].invamt) || 0;
+            const productIds = [data.data[0].product_id];
+            const eventId = `purchase-${data.data[0].orderNo}`;
+            if (typeof fbq !== 'undefined') {
+              fbq('track', 'Purchase', {
+                value: orderTotal,
+                currency: 'INR',
+                content_ids: productIds,
+                content_type: 'product',
+                eventID: eventId
+              });
+            }
             setPurchaseTracked(true);
           }
-
-          dispatch(updateCartItems([]));
-          dispatch(removeCoupon());
         }
+
+        dispatch(updateCartItems([]));
+        dispatch(removeCoupon());
       } else {
         console.error("Failed to fetch order details:", data.message);
         router.push('/');
@@ -74,33 +86,8 @@ const [purchaseTracked, setPurchaseTracked] = useState(false);
   };
 
   useEffect(() => {
-    if (user) {
-      fetchOrderDetails();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!user) return;
-        let id = user?.result?.customerId || user?.customerId;
-        const response = await fetch(`${APIURL}/api/customerAddress/default/${id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const data = await response.json();
-        setDefaultAddress(data);
-      } catch (error) {
-        console.error("Error fetching Data", error);
-      }
-    }
-    fetchData();
-  }, [user]);
+    fetchOrderDetails();
+  }, []);
 
   if (orderDetails.length === 0) {
     return (

@@ -55,10 +55,10 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
             <div className="text-gray-900">
               <h4 className="font-bold text-lg mb-2">Delivery Address:</h4>
               {/* <br /> */}
-              <p className="font-bold">
+              {/* <p className="font-bold">
                 {user?.result?.firstName || user?.firstName}{" "}
                 {user?.result?.lastName || user?.lastName}
-              </p>
+              </p> */}
               {defaultAddress?.data && (
                 <div>
                   <>
@@ -94,13 +94,13 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
           </div>
           <hr />
           <div className="md:flex py-4">
-            <div className="h-auto w-72 border-2 border-gray-900 rounded-3xl p-4 flex flex-col justify-start items-start">
+            {/* <div className="h-auto w-72 border-2 border-gray-900 rounded-3xl p-4 flex flex-col justify-start items-start">
               <label className="text-gray-900 font-semibold mt-2">
                 {"Standard"}
               </label>
               <p className="text-gray-900">Estimated Delivery in 7 Days.</p>
-            </div>
-            <div className="md:ml-16 mt-2">
+            </div> */}
+            <div className="mt-2">
               <div className="text-gray-900">
                 <h4 className="font-bold">Order Date:</h4>
                 <p>{productDetails[0]?.orderDate ? formatDate(productDetails[0].orderDate) : currentDate}</p>
@@ -139,7 +139,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                 <div className="flex justify-between items-center mb-2">
                   <p className="text-gray-900 text-sm font-bold">Sub Total</p>
                   <p className="text-gray-900 text-sm font-bold">
-                    RS. {calculateTotalPrice()}
+                    RS. {productDetails[0]?.invamt || calculateTotalPrice()}
                   </p>
                 </div>
                 <hr />
@@ -157,14 +157,14 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     </p>
                   )}
                 </div>
-                <div className="flex justify-between items-center mb-2">
+                {/* <div className="flex justify-between items-center mb-2">
                   <p className="text-gray-900 text-sm font-bold uppercase">
                     GST (18%)
                   </p>
                   <p className="text-gray-900 text-sm font-bold uppercase">
-                     + RS. {productDetails[0]?.tax || "0.00"}
+                    + RS. {productDetails[0]?.tax || "0.00"}
                   </p>
-                </div>
+                </div> */}
                 <hr />
                 <div className="flex justify-between items-center py-2">
                   <p className="text-gray-900 text-sm font-bold">
@@ -198,18 +198,20 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                   key={index}
                   className="flex flex-col md:flex-row bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                 >
-                  <div className="md:w-48 h-48 md:h-auto relative">
-                    <img
-                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
-                      alt={product.product_name}
-                      className="h-full w-full object-cover"
-                    />
-                    {product.discountPercentage !== "0.00" && (
-                      <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        -{product.discountPercentage}% OFF
-                      </div>
-                    )}
-                  </div>
+                  {product.image && (
+                    <div className="md:w-48 h-48 md:h-auto relative">
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
+                        alt={product.product_name}
+                        className="h-full w-full object-cover"
+                      />
+                      {product.discountPercentage !== "0.00" && (
+                        <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                          -{product.discountPercentage}% OFF
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="flex-1 p-6">
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -226,7 +228,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                         <span className="font-semibold text-gray-900">RS. {product.price}</span>
                       </div>
 
-                      {product.discountedPrice !== product.price && (
+                      {product.product_name !== "Nexibles Sample Kit" && product.discountedPrice !== product.price && (
                         <div className="flex items-center space-x-2">
                           <span className="text-gray-600">Total:</span>
                           <span className="font-semibold text-green-600">
@@ -247,14 +249,14 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     )}
 
                     {/* SKU Count information */}
-                    {product.skuCount && (
+                    {/* {product.skuCount && (
                       <div className="mb-3">
                         <p className="text-gray-800">
                           <span className="font-semibold">SKU Count:</span>{' '}
                           {product.skuCount}
                         </p>
                       </div>
-                    )}
+                    )} */}
 
                     {/* Product Options */}
                     {product.product_config_id && (

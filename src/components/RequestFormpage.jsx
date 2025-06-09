@@ -448,7 +448,7 @@ function RequestFormPage() {
       {
         id: 0,
         name: "Nexibles Sample Kit",
-        price: "413.00",
+        price: "350.00",
         quantity: 1,
         payment_status: "pending",
         discountAmount: "0.00",
@@ -457,7 +457,7 @@ function RequestFormPage() {
         product_config_id: null,
         product_option_id: null,
         origin: "Nexibles Website",
-        skuCount: 1,
+        skuCount: 0,
         material: "",
         total_cost: "413.00",
       },

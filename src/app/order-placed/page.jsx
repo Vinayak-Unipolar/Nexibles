@@ -18,6 +18,7 @@ const Orderplaced = () => {
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [purchaseTracked, setPurchaseTracked] = useState(false);
+  const [emailsSent, setEmailsSent] = useState(false);
 
   const fetchOrderDetails = async () => {
     try {
@@ -54,23 +55,53 @@ const Orderplaced = () => {
           }
         });
 
-        if (!purchaseTracked && typeof window !== "undefined") {
-          const urlParams = new URLSearchParams(window.location.search);
-          if (urlParams.get('status') === 'success') {
-            const orderTotal = parseFloat(data.data[0].invamt) || 0;
-            const productIds = [data.data[0].product_id];
-            const eventId = `purchase-${data.data[0].orderNo}`;
-            if (typeof fbq !== 'undefined') {
-              fbq('track', 'Purchase', {
-                value: orderTotal,
-                currency: 'INR',
-                content_ids: productIds,
-                content_type: 'product',
-                eventID: eventId
-              });
+        // Track purchase and send emails if conditions are met
+        if (data.data[0].payment_status === 'COMPLETED' && data.data[0].transaction_id && data.data[0].orderNo) {
+          // Track purchase
+          if (!purchaseTracked && typeof window !== "undefined") {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('status') === 'success') {
+              const orderTotal = parseFloat(data.data[0].invamt) || 0;
+              const productIds = [data.data[0].product_id];
+              const eventId = `purchase-${data.data[0].orderNo}`;
+              if (typeof fbq !== 'undefined') {
+                fbq('track', 'Purchase', {
+                  value: orderTotal,
+                  currency: 'INR',
+                  content_ids: productIds,
+                  content_type: 'product',
+                  eventID: eventId
+                });
+              }
+              setPurchaseTracked(true);
             }
-            setPurchaseTracked(true);
           }
+
+          // if (!emailsSent) {
+          //   try {
+          //     const emailResponse = await fetch(`https://nexiblesapp.barecms.com/api/send-order-emails`, {
+          //       method: 'POST',
+          //       headers: {
+          //         'Content-Type': 'application/json',
+          //         'API-Key': token,
+          //       },
+          //       body: JSON.stringify({
+          //         orderNo: data.data[0].orderNo,
+          //         transactionId: data.data[0].transaction_id
+          //       })
+          //     });
+
+          //     const emailResult = await emailResponse.json();
+          //     if (emailResult.status === 'success') {
+          //       console.log('Emails sent successfully');
+          //       setEmailsSent(true);
+          //     } else {
+          //       console.error('Failed to send emails:', emailResult.message);
+          //     }
+          //   } catch (emailError) {
+          //     console.error('Error sending emails:', emailError);
+          //   }
+          // }
         }
 
         dispatch(updateCartItems([]));

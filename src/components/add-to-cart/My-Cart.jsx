@@ -368,7 +368,6 @@
 //   );
 // }
 
-
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { BsCart3 } from "react-icons/bs";
@@ -377,8 +376,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart, setCoupon, removeCoupon, setGST, updateCartItems } from '../../redux/store/cartSlice';
-import CartItems from "../shipping/CartItems";
+import { removeFromCart, setCoupon, removeCoupon, setGST, updateCartItems, updateItemFiles } from '../../redux/store/cartSlice';
 
 export default function MyCart() {
   const token = process.env.NEXT_PUBLIC_API_KEY;
@@ -391,6 +389,15 @@ export default function MyCart() {
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   const GST_RATE = 0.18;
 
+  const handleFileUpload = (index, skuIndex, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const updatedFiles = [...(cartItems[index].files || [])];
+      updatedFiles[skuIndex] = file;
+      dispatch(updateItemFiles({ index, files: updatedFiles }));
+      toast.success(`File uploaded for SKU ${skuIndex + 1}`);
+    }
+  };
 
   const applyCouponToItems = useCallback(
     (coupon) => {
@@ -554,6 +561,13 @@ export default function MyCart() {
     if (isProcessingOrder || cartItems.length === 0) {
       return;
     }
+    // Optional: Validate that all required files are uploaded
+    for (const item of cartItems) {
+      if (item.skuCount > 0 && (!item.files || item.files.length < item.skuCount)) {
+        toast.error(`Please upload ${item.skuCount} file(s) for ${item.name}`);
+        return;
+      }
+    }
     if (!isLoggedIn()) {
       toast.warning("You need to login first");
       router.push("/login");
@@ -636,14 +650,14 @@ export default function MyCart() {
                               <td className="p-1" colSpan="2">{item.material}</td>
                             </tr>
                             <tr className="bg-gray-50">
-                              <td className="p-1">Price</td>
+                              <td className MODE="dark" lassName="p-1">Price</td>
                               <td className="p-1" colSpan="2">
                                 ₹{typeof item.price === "number" ? item.price.toFixed(0) : item.price} * 1
                               </td>
                             </tr>
                             <tr className="bg-gray-50">
                               <td className="p-1">SKU</td>
-                              {item.skuCount}
+                              <td className="p-1" colSpan="2">{item.skuCount}</td>
                             </tr>
                             <tr className="bg-gray-50 font-semibold">
                               <td className="p-1">Quantity</td>
@@ -659,26 +673,40 @@ export default function MyCart() {
                       </div>
                     ) : (
                       <>
-                        <li className="mt-1 text-sm list-none">
-                          Material: {item.material}
-                        </li>
-                        <li className="mt-1 text-sm list-none">
-                          Price: ₹ {item.price}
-                        </li>
-                        <li className="mt-1 text-sm list-none">
-                          Sku: {item.skuCount}
-                        </li>
-                        {/* <li className="mt-1 list-none">
-
-                        </li> */}
-
-                        <li className="mt-1 font-semibold list-none">
-                          Quantity: {item.quantity}
-                        </li>
-                        <div className="flex justify-end"><li className="mt-1 font-semibold list-none">
-                          Total: {item.totalPrice}
-                        </li></div>
+                        <li className="mt-1 text-sm list-none">Material: {item.material}</li>
+                        <li className="mt-1 text-sm list-none">Price: ₹ {item.price}</li>
+                        <li className="mt-1 text-sm list-none">SKU: {item.skuCount}</li>
+                        <li className="mt-1 font-semibold list-none">Quantity: {item.quantity}</li>
+                        <div className="flex justify-end">
+                          <li className="mt-1 font-semibold list-none">
+                            Total: ₹{typeof item.totalPrice === "number" ? item.totalPrice.toFixed(0) : item.totalPrice}
+                          </li>
+                        </div>
                       </>
+                    )}
+                    {/* File Upload Section */}
+                    {item.skuCount > 0 && (
+                      <div className="mt-4">
+                        <p className="text-sm font-semibold">Upload Files for SKUs:</p>
+                        <div className="flex flex-col space-y-2 mt-2">
+                          {Array.from({ length: item.skuCount }).map((_, skuIndex) => (
+                            <div key={skuIndex} className="flex items-center space-x-2">
+                              <label className="text-sm">SKU {skuIndex + 1}:</label>
+                              <input
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                onChange={(e) => handleFileUpload(index, skuIndex, e)}
+                                className="text-sm"
+                              />
+                              {item.files && item.files[skuIndex] && (
+                                <span className="text-green-600 text-sm">
+                                  {item.files[skuIndex].name}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -688,12 +716,8 @@ export default function MyCart() {
         </div>
         <div className="px-4 py-2 border-t border-gray-300">
           <div className="flex items-center justify-between">
-            <p className="text-lg font-bold text-gray-900 md:text-xl">
-              Items Total
-            </p>
-            <p className="text-lg font-bold text-gray-900 md:text-xl">
-              ₹ {calculateSubTotal().toFixed(2)}
-            </p>
+            <p className="text-lg font-bold text-gray-900 md:text-xl">Items Total</p>
+            <p className="text-lg font-bold text-gray-900 md:text-xl">₹ {calculateSubTotal().toFixed(2)}</p>
           </div>
         </div>
         {cartItems.length === 0 && (
@@ -747,7 +771,7 @@ export default function MyCart() {
           {appliedCoupon && (
             <div className="mt-4">
               <p className="font-semibold text-green-600 md:text-lg text-md">
-                Coupon {promoCode} applied!  You saved ₹{calculateTotalSavings()}.
+                Coupon {promoCode} applied! You saved ₹{calculateTotalSavings()}.
               </p>
               <button
                 onClick={handleRemoveCoupon}

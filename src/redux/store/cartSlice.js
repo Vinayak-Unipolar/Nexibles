@@ -72,7 +72,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const generateItemKey = (product) => {
   const optionsString = JSON.stringify(product.selectedOptions || {});
-  // Include product.name to ensure unique items for different names
   return `${product.id}-${product.name}-${product.skuCount}-${product.category}-${optionsString}`;
 };
 
@@ -94,14 +93,13 @@ const cartSlice = createSlice({
       const existingItem = state.items.find(item => item.itemKey === itemKey);
 
       if (existingItem) {
-        // Update quantity and totalPrice for existing item
         existingItem.quantity += product.quantity;
         existingItem.totalPrice += product.totalPrice;
       } else {
-        // Add new item with unique key
         state.items.push({
           ...product,
           itemKey,
+          files: [], // Initialize an empty array for uploaded files
         });
       }
     },
@@ -117,7 +115,6 @@ const cartSlice = createSlice({
     },
     removeCoupon: (state) => {
       state.appliedCoupon = null;
-      // Reset coupon-related discount fields
       state.items = state.items.map(item => ({
         ...item,
         discountedPrice: undefined,
@@ -133,6 +130,10 @@ const cartSlice = createSlice({
       state.appliedCoupon = null;
       state.gstAmount = 0;
     },
+    updateItemFiles: (state, action) => {
+      const { index, files } = action.payload;
+      state.items[index].files = files;
+    },
   },
 });
 
@@ -144,6 +145,7 @@ export const {
   removeCoupon,
   setGST,
   clearCart,
+  updateItemFiles,
 } = cartSlice.actions;
 export default cartSlice.reducer;
 

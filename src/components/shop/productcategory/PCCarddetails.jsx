@@ -285,13 +285,11 @@ export default function PCCardDetails({ productDetails }) {
           </div>
         </div>
 
-        {/* Product Overview Section */}
         <div className="mt-16 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
         </div>
 
         <hr className="my-12 border-gray-200" />
-
         <div className="my-12">
           <DescriptionSection />
         </div>

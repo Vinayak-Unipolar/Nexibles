@@ -104,21 +104,6 @@ const ProductDetails = ({
     <div className="relative z-20">
       <div className="md:h-auto">
         <h1 className="text-gray-900 text-xl md:text-5xl font-bold tracking-tight">{name}</h1>
-        <div
-          className="prose mt-4 text-lg text-gray-700 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
-        <div className="flex items-center mt-4">
-          <span className="text-black font-semibold text-lg mr-2">Material:</span>
-          <span className="text-gray-800">{material}</span>
-        </div>
-        <div>
-          <span className="text-black text-lg font-semibold">
-            Dimension: <span className="text-gray-700 text-lg font-medium">
-              {size && typeof size === 'string' ? size : Array.isArray(size) && size.length > 0 ? size.join(', ') : 'No sizes available'}
-            </span>
-          </span>
-        </div>
         <div className="flex items-center gap-2 mt-4">
           {rating > 0 ? (
             <>
@@ -131,16 +116,33 @@ const ProductDetails = ({
             <span className="text-gray-600 text-sm">No reviews yet</span>
           )}
         </div>
-        <div className="flex flex-row items-center gap-40">
+        <div
+          className="text-lg mt-4 text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
+        <div className="flex items-center mt-4">
+          <span className="text-black font-semibold text-md mr-2">Material:</span>
+          <span className="text-gray-800">{material}</span>
+        </div>
+        {/* <div>
+          <span className="text-black text-lg font-semibold">
+            Dimension: <span className="text-gray-800">
+              {size && typeof size === 'string' ? size : Array.isArray(size) && size.length > 0 ? size.join(', ') : 'No sizes available'}
+            </span>
+          </span>
+        </div> */}
+        
+        <div className="flex flex-row items-center gap-40 md:mt-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-yellow-200 flex items-center justify-center">
                <Box className="w-6 h-6 text-yellow-400" />
             </div>
-            </div>
+           
             <div>
               <div className="text-sm text-gray-500">MOQ</div>
               <div className="font-semibold text-gray-900">{minimumQuantity}</div>
             </div>
+             </div>
           {/* <div className="flex items-center gap-2">
             <Box className="w-6 h-6 text-yellow-400" />
             <span className="text-gray-500 text-sm">
@@ -158,13 +160,13 @@ const ProductDetails = ({
           </div>
         </div>
 
-        <div className="">
+        <div className="mt-4">
           {productPrice !== null || productDetails.product_price ? (
             <div className="space-y-4 mb-6">
               <div className="flex flex-wrap items-start gap-x-3 gap-y-2">
                 <div className="flex flex-col">
-                  <span className="text-lg font-semibold">Select Quantity</span>
-                  <div className="grid grid-cols-4 gap-2 mt-4">
+                  <span className="text-md font-semibold">Select Quantity</span>
+                  <div className="grid grid-cols-4 gap-2 mt-2">
                     {quantities.map((quantity) => (
                       <label key={quantity} className="flex items-center space-x-2">
                         <input
@@ -210,7 +212,7 @@ const ProductDetails = ({
                       </span>
                       <span className="text-black text-base md:text-lg">per unit</span>
                       <span className="text-gray-500 text-base md:text-lg">=</span>
-                      <span className="text-lg md:text-xl font-bold text-gray-900">
+                      <span className="text-lg md:text-2xl font-bold text-gray-900">
                         ₹{priceAfterCalculation}
                       </span>
                     </div>
@@ -221,10 +223,9 @@ const ProductDetails = ({
           ) : null}
         </div>
 
-        <div className="space-y-6">
-          <div className="space-y-6">
-            {/* Commented-out sections for Finish and Print Type */}
-            {/* <div className="md:flex">
+        {/* <div className="space-y-6">
+          <div className="space-y-6"> 
+            <div className="md:flex">
               <div>
                 <h3 className="text-gray-900 text-lg font-semibold mb-2">Finish</h3>
                 <div className="flex flex-wrap gap-2">
@@ -261,9 +262,9 @@ const ProductDetails = ({
                   ))}
                 </div>
               </div>
-            </div> */}
+            </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

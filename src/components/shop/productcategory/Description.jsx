@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DescriptionSection = ({ description, certifications = [] }) => {
+const DescriptionSection = ({ long_desc, description = '', certifications = [] }) => {
   const [activeTab, setActiveTab] = useState('description');
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
@@ -9,36 +9,69 @@ const DescriptionSection = ({ description, certifications = [] }) => {
     { id: 'specifications', label: 'Specifications' },
     { id: 'applications', label: 'Applications' },
     { id: 'faqs', label: 'FAQs' },
-    { id: 'downloads', label: 'Downloads' },
+    // { id: 'downloads', label: 'Downloads' },
   ];
+
+  // Parse HTML description into a structured array of label-value pairs
+  const parseSpecifications = (desc) => {
+    if (!desc || !desc.trim()) {
+      return ['No specifications available'];
+    }
+
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(desc, 'text/html');
+      const paragraphs = Array.from(doc.body.getElementsByTagName('p'));
+      const specs = [];
+      let currentLabel = null;
+      let currentValues = [];
+
+      paragraphs.forEach((p, index) => {
+        const strong = p.querySelector('strong');
+        let textContent = p.textContent.trim();
+
+        if (strong) {
+          // Save the previous label-value pair if it exists
+          if (currentLabel && currentValues.length > 0) {
+            specs.push({ label: currentLabel, value: currentValues.join(', ') });
+            currentValues = [];
+          }
+
+          // Extract label and value from the same <p> if present
+          const labelText = strong.textContent.trim().replace(/:$/, ''); // Remove trailing colon
+          const valueText = p.textContent.replace(strong.textContent, '').trim();
+
+          currentLabel = labelText;
+          if (valueText) {
+            // If there's a value in the same <p>, add it
+            currentValues.push(valueText);
+          }
+        } else if (currentLabel) {
+          // Add value to the current label if no <strong> is present
+          currentValues.push(textContent);
+        }
+      });
+
+      // Save the last label-value pair
+      if (currentLabel && currentValues.length > 0) {
+        specs.push({ label: currentLabel, value: currentValues.join(', ') });
+      }
+
+      return specs.length > 0 ? specs : ['No specifications available'];
+    } catch (error) {
+      console.error('Error parsing specifications:', error);
+      return ['Error parsing specifications'];
+    }
+  };
 
   const tabContent = {
     description: {
       type: 'paragraph',
-      content: description || `
-        Introducing our Premium Eco-Friendly Flexi-Pouches, the ultimate solution for modern packaging needs. 
-        Crafted with advanced multi-layer technology, these pouches offer superior protection against moisture, 
-        oxygen, and UV light, ensuring your products stay fresh for longer periods. 
-
-        Designed for versatility, they support high-definition printing in up to 10 vibrant colors, allowing your 
-        brand to stand out with stunning visuals. Customize your pouches with features like resealable zippers, 
-        ergonomic spouts, or easy-tear notches to enhance user convenience. 
-
-        Committed to sustainability, our pouches are available in recyclable and biodegradable materials, helping 
-        your brand meet environmental goals without compromising on quality or performance.
-      `,
+      content: long_desc && long_desc.trim() ? long_desc : 'Success but no data',
     },
     specifications: {
       type: 'list',
-      content: [
-        { label: 'Material', value: 'High-grade laminated film with multi-layer barrier technology' },
-        { label: 'Dimensions', value: '150mm (W) x 220mm (H) x 50mm (D)' },
-        { label: 'Capacity', value: 'Up to 500g (depending on product density)' },
-        { label: 'Closure Type', value: 'Resealable zipper (optional spout or tear notch)' },
-        { label: 'Printing', value: 'Up to 10-color high-definition gravure printing' },
-        { label: 'Thickness', value: '80-120 microns' },
-        { label: 'Shelf Life', value: 'Extends product freshness up to 12 months' },
-      ],
+      content: parseSpecifications(description),
     },
     applications: {
       type: 'list',
@@ -82,6 +115,10 @@ const DescriptionSection = ({ description, certifications = [] }) => {
   };
 
   const renderContent = (tabData) => {
+    if (!tabData) {
+      return <p className="text-gray-600 text-sm sm:text-base">Content not available</p>;
+    }
+
     switch (tabData.type) {
       case 'paragraph':
         return <p className="text-gray-600 leading-6 sm:leading-7 text-sm sm:text-base">{tabData.content}</p>;
@@ -113,6 +150,8 @@ const DescriptionSection = ({ description, certifications = [] }) => {
                 <button
                   onClick={() => toggleFaq(index)}
                   className="w-full flex justify-between items-center px-3 sm:px-4 py-2 sm:py-3 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none transition-colors duration-200 text-sm sm:text-base"
+                  aria-expanded={openFaqIndex === index}
+                  aria-controls={`faq-answer-${index}`}
                 >
                   <span>{faq.question}</span>
                   <span className="text-gray-500">
@@ -140,7 +179,10 @@ const DescriptionSection = ({ description, certifications = [] }) => {
                   </span>
                 </button>
                 {openFaqIndex === index && (
-                  <div className="px-3 sm:px-4 pb-2 sm:pb-3 text-gray-600 text-sm sm:text-base transition-all duration-300">
+                  <div
+                    id={`faq-answer-${index}`}
+                    className="px-3 sm:px-4 pb-2 sm:pb-3 text-gray-600 text-sm sm:text-base transition-all duration-300"
+                  >
                     {faq.answer}
                   </div>
                 )}
@@ -158,7 +200,10 @@ const DescriptionSection = ({ description, certifications = [] }) => {
   return (
     <div className="bg-gray-50 rounded-xl p-4 sm:p-6 md:p-8 max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl mx-auto shadow-sm transition-all duration-300">
       {/* Tab Navigation */}
-      <div className="flex flex-wrap border-b border-gray-200 mb-4 sm:mb-6 md:mb-8 gap-1 sm:gap-2">
+      <div
+        className="flex flex-wrap border-b border-gray-200 mb-4 sm:mb-6 md:mb-8 gap-1 sm:gap-2"
+        role="tablist"
+      >
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -168,6 +213,10 @@ const DescriptionSection = ({ description, certifications = [] }) => {
                 ? 'text-black bg-white shadow-sm'
                 : 'text-gray-500 hover:text-blue-900 hover:bg-gray-100'
             }`}
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            aria-controls={`panel-${tab.id}`}
+            id={`tab-${tab.id}`}
           >
             {tab.label}
             {activeTab === tab.id && (
@@ -179,7 +228,17 @@ const DescriptionSection = ({ description, certifications = [] }) => {
 
       {/* Tab Content */}
       <div className="text-sm sm:text-base leading-relaxed mb-6 sm:mb-8 transition-opacity duration-300">
-        {renderContent(tabContent[activeTab])}
+        {tabs.map((tab) => (
+          <div
+            key={tab.id}
+            id={`panel-${tab.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${tab.id}`}
+            className={activeTab === tab.id ? 'block' : 'hidden'}
+          >
+            {renderContent(tabContent[tab.id])}
+          </div>
+        ))}
       </div>
 
       {/* Certifications */}

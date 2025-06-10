@@ -137,6 +137,7 @@ export default function PCCardDetails({ productDetails }) {
       totalPrice: totalPrice,
       skuCount: selectedSKU,
       material: productDetails.product.material,
+      long_desc: productDetails.product.long_desc,
     };
 
     const eventId = `cart_${productDetails.product.id}`;
@@ -291,7 +292,10 @@ export default function PCCardDetails({ productDetails }) {
 
         <hr className="my-12 border-gray-200" />
         <div className="my-12">
-          <DescriptionSection />
+          <DescriptionSection 
+            description={productDetails.product.description}
+            long_desc={productDetails.product.long_desc}
+            productDetails={productDetails} />
         </div>
 
         <div className="my-12">

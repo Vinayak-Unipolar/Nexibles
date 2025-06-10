@@ -234,7 +234,6 @@ export default function PCCardDetails({ productDetails }) {
     <div className="h-auto min-h-screen bg-white">
       <div className="px-4 mx-auto md:px-6 lg:px-8 containers max-w-7xl">
         <div className="flex flex-col pt-2 md:flex-row md:gap-12 ">
-          {/* Product Images Section */}
           <div className="w-full md:w-1/3  mb-8 md:mb-0 md:sticky top-[15%]">
             <ProductImages
               productImages={productImages}
@@ -260,6 +259,7 @@ export default function PCCardDetails({ productDetails }) {
               handleQuantityInputChange={handleQuantityInputChange}
               priceAfterCalculation={priceAfterCalculation}
               minimumQuantity={minimumQuantity}
+              size={productDetails.product.size}
             />
 
             <div className="mt-8">

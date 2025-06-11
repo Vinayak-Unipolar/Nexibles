@@ -25,7 +25,7 @@ const itemVariants = {
   }
 };
 
-const DescriptionSection = ({ long_desc, description = '', productDetails = {}, certifications = [] }) => {
+const DescriptionSection = ({ long_desc, description, applications, specifications = '', productDetails = {}, certifications = [] }) => {
   const [activeTab, setActiveTab] = useState('description');
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [faqs, setFaqs] = useState([]);
@@ -86,22 +86,20 @@ const DescriptionSection = ({ long_desc, description = '', productDetails = {}, 
 
   const tabContent = {
     description: {
-      type: 'html', // Changed to 'html' to render raw HTML
+      type: 'html', // Render raw HTML
       content: long_desc && long_desc.trim() ? long_desc : 'No description available',
     },
     specifications: {
-      type: 'html', // Changed to 'html' to render raw HTML
-      content: description && description.trim() ? description : 'No specifications available',
+      type: 'paragraph', // Render plain text with line breaks
+      content: specifications && specifications.trim()
+        ? specifications.replace(/\n/g, '<br>')
+        : 'No specifications available',
     },
     applications: {
-      type: 'list',
-      content: [
-        'Ideal for packaging dry goods like snacks, grains, and spices',
-        'Suitable for pet food, coffee, tea, and confectionery products',
-        'Perfect for personal care items like bath salts or powdered cosmetics',
-        'Can be used for eco-friendly packaging of sustainable products',
-        'Great for promotional or limited-edition product launches',
-      ],
+      type: 'paragraph', // Render plain text with line breaks
+      content: applications && applications.trim()
+        ? applications.replace(/\n/g, '<br>')
+        : 'No applications available',
     },
     faqs: {
       type: 'faq',
@@ -130,12 +128,19 @@ const DescriptionSection = ({ long_desc, description = '', productDetails = {}, 
             dangerouslySetInnerHTML={{ __html: tabData.content }}
           />
         );
+      case 'paragraph':
+        return (
+          <p
+            className="text-gray-600 leading-6 sm:leading-7 text-sm sm:text-base"
+            dangerouslySetInnerHTML={{ __html: tabData.content }}
+          />
+        );
       case 'list':
         return (
           <ul className="space-y-2 sm:space-y-3">
             {tabData.content.map((item, index) => (
               <li key={index} className="flex items-start">
-                {/* Removed the yellow dot span */}
+                {/* No yellow dot span */}
                 <span className="text-gray-600 text-sm sm:text-base">
                   {typeof item === 'string' ? item : (
                     <span>

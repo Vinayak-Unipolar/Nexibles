@@ -16,7 +16,7 @@ import Link from 'next/link';
 import SKUSelector from './SKUSelector';
 import DeliveryOptions from './DeliveryOptions';
 import DescriptionSection from './Description';
-import ImageDescriptionSection from './ImageDescriptionSection';
+import ImageDescriptionSection from './A+content';
 
 
 export default function PCCardDetails({ productDetails }) {
@@ -138,6 +138,12 @@ export default function PCCardDetails({ productDetails }) {
       skuCount: selectedSKU,
       material: productDetails.product.material,
       long_desc: productDetails.product.long_desc,
+      specifications: productDetails.product.specifications,
+      applications: productDetails.product.applications,
+      a_plus_content: productDetails.product.a_plus_content,
+
+
+
     };
 
     const eventId = `cart_${productDetails.product.id}`;
@@ -285,8 +291,8 @@ export default function PCCardDetails({ productDetails }) {
             </div>
           </div>
         </div>
-{/* 
-        <div className="mt-16 md:mt-24">
+
+        {/* <div className="mt-16 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
         </div> */}
 
@@ -295,11 +301,16 @@ export default function PCCardDetails({ productDetails }) {
           <DescriptionSection 
             description={productDetails.product.description}
             long_desc={productDetails.product.long_desc}
+            specifications={productDetails.product.specifications}
+            applications={productDetails.product.applications}
             productDetails={productDetails} />
+            
         </div>
 
         <div className="my-12">
-          <ImageDescriptionSection />
+          <ImageDescriptionSection          
+            a_plus_content={productDetails.product.a_plus_content}
+          />
         </div>
 
         {/* Related Products Section */}

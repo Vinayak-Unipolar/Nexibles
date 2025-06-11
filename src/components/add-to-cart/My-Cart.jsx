@@ -389,15 +389,29 @@ export default function MyCart() {
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   const GST_RATE = 0.18;
 
-  const handleFileUpload = async (index, skuIndex, event) => {
+ const handleFileUpload = async (index, skuIndex, event) => {
   const file = event.target.files[0];
   if (file) {
     // Check if file is PDF
     if (file.type !== 'application/pdf') {
-      toast.error("Only PDF files are allowed");
+      // Store error message in files array instead of toast
+      const updatedFiles = [...(cartItems[index].files || [])];
+      updatedFiles[skuIndex] = { 
+        error: "Only PDF files are allowed",
+        hasError: true
+      };
+      dispatch(updateItemFiles({ index, files: updatedFiles }));
       event.target.value = ''; // Clear the input
       return;
     }
+
+    // Clear any previous error for this slot
+    const updatedFiles = [...(cartItems[index].files || [])];
+    if (updatedFiles[skuIndex]?.hasError) {
+      updatedFiles[skuIndex] = null;
+      dispatch(updateItemFiles({ index, files: updatedFiles }));
+    }
+
     // Prepare form data for the API request
     const formData = new FormData();
     formData.append("File", file);
@@ -416,25 +430,35 @@ export default function MyCart() {
         const originalName = result.data.originalname;
 
         // Update the files in your state with only serializable data
-        const updatedFiles = [...(cartItems[index].files || [])];
+        const finalUpdatedFiles = [...(cartItems[index].files || [])];
         
         // Store only serializable data (no file object)
-        updatedFiles[skuIndex] = { 
+        finalUpdatedFiles[skuIndex] = { 
           originalName: originalName,
           fileName: file.name, // Client-side file name for display
           uploadedAt: new Date().toISOString(), // Timestamp for reference
-          // Don't store the file object as it's not serializable
+          hasError: false
         };
         
-        dispatch(updateItemFiles({ index, files: updatedFiles }));
-
-        toast.success(`File uploaded for Design ${skuIndex + 1}`);
+        dispatch(updateItemFiles({ index, files: finalUpdatedFiles }));
       } else {
-        toast.error("File upload failed");
+        // Store upload failure error
+        const errorUpdatedFiles = [...(cartItems[index].files || [])];
+        errorUpdatedFiles[skuIndex] = { 
+          error: "File upload failed",
+          hasError: true
+        };
+        dispatch(updateItemFiles({ index, files: errorUpdatedFiles }));
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      toast.error("Error uploading file");
+      // Store network error
+      const errorUpdatedFiles = [...(cartItems[index].files || [])];
+      errorUpdatedFiles[skuIndex] = { 
+        error: "Error uploading file",
+        hasError: true
+      };
+      dispatch(updateItemFiles({ index, files: errorUpdatedFiles }));
     }
   }
 };

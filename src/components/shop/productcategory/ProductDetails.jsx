@@ -206,68 +206,68 @@ const ProductDetails = ({
           </div>
         </div>
 
-        <div className="mt-4">
-          {productPrice !== null || productDetails.product_price ? (
-            <div className="space-y-4 mb-6">
-              <div className="flex flex-wrap items-start gap-x-3 gap-y-2">
-                <div className="flex flex-col">
-                  <span className="text-md font-semibold">Select Quantity</span>
-                  <div className="grid grid-cols-4 gap-2 mt-2">
-                    {quantities.map((quantity) => (
-                      <label key={quantity} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          checked={parseInt(selectedQuantity) === quantity && !isOtherSelected}
-                          onChange={() => handleQuantitySelect(quantity)}
-                          className="h-4 w-4 text-blue-950 focus:ring-blue-950 border-gray-300 rounded"
-                        />
-                        <span className="text-gray-700 text-lg">{quantity}</span>
-                      </label>
-                    ))}
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={isOtherSelected}
-                        onChange={handleOtherCheckbox}
-                        className="h-4 w-4 text-blue-950 focus:ring-blue-950 border-gray-300 rounded"
-                      />
-                      <span className="text-gray-700 text-lg">Other</span>
-                    </label>
-                  </div>
+        <div className="mt-4 px-4 sm:px-0">
+  {productPrice !== null || productDetails.product_price ? (
+    <div className="space-y-6 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-2">
+        <div className="flex flex-col md:w-[500px]">
+          <span className="text-sm sm:text-md font-semibold mb-2">Select Quantity</span>
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-2">
+            {quantities.map((quantity) => (
+              <label key={quantity} className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={parseInt(selectedQuantity) === quantity && !isOtherSelected}
+                  onChange={() => handleQuantitySelect(quantity)}
+                  className="h-4 w-4 text-blue-950  focus:ring-blue-950 border-gray-300 rounded"
+                />
+                <span className="text-gray-700 text-sm md:text-lg">{quantity}</span>
+              </label>
+            ))}
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isOtherSelected}
+                onChange={handleOtherCheckbox}
+                className="h-4 w-4 text-blue-950 focus:ring-blue-950 border-gray-300 rounded"
+              />
+              <span className="text-gray-700 text-sm sm:text-base">Other</span>
+            </label>
+          </div>
 
-                  <div className="flex items-center">
-                    <div className="mt-2">
-                      <input
-                        type="number"
-                        value={isOtherSelected ? selectedQuantity : selectedQuantity || ''}
-                        onChange={(e) => {
-                          handleQuantityInputChange({ target: { value: e.target.value } });
-                          handleOtherQuantity(e.target.value);
-                        }}
-                        disabled={!isOtherSelected}
-                        placeholder="Select or enter quantity"
-                        className="px-4 py-2 border border-gray-300 rounded-lg text-lg w-48 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        min="0"
-                      />
-                    </div>
-
-                    <div className="flex items-center space-x-2 mt-2 ml-4 min-w-[200px]">
-                      <span className="text-gray-500 text-base md:text-lg">×</span>
-                      <span className="text-base md:text-lg font-semibold text-gray-800">
-                        ₹{productPrice || productDetails.product.price}
-                      </span>
-                      <span className="text-black text-base md:text-lg">per unit</span>
-                      <span className="text-gray-500 text-base md:text-lg">=</span>
-                      <span className="text-lg md:text-2xl font-bold text-gray-900">
-                        ₹{priceAfterCalculation}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="flex gap-4 mt-4">
+            <div className=" md::w-auto ">
+              <input
+                type="number"
+                value={isOtherSelected ? selectedQuantity : selectedQuantity || ''}
+                onChange={(e) => {
+                  handleQuantityInputChange({ target: { value: e.target.value } });
+                  handleOtherQuantity(e.target.value);
+                }}
+                disabled={!isOtherSelected}
+                placeholder="Select or enter quantity"
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm sm:text-base w-[100px] md:w-full md:text-lg sm:w-40 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                min="0"
+              />
             </div>
-          ) : null}
+
+            <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-2 w-full sm:min-w-[220px]">
+              <span className="text-gray-500 text-sm sm:text-base">×</span>
+              <span className="text-sm md:text-lg font-semibold text-gray-800">
+                ₹{productPrice || productDetails.product.price}
+              </span>
+              <span className="text-black text-sm md:text-lg">per unit</span>
+              <span className="text-gray-500 text-sm sm:text-base">=</span>
+              <span className="text-base sm:text-lg md:text-2xl font-bold text-gray-900 min-w-[60px] sm:min-w-[80px] text-right">
+                ₹{priceAfterCalculation}
+              </span>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  ) : null}
+</div>
 
         {/* <div className="space-y-6">
           <div className="space-y-6"> 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import RequestForm from "../../RequestForm";
 import { FaLongArrowAltRight } from "react-icons/fa";
+
 export default function PopularProducts() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ export default function PopularProducts() {
               <div
                 key={category.id}
                 className="flex flex-col items-center w-full transition-all duration-300 hover:shadow-lg rounded-lg p-4 cursor-pointer"
-                onClick={() => window.location.href = `/${category.cat_url}`}
+                onClick={() => window.location.href = `/category/${category.cat_url}`}
               >
                 <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
                   <Image
@@ -87,7 +88,7 @@ export default function PopularProducts() {
                   <div className="flex justify-center space-x-2">
                     <div className="flex justify-center items-center gap-2 flex-wrap">
                       <Link
-                        href={`/${category.cat_url}`}
+                        href={`/category/${category.cat_url}`}
                         onClick={(e) => e.stopPropagation()}
                         className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
                       >
@@ -129,21 +130,16 @@ export default function PopularProducts() {
               ))
           )}
         </div>
-        {/* <div className="flex justify-center md:my-6 my-2">
-          <Link href="/all-category" className="items-center">
-            <button className="flex items-center gap-2 md:px-6 p-2 md:py-1 md:text-lg text-xs text-black bg-[#ffd13e] rounded-full hover:bg-[#e6bc35] transition-all">
-              Show More
-              <FaLongArrowAltRight />
-            </button>
-          </Link>
-        </div> */}
       </div>
 
-      <RequestForm
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        initialCategory={selectedCategory}
-      />
+      {isModalOpen && (
+        <RequestForm
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          initialCategory={selectedCategory}
+          isModal={true}
+        />
+      )}
     </div>
   );
 }

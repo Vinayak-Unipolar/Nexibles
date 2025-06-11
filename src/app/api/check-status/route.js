@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-
+ 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const transactionId = searchParams.get('transactionId');
@@ -8,7 +8,7 @@ export async function GET(request) {
   const token = process.env.NEXT_PUBLIC_API_KEY;
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const MERCHANT_ID = process.env.PAYMENT_MERCHANT_ID;
-
+ 
   if (!transactionId) {
     return NextResponse.json(
       { error: 'Transaction ID is required' },

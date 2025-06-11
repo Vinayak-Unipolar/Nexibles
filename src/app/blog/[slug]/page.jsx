@@ -417,14 +417,14 @@ const APIURL = process.env.NEXT_PUBLIC_API_URL;
     return (
       <div>
         <Navbar />
-        <div className="p-10 text-red-600 text-xl">Page not found</div>
+        <div className="p-10 mt-20 text-red-600 text-xl">Page not found</div>
         <Footer />
       </div>
     );
   }
 
   return (
-    <div > 
+    <div  > 
       <Navbar />
       <div className="mx-auto mt-16 page-content font-poppins">
         <style>{pageCss}</style>

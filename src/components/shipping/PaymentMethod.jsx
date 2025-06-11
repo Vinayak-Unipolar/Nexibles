@@ -1,4 +1,4 @@
-// PaymentMethod.js
+
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 

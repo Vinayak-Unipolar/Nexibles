@@ -6,9 +6,11 @@ import ShippingPolicy from '@/components/static-pages/ShippingPolicy'
 const page = () => {
   return (
     <div>
-        <Navbar />
+      <Navbar />
+      <div className='min-h-screen' >
         <ShippingPolicy />
-        <Footer />
+      </div>
+      <Footer />
     </div>
   )
 }

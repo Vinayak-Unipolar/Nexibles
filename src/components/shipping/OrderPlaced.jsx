@@ -55,15 +55,18 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
             <div className="text-gray-900">
               <h4 className="font-bold text-lg mb-2">Delivery Address:</h4>
               {/* <br /> */}
-              <p className="font-bold">
+              {/* <p className="font-bold">
                 {user?.result?.firstName || user?.firstName}{" "}
                 {user?.result?.lastName || user?.lastName}
-              </p>
+              </p> */}
               {defaultAddress?.data && (
                 <div>
                   <>
                     {defaultAddress?.data?.title && (
                       <p>{defaultAddress?.data?.title}</p>
+                    )}
+                    {defaultAddress?.data?.street && (
+                      <p>{defaultAddress?.data?.street},</p>
                     )}
                     {defaultAddress?.data?.floor && (
                       <p>{defaultAddress?.data?.floor},</p>
@@ -94,13 +97,13 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
           </div>
           <hr />
           <div className="md:flex py-4">
-            <div className="h-auto w-72 border-2 border-gray-900 rounded-3xl p-4 flex flex-col justify-start items-start">
+            {/* <div className="h-auto w-72 border-2 border-gray-900 rounded-3xl p-4 flex flex-col justify-start items-start">
               <label className="text-gray-900 font-semibold mt-2">
                 {"Standard"}
               </label>
               <p className="text-gray-900">Estimated Delivery in 7 Days.</p>
-            </div>
-            <div className="md:ml-16 mt-2">
+            </div> */}
+            <div className="mt-2">
               <div className="text-gray-900">
                 <h4 className="font-bold">Order Date:</h4>
                 <p>{productDetails[0]?.orderDate ? formatDate(productDetails[0].orderDate) : currentDate}</p>
@@ -117,7 +120,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
               )}
             </div>
           </div>
-          <div className="text-gray-900 mb-4">
+          {/* <div className="text-gray-900 mb-4">
             <div>
               Your order is in process now. The Order details have been emailed
               at <br />
@@ -126,7 +129,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                 My Account
               </Link>
             </div>
-          </div>
+          </div> */}
           <hr />
         </div>
         <div className="md:w-1/2 w-full bg-gray-300 md:p-14 p-4">
@@ -139,30 +142,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                 <div className="flex justify-between items-center mb-2">
                   <p className="text-gray-900 text-sm font-bold">Sub Total</p>
                   <p className="text-gray-900 text-sm font-bold">
-                    RS. {calculateTotalPrice()}
-                  </p>
-                </div>
-                <hr />
-                <div className="flex justify-between items-center py-2">
-                  <p className="text-gray-900 text-sm font-bold">
-                    Shipping : Standard
-                  </p>
-                  {productDetails[0]?.orderCharge && parseFloat(productDetails[0].orderCharge) > 0 ? (
-                    <p className="text-gray-900 text-sm font-bold">
-                      + RS. {parseFloat(productDetails[0].orderCharge).toFixed(2)}
-                    </p>
-                  ) : (
-                    <p className="text-green-500 text-sm font-bold uppercase">
-                      Free
-                    </p>
-                  )}
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-gray-900 text-sm font-bold uppercase">
-                    GST (18%)
-                  </p>
-                  <p className="text-gray-900 text-sm font-bold uppercase">
-                     + RS. {productDetails[0]?.tax || "0.00"}
+                    RS. {productDetails[0]?.price * productDetails[0].quantity}
                   </p>
                 </div>
                 <hr />
@@ -174,6 +154,38 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     - RS. {productDetails[0]?.disamt || calculateDiscountAmount()}
                   </p>
                 </div>
+                <hr />
+                <div className="flex justify-between items-center mb-2 mt-2">
+                  <p className="text-gray-900 text-sm font-bold">GST (18%)</p>
+                  <p className="text-gray-900 text-sm font-bold">
+                    + RS. {productDetails[0]?.tax}
+                  </p>
+                </div>
+                <hr />
+                <div className="flex justify-between items-center py-2">
+                  <p className="text-gray-900 text-sm font-bold">
+                    Shipping
+                  </p>
+                  {productDetails[0]?.orderCharge && parseFloat(productDetails[0].orderCharge) > 0 ? (
+                    <p className="text-gray-900 text-sm font-bold">
+                      + RS. {parseFloat(productDetails[0].orderCharge).toFixed(2)}
+                    </p>
+                  ) : (
+                    <p className="text-green-500 text-sm font-bold uppercase">
+                      Free
+                    </p>
+                  )}
+                </div>
+                {/* <div className="flex justify-between items-center mb-2">
+                  <p className="text-gray-900 text-sm font-bold uppercase">
+                    GST (18%)
+                  </p>
+                  <p className="text-gray-900 text-sm font-bold uppercase">
+                    + RS. {productDetails[0]?.tax || "0.00"}
+                  </p>
+                </div> */}
+                <hr />
+
                 <hr />
                 <div className="flex justify-between items-center py-2">
                   <p className="text-gray-900 text-sm font-bold">Total Paid</p>
@@ -198,18 +210,20 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                   key={index}
                   className="flex flex-col md:flex-row bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                 >
-                  <div className="md:w-48 h-48 md:h-auto relative">
-                    <img
-                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
-                      alt={product.product_name}
-                      className="h-full w-full object-cover"
-                    />
-                    {product.discountPercentage !== "0.00" && (
-                      <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        -{product.discountPercentage}% OFF
-                      </div>
-                    )}
-                  </div>
+                  {product.image && (
+                    <div className="md:w-48 h-48 md:h-auto relative">
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
+                        alt={product.product_name}
+                        className="h-full w-full object-cover"
+                      />
+                      {product.discountPercentage !== "0.00" && (
+                        <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                          -{product.discountPercentage}% OFF
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="flex-1 p-6">
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -226,14 +240,14 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                         <span className="font-semibold text-gray-900">RS. {product.price}</span>
                       </div>
 
-                      {product.discountedPrice !== product.price && (
+                      {/* {product.product_name !== "Nexibles Sample Kit" && product.discountedPrice !== product.price && (
                         <div className="flex items-center space-x-2">
                           <span className="text-gray-600">Total:</span>
                           <span className="font-semibold text-green-600">
                             RS. {product.discountedPrice}
                           </span>
                         </div>
-                      )}
+                      )} */}
                     </div>
 
                     {/* Material information */}
@@ -247,16 +261,37 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                     )}
 
                     {/* SKU Count information */}
-                    {product.skuCount && (
-                      <div className="mb-3">
-                        <p className="text-gray-800">
-                          <span className="font-semibold">SKU Count:</span>{' '}
-                          {product.skuCount}
-                        </p>
-                      </div>
+                    {product.product_name !== "Nexibles Sample Kit" && product.skuCount && (
+                      <>
+                        <div className="mb-3">
+                          <p className="text-gray-800">
+                            <span className="font-semibold">SKU Count:</span>{' '}
+                            {product.skuCount}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-gray-600">Design Files:</span>
+                          <div className="font-semibold text-gray-900">
+                            {product.design_files && typeof product.design_files === 'string'
+                              ? JSON.parse(product.design_files).map((file, index) => (
+                                <span key={file.No || index}>
+                                  {file.FileName}
+                                  {index < JSON.parse(product.design_files).length - 1 && ', '}
+                                </span>
+                              ))
+                              : Array.isArray(product.design_files)
+                                ? product.design_files.map((file, index) => (
+                                  <span key={file.No || index}>
+                                    {file.FileName}
+                                    {index < product.design_files.length - 1 && ', '}
+                                  </span>
+                                ))
+                                : 'No files available'}
+                          </div>
+                        </div>
+                      </>
                     )}
 
-                    {/* Product Options */}
                     {product.product_config_id && (
                       <div className="mb-3">
                         <p className="text-gray-800">

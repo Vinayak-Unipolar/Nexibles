@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function CartItems({ cartItems }) {
   return (
     <div className="md:w-1/2 w-full md:mt-0 mt-12">
@@ -49,9 +51,21 @@ export default function CartItems({ cartItems }) {
                       </table>
                     </div>
                   ) : (
-                    <p>
-                    
-                    </p>
+                    <p className="text-sm text-gray-600"></p>
+                  )}
+                  {item.files && item.files.length > 0 ? (
+                    <div className="mt-4">
+                      <h4 className="text-gray-900 font-bold text-md mb-2">Uploaded Designs:</h4>
+                      <ul className="list-disc pl-5 text-sm text-gray-700">
+                        {item.files.map((file, index) => (
+                          <li key={index} className="mb-1">
+                            Design {index + 1}: {file.originalName}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <p className="mt-2 text-sm text-gray-600">No designs uploaded</p>
                   )}
                 </div>
               </div>
@@ -62,8 +76,6 @@ export default function CartItems({ cartItems }) {
     </div>
   );
 }
-
-
 
 
 

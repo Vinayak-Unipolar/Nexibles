@@ -346,7 +346,7 @@ export default function Shipping({ defaultAddress, addresses }) {
       }
 
       const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-      const orderDate = new Date().toISOString();
+     const orderDate = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
       const addressDetails = selectedAddress || {};
       const newSubTotal = calculateSubtotal();
       const totalAfterDiscount = newSubTotal - parseFloat(discountAmount);
@@ -388,19 +388,20 @@ export default function Shipping({ defaultAddress, addresses }) {
         origin: "Nexibles",
         orderDetails: await getOrderDetailsFromRedux(),
       };
-      const response = await fetch(`${APIURL}/api/createorder`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" },
-        body: JSON.stringify(requestBody),
-      });
-      const responseData = await response.json();
-      if (responseData.success === true) {
-        if (typeof window !== "undefined")
-          localStorage.setItem("orderNo", responseData.orderNo);
-        return true;
-      } else {
-        throw new Error(responseData.message || "Failed to create order");
-      }
+      console.log(requestBody);
+      // const response = await fetch(`${APIURL}/api/createorder`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json", "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" },
+      //   body: JSON.stringify(requestBody),
+      // });
+      // const responseData = await response.json();
+      // if (responseData.success === true) {
+      //   if (typeof window !== "undefined")
+      //     localStorage.setItem("orderNo", responseData.orderNo);
+      //   return true;
+      // } else {
+      //   throw new Error(responseData.message || "Failed to create order");
+      // }
     } catch (error) {
       console.error("Error in createOrder:", error);
       return false;

@@ -293,36 +293,46 @@ export default function Shipping({ defaultAddress, addresses }) {
   };
 
   const getOrderDetailsFromRedux = async () => {
-    const correctedItems = await validateAndCorrectWeights(cartItems);
+  const correctedItems = await validateAndCorrectWeights(cartItems);
 
-    return correctedItems.map((product) => {
-      const selectedOptions = product.selectedOptions || {};
-      const flattenedOptions = Object.keys(selectedOptions).reduce((acc, optionKey) => {
-        const option = selectedOptions[optionKey];
-        return { ...acc, [`${optionKey}OptionName`]: option.optionName, [`${optionKey}Price`]: option.price };
-      }, {});
+  return correctedItems.map((product) => {
+    const selectedOptions = product.selectedOptions || {};
+    const flattenedOptions = Object.keys(selectedOptions).reduce((acc, optionKey) => {
+      const option = selectedOptions[optionKey];
+      return { ...acc, [`${optionKey}OptionName`]: option.optionName, [`${optionKey}Price`]: option.price };
+    }, {});
 
-      const optionKeys = Object.keys(selectedOptions);
-      const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
-      const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
+    const optionKeys = Object.keys(selectedOptions);
+    const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
+    const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
 
-      return {
-        id: product.id,
-        name: product.name,
-        price: parseFloat(product.price || 0).toFixed(2),
-        quantity: product.quantity || product.totalQuantity || 1,
-        payment_status: "pending",
-        discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
-        discountPercentage: parseFloat(product.discountPercentage || 0).toFixed(2),
-        discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
-        product_option_id: productOptionId,
-        product_config_id: productConfigId,
-        origin: "Nexibles",
-        skuCount: product.skuCount,
-        material: product.material || "",
-      };
-    });
-  };
+    // Create an array of design file details
+    const designFilesArray = (product.files || []).map((file, index) => ({
+      FileName: file.originalName,
+      No: index + 1, // Track the design number (e.g., Design 1)
+    }));
+
+    // Convert the design files array to a JSON string
+    const designFiles = JSON.stringify(designFilesArray);
+
+    return {
+      id: product.id,
+      name: product.name,
+      price: parseFloat(product.price || 0).toFixed(2),
+      quantity: product.quantity || product.totalQuantity || 1,
+      payment_status: "pending",
+      discountAmount: parseFloat(product.discountAmount || 0).toFixed(2),
+      discountPercentage: parseFloat(product.discountPercentage || 0).toFixed(2),
+      discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
+      product_option_id: productOptionId,
+      product_config_id: productConfigId,
+      origin: "Nexibles Website",
+      skuCount: product.skuCount,
+      material: product.material || "",
+      designFiles, 
+    };
+  });
+};
 
   const createOrder = async () => {
     if (isProcessingOrder) return false;

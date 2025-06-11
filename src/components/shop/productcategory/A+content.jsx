@@ -90,7 +90,7 @@ const ImageDescriptionSection = ({ a_plus_content }) => {
       </style>
       <div className="bg-gray-50 rounded-xl p-8 mx-auto shadow-sm transition-all duration-300 max-w-7xl">
         {/* Section Heading */}
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Product Description</h2>
+        {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">Product Description</h2> */}
 
         {/* Image Description Content */}
         <div className="space-y-8">

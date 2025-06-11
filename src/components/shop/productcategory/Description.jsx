@@ -1,8 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Loader from '@/components/comman/Loader';
 
-const DescriptionSection = ({ long_desc, description = '', certifications = [] }) => {
+// Animation variants for FAQs
+const faqVariants = {
+  collapsed: {
+    opacity: 0,
+    height: 0,
+    transition: { duration: 0.3 }
+  },
+  expanded: {
+    opacity: 1,
+    height: "auto",
+    transition: { duration: 0.3 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4 }
+  }
+};
+
+const DescriptionSection = ({ long_desc, description = '', productDetails = {}, certifications = [] }) => {
   const [activeTab, setActiveTab] = useState('description');
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [faqs, setFaqs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const token = process.env.NEXT_PUBLIC_API_KEY;
+  const APIURL = 'https://webapi.nexibles.com/api/faq';
+  const productId = productDetails?.product?.id;
 
   const tabs = [
     { id: 'description', label: 'Product Description' },
@@ -12,66 +44,54 @@ const DescriptionSection = ({ long_desc, description = '', certifications = [] }
     // { id: 'downloads', label: 'Downloads' },
   ];
 
-  // Parse HTML description into a structured array of label-value pairs
-  const parseSpecifications = (desc) => {
-    if (!desc || !desc.trim()) {
-      return ['No specifications available'];
-    }
-
-    try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(desc, 'text/html');
-      const paragraphs = Array.from(doc.body.getElementsByTagName('p'));
-      const specs = [];
-      let currentLabel = null;
-      let currentValues = [];
-
-      paragraphs.forEach((p, index) => {
-        const strong = p.querySelector('strong');
-        let textContent = p.textContent.trim();
-
-        if (strong) {
-          // Save the previous label-value pair if it exists
-          if (currentLabel && currentValues.length > 0) {
-            specs.push({ label: currentLabel, value: currentValues.join(', ') });
-            currentValues = [];
-          }
-
-          // Extract label and value from the same <p> if present
-          const labelText = strong.textContent.trim().replace(/:$/, ''); // Remove trailing colon
-          const valueText = p.textContent.replace(strong.textContent, '').trim();
-
-          currentLabel = labelText;
-          if (valueText) {
-            // If there's a value in the same <p>, add it
-            currentValues.push(valueText);
-          }
-        } else if (currentLabel) {
-          // Add value to the current label if no <strong> is present
-          currentValues.push(textContent);
-        }
-      });
-
-      // Save the last label-value pair
-      if (currentLabel && currentValues.length > 0) {
-        specs.push({ label: currentLabel, value: currentValues.join(', ') });
+  // Fetch FAQs from API
+  useEffect(() => {
+    const fetchFaqs = async () => {
+      if (!productId) {
+        setIsLoading(false);
+        setError('No product ID provided');
+        return;
       }
 
-      return specs.length > 0 ? specs : ['No specifications available'];
-    } catch (error) {
-      console.error('Error parsing specifications:', error);
-      return ['Error parsing specifications'];
-    }
-  };
+      try {
+        const response = await fetch(APIURL, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'API-Key': token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch FAQs');
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          const filteredFaqs = data.data.filter(faq => faq.productid === productId);
+          setFaqs(filteredFaqs);
+        } else {
+          setError('API returned an error');
+        }
+      } catch (error) {
+        setError(error.message || 'Error fetching FAQs');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFaqs();
+  }, [token, productId]);
 
   const tabContent = {
     description: {
-      type: 'paragraph',
-      content: long_desc && long_desc.trim() ? long_desc : 'Success but no data',
+      type: 'html', // Changed to 'html' to render raw HTML
+      content: long_desc && long_desc.trim() ? long_desc : 'No description available',
     },
     specifications: {
-      type: 'list',
-      content: parseSpecifications(description),
+      type: 'html', // Changed to 'html' to render raw HTML
+      content: description && description.trim() ? description : 'No specifications available',
     },
     applications: {
       type: 'list',
@@ -85,24 +105,7 @@ const DescriptionSection = ({ long_desc, description = '', certifications = [] }
     },
     faqs: {
       type: 'faq',
-      content: [
-        {
-          question: 'Are these pouches recyclable?',
-          answer: 'Yes, we offer recyclable options. Please check the product specifications or contact our team for details.',
-        },
-        {
-          question: 'Can I customize the shape of the pouch?',
-          answer: 'Absolutely! We provide custom shapes, including stand-up pouches, flat-bottom bags, and more.',
-        },
-        {
-          question: 'What is the minimum order quantity?',
-          answer: 'The minimum order quantity is 500 units, but this may vary based on customization.',
-        },
-        {
-          question: 'How long does production take?',
-          answer: 'Production typically takes 15-20 business days after design approval.',
-        },
-      ],
+      content: faqs,
     },
     downloads: {
       type: 'message',
@@ -120,14 +123,19 @@ const DescriptionSection = ({ long_desc, description = '', certifications = [] }
     }
 
     switch (tabData.type) {
-      case 'paragraph':
-        return <p className="text-gray-600 leading-6 sm:leading-7 text-sm sm:text-base">{tabData.content}</p>;
+      case 'html':
+        return (
+          <div
+            className="text-gray-600 leading-6 sm:leading-7 text-sm sm:text-base"
+            dangerouslySetInnerHTML={{ __html: tabData.content }}
+          />
+        );
       case 'list':
         return (
           <ul className="space-y-2 sm:space-y-3">
             {tabData.content.map((item, index) => (
               <li key={index} className="flex items-start">
-                <span className="w-2 h-2 bg-[#ffd13e] rounded-full mt-1.5 sm:mt-2 mr-2 sm:mr-3 flex-shrink-0"></span>
+                {/* Removed the yellow dot span */}
                 <span className="text-gray-600 text-sm sm:text-base">
                   {typeof item === 'string' ? item : (
                     <span>
@@ -141,54 +149,65 @@ const DescriptionSection = ({ long_desc, description = '', certifications = [] }
         );
       case 'faq':
         return (
-          <div className="space-y-3 sm:space-y-4">
-            {tabData.content.map((faq, index) => (
-              <div
-                key={index}
-                className="border border-gray-200 rounded-lg shadow-sm transition-all duration-300"
-              >
-                <button
-                  onClick={() => toggleFaq(index)}
-                  className="w-full flex justify-between items-center px-3 sm:px-4 py-2 sm:py-3 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none transition-colors duration-200 text-sm sm:text-base"
-                  aria-expanded={openFaqIndex === index}
-                  aria-controls={`faq-answer-${index}`}
+          <motion.div
+            className="space-y-3 sm:space-y-4"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 }
+              }
+            }}
+          >
+            {isLoading ? (
+              <Loader />
+            ) : error ? (
+              <p className="text-red-500 text-sm sm:text-base">{error}</p>
+            ) : faqs.length > 0 ? (
+              tabData.content.map((faq, index) => (
+                <motion.div
+                  key={faq.id}
+                  className="border border-gray-200 rounded-lg shadow-sm"
+                  variants={itemVariants}
                 >
-                  <span>{faq.question}</span>
-                  <span className="text-gray-500">
-                    {openFaqIndex === index ? (
-                      <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5 transform rotate-180 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    ) : (
-                      <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    )}
-                  </span>
-                </button>
-                {openFaqIndex === index && (
-                  <div
-                    id={`faq-answer-${index}`}
-                    className="px-3 sm:px-4 pb-2 sm:pb-3 text-gray-600 text-sm sm:text-base transition-all duration-300"
+                  <motion.div
+                    className="flex justify-between items-center cursor-pointer px-3 sm:px-4 py-2 sm:py-3"
+                    onClick={() => toggleFaq(index)}
+                    whileHover={{ x: 5 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+                    <p className="text-sm sm:text-base text-gray-700 font-semibold">
+                      Q. {faq.question}
+                    </p>
+                    <motion.span
+                      className="text-xl sm:text-2xl text-gray-500"
+                      animate={{ rotate: openFaqIndex === index ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {openFaqIndex === index ? '−' : '+'}
+                    </motion.span>
+                  </motion.div>
+                  <AnimatePresence>
+                    {openFaqIndex === index && (
+                      <motion.p
+                        className="px-3 sm:px-4 pb-2 sm:pb-3 text-gray-600 text-sm sm:text-base"
+                        variants={faqVariants}
+                        initial="collapsed"
+                        animate="expanded"
+                        exit="collapsed"
+                      >
+                        A. {faq.answer}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))
+            ) : (
+              <p className="text-gray-600 text-sm sm:text-base">No FAQs available for this product</p>
+            )}
+          </motion.div>
         );
       case 'message':
         return <p className="text-gray-500 italic text-center text-sm sm:text-base">{tabData.content}</p>;
@@ -198,7 +217,7 @@ const DescriptionSection = ({ long_desc, description = '', certifications = [] }
   };
 
   return (
-    <div className="bg-gray-50 rounded-xl p-4 sm:p-6 md:p-8 max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-6xl mx-auto shadow-sm transition-all duration-300">
+    <div className="bg-gray-50 rounded-xl p-4 sm:p-6 md:p-8 max-w-full sm:max-w-3xl md:max-w-4xl lg:max-w-7xl shadow-sm transition-all duration-300">
       {/* Tab Navigation */}
       <div
         className="flex flex-wrap border-b border-gray-200 mb-4 sm:mb-6 md:mb-8 gap-1 sm:gap-2"

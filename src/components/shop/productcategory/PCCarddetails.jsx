@@ -286,9 +286,9 @@ export default function PCCardDetails({ productDetails }) {
           </div>
         </div>
 
-        <div className="mt-16 md:mt-24">
+        {/* <div className="mt-16 md:mt-24">
           <Overview productDetails={productDetails} productImages={productImages} />
-        </div>
+        </div> */}
 
         <hr className="my-12 border-gray-200" />
         <div className="my-12">

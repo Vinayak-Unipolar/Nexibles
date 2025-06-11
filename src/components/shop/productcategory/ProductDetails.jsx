@@ -185,7 +185,7 @@ const ProductDetails = ({
           </span>
         </div> */}
         
-        <div className="flex flex-row items-center gap-40 md:mt-4">
+        <div className="flex flex-row items-center gap-14 md:gap-40 md:mt-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-yellow-200 flex items-center justify-center">
               <Box className="w-6 h-6 text-yellow-400" />

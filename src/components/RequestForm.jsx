@@ -456,7 +456,8 @@ function RequestForm({
 
     try {
       const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-      const orderDate = new Date().toISOString();
+      const date = new Date();
+      const orderDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
       const finalTotal = total ? total.total.toFixed(2) : "413.00";
       const requestBody = {
         orderNo,

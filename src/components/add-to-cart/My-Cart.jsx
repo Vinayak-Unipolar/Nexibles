@@ -389,15 +389,55 @@ export default function MyCart() {
   const [isProcessingOrder, setIsProcessingOrder] = useState(false);
   const GST_RATE = 0.18;
 
-  const handleFileUpload = (index, skuIndex, event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const updatedFiles = [...(cartItems[index].files || [])];
-      updatedFiles[skuIndex] = file;
-      dispatch(updateItemFiles({ index, files: updatedFiles }));
-      toast.success(`File uploaded for SKU ${skuIndex + 1}`);
+  const handleFileUpload = async (index, skuIndex, event) => {
+  const file = event.target.files[0];
+  if (file) {
+    // Check if file is PDF
+    if (file.type !== 'application/pdf') {
+      toast.error("Only PDF files are allowed");
+      event.target.value = ''; // Clear the input
+      return;
     }
-  };
+    // Prepare form data for the API request
+    const formData = new FormData();
+    formData.append("File", file);
+
+    try {
+      // Make the API call
+      const response = await fetch(`${APIURL}/api/product/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.status === 1) {
+        // Extract the original name from the API response
+        const originalName = result.data.originalname;
+
+        // Update the files in your state with only serializable data
+        const updatedFiles = [...(cartItems[index].files || [])];
+        
+        // Store only serializable data (no file object)
+        updatedFiles[skuIndex] = { 
+          originalName: originalName,
+          fileName: file.name, // Client-side file name for display
+          uploadedAt: new Date().toISOString(), // Timestamp for reference
+          // Don't store the file object as it's not serializable
+        };
+        
+        dispatch(updateItemFiles({ index, files: updatedFiles }));
+
+        toast.success(`File uploaded for Design ${skuIndex + 1}`);
+      } else {
+        toast.error("File upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Error uploading file");
+    }
+  }
+};
 
   const applyCouponToItems = useCallback(
     (coupon) => {
@@ -561,7 +601,6 @@ export default function MyCart() {
     if (isProcessingOrder || cartItems.length === 0) {
       return;
     }
-    // Optional: Validate that all required files are uploaded
     for (const item of cartItems) {
       if (item.skuCount > 0 && (!item.files || item.files.length < item.skuCount)) {
         toast.error(`Please upload ${item.skuCount} file(s) for ${item.name}`);
@@ -678,7 +717,7 @@ export default function MyCart() {
                         <li className="mt-1 text-sm list-none">SKU: {item.skuCount}</li>
                         <li className="mt-1 font-semibold list-none">Quantity: {item.quantity}</li>
                         <div className="flex justify-end">
-                          <li className="mt-1 font-semibold list-none">
+                          <li className="font-semibold list-none">
                             Total: ₹{typeof item.totalPrice === "number" ? item.totalPrice.toFixed(0) : item.totalPrice}
                           </li>
                         </div>
@@ -687,11 +726,11 @@ export default function MyCart() {
                     {/* File Upload Section */}
                     {item.skuCount > 0 && (
                       <div className="mt-4">
-                        <p className="text-sm font-semibold">Upload Files for SKUs:</p>
+                        <p className="text-sm font-semibold">Upload Files for Designs:</p>
                         <div className="flex flex-col space-y-2 mt-2">
                           {Array.from({ length: item.skuCount }).map((_, skuIndex) => (
                             <div key={skuIndex} className="flex items-center space-x-2">
-                              <label className="text-sm">SKU {skuIndex + 1}:</label>
+                              <label className="text-sm">Design {skuIndex + 1}:</label>
                               <input
                                 type="file"
                                 accept=".pdf,.jpg,.jpeg,.png"
@@ -699,8 +738,12 @@ export default function MyCart() {
                                 className="text-sm"
                               />
                               {item.files && item.files[skuIndex] && (
-                                <span className="text-green-600 text-sm">
-                                  {item.files[skuIndex].name}
+                                <span className={`text-sm ${item.files[skuIndex].hasError ? 'text-red-500' : 'text-green-600'}`}>
+                                  {item.files[skuIndex].hasError ? (
+                                    <span>❌ {item.files[skuIndex].error}</span>
+                                  ) : (
+                                    <span>✅ {item.files[skuIndex].originalName || item.files[skuIndex].fileName}</span>
+                                  )}
                                 </span>
                               )}
                             </div>

@@ -201,7 +201,7 @@ const ProductDetails = ({
             </div>
             <div>
               <div className="text-sm text-gray-500">Lead Time</div>
-              <div className="font-semibold text-gray-900">7-10 business days</div>
+              <div className="font-semibold text-gray-900">21 business days</div>
             </div>
           </div>
         </div>

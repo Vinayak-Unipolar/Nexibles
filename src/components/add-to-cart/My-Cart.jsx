@@ -431,7 +431,7 @@
 
 //         // Update the files in your state with only serializable data
 //         const finalUpdatedFiles = [...(cartItems[index].files || [])];
-        
+
 //         // Store only serializable data (no file object)
 //         finalUpdatedFiles[skuIndex] = { 
 //           originalName: originalName,
@@ -439,7 +439,7 @@
 //           uploadedAt: new Date().toISOString(), // Timestamp for reference
 //           hasError: false
 //         };
-        
+
 //         dispatch(updateItemFiles({ index, files: finalUpdatedFiles }));
 //       } else {
 //         // Store upload failure error
@@ -911,7 +911,7 @@ export default function MyCart() {
     // Check if file is PDF
     if (file.type !== 'application/pdf') {
       const updatedFiles = [...(cartItems[index].files || [])];
-      updatedFiles[skuIndex] = { 
+      updatedFiles[skuIndex] = {
         error: "Only PDF files are allowed",
         hasError: true
       };
@@ -948,21 +948,21 @@ export default function MyCart() {
 
         // Update the files in your state with only serializable data
         const finalUpdatedFiles = [...(cartItems[index].files || [])];
-        
+
         // Store only serializable data (no file object)
-        finalUpdatedFiles[skuIndex] = { 
+        finalUpdatedFiles[skuIndex] = {
           originalName: originalName,
           fileName: file.name, // Client-side file name for display
           uploadedAt: new Date().toISOString(), // Timestamp for reference
           hasError: false,
           fileSize: file.size
         };
-        
+
         dispatch(updateItemFiles({ index, files: finalUpdatedFiles }));
       } else {
         // Store upload failure error
         const errorUpdatedFiles = [...(cartItems[index].files || [])];
-        errorUpdatedFiles[skuIndex] = { 
+        errorUpdatedFiles[skuIndex] = {
           error: "File upload failed",
           hasError: true
         };
@@ -972,7 +972,7 @@ export default function MyCart() {
       console.error("Error uploading file:", error);
       // Store network error
       const errorUpdatedFiles = [...(cartItems[index].files || [])];
-      errorUpdatedFiles[skuIndex] = { 
+      errorUpdatedFiles[skuIndex] = {
         error: "Error uploading file",
         hasError: true
       };
@@ -985,7 +985,7 @@ export default function MyCart() {
   const handleDrop = (e, index, skuIndex) => {
     e.preventDefault();
     setDragState(index, skuIndex, false);
-    
+
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
       handleFileUpload(index, skuIndex, files[0]);
@@ -1307,7 +1307,7 @@ export default function MyCart() {
                         </div>
                       </>
                     )}
-                    
+
                     {/* Enhanced File Upload Section */}
                     {item.skuCount > 0 && (
                       <div className="mt-2 p-1">
@@ -1318,13 +1318,13 @@ export default function MyCart() {
                         <p className="text-sm text-gray-600 mb-4">
                           Please upload {item.skuCount} PDF file{item.skuCount > 1 ? 's' : ''} for your designs
                         </p> */}
-                        
+
                         <div className="grid gap-2">
                           {Array.from({ length: item.skuCount }).map((_, skuIndex) => {
                             const fileData = item.files && item.files[skuIndex];
                             const isUploading = uploadingStates[`${index}-${skuIndex}`];
                             const isDragging = dragStates[`${index}-${skuIndex}`];
-                            
+
                             return (
                               <div key={skuIndex} className="relative">
                                 <div className="flex items-center justify-between mb-2">
@@ -1340,16 +1340,15 @@ export default function MyCart() {
                                     </button>
                                   )}
                                 </div>
-                                
+
                                 {!fileData || fileData.hasError ? (
                                   <div
-                                    className={`relative border-2 border-dashed rounded-lg p-1 text-center transition-all duration-200 cursor-pointer ${
-                                      isDragging 
-                                        ? 'border-blue-500 bg-blue-50 scale-105' 
-                                        : fileData?.hasError 
-                                          ? 'border-red-300 bg-red-50 hover:border-red-400' 
+                                    className={`relative border-2 border-dashed rounded-lg p-3 text-center transition-all duration-200 cursor-pointer ${isDragging
+                                        ? 'border-blue-500 bg-blue-50 scale-105'
+                                        : fileData?.hasError
+                                          ? 'border-red-300 bg-red-50 hover:border-red-400'
                                           : 'border-gray-300 bg-white hover:border-blue-400 hover:bg-blue-50'
-                                    }`}
+                                      }`}
                                     onDrop={(e) => handleDrop(e, index, skuIndex)}
                                     onDragOver={handleDragOver}
                                     onDragEnter={(e) => handleDragEnter(e, index, skuIndex)}
@@ -1367,32 +1366,29 @@ export default function MyCart() {
                                       }}
                                       className="hidden"
                                     />
-                                    
+
                                     {isUploading ? (
-                                      <div className="flex flex-col items-center">
-                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
+                                      <div className="flex items-center">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-2"></div>
                                         <p className="text-sm text-blue-600 font-medium">Uploading...</p>
                                       </div>
                                     ) : (
-                                      <div className="flex flex-col items-center">
-                                        <FiUpload 
-                                          className={`mb-2 ${
-                                            fileData?.hasError ? 'text-red-400' : isDragging ? 'text-blue-500' : 'text-gray-400'
-                                          }`} 
-                                          size={32} 
+                                      <div className="flex items-center justify-center">
+                                        <FiUpload
+                                          className={`mr-2 ${fileData?.hasError ? 'text-red-400' : isDragging ? 'text-blue-500' : 'text-gray-400'
+                                            }`}
+                                          size={24}
                                         />
-                                        <p className={`text-sm font-medium mb-1 ${
-                                          fileData?.hasError ? 'text-red-600' : 'text-gray-700'
-                                        }`}>
-                                          {isDragging ? 'Drop your PDF here' : 'Drag & drop your PDF here'}
+                                        <p className={`text-sm font-medium ${fileData?.hasError ? 'text-red-600' : 'text-gray-700'
+                                          }`}>
+                                          {isDragging ? 'Drop your PDF here' : 'Drag & drop your PDF here or click to browse'}
                                         </p>
-                                        <p className="text-xs text-gray-500">or click to browse</p>
-                                        {fileData?.hasError && (
-                                          <div className="mt-2 flex items-center text-red-600">
-                                            <MdError className="mr-1" size={16} />
-                                            <span className="text-xs">{fileData.error}</span>
-                                          </div>
-                                        )}
+                                      </div>
+                                    )}
+                                    {fileData?.hasError && (
+                                      <div className="mt-2 flex items-center justify-center text-red-600">
+                                        <MdError className="mr-1" size={16} />
+                                        <span className="text-xs">{fileData.error}</span>
                                       </div>
                                     )}
                                   </div>
@@ -1422,7 +1418,7 @@ export default function MyCart() {
                             );
                           })}
                         </div>
-                        
+
                         {/* <div className="mt-4 p-3 bg-blue-100 rounded-lg">
                           <p className="text-xs text-blue-800">
                             💡 <strong>Tip:</strong> Make sure your PDF files are high quality for the best printing results. 

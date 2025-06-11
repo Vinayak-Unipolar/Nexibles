@@ -175,7 +175,7 @@ const ProductDetails = ({
         />
         <div className="flex items-center mt-4">
           <span className="text-black font-semibold text-md mr-2">Material:</span>
-          <span className="text-gray-800">{material}</span>
+          <span className="text-gray-800 text-sm">{material}</span>
         </div>
         {/* <div>
           <span className="text-black text-lg font-semibold">
@@ -185,7 +185,7 @@ const ProductDetails = ({
           </span>
         </div> */}
         
-        <div className="flex flex-row items-center gap-40 md:mt-4">
+        <div className="flex flex-row items-center gap-14 md:gap-40 md:mt-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-yellow-200 flex items-center justify-center">
               <Box className="w-6 h-6 text-yellow-400" />

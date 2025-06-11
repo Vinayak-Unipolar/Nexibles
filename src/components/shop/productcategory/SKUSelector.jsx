@@ -134,7 +134,7 @@ export default function SKUSelector({
                                 whileHover="hover"
                                 whileTap="tap"
                             >
-                                Continue
+                                Continue to Upload Design
                             </motion.button>
                             {/* <motion.button
                                 onClick={handleBuyNow}

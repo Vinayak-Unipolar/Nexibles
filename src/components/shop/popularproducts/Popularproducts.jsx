@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import RequestForm from "../../RequestForm";
 import { FaLongArrowAltRight } from "react-icons/fa";
+
 export default function PopularProducts() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -129,21 +130,16 @@ export default function PopularProducts() {
               ))
           )}
         </div>
-        {/* <div className="flex justify-center md:my-6 my-2">
-          <Link href="/all-category" className="items-center">
-            <button className="flex items-center gap-2 md:px-6 p-2 md:py-1 md:text-lg text-xs text-black bg-[#ffd13e] rounded-full hover:bg-[#e6bc35] transition-all">
-              Show More
-              <FaLongArrowAltRight />
-            </button>
-          </Link>
-        </div> */}
       </div>
 
-      <RequestForm
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        initialCategory={selectedCategory}
-      />
+      {isModalOpen && (
+        <RequestForm
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          initialCategory={selectedCategory}
+          isModal={true}
+        />
+      )}
     </div>
   );
 }

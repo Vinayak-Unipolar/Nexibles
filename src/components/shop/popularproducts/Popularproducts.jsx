@@ -65,7 +65,7 @@ export default function PopularProducts() {
               <div
                 key={category.id}
                 className="flex flex-col items-center w-full transition-all duration-300 hover:shadow-lg rounded-lg p-4 cursor-pointer"
-                onClick={() => window.location.href = `/${category.cat_url}`}
+                onClick={() => window.location.href = `/category/${category.cat_url}`}
               >
                 <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
                   <Image
@@ -87,7 +87,7 @@ export default function PopularProducts() {
                   <div className="flex justify-center space-x-2">
                     <div className="flex justify-center items-center gap-2 flex-wrap">
                       <Link
-                        href={`/${category.cat_url}`}
+                        href={`/category/${category.cat_url}`}
                         onClick={(e) => e.stopPropagation()}
                         className="px-4 py-1.5 text-xs font-medium rounded hover:bg-gray-100 text-black transition duration-300 whitespace-nowrap"
                       >

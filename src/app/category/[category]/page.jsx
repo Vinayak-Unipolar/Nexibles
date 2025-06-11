@@ -202,7 +202,7 @@ const ProductCategory = ({ params: { category } }) => {
 
             {/* Image Section */}
             <motion.div
-              className="relative w-full max-w-2xl h-[calc(100vh-4rem)] md:h-[calc(100vh-6rem)] flex items-center justify-center"
+              className="relative w-full max-w-2xl  h-[50vh] sm:h-[60vh]  md:h-[calc(100vh-6rem)] flex items-center justify-center"
               variants={containerAnimation}
               initial="initial"
               animate="animate"
@@ -213,28 +213,28 @@ const ProductCategory = ({ params: { category } }) => {
               <div className="relative w-full h-full">
                 {/* Background Image */}
                 <motion.div
-                  className="absolute inset-0 p-4 sm:p-6"
+                  className="absolute inset-0 p-2 sm:p-4 md:p-6"
                   aria-hidden="true"
                   animate={triangleAnimation}
                 >
                   <Image
                     alt={content.hero.images.background.alt}
-                    className="rounded-lg p-10 w-full h-full object-fit"
+                    className="rounded-lg w-full h-full object-contain"
                     src={Triangle}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 50vw"
                     loading="lazy"
                     quality={75}
                   />
                 </motion.div>
                 {/* Main Image */}
-                <div className="relative mt-10 z-10 w-full h-full flex items-center justify-center p-4 sm:p-6">
+                <div className="relative z-10 w-full h-full flex items-center justify-center p-2 sm:p-4 md:p-6">
                   <Image
                     alt={content.hero.images.main.alt}
-                    className="rounded-lg w-full h-full p-10 object-contain"
+                    className="rounded-lg w-full h-full object-contain"
                     src={content.hero.images.main.src}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 50vw"
                     loading="lazy"
                     quality={75}
                   />

@@ -373,7 +373,7 @@ function Login() {
                 Register First, Then Build & Price Your Own Pouch
               </p>
               <p className="text-sm text-center font-semibold text-black md:text-xl">
-                It's free, takes just 60 seconds, and provides instant pricing for all sizes.
+                {`It's free, takes just 60 seconds, and provides instant pricing for all sizes.`}
               </p>
             </>
           )}

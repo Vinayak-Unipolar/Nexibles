@@ -171,7 +171,7 @@ function VerifyEmail() {
             <p className="mb-4 text-sm text-red-600 md:text-base">{error}</p>
             {(error.includes("already verified") || error.includes("invalid or has already been used")) && (
               <p className="mb-4 text-sm text-gray-600 md:text-base">
-                Please return to the login page and click "Resend Verification Email" to receive a new link.
+                {`Please return to the login page and click "Resend Verification Email" to receive a new link.`}
               </p>
             )}
             <Link href="/login" prefetch={false}>

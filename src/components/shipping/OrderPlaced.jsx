@@ -42,7 +42,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
 
   return (
     <div>
-      <div className="md:flex md:mt-20">
+      <div className="md:flex md:mt-20 mt-16">
         <div className="md:w-1/2 w-full bg-white px-6 border-t">
           <div className="py-3">
             <h2 className="text-gray-900 md:text-3xl text-xl font-bold flex justify-start items-center">
@@ -54,45 +54,35 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
           <div className="flex justify-between py-4">
             <div className="text-gray-900">
               <h4 className="font-bold text-lg mb-2">Delivery Address:</h4>
-              {/* <br /> */}
-              {/* <p className="font-bold">
-                {user?.result?.firstName || user?.firstName}{" "}
-                {user?.result?.lastName || user?.lastName}
-              </p> */}
-              {defaultAddress?.data && (
-                <div>
-                  <>
-                    {defaultAddress?.data?.title && (
-                      <p>{defaultAddress?.data?.title}</p>
-                    )}
-                    {defaultAddress?.data?.street && (
-                      <p>{defaultAddress?.data?.street},</p>
-                    )}
-                    {defaultAddress?.data?.floor && (
-                      <p>{defaultAddress?.data?.floor},</p>
-                    )}
-                    {defaultAddress?.data?.address && (
-                      <p>{defaultAddress?.data?.address}</p>
-                    )}
+              {[
+                productDetails?.[0]?.company,
+                productDetails?.[0]?.street,
+                productDetails?.[0]?.address,
+                productDetails?.[0]?.city,
+                productDetails?.[0]?.state,
+                productDetails?.[0]?.zipcode,
+                productDetails?.[0]?.country,
+              ]
+                .filter(part => part !== undefined && part !== null && part !== '')
+                .join(', ')}
+            </div>
+          </div>
+          <hr />
+          <div className="md:flex py-4">
+            {/* <div className="h-auto w-72 border-2 border-gray-900 rounded-3xl p-4 flex flex-col justify-start items-start">
+              <label className="text-gray-900 font-semibold mt-2">
+                {"Standard"}
+              </label>
+              <p className="text-gray-900">Estimated Delivery in 7 Days.</p>
+            </div> */}
+            <div className="mt-2">
+              <div className="text-gray-900">
+                <h4 className="font-bold">Customer Details : </h4>
+                <p>{productDetails[0]?.firstName}  {productDetails[0]?.lastName}</p>
+                <p>{productDetails[0]?.mobile}</p>
+                <p>{productDetails[0]?.eMail}</p>
+              </div>
 
-                    {defaultAddress?.data?.address2 && (
-                      <p>{defaultAddress?.data?.address2},</p>
-                    )}
-                    <p>
-                      {[
-                        defaultAddress?.data?.city,
-                        defaultAddress?.data?.state,
-                        defaultAddress?.data?.zip,
-                      ]
-                        .filter(Boolean)
-                        .join(", ")}
-                    </p>
-                    {defaultAddress?.data?.country && (
-                      <p>{defaultAddress?.data?.country}</p>
-                    )}
-                  </>
-                </div>
-              )}
             </div>
           </div>
           <hr />
@@ -111,6 +101,10 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
               <div className="text-gray-900">
                 <h4 className="font-bold">Order #:</h4>
                 <p>{productDetails[0]?.orderNo || orderNo}</p>
+              </div>
+              <div className="text-gray-900">
+                <h4 className="font-bold">Transaction ID :</h4>
+                <p>{productDetails[0]?.transaction_id}</p>
               </div>
               {productDetails[0]?.coupon && (
                 <div className="text-gray-900">
@@ -215,7 +209,7 @@ const OrderPlaced = ({ productDetails, defaultAddress, transactionId }) => {
                       <img
                         src={`${process.env.NEXT_PUBLIC_CDN_URL}/product/${product.image}`}
                         alt={product.product_name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-contain"
                       />
                       {product.discountPercentage !== "0.00" && (
                         <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">

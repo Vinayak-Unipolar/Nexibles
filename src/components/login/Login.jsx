@@ -99,74 +99,74 @@ function Login() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const captchaToken = await executeCaptcha();
-    if (!captchaToken) {
+  const captchaToken = await executeCaptcha();
+  if (!captchaToken) {
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const baseUrl = window.location.origin;
+    const response = await fetch(`${APIURL}/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailAddress: email,
+        password: password,
+        captchaToken: captchaToken,
+        baseUrl: baseUrl,
+      }),
+    });
+    const data = await response.json();
+    console.log("API Response:", data); // Add for debugging
+
+    if (data.status === "error") {
+      if (data.resendAvailable || data.message === "Please verify your email address to log in") {
+        setShowResendVerification(true);
+        setResendEmail(data.emailAddress || email);
+        toast.error(
+          "Please verify your email address to log in. Click the link below to resend the verification email.",
+          {
+            autoClose: 10000,
+          }
+        );
+      } else {
+        const message = data.message || "An error occurred during login";
+        toast.error(message, {
+          autoClose: 5000,
+        });
+      }
+      setPassword(""); // Clear password field for security
       return;
     }
-
-    setLoading(true);
-    try {
-      const baseUrl = window.location.origin;
-      const response = await fetch(`${APIURL}/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          emailAddress: email,
-          password: password,
-          captchaToken: captchaToken,
-          baseUrl: baseUrl,
-        }),
+    if (data.status === "success") {
+      toast.success(data.message || "Login successful!", {
+        autoClose: false,
       });
-      const data = await response.json();
-
-      if (data.status === "error") {
-        if (data.resendAvailable) {
-          setShowResendVerification(true);
-          setResendEmail(data.emailAddress);
-          toast.error(
-            "Please verify your email address to log in. Click the link below to resend the verification email.",
-            {
-              autoClose: 10000,
-            }
-          );
-        } else {
-          const message =
-            data.message || "An error occurred during login";
-          toast.error(message, {
-            autoClose: 5000,
-          });
-        }
-        setPassword(""); // Clear password field for security
-        return;
-      }
-      if (data.status === "success") {
-        toast.success(data.message || "Login successful!", {
-          autoClose: false,
-        });
-        const { data: user, token } = data;
-        login(user, token);
-        setEmail(""); // Clear email field
-        setPassword(""); // Clear password field
-        setShowResendVerification(false); // Reset resend link
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("An unexpected error occurred. Please try again.", {
-        autoClose: 5000,
-      });
-    } finally {
-      setLoading(false);
-      setCaptchaToken(null);
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
+      const { data: user, token } = data;
+      login(user, token);
+      setEmail(""); // Clear email field
+      setPassword(""); // Clear password field
+      setShowResendVerification(false); // Reset resend link
+      router.push("/");
     }
-  };
+  } catch (error) {
+    console.error("Login error:", error);
+    toast.error("An unexpected error occurred. Please try again.", {
+      autoClose: 5000,
+    });
+  } finally {
+    setLoading(false);
+    setCaptchaToken(null);
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset();
+    }
+  }
+};
 
   const handleResendVerification = async () => {
     const captchaToken = await executeCaptcha();

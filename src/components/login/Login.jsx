@@ -8,7 +8,7 @@ import Loader from "../comman/Loader";
 import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
-
+import { toast } from 'react-toastify';
 function Login() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showPassword, setShowPassword] = useState(false);
@@ -137,107 +137,115 @@ function Login() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const token = await executeCaptcha();
-    if (!token) {
-      return;
-    }
+  const token = await executeCaptcha();
+  if (!token) {
+    toast.error("CAPTCHA verification failed. Please try again.");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const apiUrl = APIURL;
-      const response = await fetch(`${apiUrl}/api/login/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...userDetails,
-          captchaToken: token,
-        }),
+  setLoading(true);
+  try {
+    const apiUrl = APIURL;
+    const response = await fetch(`${apiUrl}/api/login/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...userDetails,
+        captchaToken: token,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.status === "success") {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, "0");
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const year = now.getFullYear();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
+      const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
+
+      gtag("event", "conversion", {
+        send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
+        transaction_id: eventId,
       });
 
-      const data = await response.json();
+      fbq("track", "Subscribe", {
+        eventID: eventId,
+      });
 
-      if (response.ok && data.status === "success") {
-        const now = new Date();
-        const day = String(now.getDate()).padStart(2, "0");
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const year = now.getFullYear();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const seconds = String(now.getSeconds()).padStart(2, "0");
-        const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
-        const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
+      setUserDetails({
+        customerId: "",
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        cName: "",
+        gender: "",
+        houseno: "",
+        floor: "",
+        address: "",
+        address2: "",
+        landmark: "",
+        city: "",
+        prov: "",
+        zip: "",
+        country: "",
+        phone: "",
+        emailAddress: "",
+        mobile: "",
+        mobile2: "",
+        company: "",
+        title: "",
+        workPhone: "",
+        dateOfBirth: "",
+        anniversary: "",
+        newsletter: "",
+        ipaddress: "",
+        subsms: "",
+        addedDate: "",
+        addedBy: "",
+        refby: "",
+        datasource: "",
+        occupation: "",
+        designation: "",
+        contactpref: "",
+        pref: "",
+        activatedon: "",
+        securecode: "",
+        active: "",
+        password: "",
+        profImage: "",
+        baseUrl: "https://nexibles.com",
+      });
 
-        gtag("event", "conversion", {
-          send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
-          transaction_id: eventId,
-        });
-
-        fbq("track", "Subscribe", {
-          eventID: eventId,
-        });
-        setUserDetails({
-          customerId: "",
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          cName: "",
-          gender: "",
-          houseno: "",
-          floor: "",
-          address: "",
-          address2: "",
-          landmark: "",
-          city: "",
-          prov: "",
-          zip: "",
-          country: "",
-          phone: "",
-          emailAddress: "",
-          mobile: "",
-          mobile2: "",
-          company: "",
-          title: "",
-          workPhone: "",
-          dateOfBirth: "",
-          anniversary: "",
-          newsletter: "",
-          ipaddress: "",
-          subsms: "",
-          addedDate: "",
-          addedBy: "",
-          refby: "",
-          datasource: "",
-          occupation: "",
-          designation: "",
-          contactpref: "",
-          pref: "",
-          activatedon: "",
-          securecode: "",
-          active: "",
-          password: "",
-          profImage: "",
-          baseUrl: "https://nexibles.com",
-        });
-        setIsLogin(true);
-      } else {
-        const errorMessage = data.message && data.message.includes("is already exist")
-          ? "Email already exists. Please use a different email."
-          : data.message || "An error occurred during registration";
-      }
-    } catch (error) {
-      console.error("Registration error:", error.message);
-    } finally {
-      setLoading(false);
-      setCaptchaToken(null);
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
+      setIsLogin(true);
+     toast.success(data.message || "!", {
+  autoClose: false,
+});
+    } else {
+      const errorMessage = data.message && data.message.includes("is already exist")
+        ? "Email already exists. Please use a different email."
+        : data.message || "An error occurred during registration";
+      toast.error(errorMessage);
     }
-  };
+  } catch (error) {
+    console.error("Registration error:", error.message);
+    toast.error("Registration failed. Please try again later.");
+  } finally {
+    setLoading(false);
+    setCaptchaToken(null);
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset();
+    }
+  }
+};
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

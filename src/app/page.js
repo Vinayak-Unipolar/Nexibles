@@ -255,15 +255,14 @@ const Modal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const token = process.env.NEXT_PUBLIC_API_KEY;
 
-  // Auto-close modal after 5 seconds
   useEffect(() => {
     if (!isOpen) return;
 
     const autoCloseTimer = setTimeout(() => {
       onClose();
-    }, 5000); // 5 seconds
+    }, 5000); 
 
-    return () => clearTimeout(autoCloseTimer); // Cleanup timer on unmount or manual close
+    return () => clearTimeout(autoCloseTimer); 
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -414,11 +413,11 @@ const Home = () => {
           });
         }
       } catch (error) {
-        showToast({
-          type: 'error',
-          title: 'Fetch Error',
-          message: 'Something went wrong while fetching categories.',
-        });
+        // showToast({
+        //   type: 'error',
+        //   title: 'Fetch Error',
+        //   message: 'Something went wrong while fetching categories.',
+        // });
       }
     };
 

@@ -6,24 +6,22 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 function VerifyEmail() {
-  const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
+  const APIURL = process.env.NEXT_PUBLIC_API_URL; 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [redirectCountdown, setRedirectCountdown] = useState(5); // Countdown for redirect
+  const [redirectCountdown, setRedirectCountdown] = useState(5);
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
 
   useEffect(() => {
-    // Log initial state for debugging
     console.log("VerifyEmail useEffect triggered", {
       token,
       APIURL,
       searchParams: searchParams.toString(),
     });
-
-    // Validate token
+    
     if (!token || typeof token !== "string" || token.length < 10) {
       console.log("Token validation failed:", {
         token,

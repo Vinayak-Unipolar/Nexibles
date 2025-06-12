@@ -41,8 +41,6 @@ const Orderplaced = () => {
 
       if (data.status === "success" && data.data) {
         setOrderDetails(data.data);
-
-        // Set address from order data
         const orderData = data.data[0];
         setDefaultAddress({
           data: {
@@ -55,9 +53,7 @@ const Orderplaced = () => {
           }
         });
 
-        // Track purchase and send emails if conditions are met
         if (data.data[0].payment_status === 'COMPLETED' && data.data[0].transaction_id && data.data[0].orderNo) {
-          // Track purchase
           if (!purchaseTracked && typeof window !== "undefined") {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('status') === 'success') {

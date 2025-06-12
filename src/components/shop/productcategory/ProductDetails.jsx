@@ -175,7 +175,7 @@ const ProductDetails = ({
         />
         <div className="flex items-center mt-4">
           <span className="text-black font-semibold text-md mr-2">Material:</span>
-          <span className="text-gray-800">{material}</span>
+          <span className="text-gray-800 text-sm">{material}</span>
         </div>
         {/* <div>
           <span className="text-black text-lg font-semibold">
@@ -201,7 +201,7 @@ const ProductDetails = ({
             </div>
             <div>
               <div className="text-sm text-gray-500">Lead Time</div>
-              <div className="font-semibold text-gray-900">7-10 business days</div>
+              <div className="font-semibold text-gray-900">21 business days</div>
             </div>
           </div>
         </div>

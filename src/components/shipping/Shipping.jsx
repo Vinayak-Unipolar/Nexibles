@@ -53,7 +53,7 @@ export default function Shipping({ defaultAddress, addresses }) {
     street_no: "",
     isDefault: "1",
   });
-    
+
   const validateAndCorrectWeights = async (cartItems) => {
     try {
       const response = await fetch(`${APIURL}/api/sizes`, {
@@ -153,7 +153,7 @@ export default function Shipping({ defaultAddress, addresses }) {
         const newTotal = (totalAfterDiscount + calculatedGst).toFixed(2);
         setTotalPrice(newTotal);
         toast.warning(data.message || "Shipment is not available. Please use another address.", {
-          toastId: 'shipping-unavailable', 
+          toastId: 'shipping-unavailable',
         });
       }
     } catch (err) {
@@ -166,11 +166,11 @@ export default function Shipping({ defaultAddress, addresses }) {
       const newTotal = (totalAfterDiscount + calculatedGst).toFixed(2);
       setTotalPrice(newTotal);
       toast.warning("Shipment is not available due to an error. Please use another address.", {
-        toastId: 'shipping-unavailable', 
+        toastId: 'shipping-unavailable',
       });
     }
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -305,6 +305,12 @@ export default function Shipping({ defaultAddress, addresses }) {
       const optionKeys = Object.keys(selectedOptions);
       const productConfigId = optionKeys.length > 0 ? optionKeys[0] : null;
       const productOptionId = optionKeys.length > 0 ? selectedOptions[optionKeys[0]].optionName : null;
+      const designFilesArray = (product.files || []).map((file, index) => ({
+        FileName: file.originalName,
+        No: index + 1,
+      }));
+
+      const designFiles = JSON.stringify(designFilesArray);
 
       return {
         id: product.id,
@@ -317,9 +323,11 @@ export default function Shipping({ defaultAddress, addresses }) {
         discountedPrice: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2),
         product_option_id: productOptionId,
         product_config_id: productConfigId,
-        origin: "Nexibles",
+        origin: "Nexibles Website",
         skuCount: product.skuCount,
         material: product.material || "",
+        designFiles,
+        total_cost: parseFloat(product.discountedPrice || product.totalPrice || 0).toFixed(2)
       };
     });
   };
@@ -336,7 +344,8 @@ export default function Shipping({ defaultAddress, addresses }) {
       }
 
       const orderNo = `ORDER-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-      const orderDate = new Date().toISOString();
+      const date = new Date();
+      const orderDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
       const addressDetails = selectedAddress || {};
       const newSubTotal = calculateSubtotal();
       const totalAfterDiscount = newSubTotal - parseFloat(discountAmount);
@@ -348,7 +357,7 @@ export default function Shipping({ defaultAddress, addresses }) {
       const requestBody = {
         orderNo,
         orderDate,
-        pmtMethod: "",
+        pmtMethod: "PhonePe",
         customerID: user?.result?.customerId || user?.customerId,
         salutation: "",
         firstName: user?.result?.firstName || user?.firstName,
@@ -374,16 +383,21 @@ export default function Shipping({ defaultAddress, addresses }) {
         minDeliveryAmt: finalTotal,
         orderCharge: shippingCost.toFixed(2),
         ipAddress: "",
-        confirm_status: "0",
+        confirm_status: "",
         origin: "Nexibles",
         orderDetails: await getOrderDetailsFromRedux(),
       };
+      console.log(requestBody);
       const response = await fetch(`${APIURL}/api/createorder`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq" },
+        headers: {
+          "Content-Type": "application/json",
+          "API-Key": "irrv211vui9kuwn11efsb4xd4zdkuq"
+        },
         body: JSON.stringify(requestBody),
       });
       const responseData = await response.json();
+      console.log(responseData);
       if (responseData.success === true) {
         if (typeof window !== "undefined")
           localStorage.setItem("orderNo", responseData.orderNo);

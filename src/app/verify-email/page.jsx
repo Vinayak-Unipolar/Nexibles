@@ -6,10 +6,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 function VerifyEmail() {
-  const APIURL = process.env.NEXT_PUBLIC_API_URL  // Fallback API URL
+  const APIURL = process.env.NEXT_PUBLIC_API_URL; // Fallback API URL
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [redirectCountdown, setRedirectCountdown] = useState(5); // Countdown for redirect
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
@@ -35,7 +36,6 @@ function VerifyEmail() {
       return;
     }
 
-    if (success) return; 
     let isMounted = true;
 
     const verifyEmail = async () => {
@@ -78,7 +78,12 @@ function VerifyEmail() {
           } else {
             let errorMessage = data.message || "Failed to verify email.";
             if (response.status === 400) {
-              errorMessage = "Invalid verification token. Please request a new link.";
+              if (data.message.includes("invalid or has already been used")) {
+                errorMessage =
+                  "This verification link is invalid or has already been used. Please request a new verification email.";
+              } else {
+                errorMessage = "Invalid verification token. Please request a new link.";
+              }
             } else if (response.status === 401) {
               errorMessage = "Unauthorized request. Please check your token.";
             } else if (response.status === 404) {
@@ -111,23 +116,32 @@ function VerifyEmail() {
       console.log("Cleaning up, setting isMounted to false");
       isMounted = false;
     };
-  }, [token, APIURL, success]);
+  }, [token, APIURL]); // Removed 'success' from dependencies
 
-  // Redirect to login page after successful verification
+  // Redirect to login page after successful verification with countdown
   useEffect(() => {
     if (success) {
-      console.log("Redirecting to /login due to successful verification");
-      const timer = setTimeout(() => {
-        router.push("/login");
-      }, 3000); // Redirect after 3 seconds
-      return () => clearTimeout(timer);
+      console.log("Starting redirect countdown");
+      const timer = setInterval(() => {
+        setRedirectCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            console.log("Redirecting to /login due to successful verification");
+            router.push("/login");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
     }
   }, [success, router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-white">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100">
       <motion.div
-        className="w-full max-w-md p-6 bg-white rounded-lg shadow-md md:p-8"
+        className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg md:p-8"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -147,12 +161,15 @@ function VerifyEmail() {
 
         {!loading && success && (
           <div className="text-center">
-            <p className="mb-6 text-sm text-green-600 md:text-base">
+            <p className="mb-4 text-sm text-green-600 md:text-base">
               Your email has been successfully verified! You can now log in to your account.
+            </p>
+            <p className="mb-4 text-sm text-gray-600 md:text-base">
+              Redirecting to login in {redirectCountdown} second{redirectCountdown !== 1 ? "s" : ""}...
             </p>
             <Link href="/login" prefetch={false}>
               <button className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50">
-                Go to Login
+                Go to Login Now
               </button>
             </Link>
           </div>
@@ -160,7 +177,12 @@ function VerifyEmail() {
 
         {!loading && !success && error && (
           <div className="text-center">
-            <p className="mb-6 text-sm text-red-600 md:text-base">{error}</p>
+            <p className="mb-4 text-sm text-red-600 md:text-base">{error}</p>
+            {error.includes("invalid or has already been used") && (
+              <p className="mb-4 text-sm text-gray-600 md:text-base">
+                Please return to the login page and click "Resend Verification Email" to receive a new link.
+              </p>
+            )}
             <Link href="/login" prefetch={false}>
               <button className="w-full px-4 py-3 text-sm font-medium text-white transition-colors bg-[#103b60] rounded-lg md:text-base hover:bg-[#0d2e4d] focus:outline-none focus:ring-2 focus:ring-[#103b60] focus:ring-opacity-50">
                 Back to Login

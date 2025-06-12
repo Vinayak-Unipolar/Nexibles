@@ -9,6 +9,7 @@ import ForgotPassword from "./ForgotPassword";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from 'react-toastify';
+
 function Login() {
   const APIURL = process.env.NEXT_PUBLIC_API_URL;
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +21,8 @@ function Login() {
   const [showConfigMessage, setShowConfigMessage] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [showResendVerification, setShowResendVerification] = useState(false);
+  const [resendEmail, setResendEmail] = useState("");
   const recaptchaRef = useRef(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -66,7 +69,7 @@ function Login() {
     active: "",
     password: "",
     profImage: "",
-    baseUrl: "https://nexibles.com",
+    baseUrl: typeof window !== "undefined" ? window.location.origin : "", // Dynamic baseUrl
   });
 
   useEffect(() => {
@@ -88,6 +91,7 @@ function Login() {
         return token;
       } catch (error) {
         console.error("reCAPTCHA execution error:", error);
+        toast.error("CAPTCHA verification failed. Please try again.");
         return null;
       }
     }
@@ -104,6 +108,7 @@ function Login() {
 
     setLoading(true);
     try {
+      const baseUrl = window.location.origin;
       const response = await fetch(`${APIURL}/api/login`, {
         method: "POST",
         headers: {
@@ -113,20 +118,93 @@ function Login() {
           emailAddress: email,
           password: password,
           captchaToken: captchaToken,
+          baseUrl: baseUrl,
         }),
       });
       const data = await response.json();
 
       if (data.status === "error") {
+        if (data.resendAvailable) {
+          setShowResendVerification(true);
+          setResendEmail(data.emailAddress);
+          toast.error(
+            "Please verify your email address to log in. Click the link below to resend the verification email.",
+            {
+              autoClose: 10000,
+            }
+          );
+        } else {
+          const message =
+            data.message || "An error occurred during login";
+          toast.error(message, {
+            autoClose: 5000,
+          });
+        }
+        setPassword(""); // Clear password field for security
         return;
       }
       if (data.status === "success") {
+        toast.success(data.message || "Login successful!", {
+          autoClose: false,
+        });
         const { data: user, token } = data;
         login(user, token);
+        setEmail(""); // Clear email field
+        setPassword(""); // Clear password field
+        setShowResendVerification(false); // Reset resend link
         router.push("/");
       }
     } catch (error) {
-      console.error("Invalid Request", error);
+      console.error("Login error:", error);
+      toast.error("An unexpected error occurred. Please try again.", {
+        autoClose: 5000,
+      });
+    } finally {
+      setLoading(false);
+      setCaptchaToken(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
+    }
+  };
+
+  const handleResendVerification = async () => {
+    const captchaToken = await executeCaptcha();
+    if (!captchaToken) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const baseUrl = window.location.origin;
+      const response = await fetch(`${APIURL}/api/login/resend-verification`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailAddress: resendEmail,
+          baseUrl: baseUrl,
+          captchaToken: captchaToken,
+        }),
+      });
+      const data = await response.json();
+
+      if (data.status === "success") {
+        toast.success("Verification email has been resent. Please check your email (including spam/junk).", {
+          autoClose: 7000,
+        });
+        setShowResendVerification(false);
+      } else {
+        toast.error(data.message || "Failed to resend verification email.", {
+          autoClose: 5000,
+        });
+      }
+    } catch (error) {
+      console.error("Resend verification error:", error);
+      toast.error("Failed to resend verification email. Please try again.", {
+        autoClose: 5000,
+      });
     } finally {
       setLoading(false);
       setCaptchaToken(null);
@@ -137,115 +215,122 @@ function Login() {
   };
 
   const handleRegister = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const token = await executeCaptcha();
-  if (!token) {
-    toast.error("CAPTCHA verification failed. Please try again.");
-    return;
-  }
-
-  setLoading(true);
-  try {
-    const apiUrl = APIURL;
-    const response = await fetch(`${apiUrl}/api/login/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...userDetails,
-        captchaToken: token,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.status === "success") {
-      const now = new Date();
-      const day = String(now.getDate()).padStart(2, "0");
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const year = now.getFullYear();
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-      const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
-      const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
-
-      gtag("event", "conversion", {
-        send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
-        transaction_id: eventId,
-      });
-
-      fbq("track", "Subscribe", {
-        eventID: eventId,
-      });
-
-      setUserDetails({
-        customerId: "",
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        cName: "",
-        gender: "",
-        houseno: "",
-        floor: "",
-        address: "",
-        address2: "",
-        landmark: "",
-        city: "",
-        prov: "",
-        zip: "",
-        country: "",
-        phone: "",
-        emailAddress: "",
-        mobile: "",
-        mobile2: "",
-        company: "",
-        title: "",
-        workPhone: "",
-        dateOfBirth: "",
-        anniversary: "",
-        newsletter: "",
-        ipaddress: "",
-        subsms: "",
-        addedDate: "",
-        addedBy: "",
-        refby: "",
-        datasource: "",
-        occupation: "",
-        designation: "",
-        contactpref: "",
-        pref: "",
-        activatedon: "",
-        securecode: "",
-        active: "",
-        password: "",
-        profImage: "",
-        baseUrl: "https://nexibles.com",
-      });
-
-      setIsLogin(true);
-     toast.success(data.message || "!", {
-  autoClose: false,
-});
-    } else {
-      const errorMessage = data.message && data.message.includes("is already exist")
-        ? "Email already exists. Please use a different email."
-        : data.message || "An error occurred during registration";
-      toast.error(errorMessage);
+    const token = await executeCaptcha();
+    if (!token) {
+      toast.error("CAPTCHA verification failed. Please try again.");
+      return;
     }
-  } catch (error) {
-    console.error("Registration error:", error.message);
-    toast.error("Registration failed. Please try again later.");
-  } finally {
-    setLoading(false);
-    setCaptchaToken(null);
-    if (recaptchaRef.current) {
-      recaptchaRef.current.reset();
+
+    setLoading(true);
+    try {
+      const apiUrl = APIURL;
+      const response = await fetch(`${apiUrl}/api/login/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...userDetails,
+          captchaToken: token,
+          baseUrl: window.location.origin, // Override hardcoded baseUrl
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === "success") {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
+        const eventId = `${day}${month}${year}${minutes}${seconds}${milliseconds}`;
+
+        gtag("event", "conversion", {
+          send_to: "AW-17014026366/6bz-COPv-MYaEP7g9bA_",
+          transaction_id: eventId,
+        });
+
+        fbq("track", "Subscribe", {
+          eventID: eventId,
+        });
+
+        // Reset form fields
+        setUserDetails({
+          customerId: "",
+          firstName: "",
+          middleName: "",
+          lastName: "",
+          cName: "",
+          gender: "",
+          houseno: "",
+          floor: "",
+          address: "",
+          address2: "",
+          landmark: "",
+          city: "",
+          prov: "",
+          zip: "",
+          country: "",
+          phone: "",
+          emailAddress: "",
+          mobile: "",
+          mobile2: "",
+          company: "",
+          title: "",
+          workPhone: "",
+          dateOfBirth: "",
+          anniversary: "",
+          newsletter: "",
+          ipaddress: "",
+          subsms: "",
+          addedDate: "",
+          addedBy: "",
+          refby: "",
+          datasource: "",
+          occupation: "",
+          designation: "",
+          contactpref: "",
+          pref: "",
+          activatedon: "",
+          securecode: "",
+          active: "",
+          password: "",
+          profImage: "",
+          baseUrl: window.location.origin,
+        });
+
+        setIsLogin(true); // Switch to login form
+        toast.success("Registration successful! Please check your email (including spam/junk) to verify your account.", {
+          autoClose: 7000, // Extended duration for verification prompt
+        });
+      } else {
+        const errorMessage =
+          data.message && data.message.includes("is already exist")
+            ? "Email already exists. Please use a different email."
+            : data.message || "An error occurred during registration";
+        toast.error(errorMessage, {
+          autoClose: 5000,
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error.message);
+      toast.error("Registration failed. Please try again later.", {
+        autoClose: 5000,
+      });
+    } finally {
+      setLoading(false);
+      setCaptchaToken(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
     }
-  }
-};
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -258,6 +343,7 @@ function Login() {
   const toggleForm = () => {
     setIsLogin(!isLogin);
     setCaptchaToken(null);
+    setShowResendVerification(false); // Reset resend link when toggling forms
     if (recaptchaRef.current) {
       recaptchaRef.current.reset();
     }
@@ -286,7 +372,7 @@ function Login() {
                 Register First, Then Build & Price Your Own Pouch
               </p>
               <p className="text-sm text-center font-semibold text-black md:text-xl">
-                It&apos;s free, takes just 60 seconds, and provides instant pricing for all sizes.
+                It's free, takes just 60 seconds, and provides instant pricing for all sizes.
               </p>
             </>
           )}
@@ -354,13 +440,21 @@ function Login() {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-end">
+                    <div className="flex items-center justify-between">
                       <div
                         onClick={() => setShowModal(true)}
                         className="text-sm font-medium text-[#103b60] hover:text-[#103b60] cursor-pointer"
                       >
                         Forgot password?
                       </div>
+                      {showResendVerification && (
+                        <div
+                          onClick={handleResendVerification}
+                          className="text-sm font-medium text-[#4F1E9B] hover:text-[#4F1E9B] cursor-pointer"
+                        >
+                          Resend Verification Email
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex justify-center">
@@ -545,8 +639,6 @@ function Login() {
 }
 
 export default Login;
-
-
 
 
 

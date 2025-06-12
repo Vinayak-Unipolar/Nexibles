@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 function VerifyEmail() {
-  const APIURL = process.env.NEXT_PUBLIC_API_URL || "https://nexiblesapp.barecms.com"; // Fallback API URL
+  const APIURL = process.env.NEXT_PUBLIC_API_URL  // Fallback API URL
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);

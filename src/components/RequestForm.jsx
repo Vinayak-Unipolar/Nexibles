@@ -50,6 +50,7 @@ function RequestForm({
     zipPostalCode: "",
     terms: "",
     gstPanCombo: "",
+    companyWebsite: "", // Added companyWebsite error field
   });
   const [submitStatus, setSubmitStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -353,9 +354,20 @@ function RequestForm({
     return "";
   };
 
+  const validateURL = (value) => {
+    if (!value) return ""; // Allow empty since it's optional
+    // Regex to validate URLs (supports http://, https://, www., or just domain.com)
+    const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
+    if (!urlRegex.test(value)) {
+      return "Please enter a valid URL.";
+    }
+    return "";
+  };
+
   const validateGSTPANCombo = (gst, pan) => {
     const isGSTValid = gst && gst.toUpperCase() !== "NA" && /^[A-Z0-9]{15}$/.test(gst);
     const isPANValid = pan && pan.toUpperCase() !== "NA" && /^[A-Z0-9]{10}$/.test(pan);
+    return "";
   };
 
   useEffect(() => {
@@ -431,6 +443,8 @@ function RequestForm({
       setErrors((prev) => ({ ...prev, zipPostalCode: validateZipCode(formattedValue) }));
     } else if (name === "email") {
       setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    } else if (name === "companyWebsite") {
+      setErrors((prev) => ({ ...prev, companyWebsite: validateURL(value) }));
     }
 
     setFormData((prevData) => ({
@@ -555,6 +569,7 @@ function RequestForm({
       zipPostalCode: formData.requestSampleKit ? validateZipCode(formData.zipPostalCode) : "",
       terms: formData.requestSampleKit && !termsAccepted ? "Please accept the Terms and Conditions." : "",
       gstPanCombo: validateGSTPANCombo(formData.gst_in, formData.pancard),
+      companyWebsite: validateURL(formData.companyWebsite),
     };
 
     setErrors(newErrors);
@@ -700,6 +715,7 @@ function RequestForm({
       zipPostalCode: formData.requestSampleKit ? validateZipCode(formData.zipPostalCode) : "",
       terms: formData.requestSampleKit && !termsAccepted ? "Please accept the Terms and Conditions." : "",
       gstPanCombo: formData.requestSampleKit ? validateGSTPANCombo(formData.gst_in, formData.pancard) : "",
+      companyWebsite: validateURL(formData.companyWebsite),
     };
 
     setErrors(newErrors);
@@ -876,6 +892,7 @@ function RequestForm({
             zipPostalCode: "",
             terms: "",
             gstPanCombo: "",
+            companyWebsite: "",
           });
           window.scrollTo({ top: 0, behavior: "smooth" });
           if (isModal) onClose();
@@ -1096,13 +1113,14 @@ function RequestForm({
               Company Website
             </label>
             <input
-              type="url"
+              type="text" // Changed from type="url" to allow more flexible input
               name="companyWebsite"
               value={formData.companyWebsite}
               onChange={handleChange}
-              placeholder="https://"
+              placeholder="example.com or www.example.com"
               className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
             />
+            {errors.companyWebsite && <p className="mt-1 text-sm text-red-500">{errors.companyWebsite}</p>}
           </div>
         </div>
 
@@ -1259,9 +1277,9 @@ function RequestForm({
             </div>
 
             <div className="mb-4">
-               <label className="block text-sm font-medium text-red-600 sm:text-md">
-                     (At least one of GSTIN or PAN Card is required)
-                  </label>
+              <label className="block text-sm font-medium text-red-600 sm:text-md">
+                (At least one of GSTIN or PAN Card is required)
+              </label>
               <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex-1">
                   <input
@@ -1279,7 +1297,6 @@ function RequestForm({
                   <span className="text-sm font-semibold text-black sm:text-md">OR</span>
                 </div>
                 <div className="flex-1">
-                  
                   <input
                     type="text"
                     name="pancard"
@@ -1291,7 +1308,6 @@ function RequestForm({
                   />
                   {errors.pancard && <p className="mt-1 text-sm text-red-500">{errors.pancard}</p>}
                 </div>
-                
               </div>
               {errors.gstPanCombo && (
                 <p className="mt-1 text-sm text-red-500">{errors.gstPanCombo}</p>

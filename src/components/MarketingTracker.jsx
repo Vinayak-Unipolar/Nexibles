@@ -3,46 +3,6 @@
 import React, { useEffect, useCallback } from 'react';
 
 function MarketingTracker({ metaPixelId }) {
-  const sendMetaPurchaseEvent = async () => {
-    const eventData = {
-      event_name: 'Purchase',
-      event_time: Math.floor(Date.now() / 1000),
-      action_source: 'website',
-      user_data: {
-        em: ['7b17fb0bd173f625b58636fb796407c22b3d16fc78302d79f0fd30c2fc2fc068'],
-        ph: [null],
-      },
-      attribution_data: {
-        attribution_share: '0.3',
-      },
-      custom_data: {
-        currency: 'USD',
-        value: '142.52',
-      },
-      original_event_data: {
-        event_name: 'Purchase',
-        event_time: Math.floor(Date.now() / 1000),
-      },
-    };
-
-    try {
-      const response = await fetch('/api/send-meta-event', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pixelId: metaPixelId, eventData }),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        //console.log('Meta event sent:', result);
-      } else {
-        console.error('Meta event error:', result);
-      }
-    } catch (error) {
-      console.error('Meta network error:', error);
-    }
-  };
-
-  // Google Ads: Load gtag.js
   const loadGtag = () => {
     return new Promise((resolve, reject) => {
       if (document.querySelector(`script[src="https://www.googletagmanager.com/gtag/js?id=AW-17014026366"]`)) {
@@ -57,8 +17,6 @@ function MarketingTracker({ metaPixelId }) {
       document.head.appendChild(gtagScript);
     });
   };
-
-  // Google Ads: Conversion Tracking Function
   const gtagReportConversion = useCallback((sendTo, url) => {
     const tryGtag = (attempts = 10, delay = 100) => {
       if (typeof window.gtag !== 'function') {
@@ -70,11 +28,9 @@ function MarketingTracker({ metaPixelId }) {
         setTimeout(() => tryGtag(attempts - 1, delay), delay);
         return false;
       }
-      //console.log(`Sending conversion: ${sendTo}`);
       window.gtag('event', 'conversion', {
         send_to: sendTo,
         event_callback: () => {
-          //console.log(`Conversion sent successfully: ${sendTo}`);
           if (typeof url !== 'undefined') {
             window.location = url;
           }
@@ -85,13 +41,11 @@ function MarketingTracker({ metaPixelId }) {
     return tryGtag();
   }, []);
 
-  // Conversion handlers
   const trackQuoteForm = (url) => gtagReportConversion('AW-17014026366/T9rTCODv-MYaEP7g9bA_', url);
   const trackSignUpForm = (url) => gtagReportConversion('AW-17014026366/6bz-COPv-MYaEP7g9bA_', url);
   const trackWhatsAppChat = (url) => gtagReportConversion('AW-17014026366/fCTNCObv-MYaEP7g9bA_', url);
 
   useEffect(() => {
-    // Meta Pixel Initialization
     if (metaPixelId) {
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
@@ -111,11 +65,8 @@ function MarketingTracker({ metaPixelId }) {
       })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
       window.fbq('init', metaPixelId);
       window.fbq('track', 'PageView');
-      // Uncomment to trigger Meta Purchase event on mount
-      sendMetaPurchaseEvent();
     }
 
-    // Google Tag Initialization
     loadGtag()
       .then(() => {
         if (!document.querySelector('script[data-gtag-config]')) {

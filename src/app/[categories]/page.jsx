@@ -1,3 +1,47 @@
+// 'use client';
+
+// import Link from 'next/link';
+// import Image from 'next/image';
+
+// export default function NotFound() {
+//   return (
+//     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center px-4">
+//       <div className="text-center">
+//         {/* Optional Image */}
+
+
+//         {/* 404 Message */}
+//         <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4">
+//           404 - Page Not Found
+//         </h1>
+//         <p className="text-lg md:text-xl text-gray-600 mb-8">
+//           Oops! The page you&apos;re looking for doesn&apos;t exist.
+//         </p>
+
+//         {/* Back to Home Button */}
+//         <Link
+//           href="/"
+//           className="inline-block bg-[#ffd13e] text-black font-semibold py-3 px-6 rounded-full hover:bg-yellow-500 transition-colors duration-300"
+//         >
+//           Go to Home
+//         </Link>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 'use client';
 
@@ -15,10 +59,10 @@ import Loader from '@/components/comman/Loader';
 import Card from '@/components/shop/productcategory/Card';
 import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials';
 import contentData from '@/data/pouches.json';
-import Triangle from '../../../../public/Triangle.webp';
+import Triangle from '../../../public/Triangle.webp';
 
-const ProductCategory = ({ params: { category } }) => {
-  // const { categories: category } = useParams(); // Match folder name: [categories]
+const ProductCategory = () => {
+  const { categories: category } = useParams(); // Match folder name: [categories]
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -202,7 +246,7 @@ const ProductCategory = ({ params: { category } }) => {
 
             {/* Image Section */}
             <motion.div
-              className="relative w-full max-w-2xl  h-[50vh] sm:h-[60vh]  md:h-[calc(100vh-6rem)] flex items-center justify-center"
+              className="relative w-full max-w-2xl h-[calc(100vh-4rem)] md:h-[calc(100vh-6rem)] flex items-center justify-center"
               variants={containerAnimation}
               initial="initial"
               animate="animate"
@@ -213,28 +257,28 @@ const ProductCategory = ({ params: { category } }) => {
               <div className="relative w-full h-full">
                 {/* Background Image */}
                 <motion.div
-                  className="absolute inset-0 p-2 sm:p-4 md:p-6"
+                  className="absolute inset-0 p-4 sm:p-6"
                   aria-hidden="true"
                   animate={triangleAnimation}
                 >
                   <Image
                     alt={content.hero.images.background.alt}
-                    className="rounded-lg w-full h-full object-contain"
+                    className="rounded-lg p-10 w-full h-full object-fit"
                     src={Triangle}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 50vw"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     loading="lazy"
                     quality={75}
                   />
                 </motion.div>
                 {/* Main Image */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center p-2 sm:p-4 md:p-6">
+                <div className="relative mt-10 z-10 w-full h-full flex items-center justify-center p-4 sm:p-6">
                   <Image
                     alt={content.hero.images.main.alt}
-                    className="rounded-lg w-full h-full object-contain"
+                    className="rounded-lg w-full h-full p-10 object-contain"
                     src={content.hero.images.main.src}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 50vw"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     loading="lazy"
                     quality={75}
                   />
@@ -377,77 +421,3 @@ const ProductCategory = ({ params: { category } }) => {
 };
 
 export default ProductCategory;
-
-
-
-
-
-
-// 'use client'
-// import Navbar from "@/components/shop/Navbar";
-// import Footer from "@/components/shop/Footer";
-// import CardBanner from "@/components/shop/productcategory/Cardbanner";
-// import BlankSpace from "@/components/shop/productcategory/BlankSpace";
-// import Card from "@/components/shop/productcategory/Card";
-// import { useEffect, useState } from "react";
-// import PHeadingRoutes from "@/components/shop/productcategory/PHeadingRoutes";
-// import Loader from "@/components/comman/Loader";
-// const ProductCategoryPage = ({ params: { category } }) => {
-//   const [product, setProduct] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const token = process.env.NEXT_PUBLIC_API_KEY;
-//   const APIURL = process.env.NEXT_PUBLIC_API_URL;
-
-//   useEffect(() => {
-//     const fetchdata = async () => {
-//       setLoading(true);
-//       try {
-//         const response = await fetch(`${APIURL}/api/product/get_list/${category}`, {
-//           method: 'GET',
-//           headers: {
-//             'Content-type': 'application/json',
-//             'API-Key': token,
-//           },
-//         });
-//         const data = await response.json();
-//         if (data.status === 'success') {
-//           setProduct(data.data);
-//         } else {
-//           console.error('failed to fetch categories', data.error);
-//         }
-//       } catch (error) {
-//         console.log("Error Fetching Data", error);
-//       }finally{
-//         setLoading(false);
-//       }
-//     };
-//     fetchdata();
-//   }, [category]);
-  
-//   if (loading) {
-//     // Only show loading state if still fetching data
-//     return <Loader/>
-//   }
-//   return (
-//     <div>
-//       <Navbar />
-//       <div className="containers">
-//         {product.length > 0 && <PHeadingRoutes product={product} />}
-//       </div>
-//       {/* <CardBanner category={category} /> */}
-//       <div className="md:flex">
-//         {product.length > 0 &&
-//           <div className="md:w-1/6">
-//             <BlankSpace />
-//           </div>
-//         }
-//         <div className="w-full">
-//           <Card product={product} />
-//         </div>
-//       </div>
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default ProductCategoryPage;

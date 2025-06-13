@@ -69,6 +69,8 @@ const AllCategoryCards = ({ categoryData }) => {
       </div>
       <ProductFeatures />
     </div>
+
+    
   );
 };
 

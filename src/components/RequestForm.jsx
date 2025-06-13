@@ -1113,7 +1113,7 @@ function RequestForm({
               Company Website
             </label>
             <input
-              type="text" // Changed from type="url" to allow more flexible input
+              type="text"
               name="companyWebsite"
               value={formData.companyWebsite}
               onChange={handleChange}

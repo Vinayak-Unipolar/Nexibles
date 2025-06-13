@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "react-toastify";
 import Link from "next/link";
 
 function VerifyEmail() {
@@ -16,26 +15,13 @@ function VerifyEmail() {
   const hasVerified = useRef(false);
 
   useEffect(() => {
-    console.log("VerifyEmail useEffect triggered", {
-      token,
-      APIURL,
-      searchParams: searchParams.toString(),
-    });
-
     if (!token || typeof token !== "string" || token.length < 10) {
-      console.log("Token validation failed:", {
-        token,
-        type: typeof token,
-        length: token?.length,
-      });
       setError("Invalid or missing verification token. Please request a new link.");
       setLoading(false);
-      toast.error("Invalid or missing verification token.", { toastId: "verify-error" });
       return;
     }
 
     if (hasVerified.current) {
-      console.log("Verification already attempted, skipping");
       return;
     }
 
@@ -45,7 +31,6 @@ function VerifyEmail() {
       setError(null);
       setSuccess(false);
       const url = `${APIURL}/api/login/verify-email?token=${token}`;
-      console.log("Sending request to:", url);
 
       try {
         const response = await fetch(url, {
@@ -53,12 +38,6 @@ function VerifyEmail() {
           headers: {
             "Content-Type": "application/json",
           },
-        });
-
-        console.log("Response received:", {
-          status: response.status,
-          ok: response.ok,
-          headers: Object.fromEntries(response.headers),
         });
 
         const contentType = response.headers.get("content-type");
@@ -69,15 +48,10 @@ function VerifyEmail() {
         }
 
         const data = await response.json();
-        console.log("Verification response:", data);
 
         if (response.ok && data.status === "success") {
-          console.log("Verification successful, setting success state");
           setSuccess(true);
-          setLoading(false); // Explicitly set loading to false here
-          toast.success("Email verified successfully! You can now log in.", {
-            toastId: "verify-success",
-          });
+          setLoading(false);
         } else {
           let errorMessage = data.message || "Failed to verify email.";
           if (response.status === 400) {
@@ -99,30 +73,22 @@ function VerifyEmail() {
       } catch (err) {
         console.error("Verification error:", err.message);
         setError(err.message || "An error occurred during verification.");
-        setLoading(false); // Ensure loading is false on error
-        toast.error(err.message || "An error occurred during verification.", {
-          toastId: "verify-error",
-        });
+        setLoading(false);
       }
     };
 
     verifyEmail();
 
-    // Simplified cleanup without isMounted
     return () => {
-      console.log("Cleaning up VerifyEmail useEffect");
     };
   }, [token, APIURL]);
 
   useEffect(() => {
-    console.log("State updated:", { loading, success, error });
     if (success) {
-      console.log("Starting redirect countdown");
       const timer = setInterval(() => {
         setRedirectCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
-            console.log("Redirecting to /login due to successful verification");
             router.push("/login");
             return 0;
           }

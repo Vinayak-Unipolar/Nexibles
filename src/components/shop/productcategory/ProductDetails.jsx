@@ -65,7 +65,9 @@ const ProductDetails = ({
   ];
   const finishes = ['Glossy', 'Matte', 'Soft-touch'];
   const printTypes = ['Digital', 'Flexographic', 'Rotogravure'];
-  const quantities = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
+  const quantities = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000].filter(
+  (quantity) => quantity >= minimumQuantity
+);
 
   // Fetch reviews and calculate average rating
   useEffect(() => {

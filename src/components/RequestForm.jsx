@@ -50,7 +50,7 @@ function RequestForm({
     zipPostalCode: "",
     terms: "",
     gstPanCombo: "",
-    companyWebsite: "", // Added companyWebsite error field
+    companyWebsite: "",
   });
   const [submitStatus, setSubmitStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,9 @@ function RequestForm({
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [submittedData, setSubmittedData] = useState(null);
-
+const [industries, setIndustries] = useState([]);
+  const [loadingIndustries, setLoadingIndustries] = useState(true);
+  const [industriesError, setIndustriesError] = useState(null);
   const countries = [
     "India",
     "United Arab Emirates",
@@ -258,34 +260,27 @@ function RequestForm({
 
   const languages = ["Hindi", "English", "Marathi", "Gujarati", "Kannada"];
 
-  const industries = [
-    "Beverages",
-    "Bread and other Bakery",
-    "Candy and other Confection",
-    "Child Resistant",
-    "Coffee and Tea",
-    "Condiments, Sauces, Seasonings, and Spices",
-    "Co-Packers/Co-Manufacturers",
-    "Dairy and Cheese",
-    "Distributor/Broker",
-    "Frozen Foods",
-    "Fruits and Vegetables",
-    "Grains, Rice, and Pasta",
-    "Garment",
-    "Health and Beauty",
-    "Lawn and Garden",
-    "Marketing Agency",
-    "Medical",
-    "Non-Food",
-    "Nutritional Supplements",
-    "Pet and other Animal Food",
-    "Prepared Meals",
-    "Processed Meats",
-    "Printer/Converter",
-    "Retail Grocery",
-    "Snacks",
-    "Tobacco",
-  ];
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        setLoadingIndustries(true);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/industries`, {
+          headers: {
+            'API-Key': process.env.NEXT_PUBLIC_API_KEY,
+          },
+        });
+        setIndustries(response.data.industries || []);
+      } catch (error) {
+        console.error('Error fetching industries:', error);
+        setIndustriesError('Failed to load industries. Please try again later.');
+        toast.error('Failed to load industries.');
+      } finally {
+        setLoadingIndustries(false);
+      }
+    };
+
+    fetchIndustries();
+  }, []);
 
   const orderQuantities = [
     "1,000 – 5,000 units",
@@ -302,7 +297,6 @@ function RequestForm({
     "Seeking Additional Packaging Provider",
   ];
 
-  // Validation functions
   const validatePhone = (value) => {
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(value)) {

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Head from "next/head"; // Import Head from next/head
 import Navbar from "@/components/shop/Navbar";
 import Footer from "@/components/shop/Footer";
 import Loader from "@/components/comman/Loader";
@@ -387,9 +386,12 @@ const Page = ({ params }) => {
         }
 
         setPageData(page);
+        // Set the document title dynamically
+        document.title = page.title;
       } catch (error) {
         console.error("Error fetching page data:", error);
         setError(error.message || "Failed to load page content. Please try again later.");
+        document.title = "Error"; // Fallback title on error
       } finally {
         setLoading(false);
       }
@@ -440,9 +442,6 @@ const Page = ({ params }) => {
 
   return (
     <div>
-      <Head>
-        <title>{pageData.title}</title> {/* Set meta title dynamically */}
-      </Head>
       <Navbar />
       <div className="mx-auto mt-16 page-content font-poppins">
         <style>{pageCss}</style>

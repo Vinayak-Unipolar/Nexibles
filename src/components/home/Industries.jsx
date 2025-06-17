@@ -158,7 +158,7 @@ const Industries = () => {
             <Slider ref={setSliderRef} {...sliderSettings}>
               {circularItems.map((category, index) => (
                 <div
-                  key={`${category.url}-${index}`}
+                  key={`${category.name}-${index}`}
                   style={{ width: `${cardWidth}px`, padding: `0 ${gap / 2}px` }}
                 >
                   <Link
@@ -180,7 +180,7 @@ const Industries = () => {
                     </div>
                     <div className="flex flex-col items-center justify-center mt-2 mx-[22px] text-center">
                       <div className="w-full px-2 py-1 text-xs font-semibold text-center text-gray-900 truncate transition-all duration-300 hover:bg-[#ffd13e] rounded-lg sm:px-3 sm:py-2 md:text-lg">
-                        {category.url}
+                        {category.name}
                       </div>
                     </div>
                   </Link>

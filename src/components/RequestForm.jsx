@@ -8,7 +8,7 @@ import { X } from "lucide-react";
 
 function RequestForm({
   isOpen = false,
-  onClose = () => {},
+  onClose = () => { },
   initialCategory = "",
   isModal = true,
   initialSampleKit = false,
@@ -50,7 +50,7 @@ function RequestForm({
     zipPostalCode: "",
     terms: "",
     gstPanCombo: "",
-    companyWebsite: "", // Added companyWebsite error field
+    companyWebsite: "",
   });
   const [submitStatus, setSubmitStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -59,6 +59,7 @@ function RequestForm({
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [submittedData, setSubmittedData] = useState(null);
+  const [pincodeLoading, setPincodeLoading] = useState(false); // New state for pincode API loading
 
   const countries = [
     "India",
@@ -355,8 +356,7 @@ function RequestForm({
   };
 
   const validateURL = (value) => {
-    if (!value) return ""; // Allow empty since it's optional
-    // Regex to validate URLs (supports http://, https://, www., or just domain.com)
+    if (!value) return "";
     const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
     if (!urlRegex.test(value)) {
       return "Please enter a valid URL.";
@@ -368,6 +368,57 @@ function RequestForm({
     const isGSTValid = gst && gst.toUpperCase() !== "NA" && /^[A-Z0-9]{15}$/.test(gst);
     const isPANValid = pan && pan.toUpperCase() !== "NA" && /^[A-Z0-9]{10}$/.test(pan);
     return "";
+  };
+
+  // Add handlePincodeChange function
+  const handlePincodeChange = async (e) => {
+    const { value } = e.target;
+
+    // Update zipPostalCode in formData
+    setFormData((prevData) => ({
+      ...prevData,
+      zipPostalCode: value,
+    }));
+
+    // Clear pincode error
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      zipPostalCode: "",
+    }));
+
+    // Fetch data when pincode is 6 digits
+    if (value.length === 6) {
+      setPincodeLoading(true);
+      try {
+        const response = await axios.get(`https://api.postalpincode.in/pincode/${value}`);
+        const data = response.data;
+
+        if (data && data.length > 0 && data[0]?.Status === "Success") {
+          const city = data[0]?.PostOffice[0]?.Block || "";
+          const state = data[0]?.PostOffice[0]?.State || "";
+
+          setFormData((prevData) => ({
+            ...prevData,
+            city,
+            state,
+            country: "India",
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            zipPostalCode: "Invalid pincode",
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching pincode data:", error);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          zipPostalCode: "Error fetching pincode data",
+        }));
+      } finally {
+        setPincodeLoading(false);
+      }
+    }
   };
 
   useEffect(() => {
@@ -417,7 +468,7 @@ function RequestForm({
     const { name, value, type, checked } = e.target;
     let formattedValue = value;
 
-    // Format and validate inputs
+    // Format and validate inputs (excluding zipPostalCode)
     if (name === "phone") {
       formattedValue = value.replace(/[^0-9]/g, "").slice(0, 10);
       setErrors((prev) => ({ ...prev, phone: validatePhone(formattedValue) }));
@@ -438,9 +489,6 @@ function RequestForm({
         pancard: validatePAN(formattedValue),
         gstPanCombo: validateGSTPANCombo(formData.gst_in, formattedValue),
       }));
-    } else if (name === "zipPostalCode") {
-      formattedValue = value.replace(/[^0-9]/g, "").slice(0, 6);
-      setErrors((prev) => ({ ...prev, zipPostalCode: validateZipCode(formattedValue) }));
     } else if (name === "email") {
       setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
     } else if (name === "companyWebsite") {
@@ -635,7 +683,7 @@ function RequestForm({
       if (!leadResponse.ok) {
         throw new Error(
           leadResponseData.message ||
-            `Failed to save lead: ${JSON.stringify(leadResponseData.errors || {})}`
+          `Failed to save lead: ${JSON.stringify(leadResponseData.errors || {})}`
         );
       }
 
@@ -655,7 +703,7 @@ function RequestForm({
       if (!emailResponse.ok) {
         throw new Error(
           emailResponseData.error ||
-            `Failed to send emails: ${JSON.stringify(emailResponseData.errors || {})}`
+          `Failed to send emails: ${JSON.stringify(emailResponseData.errors || {})}`
         );
       }
 
@@ -826,7 +874,7 @@ function RequestForm({
             return response.json().then((errorData) => {
               throw new Error(
                 errorData.message ||
-                  `Network response was not ok: ${JSON.stringify(errorData.errors || {})}`
+                `Network response was not ok: ${JSON.stringify(errorData.errors || {})}`
               );
             });
           }
@@ -848,7 +896,7 @@ function RequestForm({
             return emailResponse.json().then((emailError) => {
               throw new Error(
                 emailError.error ||
-                  `Failed to send email: ${JSON.stringify(emailError.errors || {})}`
+                `Failed to send email: ${JSON.stringify(emailError.errors || {})}`
               );
             });
           }
@@ -912,11 +960,10 @@ function RequestForm({
 
       {submitStatus && (
         <div
-          className={`mb-4 p-4 rounded text-sm sm:text-base ${
-            submitStatus.includes("success")
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
+          className={`mb-4 p-4 rounded text-sm sm:text-base ${submitStatus.includes("success")
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+            }`}
         >
           {submitStatus}
         </div>
@@ -1147,16 +1194,14 @@ function RequestForm({
                 requestSampleKit: !prev.requestSampleKit,
               }))
             }
-            className={`relative inline-flex items-center h-7 w-14 rounded-full shadow-inner transition-colors duration-300 focus:outline-none ring-2 ring-offset-1 ${
-              formData.requestSampleKit
-                ? "bg-red-500 ring-red-300"
-                : "bg-gray-300 ring-gray-200"
-            }`}
+            className={`relative inline-flex items-center h-7 w-14 rounded-full shadow-inner transition-colors duration-300 focus:outline-none ring-2 ring-offset-1 ${formData.requestSampleKit
+              ? "bg-red-500 ring-red-300"
+              : "bg-gray-300 ring-gray-200"
+              }`}
           >
             <span
-              className={`inline-block w-6 h-6 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
-                formData.requestSampleKit ? "translate-x-7" : "translate-x-1"
-              }`}
+              className={`inline-block w-6 h-6 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${formData.requestSampleKit ? "translate-x-7" : "translate-x-1"
+                }`}
             />
           </button>
         </div>
@@ -1226,6 +1271,46 @@ function RequestForm({
                 className="w-full p-2 mt-3 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
               />
               <div className="grid grid-cols-1 gap-4 mt-3 sm:grid-cols-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="zipPostalCode"
+                    value={formData.zipPostalCode}
+                    onChange={handlePincodeChange}
+                    placeholder="ZIP/Postal Code (6 digits)"
+                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
+                    required
+                    maxLength={6}
+                    disabled={pincodeLoading}
+                  />
+                  {pincodeLoading && (
+                    <div className="absolute right-2 top-2">
+                      <svg
+                        className="animate-spin h-5 w-5 text-gray-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    </div>
+                  )}
+                  {errors.zipPostalCode && (
+                    <p className="mt-1 text-sm text-red-500">{errors.zipPostalCode}</p>
+                  )}
+                </div>
                 <input
                   type="text"
                   name="city"
@@ -1244,21 +1329,6 @@ function RequestForm({
                   className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
                   required
                 />
-                <div>
-                  <input
-                    type="text"
-                    name="zipPostalCode"
-                    value={formData.zipPostalCode}
-                    onChange={handleChange}
-                    placeholder="ZIP/Postal Code (6 digits)"
-                    className="w-full p-2 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
-                    required
-                    maxLength={6}
-                  />
-                  {errors.zipPostalCode && (
-                    <p className="mt-1 text-sm text-red-500">{errors.zipPostalCode}</p>
-                  )}
-                </div>
                 <select
                   name="country"
                   value={formData.country}
@@ -1335,9 +1405,8 @@ function RequestForm({
                   required={formData.requestSampleKit}
                 />
                 <span
-                  className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out ${
-                    termsAccepted ? "bg-[#103b60]" : ""
-                  }`}
+                  className={`relative inline-block w-6 h-6 mr-2 rounded-md border-2 border-black bg-transparent transition-all duration-200 ease-in-out ${termsAccepted ? "bg-[#103b60]" : ""
+                    }`}
                 >
                   {termsAccepted && (
                     <svg
@@ -1377,17 +1446,16 @@ function RequestForm({
         <button
           type="submit"
           disabled={loading || (formData.requestSampleKit && !termsAccepted)}
-          className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${
-            loading || (formData.requestSampleKit && !termsAccepted)
-              ? "opacity-50 cursor-not-allowed"
-              : ""
-          }`}
+          className={`w-full bg-[#103b60] text-white p-2 rounded-md focus:outline-none text-sm sm:text-base ${loading || (formData.requestSampleKit && !termsAccepted)
+            ? "opacity-50 cursor-not-allowed"
+            : ""
+            }`}
         >
           {loading
             ? "Submitting..."
             : formData.requestSampleKit
-            ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
-            : "Submit"}
+              ? `Pay ₹${total ? total.total.toFixed(0) : 413}`
+              : "Submit"}
         </button>
       </form>
     </div>

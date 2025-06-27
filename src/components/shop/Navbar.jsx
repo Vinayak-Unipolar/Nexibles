@@ -27,7 +27,7 @@ const Navbar = () => {
     width: typeof window !== "undefined" ? window.innerWidth : 0,
     isMobile: false,
     isTablet: false,
-    isIPadPro: false
+    isIPadPro: false,
   });
   const { user, logout } = useAuth();
   const cartItems = useSelector((state) => state.cart.items);
@@ -43,30 +43,29 @@ const Navbar = () => {
 
     const handleResize = () => {
       const width = window.innerWidth;
-      const isIPadPro = (width >= 1024 && width <= 1366);
+      const isIPadPro = width >= 1024 && width <= 1366;
 
       setScreenSize({
         width,
         isMobile: width < 768,
         isTablet: width >= 768 && width < 1024,
-        isIPadPro
+        isIPadPro,
       });
 
       if (width >= 1200) {
         setToggleStates((prev) => ({
           ...prev,
           isMenuOpen: false,
-          showPersonDropdown: false
+          showPersonDropdown: false,
         }));
       }
     };
 
-    // Handle clicks outside of dropdown
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setToggleStates(prev => ({
+        setToggleStates((prev) => ({
           ...prev,
-          showPersonDropdown: false
+          showPersonDropdown: false,
         }));
       }
     };
@@ -75,7 +74,6 @@ const Navbar = () => {
     window.addEventListener("resize", handleResize);
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Initialize on mount
     handleResize();
 
     return () => {
@@ -193,15 +191,25 @@ const Navbar = () => {
                 animate={isNavbarInView ? "visible" : "hidden"}
                 variants={navLinkVariants}
               >
-                <Link
-                  href={item.path}
-                  className={`text-sm font-medium transition-colors duration-200 ${isActive(item.path)
+                {item.name === "Request For Sample Kit" ? (
+                  <Link
+                    href={item.path}
+                    className={`inline-block px-6 py-2 text-sm font-medium rounded-full bg-[#f58220] hover:bg-orange-400 text-black transition duration-300 ${isActive(item.path) ? "font-semibold" : ""
+                      }`}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <Link
+                    href={item.path}
+                    className={`text-sm font-medium transition-colors duration-200 ${isActive(item.path)
                       ? "text-black font-semibold border-b-2 border-black pb-1"
                       : "text-gray-600 hover:text-black"
-                    }`}
-                >
-                  {item.name}
-                </Link>
+                      }`}
+                  >
+                    {item.name}
+                  </Link>
+                )}
               </motion.div>
             ))}
           </div>
@@ -324,12 +332,11 @@ const Navbar = () => {
               className="mr-6"
             >
               <Link
-                href="/request-quote"
+                href="/request-sample-kit"
                 className="inline-block px-1 py-1 text-sm rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
               >
-                Request a Quote
+                Request Sample Kit
               </Link>
-
             </motion.div>
 
             <motion.div
@@ -394,7 +401,7 @@ const Navbar = () => {
                 { name: "About Us", path: "/about" },
                 { name: "Shop Online", path: "/shop" },
                 { name: "Customize Pouch", path: "/configuration-tool" },
-                { name: "Request for Sample Kit", path: "/request-sample-kit" },
+                { name: "Request a Quote", path: "/request-quote" },
                 { name: "Contact Us", path: "/contact-us" },
               ].map((item, index) => (
                 <motion.div
@@ -406,9 +413,7 @@ const Navbar = () => {
                 >
                   <Link
                     href={item.path}
-                    className={`block py-2.5 sm:py-3 text-base sm:text-lg font-medium ${isActive(item.path)
-                        ? "text-black font-semibold"
-                        : "text-gray-600"
+                    className={`block py-2.5 sm:py-3 text-base sm:text-lg font-medium ${isActive(item.path) ? "text-black font-semibold" : "text-gray-600"
                       }`}
                     onClick={() => handleToggle("isMenuOpen")}
                   >
@@ -435,7 +440,6 @@ const Navbar = () => {
                       <IoPersonOutline className="mr-2" size={20} />
                       My Account
                     </Link>
-                    
                   </>
                 ) : (
                   <Link

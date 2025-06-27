@@ -8,6 +8,7 @@ import {
   IoMenuOutline,
   IoCloseOutline,
   IoPersonOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useAuth } from "@/utils/authContext";
@@ -423,35 +424,60 @@ const Navbar = () => {
               ))}
 
               {/* Authentication Links for Mobile */}
-              <motion.div
-                className="mt-2 sm:mt-6"
-                custom={8}
-                initial="hidden"
-                animate="visible"
-                variants={mobileLinkVariants}
-              >
+              <div className="mt-2 sm:mt-6">
                 {user ? (
                   <>
+                    <motion.div
+                      custom={8}
+                      initial="hidden"
+                      animate="visible"
+                      variants={mobileLinkVariants}
+                    >
+                      <Link
+                        href="/my-dashboard"
+                        className="flex items-center py-2.5 sm:py-3 text-base sm:text-lg font-medium text-gray-600"
+                        onClick={() => handleToggle("isMenuOpen")}
+                      >
+                        <IoPersonOutline className="mr-2" size={20} />
+                        My Account
+                      </Link>
+                    </motion.div>
+                    <motion.div
+                      custom={9}
+                      initial="hidden"
+                      animate="visible"
+                      variants={mobileLinkVariants}
+                    >
+                      <button
+                        onClick={() => {
+                          logout();
+                          handleToggle("isMenuOpen");
+                        }}
+                        className="flex items-center py-2.5 sm:py-3 text-base sm:text-lg font-medium text-gray-600"
+                      >
+                        <IoLogOutOutline className="mr-2" size={20} />
+                        Log out
+                      </button>
+                    </motion.div>
+                  </>
+                ) : (
+                  <motion.div
+                    custom={8}
+                    initial="hidden"
+                    animate="visible"
+                    variants={mobileLinkVariants}
+                  >
                     <Link
-                      href="/my-dashboard"
-                      className="flex items-center text-base sm:text-lg font-medium text-gray-600 mb-2"
+                      href="/login"
+                      className="flex items-center py-2.5 sm:py-3 text-base sm:text-lg font-medium text-gray-600"
                       onClick={() => handleToggle("isMenuOpen")}
                     >
                       <IoPersonOutline className="mr-2" size={20} />
-                      My Account
+                      Sign In
                     </Link>
-                  </>
-                ) : (
-                  <Link
-                    href="/login"
-                    className="flex items-center text-base sm:text-lg font-medium text-gray-600"
-                    onClick={() => handleToggle("isMenuOpen")}
-                  >
-                    <IoPersonOutline className="mr-2" size={20} />
-                    Sign In
-                  </Link>
+                  </motion.div>
                 )}
-              </motion.div>
+              </div>
             </div>
             <motion.div
               className="px-4 sm:px-6 py-4 sm:py-6 bg-[#30384E] text-white"

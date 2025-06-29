@@ -53,7 +53,7 @@ const HomeNavbar = () => {
               <p className="text-white text-xl mb-2">Mahape, MIDC, Navi Mumbai,</p>
               <p className="text-white text-xl mb-4">Thane - 400710, MH, India</p>
               <h2 className="text-white text-3xl font-bold mb-2">Call US</h2>
-              <p className="text-white text-xl">+91 9821045101</p>
+              <p className="text-white text-xl">+91 9310000739</p>
             </div>
           </div>
 

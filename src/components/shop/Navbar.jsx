@@ -460,7 +460,7 @@ const Navbar = () => {
                 Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
               </p>
               <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">CALL US</h3>
-              <p className="text-xs sm:text-sm">+91 9821045101</p>
+              <p className="text-xs sm:text-sm">+91 9310000739</p>
             </motion.div>
           </motion.div>
         )}

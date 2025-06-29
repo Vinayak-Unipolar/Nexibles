@@ -181,10 +181,10 @@ const HomeContactForm = () => {
             </address>
             <div className="flex items-center gap-4 py-3">
               <a 
-                href="tel:+919821045101" 
+                href="tel:+919310000739" 
                 className="not-italic text-[#103b60] hover:text-blue-700 transition-colors"
               >
-                +91 9821045101
+                +91 9310000739
               </a>
               <span className="text-gray-400">|</span>
               <a 

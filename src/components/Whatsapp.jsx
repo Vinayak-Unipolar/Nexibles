@@ -60,7 +60,7 @@ const Whatsapp = () => {
 
     const gclid = getGclid();
     const messageWithGclid = gclid ? `Hi Nexibles GCLID:${gclid}` : "Hi Nexibles";
-    const whatsappUrl = `https://wa.me/919821045101?text=${encodeURIComponent(messageWithGclid)}`;
+    const whatsappUrl = `https://wa.me/919594945101?text=${encodeURIComponent(messageWithGclid)}`;
 
     window.open(whatsappUrl, "_blank");
     setTimeout(() => setClicked(false), 700);
@@ -361,7 +361,7 @@ const Whatsapp = () => {
 
         {/* WhatsApp link and icon */}
         <a
-          href="https://wa.me/919821045101"
+          href="https://wa.me/919594945101"
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => {

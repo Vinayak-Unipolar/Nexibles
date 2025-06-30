@@ -8,6 +8,7 @@ import {
   IoMenuOutline,
   IoCloseOutline,
   IoPersonOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 import { useAuth } from "@/utils/authContext";
 import { useSelector } from "react-redux";
@@ -191,11 +192,10 @@ const Navbar = () => {
               >
                 <Link
                   href={item.path}
-                  className={`text-sm font-medium transition-colors duration-200 ${
-                    isActive(item.path)
+                  className={`text-sm font-medium transition-colors duration-200 ${isActive(item.path)
                       ? "text-black font-semibold border-b-2 border-black pb-1"
                       : "text-gray-600 hover:text-black"
-                  }`}
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -320,10 +320,10 @@ const Navbar = () => {
               className="mr-6"
             >
               <Link
-                href="/request-quote"
+                href="/request-sample-kit"
                 className="inline-block px-1 py-1 text-sm rounded-full bg-[#ffd13e] hover:bg-yellow-500 text-black transition duration-300 whitespace-nowrap text-center min-w-[140px] max-w-full sm:px-5 sm:text-base"
               >
-                Request a Quote
+                Request Sample Kit
               </Link>
             </motion.div>
 
@@ -381,104 +381,82 @@ const Navbar = () => {
             exit="hidden"
             variants={mobileMenuVariants}
           >
-            <div className="flex flex-col h-full">
-              {/* Navigation Links Section - 60% height */}
-              <div className="flex-1 px-8 py-6" style={{ minHeight: '60%' }}>
-                <div className="space-y-4">
-                  {[
-                    { name: "Home", path: "/" },
-                    { name: "Pouches", path: "/all-category" },
-                    { name: "Industries", path: "/all-industry" },
-                    { name: "About Us", path: "/about" },
-                    { name: "Shop Online", path: "/shop" },
-                    { name: "Customize Pouch", path: "/configuration-tool" },
-                    { name: "Request for Sample Kit", path: "/request-sample-kit" },
-                    { name: "Contact Us", path: "/contact-us" },
-                  ].map((item, index) => (
-                    <motion.div
-                      key={item.name}
-                      custom={index}
-                      initial="hidden"
-                      animate="visible"
-                      variants={mobileLinkVariants}
-                    >
-                      <Link
-                        href={item.path}
-                        className={`block text-left py-1.5 text-lg font-medium ${
-                          isActive(item.path)
-                            ? "text-black font-semibold"
-                            : "text-gray-600 hover:text-black"
-                        } transition-colors duration-200`}
-                        onClick={() => handleToggle("isMenuOpen")}
-                      >
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-
-                  {/* Authentication Links for Mobile */}
-                  <motion.div
-                    className="pt-3 border-t border-gray-200"
-                    custom={8}
-                    initial="hidden"
-                    animate="visible"
-                    variants={mobileLinkVariants}
+            <div className="flex-1 px-4 sm:px-6 py-6 overflow-y-auto">
+              {[
+                { name: "Home", path: "/" },
+                { name: "Pouches", path: "/all-category" },
+                { name: "Industries", path: "/all-industry" },
+                { name: "About Us", path: "/about" },
+                { name: "Shop Online", path: "/shop" },
+                { name: "Customize Pouch", path: "/configuration-tool" },
+                { name: "Request for Sample Kit", path: "/request-sample-kit" },
+                { name: "Contact Us", path: "/contact-us" },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.name}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  variants={mobileLinkVariants}
+                >
+                  <Link
+                    href={item.path}
+                    className={`block py-2.5 sm:py-3 text-base sm:text-lg font-medium ${isActive(item.path)
+                        ? "text-black font-semibold"
+                        : "text-gray-600"
+                      }`}
+                    onClick={() => handleToggle("isMenuOpen")}
                   >
-                    {user ? (
-                      <div className="space-y-3">
-                        <Link
-                          href="/my-dashboard"
-                          className="flex items-center text-left text-lg font-medium text-gray-600 hover:text-black transition-colors duration-200"
-                          onClick={() => handleToggle("isMenuOpen")}
-                        >
-                          <IoPersonOutline className="mr-3" size={20} />
-                          My Account
-                        </Link>
-                        <button
-                          onClick={() => {
-                            logout();
-                            handleToggle("isMenuOpen");
-                          }}
-                          className="flex items-center text-left text-lg font-medium text-gray-600 hover:text-black transition-colors duration-200"
-                        >
-                          Logout
-                        </button>
-                      </div>
-                    ) : (
-                      <Link
-                        href="/login"
-                        className="flex items-center text-left text-lg font-medium text-gray-600 hover:text-black transition-colors duration-200"
-                        onClick={() => handleToggle("isMenuOpen")}
-                      >
-                        <IoPersonOutline className="mr-3" size={20} />
-                        Sign In
-                      </Link>
-                    )}
-                  </motion.div>
-                </div>
-              </div>
+                    {item.name}
+                  </Link>
+                </motion.div>
+              ))}
 
-              {/* Contact Section - 40% height */}
+              {/* Authentication Links for Mobile */}
               <motion.div
-                className="bg-[#30384E] text-white px-8 py-5"
-                style={{ minHeight: '40%' }}
+                className="mt-2 sm:mt-6"
+                custom={8}
                 initial="hidden"
                 animate="visible"
-                variants={contactVariants}
+                variants={mobileLinkVariants}
               >
-                <div className="space-y-3">
-                  <h3 className="text-xl font-semibold text-left">MEET WITH US</h3>
-                  <p className="text-sm leading-relaxed text-left">
-                    Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
-                  </p>
-                  
-                  <div className="pt-3">
-                    <h3 className="text-lg font-semibold text-left mb-2">CALL US</h3>
-                    <p className="text-sm text-left">+91 9821045101</p>
-                  </div>
-                </div>
+                {user ? (
+                  <>
+                    <Link
+                      href="/my-dashboard"
+                      className="flex items-center text-base sm:text-lg font-medium text-gray-600 mb-2"
+                      onClick={() => handleToggle("isMenuOpen")}
+                    >
+                      <IoPersonOutline className="mr-2" size={20} />
+                      My Account
+                    </Link>
+                    
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center text-base sm:text-lg font-medium text-gray-600"
+                    onClick={() => handleToggle("isMenuOpen")}
+                  >
+                    <IoPersonOutline className="mr-2" size={20} />
+                    Sign In
+                  </Link>
+                )}
               </motion.div>
             </div>
+            <motion.div
+              className="px-4 sm:px-6 py-4 sm:py-6 bg-[#30384E] text-white"
+              initial="hidden"
+              animate="visible"
+              variants={contactVariants}
+            >
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">MEET WITH US</h3>
+              <p className="text-sm sm:text-base leading-relaxed mb-3 sm:mb-4">
+                Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
+              </p>
+              <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">CALL US</h3>
+              <p className="text-xs sm:text-sm">+91 9821045101</p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

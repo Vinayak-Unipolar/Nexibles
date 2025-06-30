@@ -62,7 +62,7 @@ const Advantages = () => {
       >
         <AdvantageItem
           icon={<FaBan size={24} className="sm:size-26 md:size-14" />}
-          heading="No MOQ"
+          heading="Low MOQ"
           description="Start small, scale smart — print exactly what you need with zero minimum order quantity."
         />
         <AdvantageItem

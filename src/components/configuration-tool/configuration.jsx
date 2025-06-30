@@ -141,10 +141,7 @@ const Configuration = () => {
         }
       } catch (err) {
         console.error(`Category fetch attempt ${attempt} failed:`, err.message);
-        if (attempt === retries) {
-          setError(err.message || 'Error fetching category data');
-          return false;
-        }
+        z
         await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
       }
     }

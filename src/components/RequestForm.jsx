@@ -50,6 +50,7 @@ function RequestForm({
     zipPostalCode: "",
     terms: "",
     gstPanCombo: "",
+    companyWebsite: "",
   });
   const [submitStatus, setSubmitStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,9 @@ function RequestForm({
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [submittedData, setSubmittedData] = useState(null);
-
+const [industries, setIndustries] = useState([]);
+  const [loadingIndustries, setLoadingIndustries] = useState(true);
+  const [industriesError, setIndustriesError] = useState(null);
   const countries = [
     "India",
     "United Arab Emirates",
@@ -257,34 +260,27 @@ function RequestForm({
 
   const languages = ["Hindi", "English", "Marathi", "Gujarati", "Kannada"];
 
-  const industries = [
-    "Beverages",
-    "Bread and other Bakery",
-    "Candy and other Confection",
-    "Child Resistant",
-    "Coffee and Tea",
-    "Condiments, Sauces, Seasonings, and Spices",
-    "Co-Packers/Co-Manufacturers",
-    "Dairy and Cheese",
-    "Distributor/Broker",
-    "Frozen Foods",
-    "Fruits and Vegetables",
-    "Grains, Rice, and Pasta",
-    "Garment",
-    "Health and Beauty",
-    "Lawn and Garden",
-    "Marketing Agency",
-    "Medical",
-    "Non-Food",
-    "Nutritional Supplements",
-    "Pet and other Animal Food",
-    "Prepared Meals",
-    "Processed Meats",
-    "Printer/Converter",
-    "Retail Grocery",
-    "Snacks",
-    "Tobacco",
-  ];
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        setLoadingIndustries(true);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/industries`, {
+          headers: {
+            'API-Key': process.env.NEXT_PUBLIC_API_KEY,
+          },
+        });
+        setIndustries(response.data.industries || []);
+      } catch (error) {
+        console.error('Error fetching industries:', error);
+        setIndustriesError('Failed to load industries. Please try again later.');
+        toast.error('Failed to load industries.');
+      } finally {
+        setLoadingIndustries(false);
+      }
+    };
+
+    fetchIndustries();
+  }, []);
 
   const orderQuantities = [
     "1,000 – 5,000 units",
@@ -301,7 +297,6 @@ function RequestForm({
     "Seeking Additional Packaging Provider",
   ];
 
-  // Validation functions
   const validatePhone = (value) => {
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(value)) {
@@ -353,9 +348,20 @@ function RequestForm({
     return "";
   };
 
+  const validateURL = (value) => {
+    if (!value) return ""; // Allow empty since it's optional
+    // Regex to validate URLs (supports http://, https://, www., or just domain.com)
+    const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
+    if (!urlRegex.test(value)) {
+      return "Please enter a valid URL.";
+    }
+    return "";
+  };
+
   const validateGSTPANCombo = (gst, pan) => {
     const isGSTValid = gst && gst.toUpperCase() !== "NA" && /^[A-Z0-9]{15}$/.test(gst);
     const isPANValid = pan && pan.toUpperCase() !== "NA" && /^[A-Z0-9]{10}$/.test(pan);
+    return "";
   };
 
   useEffect(() => {
@@ -431,6 +437,8 @@ function RequestForm({
       setErrors((prev) => ({ ...prev, zipPostalCode: validateZipCode(formattedValue) }));
     } else if (name === "email") {
       setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    } else if (name === "companyWebsite") {
+      setErrors((prev) => ({ ...prev, companyWebsite: validateURL(value) }));
     }
 
     setFormData((prevData) => ({
@@ -556,6 +564,7 @@ function RequestForm({
       zipPostalCode: formData.requestSampleKit ? validateZipCode(formData.zipPostalCode) : "",
       terms: formData.requestSampleKit && !termsAccepted ? "Please accept the Terms and Conditions." : "",
       gstPanCombo: validateGSTPANCombo(formData.gst_in, formData.pancard),
+      companyWebsite: validateURL(formData.companyWebsite),
     };
 
     setErrors(newErrors);
@@ -701,6 +710,7 @@ function RequestForm({
       zipPostalCode: formData.requestSampleKit ? validateZipCode(formData.zipPostalCode) : "",
       terms: formData.requestSampleKit && !termsAccepted ? "Please accept the Terms and Conditions." : "",
       gstPanCombo: formData.requestSampleKit ? validateGSTPANCombo(formData.gst_in, formData.pancard) : "",
+      companyWebsite: validateURL(formData.companyWebsite),
     };
 
     setErrors(newErrors);
@@ -877,6 +887,7 @@ function RequestForm({
             zipPostalCode: "",
             terms: "",
             gstPanCombo: "",
+            companyWebsite: "",
           });
           window.scrollTo({ top: 0, behavior: "smooth" });
           if (isModal) onClose();
@@ -1097,13 +1108,14 @@ function RequestForm({
               Company Website
             </label>
             <input
-              type="url"
+              type="text" // Changed from type="url" to allow more flexible input
               name="companyWebsite"
               value={formData.companyWebsite}
               onChange={handleChange}
-              placeholder="https://"
+              placeholder="example.com or www.example.com"
               className="w-full p-2 mt-1 text-black placeholder-black bg-transparent border border-black rounded-md focus:outline-none"
             />
+            {errors.companyWebsite && <p className="mt-1 text-sm text-red-500">{errors.companyWebsite}</p>}
           </div>
         </div>
 
@@ -1260,9 +1272,9 @@ function RequestForm({
             </div>
 
             <div className="mb-4">
-               <label className="block text-sm font-medium text-red-600 sm:text-md">
-                     (At least one of GSTIN or PAN Card is required)
-                  </label>
+              <label className="block text-sm font-medium text-red-600 sm:text-md">
+                (At least one of GSTIN or PAN Card is required)
+              </label>
               <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex-1">
                   <input
@@ -1280,7 +1292,6 @@ function RequestForm({
                   <span className="text-sm font-semibold text-black sm:text-md">OR</span>
                 </div>
                 <div className="flex-1">
-                  
                   <input
                     type="text"
                     name="pancard"
@@ -1292,7 +1303,6 @@ function RequestForm({
                   />
                   {errors.pancard && <p className="mt-1 text-sm text-red-500">{errors.pancard}</p>}
                 </div>
-                
               </div>
               {errors.gstPanCombo && (
                 <p className="mt-1 text-sm text-red-500">{errors.gstPanCombo}</p>

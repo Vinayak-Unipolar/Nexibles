@@ -115,50 +115,182 @@ export default function PCCardDetails({ productDetails }) {
       CheckShippingCost(value);
     }
   };
+  // // Define gtag_report_conversion outside handleAddToCart
+  // function gtag_report_conversion(url, totalPrice) {
+  //   //console.log('Attempting to fire gtag_report_conversion with totalPrice:', totalPrice);
+  //   if (typeof gtag === 'undefined') {
+  //     console.error('gtag is not defined. Ensure Google Analytics script is loaded.');
+  //     return;
+  //   }
+  //   try {
+  //     gtag('event', 'conversion', {
+  //       'send_to': 'AW-17014026366/tsJFCI7OrtQaEP7g9bA_',
+  //       'value': totalPrice,
+  //       'currency': 'INR',
+  //       'event_callback': ()=>{
+  //         console.log('gtag conversion callback triggered');
+  //         console.log('gtag conversion reported successfully');
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error('Error firing gtag conversion:', error);
+  //   }
+  // }
+
+  // const handleAddToCart = () => {
+  //   console.log('handleAddToCart triggered');
+  //   try {
+  //     const qtyToUse = parseInt(selectedQuantity, 10) || 0;
+  //     console.log('Quantity:', qtyToUse, 'Minimum Quantity:', minimumQuantity);
+  //     if (qtyToUse < minimumQuantity) {
+  //       console.log('Quantity validation failed');
+  //       toast.warning(`Quantity must be at least ${minimumQuantity}`);
+  //       return;
+  //     }
+  //     const unitPrice = productPrice || productDetails.product.price;
+  //     const totalPrice = unitPrice * qtyToUse;
+  //     console.log('Unit Price:', unitPrice, 'Total Price:', totalPrice);
+
+  //     const firstImage = productImages && productImages.length > 0 ? productImages[0] : '';
+  //     console.log('First Image:', firstImage);
+
+  //     const productToAdd = {
+  //       id: productDetails.product.id,
+  //       name: productDetails.product.name,
+  //       category: productDetails.product.category,
+  //       image: firstImage,
+  //       price: unitPrice,
+  //       quantity: qtyToUse,
+  //       totalPrice: totalPrice,
+  //       skuCount: selectedSKU,
+  //       material: productDetails.product.material,
+  //       long_desc: productDetails.product.long_desc,
+  //       specifications: productDetails.product.specifications,
+  //       applications: productDetails.product.applications,
+  //       a_plus_content: productDetails.product.a_plus_content,
+  //     };
+  //     console.log('Product to Add:', productToAdd);
+
+  //     const eventId = `cart_${productDetails.product.id}`;
+  //     console.log('Firing Facebook Pixel event with eventId:', eventId);
+  //     if (typeof fbq !== 'undefined') {
+  //       fbq('track', 'AddToCart', {
+  //         content_ids: [productDetails.product.id],
+  //         content_type: 'product',
+  //         value: totalPrice,
+  //         currency: 'INR',
+  //         eventID: eventId
+  //       });
+  //     } else {
+  //       console.error('fbq is not defined. Ensure Facebook Pixel script is loaded.');
+  //     }
+
+  //     // Fire gtag_report_conversion first
+  //     gtag_report_conversion(undefined, totalPrice);
+
+  //     // Add to cart
+  //     console.log('Dispatching addToCart');
+  //     dispatch(addToCart(productToAdd));
+  //     const existingItem = cartItems.find(item => item.id === productToAdd.id);
+  //     console.log('Existing Item:', existingItem, 'Cart Items:', cartItems);
+  //     setCartItemCount(existingItem ? cartItems.length : cartItems.length + 1);
+  //     console.log('Cart Item Count Updated');
+  //     toast.success('Product added to cart');
+  //   } catch (error) {
+  //     console.error('Error in handleAddToCart:', error);
+  //   }
+  // };
+
+  const gtag_report_conversion = (url, totalPrice) => {
+    if (typeof window.gtag !== "function") {
+      console.warn("gtag is not defined. Ensure gtag.js is loaded via GoogleAnalytics.jsx.");
+      return false;
+    }
+    try {
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-17014026366/6bz-COPv-MYaEP7g9bA_',
+        'value': totalPrice,
+        'currency': 'INR',
+        'event_callback': () => {
+          if (typeof url !== 'undefined') {
+            window.location = url;
+          }
+        }
+      });
+     
+      return true;
+    } catch (error) {
+      console.error('Error firing gtag conversion:', error);
+      return false;
+    }
+  };
 
   const handleAddToCart = () => {
-    const qtyToUse = parseInt(selectedQuantity, 10) || 0;
-    if (qtyToUse < minimumQuantity) {
-      toast.warning(`Quantity must be at least ${minimumQuantity}`);
-      return;
+    try {
+      const qtyToUse = parseInt(selectedQuantity, 10) || 0;
+      if (qtyToUse < minimumQuantity) {
+        toast.warning(`Quantity must be at least ${minimumQuantity}`);
+        return;
+      }
+      const unitPrice = productPrice || productDetails.product.price;
+      const totalPrice = unitPrice * qtyToUse;
+
+      const firstImage = productImages && productImages.length > 0 ? productImages[0] : '';
+
+      const productToAdd = {
+        id: productDetails.product.id,
+        name: productDetails.product.name,
+        category: productDetails.product.category,
+        image: firstImage,
+        price: unitPrice,
+        quantity: qtyToUse,
+        totalPrice: totalPrice,
+        skuCount: selectedSKU,
+        material: productDetails.product.material,
+        long_desc: productDetails.product.long_desc,
+        specifications: productDetails.product.specifications,
+        applications: productDetails.product.applications,
+        a_plus_content: productDetails.product.a_plus_content,
+      };
+
+      const eventId = `cart_${productDetails.product.id}`;
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'AddToCart', {
+          content_ids: [productDetails.product.id],
+          content_type: 'product',
+          value: totalPrice,
+          currency: 'INR',
+          eventID: eventId
+        });
+      } else {
+        console.error('fbq is not defined. Ensure Facebook Pixel script is loaded.');
+      }
+
+      const gtagSuccess = gtag_report_conversion(undefined, totalPrice);
+      dispatch(addToCart(productToAdd));
+      const existingItem = cartItems.find(item => item.id === productToAdd.id);
+      setCartItemCount(existingItem ? cartItems.length : cartItems.length + 1);
+      toast.success('Product added to cart');
+    } catch (error) {
+      console.error('Error in handleAddToCart:', error);
     }
-    const unitPrice = productPrice || productDetails.product.price;
-    const totalPrice = unitPrice * qtyToUse;
+  };
 
-    const firstImage = productImages && productImages.length > 0 ? productImages[0] : '';
-
-    const productToAdd = {
-      id: productDetails.product.id,
-      name: productDetails.product.name,
-      category: productDetails.product.category,
-      image: firstImage,
-      price: unitPrice,
-      quantity: qtyToUse,
-      totalPrice: totalPrice,
-      skuCount: selectedSKU,
-      material: productDetails.product.material,
-      long_desc: productDetails.product.long_desc,
-      specifications: productDetails.product.specifications,
-      applications: productDetails.product.applications,
-      a_plus_content: productDetails.product.a_plus_content,
-
-
-
-    };
-
-    const eventId = `cart_${productDetails.product.id}`;
-    fbq('track', 'AddToCart', {
-      content_ids: [productDetails.product.id],
-      content_type: 'product',
-      value: totalPrice,
-      currency: 'INR',
-      eventID: eventId
-    });
-
-    dispatch(addToCart(productToAdd));
-    const existingItem = cartItems.find(item => item.id === productToAdd.id);
-    setCartItemCount(existingItem ? cartItems.length : cartItems.length + 1);
-    toast.success('Product added to cart');
+  const handleContinue = () => {
+    try {
+      const qtyToUse = parseInt(selectedQuantity, 10) || 0;
+      if (qtyToUse < minimumQuantity) {
+        console.log('Quantity validation failed');
+        toast.warning(`Quantity must be at least ${minimumQuantity}`);
+        return;
+      }
+      const unitPrice = productPrice || productDetails.product.price;
+      const totalPrice = unitPrice * qtyToUse;
+      const gtagSuccess = gtag_report_conversion(undefined, totalPrice);
+      handleAddToCart();
+    } catch (error) {
+      console.error('Error in handleContinue:', error);
+    }
   };
 
   const handleIncreaseQuantity = useCallback(() => {
@@ -298,17 +430,17 @@ export default function PCCardDetails({ productDetails }) {
 
         <hr className="my-12 border-gray-200" />
         <div className="my-12">
-          <DescriptionSection 
+          <DescriptionSection
             description={productDetails.product.description}
             long_desc={productDetails.product.long_desc}
             specifications={productDetails.product.specifications}
             applications={productDetails.product.applications}
             productDetails={productDetails} />
-            
+
         </div>
 
         <div className="my-12">
-          <ImageDescriptionSection          
+          <ImageDescriptionSection
             a_plus_content={productDetails.product.a_plus_content}
           />
         </div>

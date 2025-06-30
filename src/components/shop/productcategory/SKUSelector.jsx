@@ -115,8 +115,8 @@ export default function SKUSelector({
                         disabled={numberOfSKUs < 1}
                     >
                         {Array.from({ length: numberOfSKUs }, (_, index) => (
-                            <option key={index + 1} value={index + 1}>
-                                {index + 1}
+                            <option key={index + minimumQuantity} value={index + minimumQuantity}>
+                                {index + minimumQuantity}
                             </option>
                         ))}
                     </select>
@@ -136,15 +136,6 @@ export default function SKUSelector({
                             >
                                 Continue to Upload Design
                             </motion.button>
-                            {/* <motion.button
-                                onClick={handleBuyNow}
-                                className="flex items-center justify-center w-full gap-2 px-4 py-2.5 text-md font-medium text-black transition-all duration-200 bg-[#ffd13e] hover:bg-yellow-500 rounded-md shadow-sm"
-                                variants={buttonVariants}
-                                whileHover="hover"
-                                whileTap="tap"
-                            >
-                                Buy Now
-                            </motion.button> */}
                         </>
                     ) : (
                         <>
@@ -155,17 +146,8 @@ export default function SKUSelector({
                                 whileHover="hover"
                                 whileTap="tap"
                             >
-                                MOQ : 500
+                                MOQ: {minimumQuantity}
                             </motion.button>
-                            {/* <motion.button
-                                onClick={handleBuyNow}
-                                className="w-full md:w-auto bg-[#ffd13e] rounded-md px-4 py-2 text-white font-medium transition-all duration-200 shadow-sm flex items-center justify-center gap-2 h-10"
-                                variants={buttonVariants}
-                                whileHover="hover"
-                                whileTap="tap"
-                            >
-                                Buy Now
-                            </motion.button> */}
                         </>
                     )}
                 </motion.div>
@@ -192,8 +174,6 @@ export default function SKUSelector({
         </motion.div>
     );
 }
-
-
 
 
 

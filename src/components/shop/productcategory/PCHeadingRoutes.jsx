@@ -21,7 +21,7 @@ export default function PCHeadingRoutes({ productDetails }) {
         <GrFormNext className="mx-2 text-gray-500" size={20} />
 
         {/* Category Link */}
-        <Link href={`/category/${encodedCategory}`}>
+        <Link href={`/${encodedCategory}`}>
           <div className="flex items-center">
             <p className="mr-2 text-sm font-semibold text-gray-600 cursor-pointer md:text-sm">
               {productDetails.product ? productDetails.product.category : ''}

@@ -22,10 +22,10 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
     });
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: name === "gstin" ? value.toUpperCase() : value
         }));
     };
 
@@ -86,7 +86,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
     }, [addressId]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
             <div className="relative bg-white rounded-lg w-full max-w-md sm:max-w-lg h-[85vh] sm:h-auto sm:max-h-[90vh] overflow-y-auto">
                 <button
                     onClick={() => setShowUpdateAddress(false)}
@@ -149,15 +149,15 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             placeholder="City/Town"
                             required
                         />
-                        <select
+                        <input
+                            type="text"
                             name="state"
                             value={formData.state}
                             onChange={handleChange}
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-                        >
-                            <option value="Maharashtra">Maharashtra</option>
-                            <option value="Delhi">Delhi</option>
-                        </select>
+                            placeholder="State"
+                            required
+                        />
                     </div>
                     <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
                         <input
@@ -168,16 +168,17 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
                             placeholder="ZIP"
                             required
+                            maxLength={6}
                         />
-                        <select
+                        <input
+                            type="text"
                             name="country"
                             value={formData.country}
                             onChange={handleChange}
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-                        >
-                            <option value="India">India</option>
-                            <option value="Germany">Germany</option>
-                        </select>
+                            placeholder="Country"
+                            required
+                        />
                     </div>
                     <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
                         <input
@@ -188,23 +189,17 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
                             placeholder="Phone"
                             required
+                            maxLength={10}
                         />
-                        <select
+                        <input
+                            type="text"
                             name="addressType"
                             value={formData.addressType}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setFormData((prevState) => ({
-                                    ...prevState,
-                                    addressType: value === 'Others' ? '' : value,
-                                }));
-                            }}
+                            onChange={handleChange}
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-                        >
-                            <option value="">Select Address Type</option>
-                            <option value="Home">Home</option>
-                            <option value="Office">Office</option>
-                        </select>
+                            placeholder="Address Type"
+                            required
+                        />
                     </div>
                     <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
                         <input
@@ -222,6 +217,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             onChange={handleChange}
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
                             placeholder="GSTIN"
+                            maxLength={15}
                         />
                     </div>
                     <div className="mt-2 sm:mt-4">
@@ -229,7 +225,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             type="submit"
                             className="w-full sm:w-auto bg-[#103b60] rounded-md text-white px-6 py-2 sm:px-8 sm:py-2 text-sm sm:text-base"
                         >
-                            Use this address
+                            Update Address
                         </button>
                     </div>
                 </form>

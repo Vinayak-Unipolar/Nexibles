@@ -35,7 +35,7 @@ const AddAddress = (props) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: name === "gstin" ? value.toUpperCase() : value,
     }));
   };
 
@@ -132,17 +132,15 @@ const AddAddress = (props) => {
               placeholder="City/Town"
               required
             />
-            <select
+            <input
+              type="text"
               name="state"
               value={formData.state}
               onChange={handleChange}
               className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
+              placeholder="State"
               required
-            >
-              <option value="">Select State</option>
-              <option value="Maharashtra">Maharashtra</option>
-              <option value="Delhi">Delhi</option>
-            </select>
+            />
           </div>
           <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
@@ -155,17 +153,15 @@ const AddAddress = (props) => {
               required
               maxLength={6}
             />
-            <select
+            <input
+              type="text"
               name="country"
               value={formData.country}
               onChange={handleChange}
               className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
+              placeholder="Country"
               required
-            >
-              <option value="">Select Country</option>
-              <option value="India">India</option>
-              <option value="Germany">Germany</option>
-            </select>
+            />
           </div>
           <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
@@ -206,6 +202,7 @@ const AddAddress = (props) => {
               onChange={handleChange}
               className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
               placeholder="GSTIN"
+              maxLength={15}
             />
           </div>
           <div className="mt-2 sm:mt-4">

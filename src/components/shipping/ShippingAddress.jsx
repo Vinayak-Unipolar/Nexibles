@@ -28,7 +28,7 @@ export default function ShippingAddress({
         (addr) => String(addr.id) === String(defaultAddress.data.id)
       );
       if (defaultAddr) {
-        console.log("Preselecting default address:", defaultAddr);
+        //console.log("Preselecting default address:", defaultAddr);
         setSelectedAddress(defaultAddr);
       } else {
         console.log("Default address not found in addresses array");

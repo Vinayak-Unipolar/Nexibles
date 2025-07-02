@@ -1,5 +1,5 @@
 import contentData from '@/data/pouches.json';
-import ProductCategoryClient from '@/app/[categories]/ProductCategoryClient';
+import ProductCategoryClient from '@/app/all-categories/[categories]/ProductCategoryClient';
 import Head from 'next/head';
 
 export async function generateMetadata({ params }) {

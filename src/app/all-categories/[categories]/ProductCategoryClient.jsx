@@ -12,7 +12,7 @@ import BrandLogosSection from '@/components/instagramandlogos/BrandLogosSection'
 import Loader from '@/components/comman/Loader';
 import Card from '@/components/shop/productcategory/Card';
 import StatsAndTestimonials from '@/components/StatsAndTestimonials/StatsAndTestimonials';
-import Triangle from '../../../public/Triangle.webp';
+import Triangle from '../../../../public/Triangle.webp';
 
 const ProductCategoryClient = ({ content, category }) => {
   const [products, setProducts] = useState([]);

@@ -92,7 +92,7 @@ const Navbar = () => {
     { name: "Pouches", path: "/all-category" },
     { name: "Industries", path: "/all-industry" },
     { name: "About Us", path: "/about" },
-    { name: "Request For Sample Kit", path: "/request-sample-kit" },
+    // { name: "Request For Sample Kit", path: "/request-sample-kit" },
   ];
 
   const logoVariants = {
@@ -200,7 +200,21 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               </motion.div>
+              
             ))}
+            <motion.div
+              custom={2}
+              initial="hidden"
+              animate={isNavbarInView ? "visible" : "hidden"}
+              variants={navLinkVariants}
+            >
+              <Link
+                href="/request-sample-kit"
+                className="inline-block px-6 py-2 text-sm font-medium rounded-full bg-[#f58220] text-black transition duration-300"
+              >
+                Request Sample Kit
+              </Link>
+            </motion.div>
           </div>
 
           {/* Right Nav Items - Desktop Only */}
@@ -233,8 +247,10 @@ const Navbar = () => {
               </Link>
             </motion.div>
 
+            
+
             <motion.div
-              custom={2}
+              custom={3}
               initial="hidden"
               animate={isNavbarInView ? "visible" : "hidden"}
               variants={iconVariants}
@@ -253,7 +269,7 @@ const Navbar = () => {
 
             <motion.div
               ref={dropdownRef}
-              custom={3}
+              custom={4}
               initial="hidden"
               animate={isNavbarInView ? "visible" : "hidden"}
               variants={iconVariants}
@@ -358,8 +374,8 @@ const Navbar = () => {
               {toggleStates.isMenuOpen ? (
                 <motion.div
                   initial={{ rotate: 0 }}
-                   animate={{ rotate: 90 }}
-                   transition={{ duration: 0.2 }}
+                  animate={{ rotate: 90 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <IoCloseOutline size={24} />
                 </motion.div>
@@ -454,7 +470,9 @@ const Navbar = () => {
               <p className="text-sm sm:text-base leading-relaxed mb-3 sm:mb-4">
                 Art NEXT Pvt Ltd | Nexibles®, Unit A6C, Lodha Industrial & Logistics Park - II, Usatane Village, Navi Mumbai, Taloja Bypass Road, Palava, Maharashtra - 421306
               </p>
-              <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">CALL US</h3>
+              <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">CALL
+
+ US</h3>
               <p className="text-xs sm:text-sm">+91 9821045101</p>
             </motion.div>
           </motion.div>

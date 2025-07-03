@@ -12,7 +12,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
         address: '',
         address2: '',
         city: '',
-        state: 'Maharashtra',
+        state: '',
         zip: '',
         country: 'India',
         phone: '',
@@ -20,6 +20,45 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
         company: '',
         gstin: ''
     });
+
+    const indianStates = [
+        "Andaman and Nicobar Islands",
+        "Andhra Pradesh",
+        "Arunachal Pradesh",
+        "Assam",
+        "Bihar",
+        "Chandigarh",
+        "Chhattisgarh",
+        "Dadra and Nagar Haveli and Daman and Diu",
+        "Delhi",
+        "Goa",
+        "Gujarat",
+        "Haryana",
+        "Himachal Pradesh",
+        "Jammu and Kashmir",
+        "Jharkhand",
+        "Karnataka",
+        "Kerala",
+        "Ladakh",
+        "Lakshadweep",
+        "Madhya Pradesh",
+        "Maharashtra",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Odisha",
+        "Puducherry",
+        "Punjab",
+        "Rajasthan",
+        "Sikkim",
+        "Tamil Nadu",
+        "Telangana",
+        "Tripura",
+        "Uttar Pradesh",
+        "Uttarakhand",
+        "West Bengal",
+    ];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +105,7 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             address: addressData.address || '',
                             address2: addressData.address2 || '',
                             city: addressData.city || '',
-                            state: addressData.state || 'Maharashtra',
+                            state: addressData.state || '',
                             zip: addressData.zip || '',
                             country: addressData.country || 'India',
                             phone: addressData.phone || '',
@@ -149,15 +188,20 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             placeholder="City/Town"
                             required
                         />
-                        <input
-                            type="text"
+                        <select
                             name="state"
                             value={formData.state}
                             onChange={handleChange}
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-                            placeholder="State"
                             required
-                        />
+                        >
+                            <option value="">Select State</option>
+                            {indianStates.map((state) => (
+                                <option key={state} value={state}>
+                                    {state}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
                         <input
@@ -191,15 +235,17 @@ const UpdatedAddress = ({ addressId, setShowUpdateAddress }) => {
                             required
                             maxLength={10}
                         />
-                        <input
-                            type="text"
+                        <select
                             name="addressType"
                             value={formData.addressType}
                             onChange={handleChange}
                             className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-                            placeholder="Address Type"
                             required
-                        />
+                        >
+                            <option value="">Select Address Type</option>
+                            <option value="Home">Home</option>
+                            <option value="Office">Office</option>
+                        </select>
                     </div>
                     <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
                         <input

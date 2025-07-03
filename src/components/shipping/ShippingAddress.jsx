@@ -16,6 +16,45 @@ export default function ShippingAddress({
   selectedAddress,
   setSelectedAddress
 }) {
+  const indianStates = [
+    "Andaman and Nicobar Islands",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Ladakh",
+    "Lakshadweep",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+  ];
+
   // Log props for debugging
   useEffect(() => {
     //console.log("ShippingAddress - defaultAddress:", defaultAddress);
@@ -43,7 +82,6 @@ export default function ShippingAddress({
 
   const renderAddressFields = (address) => {
     const fields = [
-      // { key: "title" },
       { key: "houseno" },
       { key: "floor" },
       { key: "address" },
@@ -52,19 +90,11 @@ export default function ShippingAddress({
       { key: "state" },
       { key: "zip" },
       { key: "country" },
-      // { key: "phone" },
-      // { key: "mobile" },
-      // { key: "addressType" },
-      // { key: "company" },
       { key: "location" },
       { key: "serviceArea" },
       { key: "gstin" },
       { key: "latlong" },
       { key: "street_no" },
-      // { key: "addedon", format: (value) => new Date(value).toLocaleString("en-GB", {
-      //   day: "2-digit", month: "2-digit", year: "numeric",
-      //   hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-      // })}
     ];
 
     const values = fields
@@ -120,19 +150,6 @@ export default function ShippingAddress({
               ))}
             </div>
           </div>
-          {/* {selectedAddress && (
-            <div className="flex justify-between mt-4 mb-4">
-              <div className="flex flex-col">
-                <p className="text-gray-900 text-2xl font-bold">
-                  {user?.result?.firstName ?? user?.firstName} {user?.result?.lastName ?? user?.lastName}
-                </p>
-                {renderAddressFields(selectedAddress)}
-              </div>
-              <Link href="/manageaddress">
-                <p className="text-gray-900 underline uppercase text-sm font-bold cursor-pointer">change address</p>
-              </Link>
-            </div>
-          )} */}
           <hr className="border border-gray-300" />
           <div className="mt-4 flex items-start justify-between">
             <div className="flex flex-col">
@@ -211,9 +228,13 @@ export default function ShippingAddress({
               <input type="text" name="address2" value={formData.address2} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none" placeholder="Address 2" />
               <input type="text" name="floor" value={formData.floor} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none" placeholder="Floor" />
               <input type="text" name="city" value={formData.city} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none" placeholder="City/Town" required />
-              <select name="state" value={formData.state} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none">
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Delhi">Delhi</option>
+              <select name="state" value={formData.state} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none" required>
+                <option value="">Select State</option>
+                {indianStates.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
               </select>
               <input type="text" name="zip" value={formData.zip} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none" placeholder="zip" required maxLength={6} />
               <select name="country" value={formData.country} onChange={handleChange} className="border-2 rounded-full text-gray-900 px-4 py-1 outline-none">

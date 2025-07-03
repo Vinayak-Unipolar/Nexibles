@@ -16,7 +16,7 @@ const AddAddress = (props) => {
     floor: "",
     address: "",
     address2: "",
-    state: "Maharashtra",
+    state: "",
     city: "",
     zip: "",
     country: "India",
@@ -30,6 +30,45 @@ const AddAddress = (props) => {
     addressTypeOther: "",
     gstin: "",
   });
+
+  const indianStates = [
+    "Andaman and Nicobar Islands",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Ladakh",
+    "Lakshadweep",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -132,15 +171,20 @@ const AddAddress = (props) => {
               placeholder="City/Town"
               required
             />
-            <input
-              type="text"
+            <select
               name="state"
               value={formData.state}
               onChange={handleChange}
               className="w-full px-3 py-1 text-sm text-gray-900 border-2 rounded-full outline-none sm:px-4 sm:py-1 sm:text-base"
-              placeholder="State"
               required
-            />
+            >
+              <option value="">Select State</option>
+              {indianStates.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
             <input
